@@ -33,11 +33,11 @@ export class ChatActionsRenderer extends ActionsRenderer {
     super(ctx.game);
   }
 
-  public needsActionRender(entity: Entity): boolean {
+  public needsUpdate(entity: Entity): boolean {
     return entity.hasAction(ChatAction);
   }
 
-  public render(entity: Entity) {
+  public doUpdate(entity: Entity) {
     this.clearChatData(entity);
 
     const entitySprite = entity.data.visual && entity.data.visual.sprite;
@@ -98,5 +98,9 @@ export class ChatActionsRenderer extends ActionsRenderer {
       entity.data.chat.text.destroy();
       entity.data.chat = null;
     }
+  }
+
+  public getLastUpdateDetails(): [[string, number]] | null {
+    return [["action:chat", this.getLastUpdateTimeMs()]];
   }
 }

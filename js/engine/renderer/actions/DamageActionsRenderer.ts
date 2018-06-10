@@ -9,11 +9,11 @@ export class DamageActionsRenderer extends ActionsRenderer {
     super(game);
   }
 
-  public needsActionRender(entity: Entity): boolean {
+  public needsUpdate(entity: Entity): boolean {
     return entity.actions.findIndex(x => x instanceof DamageAction) !== -1;
   }
 
-  public render(entity: Entity) {
+  public doUpdate(entity: Entity) {
     const actions = this.getActionsFromEntity<DamageAction>(entity, DamageAction);
 
     const visual = entity.data.visual;
@@ -43,5 +43,9 @@ export class DamageActionsRenderer extends ActionsRenderer {
         onComplete: () => txt.destroy()
       });
     });
+  }
+
+  public getLastUpdateDetails(): [[string, number]] {
+    return [['action:damage', this.getLastUpdateTimeMs()]];
   }
 }

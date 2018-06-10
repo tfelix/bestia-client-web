@@ -4,12 +4,7 @@ import { DamageActionsRenderer } from './DamageActionsRenderer';
 import { ChatActionsRenderer } from './ChatActionsRenderer';
 import { EngineContext } from '../../EngineContext';
 
-interface RenderStatistics {
-  getLastUpdateDetails(): Map<string, number>;
-  getLastUpdateTimeMs(): number;
-}
-
-export class ActionsRendererManager {
+export class ActionsRendererManager implements RenderStatistics {
 
   private renderer: ActionsRenderer[] = [];
 
@@ -27,11 +22,21 @@ export class ActionsRendererManager {
         continue;
       }
       this.renderer.forEach(r => {
-        if (r.needsActionRender(e)) {
-          r.render(e);
+        if (r.needsUpdate(e)) {
+          r.update(e);
         }
       });
       e.actions = [];
     }
+  }
+
+  public getLastUpdateDetails(): [[string, number]] {
+    return null;
+  }
+
+  public getLastUpdateTimeMs(): number {
+    return this.renderer
+      .map(x => x.getLastUpdateTimeMs())
+      .reduce((prev, val) => { return prev + val });
   }
 }

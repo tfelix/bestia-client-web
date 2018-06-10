@@ -1,4 +1,5 @@
 var path = require('path');
+var webpack = require('webpack');
 
 module.exports = {
   entry: './js/game.ts',
@@ -31,5 +32,10 @@ module.exports = {
       { test: /\.ts$/, loader: 'ts-loader', exclude: '/node_modules/' },
       { test: /phaser\.js$/, loader: 'expose-loader?Phaser' }
     ]
-  }
+  },
+  plugins: [
+    new webpack.DefinePlugin({
+      DEV: JSON.stringify(true),
+    })
+  ]
 };

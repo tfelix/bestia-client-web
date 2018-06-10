@@ -5,8 +5,10 @@ import * as store from 'store';
 import { BootScene } from './scenes/BootScene';
 import { GameScene } from './scenes/GameScene';
 
+const title = (DEV) ? 'Bestia Client DEVELOPMENT' : 'Bestia Client';
+
 const config: GameConfig = {
-  title: 'Bestia',
+  title: title,
   url: 'https://bestia-game.net',
   version: '0.1-alpha',
   width: 800,

@@ -14,13 +14,6 @@ export class BootScene extends Phaser.Scene {
       '../assets/sprites/mob/player_1/player_1.json'
     );
 
-    this.load.json('poring_desc', '../assets/sprites/mob/poring/poring_desc.json');
-    this.load.atlas(
-      'poring',
-      '../assets/sprites/mob/poring/poring.png',
-      '../assets/sprites/mob/poring/poring.json'
-    );
-
     this.load.json('rabbit_desc', '../assets/sprites/mob/rabbit/rabbit_desc.json');
     this.load.atlas(
       'rabbit',
