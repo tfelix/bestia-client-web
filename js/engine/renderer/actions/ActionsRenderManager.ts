@@ -18,9 +18,6 @@ export class ActionsRendererManager implements RenderStatistics {
 
   public update() {
     for (const e of this.ctx.entityStore.entities.values()) {
-      if (e.actions.length === 0) {
-        continue;
-      }
       this.renderer.forEach(r => {
         if (r.needsUpdate(e)) {
           r.update(e);
@@ -37,6 +34,6 @@ export class ActionsRendererManager implements RenderStatistics {
   public getLastUpdateTimeMs(): number {
     return this.renderer
       .map(x => x.getLastUpdateTimeMs())
-      .reduce((prev, val) => { return prev + val });
+      .reduce((prev, val) => prev + val);
   }
 }

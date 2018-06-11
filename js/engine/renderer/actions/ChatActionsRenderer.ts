@@ -33,21 +33,38 @@ export class ChatActionsRenderer extends ActionsRenderer {
     super(ctx.game);
   }
 
-  public needsUpdate(entity: Entity): boolean {
-    return entity.hasAction(ChatAction);
+  private updateChatPosition(entity: Entity) {
+    const sprite = entity.data.visual && entity.data.visual.sprite;
+    if (!sprite) {
+      this.clearChatData(entity);
+    }
+    const chatData = entity.data.chat!!;
+    const chatPos = this.calculateChatPosition(entity);
+    chatData.text.setPosition(chatPos.x, chatPos.y);
+    chatData.background.clear();
+    this.drawChatBackground(chatData.background, chatData.text);
   }
 
-  public doUpdate(entity: Entity) {
-    this.clearChatData(entity);
+  public needsUpdate(entity: Entity): boolean {
+    return entity.hasAction(ChatAction) || !!entity.data.chat;
+  }
 
+  private calculateChatPosition(entity: Entity) {
     const entitySprite = entity.data.visual && entity.data.visual.sprite;
     if (!entitySprite) {
       return;
     }
-
     const spriteHeight = this.ctx.helper.sprite.getSpriteSize(entitySprite).height;
-    const chatPos = new Px(entitySprite.x, entitySprite.y - spriteHeight + SPRITE_Y_OFFSET);
+    return new Px(entitySprite.x, entitySprite.y - spriteHeight + SPRITE_Y_OFFSET);
+  }
 
+  public doUpdate(entity: Entity) {
+    if (entity.data.chat) {
+      this.updateChatPosition(entity);
+      return;
+    }
+
+    const chatPos = this.calculateChatPosition(entity);
     const actions = this.getActionsFromEntity<ChatAction>(entity, ChatAction);
     // We only render the last one
     const action = actions.pop();
@@ -64,20 +81,8 @@ export class ChatActionsRenderer extends ActionsRenderer {
     txt.depth = 10000;
     txt.setOrigin(0.5, 0.5);
 
-
     const gfx = this.game.add.graphics({ fillStyle: { color: 0x00AA00 } });
-
-    const topleft = txt.getTopLeft();
-    rect.setPosition(topleft.x - CHAT_BORDER_PADDING / 2, topleft.y - CHAT_BORDER_PADDING / 2);
-    rect.width = txt.width + CHAT_BORDER_PADDING;
-    rect.height = txt.height + CHAT_BORDER_PADDING;
-
-    // Draw background
-    gfx.fillStyle(0x000000, 0.5);
-    gfx.fillRectShape(rect);
-
-    gfx.displayOriginX = 0.5;
-    gfx.displayOriginY = 0.5;
+    this.drawChatBackground(gfx, txt);
 
     // There seems to be a bug and the childs can not be added in the constructor.
     // Thats why they are added in an extra call.
@@ -91,6 +96,16 @@ export class ChatActionsRenderer extends ActionsRenderer {
     };
   }
 
+  private drawChatBackground(gfx: Phaser.GameObjects.Graphics, txt: Phaser.GameObjects.Text) {
+    const topleft = txt.getTopLeft();
+    rect.setPosition(topleft.x - CHAT_BORDER_PADDING / 2, topleft.y - CHAT_BORDER_PADDING / 2);
+    rect.width = txt.width + CHAT_BORDER_PADDING;
+    rect.height = txt.height + CHAT_BORDER_PADDING;
+
+    gfx.fillStyle(0x000000, 0.5);
+    gfx.fillRectShape(rect);
+  }
+
   private clearChatData(entity: Entity) {
     if (entity.data.chat) {
       entity.data.chat.deleteTimer.destroy();
@@ -101,6 +116,6 @@ export class ChatActionsRenderer extends ActionsRenderer {
   }
 
   public getLastUpdateDetails(): [[string, number]] | null {
-    return [["action:chat", this.getLastUpdateTimeMs()]];
+    return [['action:chat', this.getLastUpdateTimeMs()]];
   }
 }

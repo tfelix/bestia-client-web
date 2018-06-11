@@ -67,6 +67,10 @@ export class GameScene extends Phaser.Scene {
     this.entityFactory.addObject('tree', new Point(14, 12));
     this.entityFactory.addObject('tree', new Point(18, 9));
     this.entityFactory.addObject('tree', new Point(6, 16));
+    this.entityFactory.addObject('plant', new Point(3, 4));
+    this.entityFactory.addObject('plant', new Point(10, 8));
+    this.entityFactory.addObject('plant', new Point(7, 8));
+    this.entityFactory.addObject('water', new Point(5, 8));
 
     this.engineContext.config.debug.renderCollision = false;
 

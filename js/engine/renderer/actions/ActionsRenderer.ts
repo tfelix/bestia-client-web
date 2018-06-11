@@ -3,7 +3,7 @@ import { Action } from 'entities/actions';
 
 export abstract class ActionsRenderer implements RenderStatistics {
 
-  private lastUpdateTime: number = 0;
+  private lastUpdateTime = 0;
 
   public getLastUpdateTimeMs(): number {
     return this.lastUpdateTime;
@@ -18,6 +18,7 @@ export abstract class ActionsRenderer implements RenderStatistics {
   }
 
   public abstract needsUpdate(entity: Entity): boolean;
+
   public update(entity: Entity) {
     const startMs = new Date().getMilliseconds();
     this.doUpdate(entity);
