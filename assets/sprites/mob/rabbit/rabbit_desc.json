@@ -14,7 +14,7 @@
 				{"name": "stand_down", "from": 1, "to": 4, "fps": 2 },
 				{"name": "stand_down_left", "from": 1, "to": 4, "fps": 2 },
 				{"name": "stand_left", "from": 1, "to": 4, "fps": 2 },
-				{"name": "hit", "from": 1, "to": 2, "fps": 2 }
+				{"name": "hit", "from": 1, "to": 2, "fps": 3 }
 			],
 	"collision": [[0, 0, 0],[0, 1, 0]],
 	"anchor": {"x": 0.5, "y": 1},
