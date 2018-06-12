@@ -103,24 +103,10 @@ export class GameScene extends Phaser.Scene {
 
     this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 
-    const cursors = this.input.keyboard.createCursorKeys();
-
-    const controlConfig = {
-      camera: this.cameras.main,
-      left: cursors.left,
-      right: cursors.right,
-      up: cursors.up,
-      down: cursors.down,
-      speed: 0.5
-    };
-
-    this.controls = new Phaser.Cameras.Controls.Fixed(controlConfig);
     this.pointerManager.create();
   }
 
   public update(time, delta) {
-    this.controls.update(delta);
-
     this.pointerManager.update();
 
     this.entityRenderManager.update();

@@ -119,6 +119,9 @@ export class VisualComponentRenderer extends ComponentRenderer<VisualComponent> 
     LOG.debug(`Entity: ${entity.id} Visual: ${component.id} (${component.sprite})`);
 
     const sprite = this.game.add.sprite(px.x, px.y, desc.name);
+    sprite.setInteractive();
+    sprite.on('pointerdown', () => alert('geht auch'));
+    sprite.on('clicked', () => alert('geht'));
     const spriteData: SpriteData = {
       sprite: sprite,
       spriteName: component.sprite,

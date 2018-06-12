@@ -8,6 +8,7 @@ import { DebugComponentRenderer } from './component/DebugComponentRenderer';
 import { MoveComponentRenderer } from './component/MoveComponentRenderer';
 import { ConditionComponentRenderer } from './component/ConditionComponentRenderer';
 import { EngineContext } from '../EngineContext';
+import { MasterLocalComponentRenderer } from './component/local/MasterLocalComponentRenderer';
 
 export class EntityRenderManager {
 
@@ -20,6 +21,9 @@ export class EntityRenderManager {
     this.addComponentRenderer(new DebugComponentRenderer(this.context.game));
     this.addComponentRenderer(new MoveComponentRenderer(context));
     this.addComponentRenderer(new ConditionComponentRenderer(context));
+
+    // Local Component Renderer.
+    this.addComponentRenderer(new MasterLocalComponentRenderer(context));
   }
 
   private addComponentRenderer(renderer: ComponentRenderer<Component>) {

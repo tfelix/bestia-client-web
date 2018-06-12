@@ -4,5 +4,10 @@ export enum ComponentType {
   POSITION,
   DEBUG,
   PLAYER,
-  CONDITION
+  CONDITION,
+
+  // This are local only components which will never get send from the server
+  // to the client. They exist for local housekeeping.
+
+  LOCAL_MASTER
 }
