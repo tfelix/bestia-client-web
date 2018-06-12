@@ -58,6 +58,13 @@ export class EntityStore {
     this.onUpdateEntity.next(updateMsg);
   }
 
+  public removeComponent(component: Component) {
+    const e = this.getEntity(component.entityId);
+    e.removeComponentByType(component.type);
+    const updateMsg = new EntityUpdate(e, component.type, UpdateType.DELETED);
+    this.onUpdateEntity.next(updateMsg);
+  }
+
   public removeEntity(entityId: number) {
     const entity = this.entities.get(entityId);
     this.onRemoveEntity.next(entity);

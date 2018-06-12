@@ -110,9 +110,7 @@ export class MoveComponentRenderer extends ComponentRenderer<MoveComponent> {
 
     this.ctx.entityStore.onUpdateEntity.subscribe(msg => {
       if (msg.changedComponentType === ComponentType.MOVE) {
-        LOG.debug('Received new movement data.');
-        // TODO das hier noch debuggen.
-        // this.clearMovementData(msg.entity);
+        this.clearMovementData(msg.entity);
       }
     });
   }
@@ -126,21 +124,14 @@ export class MoveComponentRenderer extends ComponentRenderer<MoveComponent> {
   }
 
   private clearMovementData(entity: Entity) {
-    LOG.debug(`Clearing movement data for entity: ${entity.id}`);
     if (entity.data.move && entity.data.move.timeline) {
       entity.data.move.timeline.stop();
     }
     entity.data.move = null;
-    entity.removeComponentByType(ComponentType.MOVE);
   }
 
   private performNextMovement(entity: Entity, component: MoveComponent) {
-    LOG.debug(`performNextMovement for entity: ${entity.id}`);
     const moveData = entity.data.move;
-
-    if (!moveData) {
-      this.clearMovementData(entity);
-    }
 
     const currentPos = component.path[moveData.currentPathPosition];
     const nextPathPosition = moveData.currentPathPosition + 1;
@@ -157,38 +148,37 @@ export class MoveComponentRenderer extends ComponentRenderer<MoveComponent> {
     // Subtract one because we added start position of entity to the path queue before.
     const hasNextStep = (component.path.length - 1) >= nextPathPosition;
     if (!hasNextStep) {
-
       const lastPos = component.path[moveData.currentPathPosition - 1];
       const standAnimation = getStandAnimationName(lastPos, currentPos);
       visual.animation = standAnimation;
       this.clearMovementData(entity);
-    } else {
-
-      const nextPosition = component.path[nextPathPosition];
-      const speed = component.walkspeed;
-      const walkAnimation = getWalkAnimationName(currentPos, nextPosition);
-      const stepDuration = getWalkDuration(currentPos.getDistance(nextPosition), 1);
-      visual.animation = walkAnimation;
-
-      const nextPosPx = MapHelper.pointToPixelCentered(nextPosition);
-
-      moveData.timeline = this.game.tweens.timeline({
-        targets: spriteData.sprite,
-        ease: 'Linear',
-        totalDuration: stepDuration,
-        tweens: [{
-          x: nextPosPx.x,
-          y: nextPosPx.y,
-          onComplete: () => this.performNextMovement(entity, component)
-        }]
-      });
-
-      moveData.currentPathPosition = nextPathPosition;
+      this.ctx.entityStore.removeComponent(component);
+      return;
     }
+
+    const nextPosition = component.path[nextPathPosition];
+    const speed = component.walkspeed;
+    const walkAnimation = getWalkAnimationName(currentPos, nextPosition);
+    const stepDuration = getWalkDuration(currentPos.getDistance(nextPosition), 1);
+    visual.animation = walkAnimation;
+
+    const nextPosPx = MapHelper.pointToPixelCentered(nextPosition);
+    moveData.currentPathPosition = nextPathPosition;
+
+    moveData.timeline = this.game.tweens.timeline({
+      targets: spriteData.sprite,
+      ease: 'Linear',
+      totalDuration: stepDuration,
+      tweens: [{
+        x: nextPosPx.x,
+        y: nextPosPx.y,
+        onComplete: () => this.performNextMovement(entity, component)
+      }]
+    });
+
   }
 
   protected createGameData(entity: Entity, component: MoveComponent) {
-    LOG.debug(`Creating movement data for entity: ${entity.id}`);
     const path = component.path;
     const position = entity.getComponent(ComponentType.POSITION) as PositionComponent;
 
