@@ -1,5 +1,7 @@
 # Bestia Browsergame Client
 
+[![Build Status](https://travis-ci.org/tfelix/bestia-client.svg?branch=master)](https://travis-ci.org/tfelix/bestia-client)
+
 This is the client implementation of the [Bestia Browsergame](https://bestia-game.net).
 
 Currently its meant as a development platform and as an introduction game, thus no connection to the server is established and is solely a single user game.

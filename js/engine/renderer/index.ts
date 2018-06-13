@@ -1,3 +1,3 @@
-export * from './EntityRenderManager';
-export * from './CollisionRenderer';
+export * from './common/CollisionCommonRenderer';
+export * from './common/CommonRenderManager';
 export * from './component';

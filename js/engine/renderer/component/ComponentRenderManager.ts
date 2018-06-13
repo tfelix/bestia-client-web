@@ -2,13 +2,13 @@ import * as LOG from 'loglevel';
 
 import { EntityStore, EntityUpdate, Entity } from 'entities';
 import { Component, ComponentType } from 'entities/components';
-import { ComponentRenderer } from './component/ComponentRenderer';
-import { VisualComponentRenderer } from './component/VisualComponentRenderer';
-import { DebugComponentRenderer } from './component/DebugComponentRenderer';
-import { MoveComponentRenderer } from './component/MoveComponentRenderer';
-import { ConditionComponentRenderer } from './component/ConditionComponentRenderer';
-import { EngineContext } from '../EngineContext';
-import { MasterLocalComponentRenderer } from './component/local/MasterLocalComponentRenderer';
+import { ComponentRenderer } from './ComponentRenderer';
+import { VisualComponentRenderer } from './VisualComponentRenderer';
+import { DebugComponentRenderer } from './DebugComponentRenderer';
+import { MoveComponentRenderer } from './MoveComponentRenderer';
+import { ConditionComponentRenderer } from './ConditionComponentRenderer';
+import { MasterLocalComponentRenderer } from './local/MasterLocalComponentRenderer';
+import { EngineContext } from '../../EngineContext';
 
 export class EntityRenderManager {
 

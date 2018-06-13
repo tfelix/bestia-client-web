@@ -42,7 +42,9 @@ export class PointerManager {
   }
 
   private updatePointerPosition(pointer: Phaser.Input.Pointer) {
-    const cords = MapHelper.getClampedTilePixelXY(pointer.x, pointer.y);
+    const worldX = this.engineContext.game.cameras.main.scrollX + pointer.x;
+    const worldY = this.engineContext.game.cameras.main.scrollY + pointer.y;
+    const cords = MapHelper.getClampedTilePixelXY(worldX, worldY);
     this.activePointer.updatePosition(cords);
   }
 

@@ -9,7 +9,7 @@ import { Point, AccountInfo } from 'model';
 import { EngineContext } from 'engine/EngineContext';
 import { PointerManager } from 'engine/pointer';
 import { EntityLocalFactory } from 'entities/EntityLocalFactory';
-import { EntityRenderManager, CollisionRenderer } from 'engine/renderer';
+import { EntityRenderManager, CommonRenderManager } from 'engine/renderer';
 import { CollisionUpdater } from 'map';
 import { DamageAction } from 'entities/actions';
 import { ActionsRendererManager } from 'engine/renderer/actions/ActionsRenderManager';
@@ -27,7 +27,7 @@ export class GameScene extends Phaser.Scene {
   private collisionUpdater: CollisionUpdater;
 
   private entityRenderManager: EntityRenderManager;
-  private collisionRenderer: CollisionRenderer;
+  private commonRenderManager: CommonRenderManager;
   private actionRenderManager: ActionsRendererManager;
 
   private entityFactory: EntityLocalFactory;
@@ -45,7 +45,7 @@ export class GameScene extends Phaser.Scene {
     this.engineContext = new EngineContext(this, this.entityStore, playerEntityHolder);
 
     this.entityRenderManager = new EntityRenderManager(this.engineContext);
-    this.collisionRenderer = new CollisionRenderer(this.engineContext);
+    this.commonRenderManager = new CommonRenderManager(this.engineContext);
     this.actionRenderManager = new ActionsRendererManager(this.engineContext);
 
     this.pointerManager = new PointerManager(this.engineContext);
@@ -72,7 +72,8 @@ export class GameScene extends Phaser.Scene {
     this.entityFactory.addObject('plant', new Point(7, 8));
     this.entityFactory.addObject('water', new Point(5, 8));
 
-    this.engineContext.config.debug.renderCollision = false;
+    this.engineContext.config.debug.renderCollision = true;
+    this.engineContext.config.debug.renderInfo = true;
 
     this.time.addEvent({
       delay: 1000,
@@ -96,7 +97,6 @@ export class GameScene extends Phaser.Scene {
   public create() {
     this.engineContext.game.input.mouse.disableContextMenu();
 
-    // Setup tilemap
     const map = this.make.tilemap({ key: 'map' });
     const floorTiles = map.addTilesetImage('trees_plants_rocks', 'tiles');
     map.createStaticLayer('floor_0', floorTiles, 0, 0);
@@ -111,7 +111,7 @@ export class GameScene extends Phaser.Scene {
 
     this.entityRenderManager.update();
     this.actionRenderManager.update();
-    this.collisionRenderer.update();
+    this.commonRenderManager.update();
 
     this.engineContext.collisionUpdater.update();
   }

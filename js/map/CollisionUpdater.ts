@@ -79,6 +79,10 @@ export class CollisionUpdater {
   }
 
   public hasCollision(x: number, y: number): boolean {
+    if (this.displayTileSize.height < y || this.displayTileSize.width < x) {
+      LOG.warn(`Requested coordinate ${x}-${y} is not inside collision map.`);
+      return true;
+    }
     return this.collisionMap[y][x] !== 0;
   }
 }

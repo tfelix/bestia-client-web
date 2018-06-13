@@ -9,5 +9,6 @@ export enum ComponentType {
   // This are local only components which will never get send from the server
   // to the client. They exist for local housekeeping.
 
-  LOCAL_MASTER
+  LOCAL_MASTER,
+  LOCAL_INTERACTION
 }

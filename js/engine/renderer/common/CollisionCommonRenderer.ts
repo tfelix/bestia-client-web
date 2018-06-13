@@ -1,9 +1,11 @@
 import { MapHelper } from 'map';
 
-import { EngineContext } from '../EngineContext';
 import { Point, Size } from 'model';
+import { EngineContext } from 'engine/EngineContext';
+import { BaseCommonRenderer } from './BaseCommonRenderer';
 
-export class CollisionRenderer {
+// TODO Das hier zu einem Abstract Common Renderer machen mit Statistic etc.
+export class CollisionCommonRenderer extends BaseCommonRenderer {
 
   private graphicsCollision: Phaser.GameObjects.Graphics | null = null;
   private graphicsNonCollision: Phaser.GameObjects.Graphics | null = null;
@@ -15,7 +17,13 @@ export class CollisionRenderer {
   constructor(
     private readonly context: EngineContext
   ) {
+    super();
     this.gameTileSize = this.context.helper.display.getDisplaySizeInTiles();
+  }
+
+  public needsUpdate() {
+    // TODO Handle this better.
+    return true;
   }
 
   public update() {

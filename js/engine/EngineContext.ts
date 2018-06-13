@@ -7,7 +7,8 @@ import { SpriteHelper } from './SpriteHelper';
 export class EngineConfig {
 
   public readonly debug = {
-    renderCollision: false
+    renderCollision: false,
+    renderInfo: false
   };
 
   constructor() {
