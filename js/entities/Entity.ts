@@ -5,7 +5,6 @@ import { Component } from './components/Component';
 import { ComponentType } from './components/ComponentType';
 import { EntityData } from './EntityData';
 import { EntityStore } from '.';
-import { LOCAL_COMPONENT_ID } from 'engine/renderer/component/local/LocalComponent';
 
 export class Entity {
   private readonly components = new Map<ComponentType, Component>();
