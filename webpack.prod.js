@@ -1,21 +1,22 @@
 const path = require('path');
 const webpack = require('webpack');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
-  entry: './js/game.ts',
+  entry: './src/js/game.ts',
   devtool: 'source-map',
   mode: 'production',
   output: {
     filename: 'bundle.js',
-    path: path.resolve(__dirname, 'build')
+    path: path.resolve(__dirname, 'dist')
   },
   resolve: {
     extensions: ['.ts', '.js'],
     modules: [
       path.resolve('./node_modules'),
-      path.resolve('./js')
+      path.resolve(__dirname, 'src/js')
     ],
     alias: {
       phaser: path.resolve(__dirname, 'node_modules/phaser/dist/phaser.js'),
@@ -36,10 +37,12 @@ module.exports = {
     new UglifyJSPlugin({
       sourceMap: true
     }),
+    new HtmlWebpackPlugin({
+      template: 'src/index.html'
+    }),
     new CopyWebpackPlugin([
-      'index.html',
-      { from: 'styles', to: 'build/styles' },
-      { from: 'assets', to: 'build/assets' }
+      'src/styles',
+      'assets'
     ])
   ]
 };

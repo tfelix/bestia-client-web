@@ -5,3 +5,5 @@ applications:
   instances: 1
   buildpack: staticfile_buildpack
   path: build
+  routes:
+    - route: demo.bestia-game.net
