@@ -20,7 +20,7 @@ module.exports = {
     extensions: ['.ts', '.js'],
     modules: [
       path.resolve('./node_modules'),
-      path.resolve('./src/js')
+      path.resolve(__dirname, 'src/js')
     ],
     alias: {
       phaser: path.resolve(__dirname, 'node_modules/phaser/dist/phaser.js'),
@@ -34,15 +34,15 @@ module.exports = {
     ]
   },
   plugins: [
-    new HtmlWebpackPlugin({
-      template: 'src/index.html'
-    }),
     new webpack.DefinePlugin({
       DEV: JSON.stringify(true),
     }),
+    new HtmlWebpackPlugin({
+      template: 'src/index.html'
+    }),
     new CopyWebpackPlugin([
-      'src/styles',
-      'assets'
+      { from: 'src/styles', to: 'styles'},
+      { from: 'assets/**/*' }
     ])
   ]
 };
