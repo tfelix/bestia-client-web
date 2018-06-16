@@ -1,6 +1,5 @@
 const path = require('path');
 const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
@@ -37,11 +36,9 @@ module.exports = {
     new webpack.DefinePlugin({
       DEV: JSON.stringify(true),
     }),
-    new HtmlWebpackPlugin({
-      template: 'src/index.html'
-    }),
     new CopyWebpackPlugin([
       { from: 'src/styles', to: 'styles'},
+      { from: 'src/index.html'},
       { from: 'assets/**/*' }
     ])
   ]

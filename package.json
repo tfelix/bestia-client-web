@@ -3,32 +3,34 @@
   "version": "0.1.0",
   "description": "The client for the next generation Browsergame Bestia",
   "devDependencies": {
-    "@types/chai": "^4.1.3",
-    "@types/loglevel": "^1.5.3",
-    "@types/mocha": "^5.2.0",
-    "@types/storejs": "^2.0.2",
-    "chai": "^4.1.2",
-    "copy-webpack-plugin": "^4.5.1",
+    "@types/chai": "4.1.3",
+    "@types/loglevel": "1.5.3",
+    "@types/mocha": "5.2.0",
+    "@types/storejs": "2.0.2",
+    "chai": "4.1.2",
+    "copy-webpack-plugin": "4.5.1",
     "expose-loader": "0.7.5",
-    "html-webpack-plugin": "^3.2.0",
-    "mocha": "^5.1.1",
-    "ts-loader": "4.2.0",
-    "ts-node": "^6.0.3",
-    "tslint": "^5.10.0",
-    "typescript": "^2.8.1",
-    "webpack": "4.6.0",
-    "webpack-cli": "2.0.14",
-    "webpack-dev-server": "3.1.3"
+    "mocha": "5.1.1",
+    "rimraf": "^2.6.2",
+    "ts-loader": "4.4.1",
+    "ts-node": "6.0.3",
+    "tslint": "5.10.0",
+    "typescript": "2.8.1",
+    "webpack": "4.12.0",
+    "webpack-cli": "3.0.7",
+    "webpack-dev-server": "3.1.4"
   },
   "dependencies": {
     "easystarjs": "0.4.3",
     "loglevel": "1.6.1",
-    "phaser": "3.5.0",
-    "rxjs": "6.1.0",
+    "phaser": "3.10.1",
+    "rxjs": "6.2.1",
     "store": "2.0.12"
   },
   "scripts": {
-    "dev": "webpack && webpack-dev-server -d",
+    "clear": "rimraf dist",
+    "start": "npm run clear && webpack-dev-server -d",
+    "build:dev": "webpack --progress --config webpack.config.js",
     "build:prod": "webpack --progress --config webpack.prod.js",
     "test": "mocha -r ts-node/register \"js/**/*.test.ts\""
   },
@@ -36,7 +38,11 @@
     "name": "Thomas Felix",
     "email": "thomas.felix@tfelix.de"
   },
-  "license": "GPLV3",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/tfelix/bestia-client.git"
+  },
+  "license": "GPL-3.0",
   "bugs": {
     "url": "https://github.com/tfelix/bestia-client/issues"
   },
