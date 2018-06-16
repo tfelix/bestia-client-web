@@ -1,8 +1,8 @@
 import * as LOG from 'loglevel';
 
+import { Entity } from 'entities';
 import { DebugComponent, Component, ComponentType } from 'entities/components';
 import { ComponentRenderer } from './ComponentRenderer';
-import { Entity } from 'entities';
 import { VisualComponentRenderer } from './VisualComponentRenderer';
 
 export interface DebugData {

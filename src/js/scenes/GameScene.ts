@@ -30,6 +30,8 @@ export class GameScene extends Phaser.Scene {
   private commonRenderManager: CommonRenderManager;
   private actionRenderManager: ActionsRendererManager;
 
+  private debugCollisionKey: Phaser.Input.Keyboard.Key;
+
   private entityFactory: EntityLocalFactory;
 
   constructor() {
@@ -104,6 +106,15 @@ export class GameScene extends Phaser.Scene {
     this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 
     this.pointerManager.create();
+
+    // Setup Keys
+    this.debugCollisionKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ONE)
+    this.input.keyboard.on('keydown_Q', () => {
+      this.engineContext.config.debug.renderCollision = !this.engineContext.config.debug.renderCollision;
+    });
+    this.input.keyboard.on('keydown_W', () => {
+      this.engineContext.config.debug.renderInfo = !this.engineContext.config.debug.renderInfo;
+    });
   }
 
   public update(time, delta) {

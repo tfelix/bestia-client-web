@@ -1,6 +1,6 @@
-import { BaseCommonRenderer } from './BaseCommonRenderer';
 import { EngineContext } from 'engine/EngineContext';
 import { MapHelper } from 'map';
+import { BaseCommonRenderer } from './BaseCommonRenderer';
 
 const DEBUG_STYLE = {
   fontFamily: 'Courier New',
@@ -24,10 +24,18 @@ export class DebugInfoRenderer extends BaseCommonRenderer {
   }
 
   public needsUpdate() {
-    return this.ctx.config.debug.renderInfo;
+    const shouldRender = this.ctx.config.debug.renderInfo;
+    const shouldCleanData = !this.ctx.config.debug.renderInfo && !!this.text;
+    return shouldRender || shouldCleanData;
   }
 
   public update() {
+    const shouldCleanData = !this.ctx.config.debug.renderInfo && !!this.text;
+    if (shouldCleanData) {
+      this.clearAllData();
+      return;
+    }
+
     if (!this.text) {
       this.createData();
     }
@@ -61,6 +69,7 @@ export class DebugInfoRenderer extends BaseCommonRenderer {
   }
 
   private clearAllData() {
-
+    this.text.destroy();
+    this.text = null;
   }
 }
