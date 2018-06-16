@@ -1,7 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
@@ -37,12 +36,10 @@ module.exports = {
     new UglifyJSPlugin({
       sourceMap: true
     }),
-    new HtmlWebpackPlugin({
-      template: 'src/index.html'
-    }),
     new CopyWebpackPlugin([
-      'src/styles',
-      'assets'
+      { from: 'src/styles', to: 'styles'},
+      { from: 'src/index.html'},
+      { from: 'assets/**/*' }
     ])
   ]
 };
