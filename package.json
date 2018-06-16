@@ -30,8 +30,9 @@
   "scripts": {
     "clear": "rimraf dist",
     "start": "npm run clear && webpack-dev-server -d",
+    "start:prod": "npm run clear && npm run build:prod && webpack-dev-server --mode production",
     "build:dev": "webpack --progress --config webpack.config.js",
-    "build:prod": "webpack --progress --config webpack.prod.js",
+    "build:prod": "webpack --progress --config webpack.config.js",
     "test": "mocha -r ts-node/register \"js/**/*.test.ts\""
   },
   "author": {

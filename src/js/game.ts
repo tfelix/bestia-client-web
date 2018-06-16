@@ -5,6 +5,15 @@ import * as store from 'store';
 import { BootScene } from './scenes/BootScene';
 import { GameScene } from './scenes/GameScene';
 
+if(DEV) {
+  // Development configs
+  LOG.setLevel('debug');
+  LOG.info('Bestia Client is running in DEVELOPMENT MODE');
+} else {
+  // Production configs
+  LOG.setLevel('warn');
+}
+
 const title = (DEV) ? 'Bestia Client DEVELOPMENT' : 'Bestia Client';
 
 const config: GameConfig = {
@@ -27,8 +36,6 @@ const config: GameConfig = {
   pixelArt: true,
   antialias: false
 };
-
-LOG.setLevel('debug');
 
 class Game extends Phaser.Game {
   constructor(config: GameConfig) {

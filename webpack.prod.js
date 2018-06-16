@@ -37,9 +37,9 @@ module.exports = {
       sourceMap: true
     }),
     new CopyWebpackPlugin([
-      { from: 'src/styles', to: 'styles'},
-      { from: 'src/index.html'},
-      { from: 'assets/**/*' }
+      'src/index.html',
+      'src/styles',
+      'assets'
     ])
   ]
 };
