@@ -1,6 +1,7 @@
 import { EngineContext } from 'engine/EngineContext';
 import { MapHelper } from 'map';
 import { BaseCommonRenderer } from './BaseCommonRenderer';
+import { DisplayHelper } from '../../DisplayHelper';
 
 const DEBUG_STYLE = {
   fontFamily: 'Courier New',
@@ -16,11 +17,14 @@ const DEBUG_STYLE = {
 export class DebugInfoRenderer extends BaseCommonRenderer {
 
   private text: Phaser.GameObjects.Text | null = null;
+  private displayHelper: DisplayHelper;
 
   constructor(
     private readonly ctx: EngineContext
   ) {
     super();
+
+    this.displayHelper = new DisplayHelper(ctx.game);
   }
 
   public needsUpdate() {
@@ -59,7 +63,8 @@ export class DebugInfoRenderer extends BaseCommonRenderer {
 
     const pointerScreenX = Math.floor(this.ctx.game.input.activePointer.position.x);
     const pointerScreenY = Math.floor(this.ctx.game.input.activePointer.position.y);
-    const pointerMapPos = MapHelper.pixelToPoint(pointerScreenX, pointerScreenY);
+    const scrollOffset = this.displayHelper.getScrollOffset();
+    const pointerMapPos = MapHelper.pixelToPoint(pointerScreenX, pointerScreenY).plus(scrollOffset);
 
     let debugTxt = `Camera (scrollX: ${camScrollX} scrollY: ${camScrollY})`;
     debugTxt += `\nPointer (wx: ${pointerScreenX} wy: ${pointerScreenY} mx: ${pointerMapPos.x} my: ${pointerMapPos.y})`;

@@ -10,4 +10,12 @@ export class Point {
     const dy = p.y - this.y;
     return Math.sqrt(dx * dx + dy * dy);
   }
+
+  public minus(rhs: Point): Point {
+    return new Point(this.x - rhs.x, this.y - rhs.y);
+  }
+
+  public plus(rhs: Point): Point {
+    return new Point(this.x + rhs.x, this.y + rhs.y);
+  }
 }

@@ -4,6 +4,7 @@ import { Entity } from 'entities';
 import { DebugComponent, Component, ComponentType } from 'entities/components';
 import { ComponentRenderer } from './ComponentRenderer';
 import { VisualComponentRenderer } from './VisualComponentRenderer';
+import { MapHelper } from 'map';
 
 export interface DebugData {
   origin: Phaser.GameObjects.Graphics;
@@ -60,10 +61,13 @@ export class DebugComponentRenderer extends ComponentRenderer<DebugComponent> {
     if (graphics.depth) {
       graphics.depth.destroy();
     }
+
+    const pos = MapHelper.pixelToPoint(sprite.x, sprite.y);
+    const text = `z: ${Math.floor(sprite.depth)}\nx: ${pos.x} y: ${pos.y}`;
     graphics.depth = this.game.add.text(
       sprite.x + 10,
       sprite.y - 32,
-      `z: ${Math.floor(sprite.depth)}`
+      text
     );
     graphics.origin.setPosition(sprite.x, sprite.y);
   }

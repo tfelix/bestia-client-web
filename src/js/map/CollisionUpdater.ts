@@ -100,14 +100,14 @@ export class CollisionUpdater {
     return entity.hasComponent(ComponentType.VISUAL) && entity.hasComponent(ComponentType.POSITION);
   }
 
-  private isEntityInRange(pos: Point, displayOffset: Point, displaySize: Size): Boolean {
+  private isEntityInRange(pos: Point, displayOffset: Point, displaySize: Size): boolean {
     const isInLowerBound = pos.x >= displayOffset.x && pos.y >= displayOffset.y;
     const isInUpperBound = pos.x <= displayOffset.x + displaySize.width && pos.y <= displayOffset.y + displaySize.height;
     return isInLowerBound && isInUpperBound;
   }
 
   public hasCollision(x: number, y: number): boolean {
-    if (this.displayTileSize.height < y || this.displayTileSize.width < x) {
+    if (this.displayTileSize.height < y || this.displayTileSize.width < x || x < 0 || y < 0) {
       LOG.warn(`Requested coordinate ${x}-${y} is not inside collision map.`);
       return true;
     }

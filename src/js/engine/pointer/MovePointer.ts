@@ -7,16 +7,20 @@ import { MapHelper } from 'map/MapHelper';
 import { Pointer } from './Pointer';
 import { PointerManager } from './PointerManager';
 import { EngineContext } from '../EngineContext';
+import { DisplayHelper } from '../DisplayHelper';
 
 export class MovePointer extends Pointer {
 
   private marker: Phaser.GameObjects.Sprite;
+  private displayHelper: DisplayHelper;
 
   constructor(
     manager: PointerManager,
     ctx: EngineContext
   ) {
     super(manager, ctx);
+
+    this.displayHelper = new DisplayHelper(ctx.game);
   }
 
   public activate() {
@@ -27,7 +31,8 @@ export class MovePointer extends Pointer {
   public updatePosition(px: Px) {
     this.marker.setPosition(px.x, px.y);
 
-    const point = MapHelper.pixelToPoint(px.x, px.y);
+    const offset = this.displayHelper.getScrollOffset();
+    const point = MapHelper.pixelToPoint(px.x, px.y).minus(offset);
     this.marker.visible = !this.isNotWalkable(point);
   }
 
@@ -35,10 +40,13 @@ export class MovePointer extends Pointer {
     return this.ctx.collisionUpdater.hasCollision(point.x, point.y);
   }
 
-  private onPathFound(path: Array<{ x: number; y: number }>) {
-    LOG.debug(`Path found: ${JSON.stringify(path)}`);
-    path = path || [];
-    if (path.length === 0) {
+  private onPathFound(usedShiftOffset: Point, path: Array<{ x: number; y: number }>) {
+    // We must shift the path into the collision map first. Now we must undo this again to
+    // world space.
+    const shiftedPath = path.map(pos => new Point(pos.x + usedShiftOffset.x, pos.y + usedShiftOffset.y));
+
+    LOG.debug(`Path found: ${JSON.stringify(shiftedPath)}`);
+    if (shiftedPath.length === 0) {
       return;
     }
 
@@ -50,7 +58,7 @@ export class MovePointer extends Pointer {
       playerEntityId
     );
     move.walkspeed = 1;
-    move.path = path.map(p => new Point(p.x, p.y));
+    move.path = shiftedPath;
     this.ctx.entityStore.addComponent(move);
   }
 
@@ -67,15 +75,20 @@ export class MovePointer extends Pointer {
     if (!playerPositionComponent) {
       return;
     }
+    const pxScrollOffset = this.displayHelper.getScrollOffsetPx();
     const start = playerPositionComponent.position;
-    const goal = MapHelper.pixelToPoint(pointer.downX, pointer.downY);
+    const goal = MapHelper.pixelToPoint(pointer.downX + pxScrollOffset.x, pointer.downY + pxScrollOffset.y);
 
-    if (this.isNotWalkable(goal)) {
+    const scrollOffset = this.displayHelper.getScrollOffset();
+    const shiftedStart = start.minus(scrollOffset);
+    const shiftedGoal = goal.minus(scrollOffset);
+
+    if (this.isNotWalkable(shiftedGoal)) {
       return;
     }
 
-    LOG.debug(`Find path from: ${JSON.stringify(start)} to ${JSON.stringify(goal)}`);
-    this.ctx.pathfinder.findPath(start.x, start.y, goal.x, goal.y, this.onPathFound.bind(this));
+    LOG.debug(`Find path from: ${JSON.stringify(shiftedStart)} to ${JSON.stringify(shiftedGoal)}`);
+    this.ctx.pathfinder.findPath(shiftedStart.x, shiftedStart.y, shiftedGoal.x, shiftedGoal.y, this.onPathFound.bind(this, scrollOffset));
   }
 
   public load(loader) {
