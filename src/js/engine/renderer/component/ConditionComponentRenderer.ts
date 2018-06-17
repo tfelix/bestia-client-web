@@ -58,6 +58,11 @@ export class ConditionComponentRenderer extends ComponentRenderer<ConditionCompo
     const maxWidth = this.ctx.helper.sprite.getSpriteSize(sprite).width;
     const hpPerc = component.currentHealth / component.maxHealth;
 
+    if (hpPerc > 0.999) {
+      this.clearGraphics(entity);
+      return;
+    }
+
     rect.height = conditionBarHeight;
 
     rect.x = sprite.x - maxWidth / 2;

@@ -65,13 +65,13 @@ export class EntityLocalFactory {
     return entity;
   }
 
-  public addConditionComponent(entity: Entity) {
+  public addConditionComponent(entity: Entity, currentHealth: number = 100, maxHealth: number = 100) {
     const condComponent = new ConditionComponent(
       this.componentCounter++,
       entity.id
     );
-    condComponent.maxHealth = 100;
-    condComponent.currentHealth = 60;
+    condComponent.maxHealth = maxHealth;
+    condComponent.currentHealth = currentHealth;
     this.entityStore.addComponent(condComponent);
   }
 

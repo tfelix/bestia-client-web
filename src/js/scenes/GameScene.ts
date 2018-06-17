@@ -24,13 +24,9 @@ export class GameScene extends Phaser.Scene {
   private engineContext: EngineContext;
   private pointerManager: PointerManager;
 
-  private collisionUpdater: CollisionUpdater;
-
   private entityRenderManager: EntityRenderManager;
   private commonRenderManager: CommonRenderManager;
   private actionRenderManager: ActionsRendererManager;
-
-  private debugCollisionKey: Phaser.Input.Keyboard.Key;
 
   private entityFactory: EntityLocalFactory;
 
@@ -63,7 +59,9 @@ export class GameScene extends Phaser.Scene {
     this.entityFactory.addDebugComponent(master);
     const rabbit = this.entityFactory.addSprite('rabbit', new Point(5, 6));
     this.entityFactory.addDebugComponent(rabbit);
-    this.entityFactory.addConditionComponent(rabbit);
+    this.entityFactory.addConditionComponent(rabbit, 60, 100);
+    const rabbit2 = this.entityFactory.addSprite('rabbit', new Point(12, 12));
+    this.entityFactory.addConditionComponent(rabbit2);
 
     this.entityFactory.addObject('tree', new Point(10, 10));
     this.entityFactory.addObject('tree', new Point(14, 12));
@@ -74,8 +72,8 @@ export class GameScene extends Phaser.Scene {
     this.entityFactory.addObject('plant', new Point(7, 8));
     this.entityFactory.addObject('water', new Point(5, 8));
 
-    this.engineContext.config.debug.renderCollision = true;
-    this.engineContext.config.debug.renderInfo = true;
+    this.engineContext.config.debug.renderCollision = false;
+    this.engineContext.config.debug.renderInfo = false;
 
     this.time.addEvent({
       delay: 1000,
@@ -108,7 +106,6 @@ export class GameScene extends Phaser.Scene {
     this.pointerManager.create();
 
     // Setup Keys
-    this.debugCollisionKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ONE)
     this.input.keyboard.on('keydown_Q', () => {
       this.engineContext.config.debug.renderCollision = !this.engineContext.config.debug.renderCollision;
     });

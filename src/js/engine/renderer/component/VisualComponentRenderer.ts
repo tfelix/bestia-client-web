@@ -120,8 +120,7 @@ export class VisualComponentRenderer extends ComponentRenderer<VisualComponent> 
 
     const sprite = this.game.add.sprite(px.x, px.y, desc.name);
     sprite.setInteractive();
-    sprite.on('pointerdown', () => alert('geht auch'));
-    sprite.on('clicked', () => alert('geht'));
+    // sprite.on('pointerdown', () => alert('geht auch'));
     const spriteData: SpriteData = {
       sprite: sprite,
       spriteName: component.sprite,
