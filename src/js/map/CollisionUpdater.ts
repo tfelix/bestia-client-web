@@ -1,16 +1,18 @@
 import * as LOG from 'loglevel';
 
-import { MapHelper } from 'map';
 import { EngineContext } from 'engine/EngineContext';
 import { ComponentType, VisualComponent, PositionComponent } from 'entities/components';
-import { SpriteDescription, getSpriteDescriptionFromCache } from 'engine/renderer';
+import { getSpriteDescriptionFromCache } from 'engine/renderer';
 import { Point, Size } from 'model';
+import { DisplayHelper } from 'engine/DisplayHelper';
+import { Entity } from 'entities';
 
 export class CollisionUpdater {
 
   private collisionMap: number[][];
   public isDirty = true;
   private displayTileSize: Size;
+  private displayHelper: DisplayHelper
 
   constructor(
     private readonly ctx: EngineContext
@@ -23,6 +25,8 @@ export class CollisionUpdater {
     this.clearCollisionMap();
     ctx.pathfinder.setGrid(this.collisionMap);
     ctx.pathfinder.setAcceptableTiles(0);
+
+    this.displayHelper = new DisplayHelper(this.ctx.game);
   }
 
   private clearCollisionMap() {
@@ -48,10 +52,25 @@ export class CollisionUpdater {
       return;
     }
 
+    const scrollOffset = this.displayHelper.getScrollOffset();
+    const displaySize = this.displayHelper.getDisplaySizeInTiles();
+
     this.ctx.entityStore.entities.forEach(entity => {
+      if (!this.hasEntityAllRequirements(entity)) {
+        return;
+      }
+
       const visualComp = entity.getComponent(ComponentType.VISUAL) as VisualComponent;
       const positionComp = entity.getComponent(ComponentType.POSITION) as PositionComponent;
-      if (!visualComp || !positionComp || !visualComp.visible) {
+      if (!visualComp.visible) {
+        return;
+      }
+
+      if (!this.isEntityInRange(
+        positionComp.position,
+        scrollOffset,
+        displaySize
+      )) {
         return;
       }
 
@@ -61,13 +80,12 @@ export class CollisionUpdater {
 
       const sprite = entity.data.visual.sprite;
       const spriteTopLeft = this.ctx.helper.sprite.getSpriteTopLeftPoint(sprite);
-      const spriteSize = this.ctx.helper.sprite.getSpriteSizePoints(sprite);
 
       for (let dy = 0; dy < collision.length; dy++) {
         for (let dx = 0; dx < collision[dy].length; dx++) {
           if (collision[dy][dx] === 1) {
-            const x = spriteTopLeft.x + dx;
-            const y = spriteTopLeft.y + dy;
+            const x = spriteTopLeft.x + dx - scrollOffset.x;
+            const y = spriteTopLeft.y + dy - scrollOffset.y;
             this.collisionMap[y][x] = 1;
           }
         }
@@ -76,6 +94,16 @@ export class CollisionUpdater {
 
     this.ctx.pathfinder.setGrid(this.collisionMap);
     this.isDirty = false;
+  }
+
+  private hasEntityAllRequirements(entity: Entity) {
+    return entity.hasComponent(ComponentType.VISUAL) && entity.hasComponent(ComponentType.POSITION);
+  }
+
+  private isEntityInRange(pos: Point, displayOffset: Point, displaySize: Size): Boolean {
+    const isInLowerBound = pos.x >= displayOffset.x && pos.y >= displayOffset.y;
+    const isInUpperBound = pos.x <= displayOffset.x + displaySize.width && pos.y <= displayOffset.y + displaySize.height;
+    return isInLowerBound && isInUpperBound;
   }
 
   public hasCollision(x: number, y: number): boolean {

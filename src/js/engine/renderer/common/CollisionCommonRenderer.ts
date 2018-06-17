@@ -3,6 +3,7 @@ import { MapHelper } from 'map';
 import { Point, Size } from 'model';
 import { EngineContext } from 'engine/EngineContext';
 import { BaseCommonRenderer } from './BaseCommonRenderer';
+import { DisplayHelper } from '../../DisplayHelper';
 
 // TODO Das hier zu einem Abstract Common Renderer machen mit Statistic etc.
 export class CollisionCommonRenderer extends BaseCommonRenderer {
@@ -13,12 +14,14 @@ export class CollisionCommonRenderer extends BaseCommonRenderer {
   private rect = new Phaser.Geom.Rectangle(0, 0, MapHelper.TILE_SIZE_PX, MapHelper.TILE_SIZE_PX);
 
   private gameTileSize: Size;
+  private displayHelper: DisplayHelper;
 
   constructor(
     private readonly context: EngineContext
   ) {
     super();
     this.gameTileSize = this.context.helper.display.getDisplaySizeInTiles();
+    this.displayHelper = new DisplayHelper(this.context.game);
   }
 
   public needsUpdate() {
@@ -43,11 +46,13 @@ export class CollisionCommonRenderer extends BaseCommonRenderer {
     this.graphicsCollision.clear();
     this.graphicsNonCollision.clear();
 
+    const pxScrollOffset = this.displayHelper.getScrollOffsetPx();
+
     for (let y = 0; y < this.gameTileSize.height; y++) {
       for (let x = 0; x < this.gameTileSize.width; x++) {
         const px = MapHelper.pointToPixel(new Point(x, y));
-        this.rect.x = px.x;
-        this.rect.y = px.y;
+        this.rect.x = px.x + pxScrollOffset.x;
+        this.rect.y = px.y + pxScrollOffset.y;
         const hasCollision = this.context.collisionUpdater.hasCollision(x, y);
         if (hasCollision) {
           this.graphicsCollision.fillRectShape(this.rect);
