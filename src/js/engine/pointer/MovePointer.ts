@@ -8,6 +8,8 @@ import { Pointer } from './Pointer';
 import { PointerManager } from './PointerManager';
 import { EngineContext } from '../EngineContext';
 import { DisplayHelper } from '../DisplayHelper';
+import { Entity } from 'entities';
+import { PointerPriority } from './PointerPriority';
 
 export class MovePointer extends Pointer {
 
@@ -21,6 +23,10 @@ export class MovePointer extends Pointer {
     super(manager, ctx);
 
     this.displayHelper = new DisplayHelper(ctx.game);
+  }
+
+  public checkActive(pointer: Px, entity?: Entity): number {
+    return PointerPriority.MOVE;
   }
 
   public activate() {

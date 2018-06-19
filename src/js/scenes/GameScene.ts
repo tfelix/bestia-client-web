@@ -1,19 +1,11 @@
 import * as LOG from 'loglevel';
 
-import { Entity, EntityStore, PlayerEntityHolder } from 'entities';
-import {
-  VisualComponent, SpriteType, PositionComponent, DebugComponent,
-  MoveComponent
-} from 'entities/components';
+import { EntityStore, PlayerEntityHolder } from 'entities';
 import { Point, AccountInfo } from 'model';
 import { EngineContext } from 'engine/EngineContext';
-import { PointerManager } from 'engine/pointer';
 import { EntityLocalFactory } from 'entities/EntityLocalFactory';
 import { EntityRenderManager, CommonRenderManager } from 'engine/renderer';
-import { CollisionUpdater } from 'map';
-import { DamageAction } from 'entities/actions';
 import { ActionsRendererManager } from 'engine/renderer/actions/ActionsRenderManager';
-import { ChatAction } from 'entities/actions/ChatAction';
 
 const PLAYER_ACC_ID = 1;
 
@@ -22,7 +14,6 @@ export class GameScene extends Phaser.Scene {
 
   private entityStore: EntityStore;
   private engineContext: EngineContext;
-  private pointerManager: PointerManager;
 
   private entityRenderManager: EntityRenderManager;
   private commonRenderManager: CommonRenderManager;
@@ -45,8 +36,6 @@ export class GameScene extends Phaser.Scene {
     this.entityRenderManager = new EntityRenderManager(this.engineContext);
     this.commonRenderManager = new CommonRenderManager(this.engineContext);
     this.actionRenderManager = new ActionsRendererManager(this.engineContext);
-
-    this.pointerManager = new PointerManager(this.engineContext);
 
     this.entityFactory = new EntityLocalFactory(this.entityStore);
 
@@ -75,7 +64,7 @@ export class GameScene extends Phaser.Scene {
     this.engineContext.config.debug.renderCollision = false;
     this.engineContext.config.debug.renderInfo = false;
 
-    this.time.addEvent({
+    /*this.time.addEvent({
       delay: 1000,
       repeat: 9,
       callback: () => {
@@ -86,12 +75,11 @@ export class GameScene extends Phaser.Scene {
         const chatAction = new ChatAction('Test', 'rocket');
         master.actions.push(chatAction);
       }
-    });
-
+    });*/
   }
 
   public preload(): void {
-    this.pointerManager.load(this.load);
+    this.engineContext.pointerManager.load(this.load);
   }
 
   public create() {
@@ -103,7 +91,7 @@ export class GameScene extends Phaser.Scene {
 
     this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 
-    this.pointerManager.create();
+    this.engineContext.pointerManager.create();
 
     // Setup Keys
     this.input.keyboard.on('keydown_Q', () => {
@@ -115,7 +103,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   public update(time, delta) {
-    this.pointerManager.update();
+    this.engineContext.pointerManager.update();
 
     this.entityRenderManager.update();
     this.actionRenderManager.update();

@@ -1,8 +1,12 @@
-import { Pointer } from "./Pointer";
-import { PointerManager } from "./PointerManager";
-import { EngineContext } from "../EngineContext";
+import { Pointer } from './Pointer';
+import { PointerManager } from './PointerManager';
+import { EngineContext } from '../EngineContext';
+import { PointerPriority } from './PointerPriority';
+import { Px } from 'model';
+import { Entity } from 'entities';
 
 export class NullPointer extends Pointer {
+
   constructor(
     manager: PointerManager,
     ctx: EngineContext
@@ -10,7 +14,11 @@ export class NullPointer extends Pointer {
     super(manager, ctx);
   }
 
-  allowOverwrite(): boolean {
+  public allowOverwrite(): boolean {
     return true;
+  }
+
+  public checkActive(position: Px, entity?: Entity): number {
+    return PointerPriority.NONE;
   }
 }

@@ -3,6 +3,7 @@ import { PlayerEntityHolder, EntityStore } from 'entities';
 import { CollisionUpdater } from 'map';
 import { DisplayHelper } from './DisplayHelper';
 import { SpriteHelper } from './SpriteHelper';
+import { PointerManager } from './pointer';
 
 export class EngineConfig {
 
@@ -25,6 +26,7 @@ export class EngineContext {
   public pointerGroup: Phaser.GameObjects.Group;
   public pathfinder: EasyStar.js;
   public collisionUpdater: CollisionUpdater;
+  public pointerManager: PointerManager;
 
   public readonly config = new EngineConfig();
   public readonly data = new GameData();
@@ -50,5 +52,6 @@ export class EngineContext {
     this.pathfinder.enableDiagonals();
 
     this.collisionUpdater = new CollisionUpdater(this);
+    this.pointerManager = new PointerManager(this);
   }
 }

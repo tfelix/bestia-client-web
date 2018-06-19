@@ -8,6 +8,7 @@ import { Point } from 'model';
 import { MapHelper } from 'map/MapHelper';
 
 import { ComponentRenderer } from './ComponentRenderer';
+import { EngineContext } from '../../EngineContext';
 
 export interface SpriteData {
   sprite: Phaser.GameObjects.Sprite;
@@ -94,8 +95,10 @@ function translateMovementToSubspriteAnimationName(moveAnimation: string): strin
 
 export class VisualComponentRenderer extends ComponentRenderer<VisualComponent> {
 
-  constructor(game: Phaser.Scene) {
-    super(game);
+  constructor(
+    private readonly ctx: EngineContext
+  ) {
+    super(ctx.game);
   }
 
   get supportedComponent(): ComponentType {
@@ -119,8 +122,8 @@ export class VisualComponentRenderer extends ComponentRenderer<VisualComponent> 
     LOG.debug(`Entity: ${entity.id} Visual: ${component.id} (${component.sprite})`);
 
     const sprite = this.game.add.sprite(px.x, px.y, desc.name);
+    sprite.setData('entity_id', entity.id);
     sprite.setInteractive();
-    // sprite.on('pointerdown', () => alert('geht auch'));
     const spriteData: SpriteData = {
       sprite: sprite,
       spriteName: component.sprite,

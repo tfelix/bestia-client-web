@@ -62,8 +62,9 @@ export class DebugComponentRenderer extends ComponentRenderer<DebugComponent> {
       graphics.depth.destroy();
     }
 
+    const entityId = sprite.getData('entity_id') || '?';
     const pos = MapHelper.pixelToPoint(sprite.x, sprite.y);
-    const text = `z: ${Math.floor(sprite.depth)}\nx: ${pos.x} y: ${pos.y}`;
+    const text = `eid: ${entityId}  z: ${Math.floor(sprite.depth)}\nx: ${pos.x} y: ${pos.y}`;
     graphics.depth = this.game.add.text(
       sprite.x + 10,
       sprite.y - 32,

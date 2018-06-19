@@ -1,11 +1,12 @@
-import * as LOG from 'loglevel';
-
 import { MapHelper } from 'map/MapHelper';
 
 import { EngineContext } from '../EngineContext';
 import { MovePointer } from './MovePointer';
 import { NullPointer } from './NullPointer';
 import { Pointer } from './Pointer';
+import { BasicAttackPointer } from './BasicAttackPointer';
+import { Entity } from 'entities';
+import { Px } from 'model';
 
 /**
  * The manager is responsible for switching the indicator depending on the needs
@@ -36,9 +37,60 @@ export class PointerManager {
 
     // Register the available indicators.
     this.pointers.push(this.movePointer);
-    // this.pointers.push(new BasicAttackIndicator(this, engineContext));
+    this.pointers.push(new BasicAttackPointer(this, engineContext));
 
     this.engineContext.game.input.on('pointermove', this.updatePointerPosition, this);
+
+    this.engineContext.game.input.on('pointerdown', this.onPointerClicked, this);
+    this.engineContext.game.input.on('gameobjectover', this.checkPointerPriority, this);
+
+    this.engineContext.game.input.on('gameobjectout', this.checkPointerOut, this);
+    // this.engineContext.game.input.on('pointerup', this.checkPointerOut, this);
+  }
+
+  private checkPointerOut() {
+    this.showDefault();
+  }
+
+  private pointerToPx(pointer: Phaser.Input.Pointer): Px {
+    const worldX = this.engineContext.game.cameras.main.scrollX + pointer.x;
+    const worldY = this.engineContext.game.cameras.main.scrollY + pointer.y;
+    return new Px(worldX, worldY);
+  }
+
+  private getEntityFromGameObj(gameObj?: Phaser.GameObjects.GameObject): Entity {
+    const checkedGameObj = (gameObj instanceof Phaser.GameObjects.GameObject) ? gameObj : null;
+    const entityId = checkedGameObj.getData('entity_id') || -1;
+    const entity = this.engineContext.entityStore.getEntity(entityId);
+    return entity;
+  }
+
+  private checkPointerPriority(
+    pointer: Phaser.Input.Pointer,
+    gameObj: Phaser.GameObjects.Sprite
+  ) {
+    const entity = this.getEntityFromGameObj(gameObj);
+    const px = this.pointerToPx(pointer);
+    let highestPriority = 0;
+    let highestPriorityPointer: Pointer = null;
+    this.pointers.forEach(x => {
+      const pointerPrio = x.checkActive(pointer, entity);
+      if (pointerPrio > highestPriority && highestPriority > -1) {
+        highestPriority = pointerPrio;
+        highestPriorityPointer = x;
+      }
+    });
+    if (highestPriorityPointer !== null) {
+      this.setActive(highestPriorityPointer);
+      this.activePointer.updatePosition(px, entity);
+    }
+  }
+
+  private onPointerClicked(pointer: Phaser.Input.Pointer, gameObj?: Phaser.GameObjects.GameObject[]) {
+    const gameObjSingle = gameObj && (gameObj.length > 0) ? gameObj[0] : null;
+    const entity = this.getEntityFromGameObj(gameObjSingle);
+    const px = this.pointerToPx(pointer);
+    this.activePointer.onClick(px, entity);
   }
 
   private updatePointerPosition(pointer: Phaser.Input.Pointer) {
