@@ -21,7 +21,7 @@ export class BootScene extends Phaser.Scene {
       '../assets/sprites/mob/rabbit/rabbit.json'
     );
 
-    const additionalObjects = ['tree', 'plant', 'water'];
+    const additionalObjects = ['tree', 'plant', 'water', 'sign'];
     additionalObjects.forEach(x => {
       const baseUrl = `../assets/sprites/object/${x}`;
       const pngUrl = `${baseUrl}/${x}.png`;

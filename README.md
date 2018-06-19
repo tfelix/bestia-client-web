@@ -28,3 +28,4 @@ The art currently used in this game is from:
 
 * [LPC Sprite Sheet Generator](http://gaurav.munjal.us/Universal-LPC-Spritesheet-Character-Generator/) (CC-BY-SA2)
 * [Hyptosis Tilesheets](https://opengameart.org/content/lots-of-hyptosis-tiles-organized) (CC-BY 3.0)
+* [Nemisys Signpost](https://opengameart.org/users/nemisys) (CC-BY 3.0)

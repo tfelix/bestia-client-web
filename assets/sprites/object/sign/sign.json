@@ -1,0 +1,20 @@
+{"frames": {
+
+"sign.png":
+{
+	"frame": {"x":1,"y":1,"w":30,"h":42},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":30,"h":42},
+	"sourceSize": {"w":30,"h":42}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "sign.png",
+	"format": "RGBA8888",
+	"size": {"w":32,"h":44},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:66d82010af1c6bb25870b65935cc0142:f5f4c58e0309d804b7db336e8a37de3d:530312cd98244c39a25d0f4bcda84831$"
+}
+}
