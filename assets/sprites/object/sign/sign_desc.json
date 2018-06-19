@@ -3,5 +3,6 @@
 	"type": "sprite",
 	"version": 1,
 	"scale" : 1,
+	"collision": [[0],[1]],
 	"anchor": {"x": 0.5, "y": 1}
 }

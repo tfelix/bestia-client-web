@@ -7,6 +7,7 @@ import { PointerPriority } from './PointerPriority';
 import { Px } from 'model';
 import { Entity } from 'entities';
 import { ComponentType } from 'entities/components';
+import { DamageAction } from 'entities/actions';
 
 export class BasicAttackPointer extends Pointer {
 
@@ -44,6 +45,14 @@ export class BasicAttackPointer extends Pointer {
     if (this.activeSprite) {
       this.activeSprite.clearTint();
       this.activeSprite = null;
+    }
+  }
+
+  public onClick(pointer: Px, entity?: Entity) {
+    if (entity) {
+      const dmg = Math.floor(Math.random() * 15 + 4);
+      const dmgAction = new DamageAction(dmg);
+      entity.actions.push(dmgAction);
     }
   }
 

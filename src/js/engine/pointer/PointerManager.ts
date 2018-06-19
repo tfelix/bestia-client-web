@@ -60,7 +60,7 @@ export class PointerManager {
 
   private getEntityFromGameObj(gameObj?: Phaser.GameObjects.GameObject): Entity {
     const checkedGameObj = (gameObj instanceof Phaser.GameObjects.GameObject) ? gameObj : null;
-    const entityId = checkedGameObj.getData('entity_id') || -1;
+    const entityId = checkedGameObj && checkedGameObj.getData('entity_id') || -1;
     const entity = this.engineContext.entityStore.getEntity(entityId);
     return entity;
   }
