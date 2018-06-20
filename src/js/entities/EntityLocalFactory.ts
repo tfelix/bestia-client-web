@@ -1,9 +1,13 @@
 import { Entity, EntityStore } from '.';
 import {
-  VisualComponent, SpriteType, PositionComponent, PlayerComponent, ComponentType, DebugComponent
+  VisualComponent, SpriteType, PositionComponent, PlayerComponent,
+  ComponentType, DebugComponent
 } from './components';
 import { Point } from 'model';
 import { ConditionComponent } from './components/ConditionComponent';
+import { EntityTypeComponent, EntityType } from './components/EntityTypeComponent';
+import { AttacksComponent } from './components/AttacksComponent';
+import { InteractionCacheLocalComponent, InteractionType } from './components/local/InteractionCacheLocalComponent';
 
 export class EntityLocalFactory {
 
@@ -20,7 +24,7 @@ export class EntityLocalFactory {
     return this.entityStore.getEntity(this.entityCounter++);
   }
 
-  public addSprite(name: string, pos: Point): Entity {
+  private makeEntityWithSprite(name: string, pos: Point): Entity {
     const entity = this.createEntity();
     this.entityStore.addEntity(entity);
     const visual = new VisualComponent(
@@ -32,14 +36,58 @@ export class EntityLocalFactory {
     );
     visual.animation = 'stand_down';
     this.entityStore.addComponent(visual);
-
     const position = new PositionComponent(
       this.componentCounter++,
       entity.id
     );
     position.position = pos;
     this.entityStore.addComponent(position);
+    return entity;
+  }
 
+  public addPlayer(name: string, pos: Point): Entity {
+    const entity = this.makeEntityWithSprite(name, pos);
+
+    const entityTypeComp = new EntityTypeComponent(
+      this.componentCounter++,
+      entity.id
+    );
+    entityTypeComp.entityType = EntityType.PLAYER_BESTIA;
+    this.entityStore.addComponent(entityTypeComp);
+
+    const attackComp = new AttacksComponent(
+      this.componentCounter++,
+      entity.id
+    );
+    this.entityStore.addComponent(attackComp);
+
+    const interactionCache = new InteractionCacheLocalComponent(
+      entity.id
+    );
+    interactionCache.interactionCache.set(EntityType.BESTIA, InteractionType.ATTACK);
+    this.entityStore.addComponent(interactionCache);
+
+    const conditionComp = new ConditionComponent(
+      this.componentCounter++,
+      entity.id
+    );
+    conditionComp.currentHealth = 100;
+    conditionComp.maxHealth = 100;
+    conditionComp.currentMana = 0;
+    conditionComp.maxMana = 0;
+    this.entityStore.addComponent(attackComp);
+
+    return entity;
+  }
+
+  public addBestia(name: string, pos: Point): Entity {
+    const entity = this.makeEntityWithSprite(name, pos);
+    const entityTypeComp = new EntityTypeComponent(
+      this.componentCounter++,
+      entity.id
+    );
+    entityTypeComp.entityType = EntityType.BESTIA;
+    this.entityStore.addComponent(entityTypeComp);
     return entity;
   }
 

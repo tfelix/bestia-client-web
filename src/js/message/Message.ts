@@ -2,7 +2,7 @@ import { EntityStore } from '../entities/EntityStore';
 import { Point } from '../model';
 import { ComponentType, PositionComponent } from '../entities/components';
 
-class Message<T extends ComponentMessage> {
+export class Message<T extends ComponentMessage> {
 
   public componentName: string;
   public payoad: T;

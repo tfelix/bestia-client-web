@@ -21,7 +21,6 @@ export class MovePointer extends Pointer {
     ctx: EngineContext
   ) {
     super(manager, ctx);
-
     this.displayHelper = new DisplayHelper(ctx.game);
   }
 

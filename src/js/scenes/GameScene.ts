@@ -10,8 +10,6 @@ import { ActionsRendererManager } from 'engine/renderer/actions/ActionsRenderMan
 const PLAYER_ACC_ID = 1;
 
 export class GameScene extends Phaser.Scene {
-  private controls: Phaser.Cameras.Controls.FixedKeyControl;
-
   private entityStore: EntityStore;
   private engineContext: EngineContext;
 
@@ -43,13 +41,13 @@ export class GameScene extends Phaser.Scene {
   }
 
   public setupTestEnv() {
-    const master = this.entityFactory.addSprite('player_1', new Point(2, 3));
+    const master = this.entityFactory.addPlayer('player_1', new Point(2, 3));
     this.entityFactory.addPlayerComponent(master, PLAYER_ACC_ID);
     this.entityFactory.addDebugComponent(master);
-    const rabbit = this.entityFactory.addSprite('rabbit', new Point(5, 6));
+    const rabbit = this.entityFactory.addBestia('rabbit', new Point(5, 6));
     this.entityFactory.addDebugComponent(rabbit);
     this.entityFactory.addConditionComponent(rabbit, 60, 100);
-    const rabbit2 = this.entityFactory.addSprite('rabbit', new Point(12, 12));
+    const rabbit2 = this.entityFactory.addBestia('rabbit', new Point(12, 12));
     this.entityFactory.addConditionComponent(rabbit2);
 
     this.entityFactory.addObject('tree', new Point(10, 10));
@@ -64,19 +62,6 @@ export class GameScene extends Phaser.Scene {
 
     this.engineContext.config.debug.renderCollision = false;
     this.engineContext.config.debug.renderInfo = false;
-
-    /*this.time.addEvent({
-      delay: 1000,
-      repeat: 9,
-      callback: () => {
-        const dmg = Math.floor(Math.random() * 15 + 4);
-        const dmgAction = new DamageAction(dmg);
-        rabbit.actions.push(dmgAction);
-
-        const chatAction = new ChatAction('Test', 'rocket');
-        master.actions.push(chatAction);
-      }
-    });*/
   }
 
   public preload(): void {
