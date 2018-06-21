@@ -4,20 +4,22 @@ import { Pointer } from './Pointer';
 import { PointerManager } from './PointerManager';
 import { EngineContext } from '../EngineContext';
 import { PointerPriority } from './PointerPriority';
-import { Px } from 'model';
+import { Px, Point } from 'model';
 import { Entity, PlayerEntityHolder } from 'entities';
-import { ComponentType, PositionComponent, MoveComponent } from 'entities/components';
+import { ComponentType, PositionComponent, MoveComponent, VisualComponent } from 'entities/components';
 import { DamageAction } from 'entities/actions';
 import { EntityTypeComponent, EntityType } from 'entities/components/EntityTypeComponent';
 import { InteractionCacheLocalComponent, InteractionType } from 'entities/components/local/InteractionCacheLocalComponent';
 import { AttacksComponent } from 'entities/components/AttacksComponent';
-import { DisplayHelper } from '../DisplayHelper';
+
+function getSightDirection(source: Point, lookingTo: Point): Point {
+  return lookingTo.minus(source).norm();
+}
 
 export class BasicAttackPointer extends Pointer {
 
   private activeSprite: Phaser.GameObjects.Sprite;
   private playerHolder: PlayerEntityHolder;
-  private displayHelper: DisplayHelper;
 
   private attackedEntity: Entity | null = null;
 
@@ -95,6 +97,13 @@ export class BasicAttackPointer extends Pointer {
 
     if (this.inRangeForBasicAttack(entity)) {
       // Do attack.
+      const attackerEntity = this.ctx.playerHolder.activeEntity;
+      const attackerPos = (attackerEntity.getComponent(ComponentType.POSITION) as PositionComponent).position;
+      const attackerPosComp = (entity.getComponent(ComponentType.POSITION) as PositionComponent);
+      const defenderPos = attackerPosComp.position;
+
+      const attackerVisualComp = (attackerEntity.getComponent(ComponentType.VISUAL) as VisualComponent);
+      attackerVisualComp.sightDirection = getSightDirection(attackerPos, defenderPos);
       const dmg = Math.floor(Math.random() * 15 + 4);
       const dmgAction = new DamageAction(dmg);
       entity.actions.push(dmgAction);

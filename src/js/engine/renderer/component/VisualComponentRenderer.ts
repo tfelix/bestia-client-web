@@ -62,6 +62,38 @@ export function getSpriteDescriptionFromCache(
   return scene.cache.json.get(`${spriteName}_desc`);
 }
 
+type StandAnimation = 'stand_down' | 'stand_up' | 'stand_left' | 'stand_right' | 'stand_down_left'
+  | 'stand_up_left' | 'stand_down_right' | 'stand_up_right';
+
+const DIRECTION_UP = new Point(0, -1);
+const DIRECTION_DOWN = new Point(0, 1);
+const DIRECTION_LEFT = new Point(-1, 0);
+const DIRECTION_RIGHT = new Point(1, 0);
+const DIRECTION_UP_LEFT = new Point(-1, -1).norm();
+const DIRECTION_DOWN_LEFT = new Point(-1, 1).norm();
+const DIRECTION_UP_RIGHT = new Point(1, -1);
+const DIRECTION_DOWN_RIGHT = new Point(1, 1);
+
+function translateSightPositionToAnimationName(sightDirection: Point): StandAnimation {
+  if (Math.floor(sightDirection.scalarp(DIRECTION_DOWN)) === 1) {
+    return 'stand_down';
+  } else if (Math.floor(sightDirection.scalarp(DIRECTION_UP)) === 1) {
+    return 'stand_up';
+  } else if (Math.floor(sightDirection.scalarp(DIRECTION_LEFT)) === 1) {
+    return 'stand_left';
+  } else if (Math.floor(sightDirection.scalarp(DIRECTION_RIGHT)) === 1) {
+    return 'stand_right';
+  } else if (Math.floor(sightDirection.scalarp(DIRECTION_UP_LEFT)) === 1) {
+    return 'stand_up_left';
+  } else if (Math.floor(sightDirection.scalarp(DIRECTION_DOWN_LEFT)) === 1) {
+    return 'stand_down_left';
+  } else if (Math.floor(sightDirection.scalarp(DIRECTION_UP_RIGHT)) === 1) {
+    return 'stand_up_right';
+  } else {
+    return 'stand_down_right';
+  }
+}
+
 function translateMovementToSubspriteAnimationName(moveAnimation: string): string {
   switch (moveAnimation) {
     case 'stand_down':
@@ -209,10 +241,25 @@ export class VisualComponentRenderer extends ComponentRenderer<VisualComponent> 
 
     if (component.oneshotAnimation) {
       this.setupOneshotAnimation(entity, component);
+      component.oneshotAnimation = null;
+    }
+
+    if(component.sightDirection) {
+      this.setupSightDirection(entity, component);
+      component.sightDirection = null;
     }
 
     this.updateChildSpriteOffset(spriteData);
     this.updateSpriteDepth(spriteData);
+  }
+
+  private setupSightDirection(entity: Entity, component: VisualComponent) {
+    const spriteData = entity.data.visual;
+    const animationName = translateSightPositionToAnimationName(component.sightDirection);
+    const fullAnimationName = `${component.sprite}_${animationName}`;
+    LOG.debug(`Play sight animation: ${fullAnimationName} for entity: ${entity.id}`);
+    this.setSpriteAnimationName(spriteData.sprite, fullAnimationName);
+    this.updateChildSpritesAnimation(spriteData, animationName);
   }
 
   private setupOneshotAnimation(entity: Entity, component: VisualComponent) {
@@ -229,7 +276,6 @@ export class VisualComponentRenderer extends ComponentRenderer<VisualComponent> 
       delay: animationDuration,
       callback: () => component.animation = previousAnimationName
     });
-    component.oneshotAnimation = null;
   }
 
   private updateChildSpritesAnimation(spriteData: SpriteData, animationName: string) {

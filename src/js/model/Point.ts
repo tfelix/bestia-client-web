@@ -18,4 +18,17 @@ export class Point {
   public plus(rhs: Point): Point {
     return new Point(this.x + rhs.x, this.y + rhs.y);
   }
+
+  public abs(): number {
+    return Math.sqrt(this.x * this.x + this.y * this.y);
+  }
+
+  public scalarp(rhs: Point): number {
+    return this.x * rhs.x + this.y * rhs.y;
+  }
+
+  public norm(): Point {
+    const abs = this.abs();
+    return new Point(this.x / abs, this.y / abs);
+  }
 }

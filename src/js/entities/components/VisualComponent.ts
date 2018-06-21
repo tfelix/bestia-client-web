@@ -1,5 +1,6 @@
 import { Component } from './Component';
 import { ComponentType } from './ComponentType';
+import { Point } from 'model';
 
 export enum SpriteType {
   MULTI,
@@ -15,6 +16,7 @@ export class VisualComponent extends Component {
     public sprite: string,
     public spriteType: SpriteType,
     public animation: string | null = null,
+    public sightDirection: Point | null = null,
     /**
      * Other systems can set this. Such animations are only
      * shortly displayed and once after the normal animation is
