@@ -4,6 +4,7 @@ import { CollisionUpdater } from 'map';
 import { DisplayHelper } from './DisplayHelper';
 import { SpriteHelper } from './SpriteHelper';
 import { PointerManager } from './pointer';
+import { MoveHelper } from './MoveHelper';
 
 export class EngineConfig {
 
@@ -18,6 +19,7 @@ export class EngineConfig {
 }
 
 export class GameData {
+  // TODO Will contain shared game data.
 }
 
 export class EngineContext {
@@ -34,6 +36,7 @@ export class EngineContext {
   public readonly helper: {
     display: DisplayHelper;
     sprite: SpriteHelper;
+    move: MoveHelper;
   };
 
   constructor(
@@ -43,7 +46,8 @@ export class EngineContext {
   ) {
     this.helper = {
       display: new DisplayHelper(this.game),
-      sprite: new SpriteHelper(this.game)
+      sprite: new SpriteHelper(this.game),
+      move: new MoveHelper(this)
     };
 
     this.mapGroup0 = this.game.make.group({});

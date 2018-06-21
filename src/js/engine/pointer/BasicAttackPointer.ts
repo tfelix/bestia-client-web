@@ -4,14 +4,13 @@ import { Pointer } from './Pointer';
 import { PointerManager } from './PointerManager';
 import { EngineContext } from '../EngineContext';
 import { PointerPriority } from './PointerPriority';
-import { Px, Point } from 'model';
+import { Px } from 'model';
 import { Entity, PlayerEntityHolder } from 'entities';
 import { ComponentType, PositionComponent, MoveComponent } from 'entities/components';
 import { DamageAction } from 'entities/actions';
 import { EntityTypeComponent, EntityType } from 'entities/components/EntityTypeComponent';
 import { InteractionCacheLocalComponent, InteractionType } from 'entities/components/local/InteractionCacheLocalComponent';
 import { AttacksComponent } from 'entities/components/AttacksComponent';
-import { MapHelper } from 'map';
 import { DisplayHelper } from '../DisplayHelper';
 
 export class BasicAttackPointer extends Pointer {
@@ -20,6 +19,8 @@ export class BasicAttackPointer extends Pointer {
   private playerHolder: PlayerEntityHolder;
   private displayHelper: DisplayHelper;
 
+  private attackedEntity: Entity | null = null;
+
   constructor(
     manager: PointerManager,
     ctx: EngineContext
@@ -27,9 +28,6 @@ export class BasicAttackPointer extends Pointer {
     super(manager, ctx);
 
     this.playerHolder = ctx.playerHolder;
-
-    // TODO Consider putting this into the ctx
-    this.displayHelper = new DisplayHelper(ctx.game);
   }
 
   public allowOverwrite(): boolean {
@@ -93,6 +91,8 @@ export class BasicAttackPointer extends Pointer {
       return;
     }
 
+    this.attackedEntity = entity;
+
     if (this.inRangeForBasicAttack(entity)) {
       // Do attack.
       const dmg = Math.floor(Math.random() * 15 + 4);
@@ -100,7 +100,7 @@ export class BasicAttackPointer extends Pointer {
       entity.actions.push(dmgAction);
     } else {
       // Walk to it
-      this.onClickMove(pointer);
+      this.ctx.helper.move.moveTo(pointer);
     }
   }
 
@@ -130,52 +130,5 @@ export class BasicAttackPointer extends Pointer {
         this.activeSprite = sprite;
       }
     }
-  }
-
-  // ================================
-  // TODO Refactor into shared code with move pointer
-  private onPathFound(usedShiftOffset: Point, path: Array<{ x: number; y: number }>) {
-    if (path === null) {
-      return;
-    }
-    // We must shift the path into the collision map first. Now we must undo this again to
-    // world space.
-    const shiftedPath = path.map(pos => new Point(pos.x + usedShiftOffset.x, pos.y + usedShiftOffset.y));
-
-    LOG.debug(`Path found: ${JSON.stringify(shiftedPath)}`);
-    if (shiftedPath.length === 0) {
-      return;
-    }
-
-    const componentId = Math.floor(Math.random() * -10000);
-
-    const playerEntityId = this.ctx.playerHolder.activeEntity.id;
-    const move = new MoveComponent(
-      componentId,
-      playerEntityId
-    );
-    move.walkspeed = 1;
-    move.path = shiftedPath;
-    this.ctx.entityStore.addComponent(move);
-  }
-
-  private onClickMove(pointer: Px) {
-    const activePlayerEntity = this.ctx.playerHolder.activeEntity;
-    if (!activePlayerEntity) {
-      return;
-    }
-    const playerPositionComponent = activePlayerEntity.getComponent(ComponentType.POSITION) as PositionComponent;
-    if (!playerPositionComponent) {
-      return;
-    }
-    const start = playerPositionComponent.position;
-    const goal = MapHelper.pixelToPoint(pointer.x, pointer.y);
-
-    const scrollOffset = this.displayHelper.getScrollOffset();
-    const shiftedStart = start.minus(scrollOffset);
-    const shiftedGoal = goal.minus(scrollOffset).minus(new Point(0, 1));
-
-    LOG.debug(`Find path from: ${JSON.stringify(shiftedStart)} to ${JSON.stringify(shiftedGoal)}`);
-    this.ctx.pathfinder.findPath(shiftedStart.x, shiftedStart.y, shiftedGoal.x, shiftedGoal.y, this.onPathFound.bind(this, scrollOffset));
   }
 }
