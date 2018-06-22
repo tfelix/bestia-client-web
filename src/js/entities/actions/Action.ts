@@ -1,4 +1,1 @@
-
-export class Action {
-  
-}
+export class Action { }

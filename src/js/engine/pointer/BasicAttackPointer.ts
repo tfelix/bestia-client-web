@@ -1,4 +1,5 @@
 import * as LOG from 'loglevel';
+import * as PubSub from 'pubsub-js';
 
 import { Pointer } from './Pointer';
 import { PointerManager } from './PointerManager';
@@ -6,11 +7,12 @@ import { EngineContext } from '../EngineContext';
 import { PointerPriority } from './PointerPriority';
 import { Px, Point } from 'model';
 import { Entity, PlayerEntityHolder } from 'entities';
-import { ComponentType, PositionComponent, MoveComponent, VisualComponent } from 'entities/components';
-import { DamageAction } from 'entities/actions';
+import { ComponentType, PositionComponent, VisualComponent } from 'entities/components';
 import { EntityTypeComponent, EntityType } from 'entities/components/EntityTypeComponent';
 import { InteractionCacheLocalComponent, InteractionType } from 'entities/components/local/InteractionCacheLocalComponent';
 import { AttacksComponent } from 'entities/components/AttacksComponent';
+import { BasicAttackMessage } from 'message/BasicAttackMessage';
+import { Topics } from 'Topics';
 
 function getSightDirection(source: Point, lookingTo: Point): Point {
   return lookingTo.minus(source).norm();
@@ -104,9 +106,8 @@ export class BasicAttackPointer extends Pointer {
 
       const attackerVisualComp = (attackerEntity.getComponent(ComponentType.VISUAL) as VisualComponent);
       attackerVisualComp.sightDirection = getSightDirection(attackerPos, defenderPos);
-      const dmg = Math.floor(Math.random() * 15 + 4);
-      const dmgAction = new DamageAction(dmg);
-      entity.actions.push(dmgAction);
+      const atkMsg = new BasicAttackMessage(entity.id);
+      PubSub.publish(Topics.IO_SEND_MSG, atkMsg);
     } else {
       // Walk to it
       this.ctx.helper.move.moveTo(pointer);

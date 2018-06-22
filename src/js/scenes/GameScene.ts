@@ -1,11 +1,13 @@
-import * as LOG from 'loglevel';
-
 import { EntityStore, PlayerEntityHolder } from 'entities';
 import { Point, AccountInfo } from 'model';
 import { EngineContext } from 'engine/EngineContext';
 import { EntityLocalFactory } from 'entities/EntityLocalFactory';
 import { EntityRenderManager, CommonRenderManager } from 'engine/renderer';
 import { ActionsRendererManager } from 'engine/renderer/actions/ActionsRenderManager';
+import { ServerLocalFacade } from 'connection/ServerLocalFacade';
+import { ConnectionLogger } from 'connection/ConnectionLogger';
+import { MessageRouter } from 'connection/MessageRouter';
+import { ActionMessageHandler } from 'engine/renderer/actions/ActionMessageHandler';
 
 const PLAYER_ACC_ID = 1;
 
@@ -19,14 +21,31 @@ export class GameScene extends Phaser.Scene {
 
   private entityFactory: EntityLocalFactory;
 
+  private connectionFacade: ServerLocalFacade;
+  private connectionLogger: ConnectionLogger;
+
+  // BOOTSTRAP
+  private messageRouter: MessageRouter;
+  private actionMessageHandler: ActionMessageHandler;
+  // /BOOTSTRAP
   constructor() {
     super({
       key: 'GameScene'
     });
+
+    // BOOTSTRAP CODE
+    // THIS CODE MUST BE CREATED EVEN EARLIER BEFORE LOADING
+    // GAME SCENE IS STARTED IF I KNOW HOW
+    this.entityStore = new EntityStore();
+    this.setupMessaging();
+
+    // EntityStore
+    // Connection Stuff
+    // Connection Handler
+    // Renderer Stuff
   }
 
   public init(entityStore: EntityStore): void {
-    this.entityStore = new EntityStore();
     const accountInfo = new AccountInfo('gast', PLAYER_ACC_ID, 'gast');
     const playerEntityHolder = new PlayerEntityHolder(accountInfo, this.entityStore);
     this.engineContext = new EngineContext(this, this.entityStore, playerEntityHolder);
@@ -37,10 +56,20 @@ export class GameScene extends Phaser.Scene {
 
     this.entityFactory = new EntityLocalFactory(this.entityStore);
 
+    if (DEV) {
+      this.connectionLogger = new ConnectionLogger();
+    }
+
     this.setupTestEnv();
   }
 
-  public setupTestEnv() {
+  private setupMessaging() {
+    this.messageRouter = new MessageRouter();
+    this.actionMessageHandler = new ActionMessageHandler(this.entityStore);
+    this.connectionFacade = new ServerLocalFacade(this.entityStore);
+  }
+
+  private setupTestEnv() {
     const master = this.entityFactory.addPlayer('player_1', new Point(2, 3));
     this.entityFactory.addPlayerComponent(master, PLAYER_ACC_ID);
     this.entityFactory.addDebugComponent(master);
