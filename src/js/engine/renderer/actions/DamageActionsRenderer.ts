@@ -1,6 +1,5 @@
 import { ActionsRenderer } from './ActionsRenderer';
-import { Entity } from 'entities';
-import { DamageAction } from 'entities/actions';
+import { Entity, DamageAction } from 'entities';
 import { ComponentType, VisualComponent } from 'entities/components';
 
 export class DamageActionsRenderer extends ActionsRenderer {

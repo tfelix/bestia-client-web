@@ -88,6 +88,9 @@ export class EntityLocalFactory {
     );
     entityTypeComp.entityType = EntityType.BESTIA;
     this.entityStore.addComponent(entityTypeComp);
+
+    this.addConditionComponent(entity);
+
     return entity;
   }
 

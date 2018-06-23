@@ -1,5 +1,4 @@
-import { Entity } from 'entities';
-import { Action } from 'entities/actions';
+import { Entity, Action } from 'entities';
 
 export abstract class ActionsRenderer implements RenderStatistics {
 
@@ -13,7 +12,7 @@ export abstract class ActionsRenderer implements RenderStatistics {
   ) {
   }
 
-  protected getActionsFromEntity<T>(entity: Entity, constructor: { new(...args: any[]): T }): T[] {
+  protected getActionsFromEntity<T extends Action>(entity: Entity, constructor: { new(...args: any[]): T }): T[] {
     return entity.actions.filter(x => x instanceof constructor) as T[];
   }
 

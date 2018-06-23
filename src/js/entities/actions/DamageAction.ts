@@ -1,10 +1,13 @@
+import { ActionType } from './ActionType';
+import { Action } from './Action';
+
 export enum DamageType {
   HEAL,
   CRITICAL,
   NORMAL
 }
 
-export class DamageAction {
+export class DamageAction extends Action {
 
   public readonly amounts: number[];
 
@@ -12,6 +15,7 @@ export class DamageAction {
     amounts: number | number[],
     public readonly type: DamageType = DamageType.NORMAL
   ) {
+    super(ActionType.DAMAGE);
     this.amounts = (Array.isArray(amounts)) ? amounts : [amounts];
   }
 

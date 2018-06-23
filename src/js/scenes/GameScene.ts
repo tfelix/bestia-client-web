@@ -72,12 +72,8 @@ export class GameScene extends Phaser.Scene {
   private setupTestEnv() {
     const master = this.entityFactory.addPlayer('player_1', new Point(2, 3));
     this.entityFactory.addPlayerComponent(master, PLAYER_ACC_ID);
-    this.entityFactory.addDebugComponent(master);
-    const rabbit = this.entityFactory.addBestia('rabbit', new Point(5, 6));
-    this.entityFactory.addDebugComponent(rabbit);
-    this.entityFactory.addConditionComponent(rabbit, 60, 100);
-    const rabbit2 = this.entityFactory.addBestia('rabbit', new Point(12, 12));
-    this.entityFactory.addConditionComponent(rabbit2);
+    this.entityFactory.addBestia('rabbit', new Point(5, 6));
+    this.entityFactory.addBestia('rabbit', new Point(12, 12));
 
     this.entityFactory.addObject('tree', new Point(10, 10));
     this.entityFactory.addObject('tree', new Point(14, 12));
