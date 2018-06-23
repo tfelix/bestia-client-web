@@ -8,6 +8,7 @@ import { ServerLocalFacade } from 'connection/ServerLocalFacade';
 import { ConnectionLogger } from 'connection/ConnectionLogger';
 import { MessageRouter } from 'connection/MessageRouter';
 import { ActionMessageHandler } from 'engine/renderer/actions/ActionMessageHandler';
+import { ComponentMessageHandler } from 'entities/components/ComponentMessageHandler';
 
 const PLAYER_ACC_ID = 1;
 
@@ -27,6 +28,7 @@ export class GameScene extends Phaser.Scene {
   // BOOTSTRAP
   private messageRouter: MessageRouter;
   private actionMessageHandler: ActionMessageHandler;
+  private componentMessageHandler: ComponentMessageHandler;
   // /BOOTSTRAP
   constructor() {
     super({
@@ -66,6 +68,7 @@ export class GameScene extends Phaser.Scene {
   private setupMessaging() {
     this.messageRouter = new MessageRouter();
     this.actionMessageHandler = new ActionMessageHandler(this.entityStore);
+    this.componentMessageHandler = new ComponentMessageHandler(this.entityStore);
     this.connectionFacade = new ServerLocalFacade(this.entityStore);
   }
 

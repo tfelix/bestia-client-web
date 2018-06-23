@@ -5,8 +5,9 @@ import { ServerConnection } from './ServerConnection';
 import { EntityStore, KillAction, DamageAction } from 'entities';
 import { Message } from 'message/Message';
 import { ActionMessage } from 'message/ActionMessage';
-import { ComponentType } from 'entities/components';
+import { ComponentType, Component } from 'entities/components';
 import { ConditionComponent } from 'entities/components/ConditionComponent';
+import { ComponentMessage } from 'message/ComponentMessage';
 
 // Helper Classes
 class ConditionHelper {
@@ -45,9 +46,24 @@ class ConditionHelper {
   }
 }
 
+class ComponentCopyHelper {
+  constructor(
+    private readonly entityStore: EntityStore
+  ) {
+  }
+
+  public copyComponent(entityId: number, type: ComponentType): Component {
+    const entity = this.entityStore.getEntity(entityId);
+    const comp = entity.getComponent(type);
+    const copyComp = Object.assign({}, comp);
+    return copyComp;
+  }
+}
+
 export class ServerLocalFacade implements ServerConnection {
 
   private condHelper = new ConditionHelper(this.entityStore);
+  private copyHelper = new ComponentCopyHelper(this.entityStore);
 
   constructor(
     private readonly entityStore: EntityStore
@@ -76,6 +92,11 @@ export class ServerLocalFacade implements ServerConnection {
       const killActionMsg = new ActionMessage<KillAction>(msg.targetEntityId, killAction);
       this.sendClient(killActionMsg);
     }
+
+    const condComp = this.copyHelper.copyComponent(msg.targetEntityId, ComponentType.CONDITION) as ConditionComponent;
+    condComp.currentHealth = newHp;
+    const compMsg = new ComponentMessage<ConditionComponent>(condComp);
+    this.sendClient(compMsg);
   }
 
   public sendMessage(msg: Message<any>) {
@@ -83,6 +104,6 @@ export class ServerLocalFacade implements ServerConnection {
   }
 
   private sendClient(msg: any) {
-    PubSub.publish(Topics.IO_RECV_ACTION, msg);
+    PubSub.publish(Topics.IO_RECV_MSG, msg);
   }
 }

@@ -56,7 +56,7 @@ export class ConditionComponentRenderer extends ComponentRenderer<ConditionCompo
 
     const gfx = entity.data.condition.conditionGraphic;
     const maxWidth = this.ctx.helper.sprite.getSpriteSize(sprite).width;
-    const hpPerc = component.currentHealth / component.maxHealth;
+    const hpPerc = Math.max(0, component.currentHealth / component.maxHealth);
 
     if (hpPerc > 0.999) {
       this.clearGraphics(entity);

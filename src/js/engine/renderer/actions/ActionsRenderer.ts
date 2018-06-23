@@ -1,15 +1,14 @@
 import { Entity, Action } from 'entities';
 
 export abstract class ActionsRenderer implements RenderStatistics {
-
   private lastUpdateTime = 0;
-
-  public getLastUpdateTimeMs(): number {
-    return this.lastUpdateTime;
-  }
   constructor(
     protected readonly game: Phaser.Scene
   ) {
+  }
+
+  public getLastUpdateTimeMs(): number {
+    return this.lastUpdateTime;
   }
 
   protected getActionsFromEntity<T extends Action>(entity: Entity, constructor: { new(...args: any[]): T }): T[] {

@@ -1,8 +1,7 @@
 import { ActionsRenderer } from './ActionsRenderer';
 import { Entity } from 'entities';
 import { ChatAction } from 'entities/actions/ChatAction';
-import { EngineConfig, EngineContext } from '../../EngineContext';
-import { ComponentType, VisualComponent } from 'entities/components';
+import { EngineContext } from '../../EngineContext';
 import { Px } from 'model';
 
 const CHAT_DISPLAY_DURATION_MS = 3500;
