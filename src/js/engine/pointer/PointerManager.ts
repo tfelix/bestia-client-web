@@ -39,7 +39,7 @@ export class PointerManager {
     this.pointers.push(this.movePointer);
     this.pointers.push(new BasicAttackPointer(this, engineContext));
 
-    this.engineContext.game.input.on('pointermove', this.updatePointerPosition, this);
+    this.engineContext.game.input.on('pointermove', this.updateActivePointerPosition, this);
 
     this.engineContext.game.input.on('pointerdown', this.onPointerClicked, this);
     this.engineContext.game.input.on('gameobjectover', this.checkPointerPriority, this);
@@ -94,7 +94,7 @@ export class PointerManager {
     this.activePointer.onClick(px, entity);
   }
 
-  private updatePointerPosition(pointer: Phaser.Input.Pointer) {
+  private updateActivePointerPosition(pointer: Phaser.Input.Pointer) {
     const worldX = this.engineContext.game.cameras.main.scrollX + pointer.x;
     const worldY = this.engineContext.game.cameras.main.scrollY + pointer.y;
     const cords = MapHelper.getClampedTilePixelXY(worldX, worldY);
@@ -162,5 +162,6 @@ export class PointerManager {
     } else {
       this.setActive(this.pointerStack.pop());
     }
+    this.updateActivePointerPosition(this.engineContext.game.input.activePointer);
   }
 }

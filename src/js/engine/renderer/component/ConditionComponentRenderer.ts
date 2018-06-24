@@ -9,7 +9,7 @@ export interface ConditionData {
 }
 
 const bottomHealtbarOffset = 8;
-const conditionBarHeight = 8;
+const conditionBarHeight = 6;
 const rect = new Phaser.Geom.Rectangle();
 
 export class ConditionComponentRenderer extends ComponentRenderer<ConditionComponent> {
@@ -75,11 +75,11 @@ export class ConditionComponentRenderer extends ComponentRenderer<ConditionCompo
 
     // Draw health.
     gfx.fillStyle(0x33F30D);
-    rect.x += 2;
-    rect.y += 2;
-    rect.width -= 4;
+    rect.x += 1;
+    rect.y += 1;
+    rect.width -= 2;
     rect.width *= hpPerc;
-    rect.height -= 4;
+    rect.height -= 2;
     gfx.fillRectShape(rect);
   }
 }

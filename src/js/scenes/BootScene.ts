@@ -36,6 +36,10 @@ export class BootScene extends Phaser.Scene {
     this.load.image('tiles', '../assets/tilemap/tiles/trees_plants_rocks.png');
     this.load.tilemapTiledJSON('map', '../assets/tilemap/maps/demo.json');
 
+    // Load Items
+    this.load.image('empty_bottle', '../assets/sprites/items/empty_bottle.png');
+    this.load.image('knife', '../assets/sprites/items/knife.png');
+
     // Tree Sprite
 
     // Misc

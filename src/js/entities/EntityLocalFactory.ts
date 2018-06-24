@@ -103,6 +103,33 @@ export class EntityLocalFactory {
     return entity;
   }
 
+  public addItem(name: string, amount: number, pos: Point): Entity {
+    const entity = this.createEntity();
+    this.entityStore.addEntity(entity);
+    const visual = new VisualComponent(
+      this.componentCounter++,
+      entity.id,
+      true,
+      name,
+      SpriteType.SIMPLE
+    );
+    this.entityStore.addComponent(visual);
+    const position = new PositionComponent(
+      this.componentCounter++,
+      entity.id
+    );
+    position.position = pos;
+    this.entityStore.addComponent(position);
+    const entityTypeComp = new EntityTypeComponent(
+      this.componentCounter++,
+      entity.id
+    );
+    entityTypeComp.entityType = EntityType.ITEM;
+    this.entityStore.addComponent(entityTypeComp);
+
+    return entity;
+  }
+
   public addObject(name: string, pos: Point): Entity {
     const entity = this.createEntity();
     this.entityStore.addEntity(entity);

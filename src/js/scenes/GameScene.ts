@@ -9,6 +9,7 @@ import { ConnectionLogger } from 'connection/ConnectionLogger';
 import { MessageRouter } from 'connection/MessageRouter';
 import { ActionMessageHandler } from 'engine/renderer/actions/ActionMessageHandler';
 import { ComponentMessageHandler } from 'entities/components/ComponentMessageHandler';
+import { SpriteCollision } from 'map/SpriteCollision';
 
 const PLAYER_ACC_ID = 1;
 
@@ -97,6 +98,15 @@ export class GameScene extends Phaser.Scene {
   }
 
   public create() {
+    // TODO Test
+    const desc = this.cache.json.get('tree_desc');
+    const test = new SpriteCollision(new Point(10, 10), desc);
+    console.log(test.hasCollision(new Point(10, 10)));
+    console.log(test.hasCollision(new Point(11, 10)));
+    console.log(test.hasCollision(new Point(12, 10)));
+    console.log(test.hasCollision(new Point(10, 9)));
+    console.log(test.hasCollision(new Point(10, 5)));
+
     this.engineContext.game.input.mouse.disableContextMenu();
 
     const map = this.make.tilemap({ key: 'map' });

@@ -25,8 +25,6 @@ export class BasicAttackPointer extends Pointer {
   private activeSprite: Phaser.GameObjects.Sprite;
   private playerHolder: PlayerEntityHolder;
 
-  private attackedEntity: Entity | null = null;
-
   constructor(
     manager: PointerManager,
     ctx: EngineContext
@@ -97,8 +95,6 @@ export class BasicAttackPointer extends Pointer {
       this.manager.dismissActive();
       return;
     }
-
-    this.attackedEntity = entity;
 
     if (this.inRangeForBasicAttack(entity)) {
       this.performBasicAttack(entity);
