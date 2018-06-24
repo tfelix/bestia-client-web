@@ -1,6 +1,6 @@
 import * as LOG from 'loglevel';
 
-import { EntityStore, EntityUpdate, Entity } from 'entities';
+import { EntityUpdate } from 'entities';
 import { Component, ComponentType } from 'entities/components';
 import { ComponentRenderer } from './ComponentRenderer';
 import { VisualComponentRenderer } from './VisualComponentRenderer';
@@ -9,6 +9,7 @@ import { MoveComponentRenderer } from './MoveComponentRenderer';
 import { ConditionComponentRenderer } from './ConditionComponentRenderer';
 import { MasterLocalComponentRenderer } from './local/MasterLocalComponentRenderer';
 import { EngineContext } from '../../EngineContext';
+import { PerformComponentRenderer } from './PerformComponentRenderer';
 
 export class EntityRenderManager {
 
@@ -21,6 +22,7 @@ export class EntityRenderManager {
     this.addComponentRenderer(new DebugComponentRenderer(this.context.game));
     this.addComponentRenderer(new MoveComponentRenderer(context));
     this.addComponentRenderer(new ConditionComponentRenderer(context));
+    this.addComponentRenderer(new PerformComponentRenderer(this.context));
 
     // Local Component Renderer.
     this.addComponentRenderer(new MasterLocalComponentRenderer(context));

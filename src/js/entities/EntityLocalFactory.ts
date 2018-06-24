@@ -8,6 +8,7 @@ import { ConditionComponent } from './components/ConditionComponent';
 import { EntityTypeComponent, EntityType } from './components/EntityTypeComponent';
 import { AttacksComponent } from './components/AttacksComponent';
 import { InteractionCacheLocalComponent, InteractionType } from './components/local/InteractionCacheLocalComponent';
+import { PerformComponent } from './components/PerformComponent';
 
 export class EntityLocalFactory {
 
@@ -76,6 +77,14 @@ export class EntityLocalFactory {
     conditionComp.currentMana = 0;
     conditionComp.maxMana = 0;
     this.entityStore.addComponent(attackComp);
+
+    const perfComp = new PerformComponent(
+      this.componentCounter++,
+      entity.id
+    );
+    perfComp.duration = 5000;
+    perfComp.skillname = 'chop_tree';
+    this.entityStore.addComponent(perfComp);
 
     return entity;
   }

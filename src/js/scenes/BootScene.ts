@@ -40,6 +40,11 @@ export class BootScene extends Phaser.Scene {
 
     // Misc
     this.load.glsl('shaderTest', '../assets/shader/test.frag');
+    this.load.atlas(
+      'ui',
+      '../assets/ui/ui_elements.png',
+      '../assets/ui/ui_elements.json'
+    );
   }
 
   public update(): void {
