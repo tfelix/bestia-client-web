@@ -5,9 +5,10 @@ import { ServerConnection } from './ServerConnection';
 import { EntityStore, KillAction, DamageAction } from 'entities';
 import { Message } from 'message/Message';
 import { ActionMessage } from 'message/ActionMessage';
-import { ComponentType, Component } from 'entities/components';
+import { ComponentType, Component, VisualComponent } from 'entities/components';
 import { ConditionComponent } from 'entities/components/ConditionComponent';
 import { ComponentMessage } from 'message/ComponentMessage';
+import { ComponentDeleteMessage } from 'message/ComponentDeleteMessage';
 
 // Helper Classes
 class ConditionHelper {
@@ -22,7 +23,6 @@ class ConditionHelper {
     if (!entity) {
       return 0;
     }
-
     const condComp = entity.getComponent(ComponentType.CONDITION) as ConditionComponent;
     if (!condComp) {
       return 0;
@@ -36,7 +36,6 @@ class ConditionHelper {
     if (!entity) {
       return 0;
     }
-
     const condComp = entity.getComponent(ComponentType.CONDITION) as ConditionComponent;
     if (!condComp) {
       return 0;
@@ -91,12 +90,31 @@ export class ServerLocalFacade implements ServerConnection {
       const killAction = new KillAction();
       const killActionMsg = new ActionMessage<KillAction>(msg.targetEntityId, killAction);
       this.sendClient(killActionMsg);
+      this.killEntity(msg.targetEntityId);
     }
 
     const condComp = this.copyHelper.copyComponent(msg.targetEntityId, ComponentType.CONDITION) as ConditionComponent;
     condComp.currentHealth = newHp;
     const compMsg = new ComponentMessage<ConditionComponent>(condComp);
     this.sendClient(compMsg);
+  }
+
+  private killEntity(entityId: number) {
+    const entity = this.entityStore.getEntity(entityId);
+    if (!entity) {
+      return;
+    }
+
+    const visualComp = this.copyHelper.copyComponent(entityId, ComponentType.VISUAL) as VisualComponent;
+    visualComp.animation = 'die';
+    const compMsg = new ComponentMessage<VisualComponent>(visualComp);
+    this.sendClient(compMsg);
+
+    const deleteComponentIds = [];
+    deleteComponentIds.forEach(id => {
+      const deleteMessage = new ComponentDeleteMessage(entityId, id);
+      this.sendClient(deleteMessage);
+    });
   }
 
   public sendMessage(msg: Message<any>) {

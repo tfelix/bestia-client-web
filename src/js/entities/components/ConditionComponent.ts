@@ -14,3 +14,9 @@ export class ConditionComponent extends Component {
     super(id, entityId, ComponentType.CONDITION);
   }
 }
+
+export class ConditionHelper {
+  public static isAlive(c: ConditionComponent): boolean {
+    return c.currentHealth > 0;
+  }
+}

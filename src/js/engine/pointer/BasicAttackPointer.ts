@@ -13,6 +13,8 @@ import { InteractionCacheLocalComponent, InteractionType } from 'entities/compon
 import { AttacksComponent } from 'entities/components/AttacksComponent';
 import { BasicAttackMessage } from 'message/BasicAttackMessage';
 import { Topics } from 'Topics';
+import { ConditionComponent, ConditionHelper } from 'entities/components/ConditionComponent';
+import { MapHelper } from 'map';
 
 function getSightDirection(source: Point, lookingTo: Point): Point {
   return lookingTo.minus(source).norm();
@@ -58,24 +60,20 @@ export class BasicAttackPointer extends Pointer {
 
     const interactionCache = playerActive.getComponent(ComponentType.LOCAL_INTERACTION_CACHE) as InteractionCacheLocalComponent;
     const entityTypeComp = entity.getComponent(ComponentType.ENTITY_TYPE) as EntityTypeComponent;
+    const conditionComp = entity.getComponent(ComponentType.CONDITION) as ConditionComponent;
 
-    if (!entityTypeComp) {
+    if (!entityTypeComp || !conditionComp) {
       return false;
     }
 
-    // TODO Dieses Monster if refactorn.
-    if (entityTypeComp.entityType === EntityType.BESTIA) {
-      if (interactionCache) {
-        if (interactionCache.interactionCache.get(EntityType.BESTIA) === InteractionType.ATTACK) {
-          return true;
-        } else {
-          return false;
-        }
-      }
-      return true;
-    } else {
+    if (!ConditionHelper.isAlive(conditionComp)) {
       return false;
     }
+
+    const entityType = entityTypeComp.entityType;
+    const chachedInteraction = interactionCache.interactionCache.get(entityType);
+
+    return chachedInteraction === InteractionType.ATTACK;
   }
 
   public activate() {
@@ -95,22 +93,47 @@ export class BasicAttackPointer extends Pointer {
       return;
     }
 
+    if (!this.isAttackable(entity)) {
+      this.manager.dismissActive();
+      return;
+    }
+
     this.attackedEntity = entity;
 
     if (this.inRangeForBasicAttack(entity)) {
-      // Do attack.
-      const attackerEntity = this.ctx.playerHolder.activeEntity;
-      const attackerPos = (attackerEntity.getComponent(ComponentType.POSITION) as PositionComponent).position;
-      const attackerPosComp = (entity.getComponent(ComponentType.POSITION) as PositionComponent);
-      const defenderPos = attackerPosComp.position;
-
-      const attackerVisualComp = (attackerEntity.getComponent(ComponentType.VISUAL) as VisualComponent);
-      attackerVisualComp.sightDirection = getSightDirection(attackerPos, defenderPos);
-      const atkMsg = new BasicAttackMessage(entity.id);
-      PubSub.publish(Topics.IO_SEND_MSG, atkMsg);
+      this.performBasicAttack(entity);
     } else {
-      // Walk to it
-      this.ctx.helper.move.moveTo(pointer);
+      this.ctx.helper.move.moveTo(pointer, () => this.performQueuedAttack(entity));
+    }
+  }
+
+  private performBasicAttack(entity: Entity) {
+    const attackerEntity = this.ctx.playerHolder.activeEntity;
+    const attackerPos = (attackerEntity.getComponent(ComponentType.POSITION) as PositionComponent).position;
+    const attackerPosComp = (entity.getComponent(ComponentType.POSITION) as PositionComponent);
+    const defenderPos = attackerPosComp.position;
+
+    const attackerVisualComp = (attackerEntity.getComponent(ComponentType.VISUAL) as VisualComponent);
+    attackerVisualComp.sightDirection = getSightDirection(attackerPos, defenderPos);
+    const atkMsg = new BasicAttackMessage(entity.id);
+    PubSub.publish(Topics.IO_SEND_MSG, atkMsg);
+  }
+
+  private performQueuedAttack(entity: Entity) {
+    // If the attack was queued the attackable state of the entity might have changed
+    // in the meantime so we need to re-check.
+    if (this.isAttackable(entity)) {
+      return;
+    }
+    if (this.inRangeForBasicAttack(entity)) {
+      this.performBasicAttack(entity);
+    } else {
+      const positionComp = entity.getComponent(ComponentType.POSITION) as PositionComponent;
+      if (!positionComp) {
+        return;
+      }
+      const px = MapHelper.pointToPixel(positionComp.position);
+      this.ctx.helper.move.moveTo(px, () => this.performQueuedAttack(entity));
     }
   }
 

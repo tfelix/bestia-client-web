@@ -52,6 +52,7 @@ export class PointerManager {
     this.showDefault();
   }
 
+  // This method is here because it uses the phaser pointer to avoid object creation
   private pointerToPx(pointer: Phaser.Input.Pointer): Px {
     const worldX = this.engineContext.game.cameras.main.scrollX + pointer.x;
     const worldY = this.engineContext.game.cameras.main.scrollY + pointer.y;
@@ -155,6 +156,7 @@ export class PointerManager {
   }
 
   public dismissActive() {
+    this.activePointer.deactivate();
     if (this.pointerStack.length === 0) {
       this.activePointer = this.movePointer;
     } else {
