@@ -8,6 +8,12 @@ Currently its meant as a development platform and as an introduction game, thus 
 
 Later it will use the server and create an innovative 2D MMORPG.
 
+> The game is under active development but I can only do so much. If you want to help in coding feel free to fork this repo and open some pull requests. :)
+> 
+> Documentation and Game Design goals can be found here: [https://tfelix.github.io/bestia-docs](https://tfelix.github.io/bestia-docs)
+>
+> You can also get in touch via [Discord](https://discord.gg/zZW8M2S). 
+
 ## Development
 
 In order to build and run the client just do:
