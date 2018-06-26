@@ -111,15 +111,17 @@ export class EntityLocalFactory {
       entity.id,
       true,
       name,
-      SpriteType.SIMPLE
+      SpriteType.ITEM
     );
     this.entityStore.addComponent(visual);
+
     const position = new PositionComponent(
       this.componentCounter++,
       entity.id
     );
     position.position = pos;
     this.entityStore.addComponent(position);
+
     const entityTypeComp = new EntityTypeComponent(
       this.componentCounter++,
       entity.id

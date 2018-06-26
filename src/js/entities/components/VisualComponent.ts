@@ -4,7 +4,8 @@ import { Point } from 'model';
 
 export enum SpriteType {
   MULTI,
-  SIMPLE
+  SIMPLE,
+  ITEM
 }
 
 export class VisualComponent extends Component {

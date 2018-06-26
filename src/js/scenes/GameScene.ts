@@ -89,6 +89,11 @@ export class GameScene extends Phaser.Scene {
     this.entityFactory.addObject('water', new Point(5, 8));
     this.entityFactory.addObject('sign', new Point(2, 8));
 
+    this.entityFactory.addItem('empty_bottle', 2, new Point(3, 12));
+    this.entityFactory.addItem('empty_bottle', 1, new Point(7, 18));
+    this.entityFactory.addItem('knife', 1, new Point(12, 10));
+    this.entityFactory.addItem('knife', 1, new Point(3, 6));
+
     this.engineContext.config.debug.renderCollision = false;
     this.engineContext.config.debug.renderInfo = false;
   }
