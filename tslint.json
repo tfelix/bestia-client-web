@@ -27,6 +27,7 @@
     "no-implicit-dependencies": false,
     "no-submodule-imports": false,
     "no-empty": false,
+    "no-bitwise": false,
     // TODO: Enable stricter options for these
     "comment-format": [
       true,
