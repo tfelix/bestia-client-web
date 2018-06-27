@@ -28,12 +28,17 @@
     "no-submodule-imports": false,
     "no-empty": false,
     "no-bitwise": false,
+    "binary-expression-operand-order": false,
     // TODO: Enable stricter options for these
     "comment-format": [
       true,
       "check-space"
     ],
-    "quotemark": [true, "single", "jsx-double"],
+    "quotemark": [
+      true,
+      "single",
+      "jsx-double"
+    ],
     "member-access": true,
     "only-arrow-functions": [
       true,

@@ -27,7 +27,14 @@ export class MovePointer extends Pointer {
   }
 
   public onClick(pointer: Px, entity?: Entity) {
-    this.ctx.helper.move.moveTo(pointer);
+    const offset = this.ctx.helper.display.getScrollOffset();
+    const point = MapHelper.pixelToPoint(pointer.x, pointer.y).minus(offset);
+
+    if (this.ctx.collisionUpdater.hasCollision(point.x, point.y)) {
+
+    } else {
+      this.ctx.helper.move.moveTo(pointer);
+    }
   }
 
   public updatePosition(px: Px) {
