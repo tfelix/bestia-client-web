@@ -28,6 +28,7 @@
     "no-submodule-imports": false,
     "no-empty": false,
     "no-bitwise": false,
+    "prefer-object-spread": false,
     "binary-expression-operand-order": false,
     // TODO: Enable stricter options for these
     "comment-format": [

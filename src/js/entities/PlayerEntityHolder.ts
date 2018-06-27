@@ -54,4 +54,11 @@ export class PlayerEntityHolder {
       }
     }
   }
+
+  public isPlayerEntity(entity?: Entity): boolean {
+    if (!entity) {
+      return false;
+    }
+    return this.activeEntity && this.activeEntity.id === entity.id;
+  }
 }

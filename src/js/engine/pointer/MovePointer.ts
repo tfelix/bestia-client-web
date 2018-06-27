@@ -6,6 +6,7 @@ import { PointerManager } from './PointerManager';
 import { EngineContext } from '../EngineContext';
 import { Entity } from 'entities';
 import { PointerPriority } from './PointerPriority';
+import { ComponentType } from 'entities/components';
 
 export class MovePointer extends Pointer {
 
@@ -27,6 +28,14 @@ export class MovePointer extends Pointer {
   }
 
   public onClick(pointer: Px, entity?: Entity) {
+    if (!entity) {
+      return;
+    }
+
+    if (!this.canMove(entity)) {
+      return;
+    }
+
     const offset = this.ctx.helper.display.getScrollOffset();
     const point = MapHelper.pixelToPoint(pointer.x, pointer.y).minus(offset);
 
@@ -35,6 +44,10 @@ export class MovePointer extends Pointer {
     } else {
       this.ctx.helper.move.moveTo(pointer);
     }
+  }
+
+  private canMove(entity: Entity): boolean {
+    return !entity.hasComponent(ComponentType.PERFORM);
   }
 
   public updatePosition(px: Px) {

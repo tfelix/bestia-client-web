@@ -1,5 +1,6 @@
 import { Component, ComponentType } from 'entities/components';
 import { Entity } from 'entities';
+import { Px } from 'model';
 
 export abstract class ComponentRenderer<C extends Component> {
 
@@ -35,4 +36,17 @@ export abstract class ComponentRenderer<C extends Component> {
   protected abstract updateGameData(entity: Entity, component: C);
 
   protected abstract removeComponent(entity: Entity, component: C);
+
+  // Some neat helper functions
+  protected getEntityPxPos(entity?: Entity): Px | null {
+    if (!entity) {
+      return null;
+    }
+    const sprite = entity.data.visual && entity.data.visual.sprite;
+    if (!sprite) {
+      return null;
+    }
+
+    return new Px(sprite.x, sprite.y);
+  }
 }

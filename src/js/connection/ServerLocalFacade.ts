@@ -1,7 +1,7 @@
 import * as PubSub from 'pubsub-js';
+import * as LOG from 'loglevel';
 import { Topics } from 'Topics';
 import { BasicAttackMessage } from 'message/BasicAttackMessage';
-import { ServerConnection } from './ServerConnection';
 import { EntityStore, KillAction, DamageAction } from 'entities';
 import { Message } from 'message/Message';
 import { ActionMessage } from 'message/ActionMessage';
@@ -9,10 +9,13 @@ import { ComponentType, Component, VisualComponent } from 'entities/components';
 import { ConditionComponent } from 'entities/components/ConditionComponent';
 import { ComponentMessage } from 'message/ComponentMessage';
 import { ComponentDeleteMessage } from 'message/ComponentDeleteMessage';
+import { SyncRequestMessage } from 'message';
+import { PerformComponent } from 'entities/components/PerformComponent';
+
+const serverEntities = new EntityStore();
 
 // Helper Classes
 class ConditionHelper {
-
   constructor(
     private readonly entityStore: EntityStore
   ) {
@@ -59,7 +62,7 @@ class ComponentCopyHelper {
   }
 }
 
-export class ServerLocalFacade implements ServerConnection {
+export class ServerLocalFacade {
 
   private condHelper = new ConditionHelper(this.entityStore);
   private copyHelper = new ComponentCopyHelper(this.entityStore);
@@ -73,7 +76,31 @@ export class ServerLocalFacade implements ServerConnection {
   private receivedFromClient(message: any) {
     if (message instanceof BasicAttackMessage) {
       this.handleBasicAttack(message);
+    } else if (message instanceof SyncRequestMessage) {
+      this.setupClient();
+    } else {
+      LOG.warn(`Unknown client message received: ${JSON.stringify(message)}`);
     }
+  }
+
+  private setupClient() {
+
+    const perfComp = new PerformComponent(
+      71235,
+      0
+    );
+    perfComp.duration = 5000;
+    perfComp.skillname = 'chop_tree';
+    this.entityStore.addComponent(perfComp);
+    const compMsg = new ComponentMessage<PerformComponent>(perfComp);
+    this.sendClient(compMsg);
+
+    window.setTimeout(() => {
+      const deleteMessage = new ComponentDeleteMessage(0, ComponentType.PERFORM);
+      this.sendClient(deleteMessage);
+    },
+      5000
+    );
   }
 
   private handleBasicAttack(msg: BasicAttackMessage) {

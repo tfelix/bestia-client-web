@@ -4,6 +4,8 @@ import { Entity } from 'entities';
 import { EngineContext } from '../../EngineContext';
 import { PerformComponent } from 'entities/components/PerformComponent';
 import { Depths } from '../VisualDepths';
+import { UIConstants } from 'ui';
+import { Px } from 'model';
 
 export interface PerformData {
   endTime: number;
@@ -17,6 +19,8 @@ const rect = new Phaser.Geom.Rectangle();
 export class PerformComponentRenderer extends ComponentRenderer<PerformComponent> {
 
   private static graphicsLayer: Phaser.GameObjects.Graphics;
+  private static cancelButton: Phaser.GameObjects.Image;
+  private static cancelButtonOffset = new Px(-40, 15);
 
   constructor(
     private readonly ctx: EngineContext
@@ -27,8 +31,9 @@ export class PerformComponentRenderer extends ComponentRenderer<PerformComponent
       PerformComponentRenderer.graphicsLayer = this.game.add.graphics({ fillStyle: { color: 0x000000 } });
       PerformComponentRenderer.graphicsLayer.depth = Depths.UI;
 
-      const cancel = this.game.add.image(400, 300, 'ui', 'cancel.png');
-      cancel.depth = Depths.UI;
+      PerformComponentRenderer.cancelButton = this.game.add.image(0, 0, 'ui', UIConstants.CANCEL);
+      PerformComponentRenderer.cancelButton.visible = false;
+      PerformComponentRenderer.cancelButton.depth = Depths.UI;
     }
   }
 
@@ -41,7 +46,7 @@ export class PerformComponentRenderer extends ComponentRenderer<PerformComponent
   }
 
   protected hasNotSetup(entity: Entity, component: PerformComponent): boolean {
-    return !entity.data.perform;
+    return !entity.data.perform && this.ctx.playerHolder.isPlayerEntity(entity);
   }
 
   protected createGameData(entity: Entity, component: PerformComponent) {
@@ -49,13 +54,24 @@ export class PerformComponentRenderer extends ComponentRenderer<PerformComponent
       endTime: this.game.time.now + component.duration - entity.latency,
       startTime: this.game.time.now
     };
+    PerformComponentRenderer.cancelButton.visible = true;
   }
 
   protected updateGameData(entity: Entity, component: PerformComponent) {
     this.drawPerformBar(entity, component);
+    this.updateCancelButton(entity);
+  }
+
+  private updateCancelButton(entity: Entity) {
+    const pxPos = this.getEntityPxPos(entity);
+    PerformComponentRenderer.cancelButton.setPosition(
+      pxPos.x + PerformComponentRenderer.cancelButtonOffset.x,
+      pxPos.y + PerformComponentRenderer.cancelButtonOffset.y
+    );
   }
 
   protected removeComponent(entity: Entity, component: PerformComponent) {
+    PerformComponentRenderer.cancelButton.visible = false;
   }
 
   private drawPerformBar(entity: Entity, component: PerformComponent) {

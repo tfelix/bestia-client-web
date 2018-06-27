@@ -4,6 +4,7 @@ import * as LOG from 'loglevel';
 import { Topics } from 'Topics';
 import { ActionMessage } from 'message/ActionMessage';
 import { ComponentMessage } from 'message/ComponentMessage';
+import { ComponentDeleteMessage } from 'message';
 
 export class MessageRouter {
 
@@ -16,6 +17,8 @@ export class MessageRouter {
       PubSub.publish(Topics.IO_RECV_ACTION, msg);
     } else if (msg instanceof ComponentMessage) {
       PubSub.publish(Topics.IO_RECV_COMP_MSG, msg);
+    } else if (msg instanceof ComponentDeleteMessage) {
+      PubSub.publish(Topics.IO_RECV_DEL_COMP_MSG, msg);
     } else {
       LOG.warn(`Unknown message arrived: ${JSON.stringify(msg)}`);
     }

@@ -10,6 +10,8 @@ import { MessageRouter } from 'connection/MessageRouter';
 import { ActionMessageHandler } from 'engine/renderer/actions/ActionMessageHandler';
 import { ComponentMessageHandler } from 'entities/components/ComponentMessageHandler';
 import { SpriteCollision } from 'map/SpriteCollision';
+import { SyncRequestMessage } from 'message';
+import { Topics } from 'Topics';
 
 const PLAYER_ACC_ID = 1;
 
@@ -129,6 +131,11 @@ export class GameScene extends Phaser.Scene {
     this.input.keyboard.on('keydown_W', () => {
       this.engineContext.config.debug.renderInfo = !this.engineContext.config.debug.renderInfo;
     });
+
+    // Signal the server we are ready now can now receive packets/setup.
+    // This message might be needed to be send on another location in the code
+    const syncRequest = new SyncRequestMessage();
+    PubSub.publish(Topics.IO_SEND_MSG, syncRequest);
   }
 
   public update(time, delta) {

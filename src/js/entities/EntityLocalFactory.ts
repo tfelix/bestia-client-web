@@ -78,14 +78,6 @@ export class EntityLocalFactory {
     conditionComp.maxMana = 0;
     this.entityStore.addComponent(attackComp);
 
-    const perfComp = new PerformComponent(
-      this.componentCounter++,
-      entity.id
-    );
-    perfComp.duration = 5000;
-    perfComp.skillname = 'chop_tree';
-    this.entityStore.addComponent(perfComp);
-
     return entity;
   }
 

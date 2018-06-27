@@ -32,4 +32,8 @@ export class ItemSpriteRenderer extends SpriteRenderer {
   public updateGameData(entity: Entity, component: VisualComponent, pxPos: Px, spriteData: SpriteData) {
     this.updateSpriteDepth(entity.data.visual);
   }
+
+  protected updateSpriteDepth(spriteData: SpriteData) {
+    spriteData.sprite.depth = spriteData.sprite.y - 10;
+  }
 }
