@@ -1,5 +1,4 @@
 import * as LOG from 'loglevel';
-import * as PubSub from 'pubsub-js';
 
 import { Pointer } from './Pointer';
 import { PointerManager } from './PointerManager';
@@ -28,10 +27,6 @@ export class ItemPickupPointer extends Pointer {
 
   public checkActive(pointer: Px, entity?: Entity): number {
     if (!entity) {
-      return PointerPriority.NONE;
-    }
-
-    if (!this.isAttackable(entity)) {
       return PointerPriority.NONE;
     }
 
