@@ -43,6 +43,7 @@ export class EntityRenderManager {
           renderer.removeGameData(e);
         }
       }
+      e.removedComponentTypes.length = 0;
     }
   }
 }

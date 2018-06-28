@@ -31,6 +31,7 @@ export class BootScene extends Phaser.Scene {
     });
 
     // Load Music
+    this.load.audio('click', ['../assets/audio/click.ogg'], {});
 
     // Load Tileset + Tilesheet
     this.load.image('tiles', '../assets/tilemap/tiles/trees_plants_rocks.png');

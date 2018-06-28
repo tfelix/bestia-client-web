@@ -34,6 +34,8 @@ export class PerformComponentRenderer extends ComponentRenderer<PerformComponent
       PerformComponentRenderer.cancelButton = this.game.add.image(0, 0, 'ui', UIConstants.CANCEL);
       PerformComponentRenderer.cancelButton.visible = false;
       PerformComponentRenderer.cancelButton.depth = Depths.UI;
+      // PerformComponentRenderer.cancelButton.setInteractive(true);
+      //PerformComponentRenderer.cancelButton.on('pointerdown', () => alert('geht'));
     }
   }
 
@@ -55,6 +57,7 @@ export class PerformComponentRenderer extends ComponentRenderer<PerformComponent
       startTime: this.game.time.now
     };
     PerformComponentRenderer.cancelButton.visible = true;
+    
   }
 
   protected updateGameData(entity: Entity, component: PerformComponent) {
