@@ -15,6 +15,8 @@ import { BasicAttackMessage } from 'message/BasicAttackMessage';
 import { Topics } from 'Topics';
 import { ConditionComponent, ConditionHelper } from 'entities/components/ConditionComponent';
 import { MapHelper } from 'map';
+import { getSpriteDescriptionFromCache } from '../renderer';
+import { SpriteCollision } from 'map/SpriteCollision';
 
 function getSightDirection(source: Point, lookingTo: Point): Point {
   return lookingTo.minus(source).norm();
@@ -99,7 +101,14 @@ export class BasicAttackPointer extends Pointer {
     if (this.inRangeForBasicAttack(entity)) {
       this.performBasicAttack(entity);
     } else {
-      this.ctx.helper.move.moveTo(pointer, () => this.performQueuedAttack(entity));
+      // The entity is probably not walkable so we need the closes walkable tile coordinate.
+      // FIXME This is currently buggy.
+      const point = MapHelper.pixelToPoint(pointer.x, pointer.y);
+      const spriteDesc = getSpriteDescriptionFromCache(entity.data.visual.spriteName, this.ctx.game);
+      const test = new SpriteCollision(point, spriteDesc);
+      const playerPos = (this.ctx.playerHolder.activeEntity.getComponent(ComponentType.POSITION) as PositionComponent).position;
+      const walkTarget = test.nextNonCollision(playerPos, point);
+      this.ctx.helper.move.moveTo(walkTarget, () => this.performQueuedAttack(entity));
     }
   }
 
