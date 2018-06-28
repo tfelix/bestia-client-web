@@ -46,7 +46,7 @@ export class PerformComponentRenderer extends ComponentRenderer<PerformComponent
   }
 
   protected hasNotSetup(entity: Entity, component: PerformComponent): boolean {
-    return !entity.data.perform && this.ctx.playerHolder.isPlayerEntity(entity);
+    return !entity.data.perform && this.ctx.playerHolder.isActivePlayerEntity(entity);
   }
 
   protected createGameData(entity: Entity, component: PerformComponent) {
@@ -70,7 +70,7 @@ export class PerformComponentRenderer extends ComponentRenderer<PerformComponent
     );
   }
 
-  protected removeComponent(entity: Entity, component: PerformComponent) {
+  public removeGameData(entity: Entity) {
     PerformComponentRenderer.cancelButton.visible = false;
   }
 

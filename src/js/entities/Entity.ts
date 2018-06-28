@@ -14,6 +14,8 @@ export class Entity {
 
   public latency = 0;
 
+  public readonly removedComponentTypes: ComponentType[] = [];
+
   constructor(
     public readonly id: number,
     private readonly entityStore: EntityStore
@@ -43,5 +45,6 @@ export class Entity {
 
   public removeComponentByType(type: ComponentType) {
     this.components.delete(type);
+    this.removedComponentTypes.push(type);
   }
 }

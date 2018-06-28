@@ -1,15 +1,13 @@
 import * as LOG from 'loglevel';
 
 import {
-  DebugComponent, Component, ComponentType, MoveComponent,
-  VisualComponent, PositionComponent
+  ComponentType, MoveComponent, VisualComponent, PositionComponent
 } from 'entities/components';
 import { ComponentRenderer } from './ComponentRenderer';
 import { Entity } from 'entities';
 import { Point } from 'model';
-import { VisualComponentRenderer, SpriteData } from './VisualComponentRenderer';
 import { MapHelper } from 'map';
-import { EngineConfig, EngineContext } from '../../EngineContext';
+import { EngineContext } from '../../EngineContext';
 
 type WalkAnimationName = 'walk_up' | 'walk_up_right' | 'walk_right' | 'walk_down_right' |
   'walk_down' | 'walk_down_left' | 'walk_left' | 'walk_up_left';
@@ -107,12 +105,6 @@ export class MoveComponentRenderer extends ComponentRenderer<MoveComponent> {
     private readonly ctx: EngineContext,
   ) {
     super(ctx.game);
-
-    this.ctx.entityStore.onUpdateEntity.subscribe(msg => {
-      if (msg.changedComponentType === ComponentType.MOVE) {
-        this.clearMovementData(msg.entity);
-      }
-    });
   }
 
   get supportedComponent(): ComponentType {
@@ -157,7 +149,6 @@ export class MoveComponentRenderer extends ComponentRenderer<MoveComponent> {
     }
 
     const nextPosition = component.path[nextPathPosition];
-    const speed = component.walkspeed;
     const walkAnimation = getWalkAnimationName(currentPos, nextPosition);
     const stepDuration = getWalkDuration(currentPos.getDistance(nextPosition), 1);
     visual.animation = walkAnimation;
@@ -179,9 +170,6 @@ export class MoveComponentRenderer extends ComponentRenderer<MoveComponent> {
   }
 
   protected createGameData(entity: Entity, component: MoveComponent) {
-    const path = component.path;
-    const position = entity.getComponent(ComponentType.POSITION) as PositionComponent;
-
     const moveData: MoveData = {
       assumedWalkspeed: component.walkspeed,
       currentPathPosition: 0,
@@ -195,7 +183,7 @@ export class MoveComponentRenderer extends ComponentRenderer<MoveComponent> {
   protected updateGameData(entity: Entity, component: MoveComponent) {
   }
 
-  protected removeComponent(entity: Entity, component: MoveComponent) {
+  public removeGameData(entity: Entity) {
     this.clearMovementData(entity);
   }
 

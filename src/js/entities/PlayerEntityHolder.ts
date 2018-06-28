@@ -1,61 +1,54 @@
 import * as LOG from 'loglevel';
 import { Subject } from 'rxjs';
 
-import { EntityStore, EntityUpdate, UpdateType } from './EntityStore';
+import { EntityStore } from './EntityStore';
 import { Entity } from './Entity';
 import { ComponentType } from './components/ComponentType';
 import { PlayerComponent } from './components/PlayerComponent';
 import { AccountInfo } from '../model/AccountInfo';
 import { MasterLocalComponent } from './components/local/MasterLocalComponent';
+import { Topics } from 'Topics';
+import { ComponentMessage } from 'message';
+import { Component } from './components';
 
 export class PlayerEntityHolder {
 
-  public activeEntity?: Entity;
-  public masterEntity?: Entity;
-  public ownedEntities: Entity[] = [];
+  private _activeEntityId = 0;
 
-  public readonly onNewActiveEntity = new Subject<Entity>();
-  public readonly onNewMasterEntity = new Subject<Entity>();
-  public readonly onEntitiesChanged = new Subject<Entity[]>();
+  public get activeEntity(): Entity | null {
+    return this.entityStore.getEntity(this._activeEntityId);
+  }
 
   constructor(
     private readonly info: AccountInfo,
     private readonly entityStore: EntityStore
   ) {
-    entityStore.onUpdateEntity.subscribe(x => this.checkEntity(x));
+    PubSub.subscribe(Topics.IO_RECV_COMP_MSG, (_, msg) => this.checkEntity(msg));
   }
 
-  private addEntity(entity: Entity) {
-    if (this.ownedEntities.find(x => x.id === entity.id)) {
+  private checkEntity(data: ComponentMessage<Component>) {
+    if (data.component.type !== ComponentType.PLAYER) {
       return;
     }
 
-    this.ownedEntities.push(entity);
-    this.onEntitiesChanged.next(this.ownedEntities);
-  }
-
-  private checkEntity(data: EntityUpdate) {
-    if (data.changedComponentType !== ComponentType.PLAYER) {
-      return;
-    }
-
-    const playerComp = data.entity.getComponent(ComponentType.PLAYER) as PlayerComponent;
+    const playerComp = data.component as PlayerComponent;
     const isPlayerEntity = !!playerComp && playerComp.ownerAccountId === this.info.accountId;
 
     if (isPlayerEntity) {
-      LOG.debug(`Found new player entity: ${data.entity.id}`);
-      this.masterEntity = data.entity;
-      // TODO Das hier in eine factory auslagern.
-      const masterComponent = new MasterLocalComponent(data.entity.id);
+      const masterComponent = new MasterLocalComponent(playerComp.entityId);
       this.entityStore.addComponent(masterComponent);
 
       if (!this.activeEntity) {
-        this.activeEntity = data.entity;
+        this._activeEntityId = playerComp.entityId;
       }
     }
   }
 
-  public isPlayerEntity(entity?: Entity): boolean {
+  /**
+   * Helper method
+   * @param entity Entity to check if this is the active player entity.
+   */
+  public isActivePlayerEntity(entity?: Entity): boolean {
     if (!entity) {
       return false;
     }

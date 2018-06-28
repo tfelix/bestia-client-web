@@ -1,6 +1,3 @@
-import * as LOG from 'loglevel';
-
-import { EntityUpdate } from 'entities';
 import { Component, ComponentType } from 'entities/components';
 import { ComponentRenderer } from './ComponentRenderer';
 import { VisualComponentRenderer } from './VisualComponentRenderer';
@@ -40,15 +37,12 @@ export class EntityRenderManager {
           renderer.render(e, c);
         }
       }
-    }
-  }
-
-  private handleUpdateEntity(data: EntityUpdate) {
-    LOG.debug(`Processing component: ${data.changedComponentType}.`);
-    const renderer = this.componentRenderer.get(data.changedComponentType);
-    if (renderer) {
-      const component = data.entity.getComponent(data.changedComponentType);
-      renderer.render(data.entity, component);
+      for (const rc of e.removedComponentTypes) {
+        const renderer = this.componentRenderer.get(rc);
+        if (renderer) {
+          renderer.removeGameData(e);
+        }
+      }
     }
   }
 }

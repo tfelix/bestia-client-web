@@ -35,7 +35,7 @@ export abstract class ComponentRenderer<C extends Component> {
 
   protected abstract updateGameData(entity: Entity, component: C);
 
-  protected abstract removeComponent(entity: Entity, component: C);
+  public removeGameData(entity: Entity) { }
 
   // Some neat helper functions
   protected getEntityPxPos(entity?: Entity): Px | null {
