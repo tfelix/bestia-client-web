@@ -42,7 +42,8 @@ export class PerformComponentRenderer extends ComponentRenderer<PerformComponent
       PerformComponentRenderer.cancelButton.visible = false;
       PerformComponentRenderer.cancelButton.depth = Depths.UI;
       PerformComponentRenderer.cancelButton.setInteractive();
-      PerformComponentRenderer.cancelButton.on('pointerover', () => PerformComponentRenderer.clickSound.play());
+      PerformComponentRenderer.cancelButton.on('pointerout', () => this.ctx.pointerManager.show());
+      PerformComponentRenderer.cancelButton.on('pointerover', () => this.ctx.pointerManager.hide());
       PerformComponentRenderer.cancelButton.on('pointerdown', () => this.abortPerform());
     }
   }
@@ -52,6 +53,7 @@ export class PerformComponentRenderer extends ComponentRenderer<PerformComponent
   }
 
   private abortPerform() {
+    PerformComponentRenderer.clickSound.play();
     const abortMsg = new AbortPerformMessage();
     PubSub.publish(Topics.IO_SEND_MSG, abortMsg);
   }

@@ -28,6 +28,10 @@ export class MovePointer extends Pointer {
     this.marker.visible = true;
   }
 
+  public deactivate() {
+    this.marker.visible = false;
+  }
+
   public onClick(pointer: Px, entity?: Entity) {
     if (!this.canMove(this.ctx.playerHolder.activeEntity)) {
       return;
