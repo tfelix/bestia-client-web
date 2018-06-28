@@ -26,11 +26,13 @@ export class MoveHelper {
     }
 
     const componentId = Math.floor(Math.random() * -10000);
-
-    const playerEntityId = this.ctx.playerHolder.activeEntity.id;
+    const playerEntity = this.ctx.playerHolder.activeEntity;
+    // We must remove the possibly currently present component so we can start new.
+    playerEntity.removeComponentByType(ComponentType.MOVE);
+    
     const move = new MoveComponent(
       componentId,
-      playerEntityId
+      playerEntity.id
     );
     move.walkspeed = 1;
     move.path = shiftedPath;

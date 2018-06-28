@@ -31,12 +31,6 @@ export class EntityRenderManager {
 
   public update() {
     for (const e of this.context.entityStore.entities.values()) {
-      for (const c of e.getComponentIterator()) {
-        const renderer = this.componentRenderer.get(c.type);
-        if (renderer) {
-          renderer.render(e, c);
-        }
-      }
       for (const rc of e.removedComponentTypes) {
         const renderer = this.componentRenderer.get(rc);
         if (renderer) {
@@ -44,6 +38,12 @@ export class EntityRenderManager {
         }
       }
       e.removedComponentTypes.length = 0;
+      for (const c of e.getComponentIterator()) {
+        const renderer = this.componentRenderer.get(c.type);
+        if (renderer) {
+          renderer.render(e, c);
+        }
+      }
     }
   }
 }

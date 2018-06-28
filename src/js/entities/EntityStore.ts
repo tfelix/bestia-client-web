@@ -33,11 +33,13 @@ export class EntityStore {
     this.entities.set(entity.id, entity);
   }
 
+  // DEPRICATED Can now be done directly on the entity. Maybe we keep this as a helper method.
   public addComponent(component: Component) {
     const e = this.getEntity(component.entityId);
     e.addComponent(component);
   }
 
+  // DEPRICATED Can now be done directly on the entity.
   public removeComponent(component: Component) {
     const e = this.getEntity(component.entityId);
     if (!e) {
