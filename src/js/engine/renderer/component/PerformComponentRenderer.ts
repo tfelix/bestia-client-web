@@ -6,6 +6,8 @@ import { PerformComponent } from 'entities/components/PerformComponent';
 import { Depths } from '../VisualDepths';
 import { UIConstants } from 'ui';
 import { Px } from 'model';
+import { AbortPerformMessage } from 'message';
+import { Topics } from 'Topics';
 
 export interface PerformData {
   endTime: number;
@@ -22,6 +24,9 @@ export class PerformComponentRenderer extends ComponentRenderer<PerformComponent
   private static cancelButton: Phaser.GameObjects.Image;
   private static cancelButtonOffset = new Px(-40, 15);
 
+  // TODO The shared sound objects should be put into a central class managing all the sounds.
+  private static clickSound: Phaser.Sound.BaseSound;
+
   constructor(
     private readonly ctx: EngineContext
   ) {
@@ -31,16 +36,24 @@ export class PerformComponentRenderer extends ComponentRenderer<PerformComponent
       PerformComponentRenderer.graphicsLayer = this.game.add.graphics({ fillStyle: { color: 0x000000 } });
       PerformComponentRenderer.graphicsLayer.depth = Depths.UI;
 
+      PerformComponentRenderer.clickSound = this.game.sound.add('click', { loop: false });
       PerformComponentRenderer.cancelButton = this.game.add.image(0, 0, 'ui', UIConstants.CANCEL);
+
       PerformComponentRenderer.cancelButton.visible = false;
       PerformComponentRenderer.cancelButton.depth = Depths.UI;
-      // PerformComponentRenderer.cancelButton.setInteractive(true);
-      //PerformComponentRenderer.cancelButton.on('pointerdown', () => alert('geht'));
+      PerformComponentRenderer.cancelButton.setInteractive();
+      PerformComponentRenderer.cancelButton.on('pointerover', () => PerformComponentRenderer.clickSound.play());
+      PerformComponentRenderer.cancelButton.on('pointerdown', () => this.abortPerform());
     }
   }
 
   get supportedComponent(): ComponentType {
     return ComponentType.PERFORM;
+  }
+
+  private abortPerform() {
+    const abortMsg = new AbortPerformMessage();
+    PubSub.publish(Topics.IO_SEND_MSG, abortMsg);
   }
 
   protected update() {
@@ -57,7 +70,7 @@ export class PerformComponentRenderer extends ComponentRenderer<PerformComponent
       startTime: this.game.time.now
     };
     PerformComponentRenderer.cancelButton.visible = true;
-    
+
   }
 
   protected updateGameData(entity: Entity, component: PerformComponent) {
@@ -74,6 +87,7 @@ export class PerformComponentRenderer extends ComponentRenderer<PerformComponent
   }
 
   public removeGameData(entity: Entity) {
+    PerformComponentRenderer.graphicsLayer.clear();
     PerformComponentRenderer.cancelButton.visible = false;
   }
 

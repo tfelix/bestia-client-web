@@ -40,6 +40,9 @@ export class EntityStore {
 
   public removeComponent(component: Component) {
     const e = this.getEntity(component.entityId);
+    if (!e) {
+      return;
+    }
     e.removeComponentByType(component.type);
   }
 

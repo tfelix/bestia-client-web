@@ -9,7 +9,7 @@ import { ComponentType, Component, VisualComponent } from 'entities/components';
 import { ConditionComponent } from 'entities/components/ConditionComponent';
 import { ComponentMessage } from 'message/ComponentMessage';
 import { ComponentDeleteMessage } from 'message/ComponentDeleteMessage';
-import { SyncRequestMessage } from 'message';
+import { SyncRequestMessage, AbortPerformMessage } from 'message';
 import { PerformComponent } from 'entities/components/PerformComponent';
 
 const serverEntities = new EntityStore();
@@ -78,18 +78,20 @@ export class ServerLocalFacade {
       this.handleBasicAttack(message);
     } else if (message instanceof SyncRequestMessage) {
       this.setupClient();
+    } else if (message instanceof AbortPerformMessage) {
+      const deleteMessage = new ComponentDeleteMessage(0, ComponentType.PERFORM);
+      this.sendClient(deleteMessage);
     } else {
       LOG.warn(`Unknown client message received: ${JSON.stringify(message)}`);
     }
   }
-
+  
   private setupClient() {
-
     const perfComp = new PerformComponent(
       71235,
       0
     );
-    perfComp.duration = 5000;
+    perfComp.duration = 10000;
     perfComp.skillname = 'chop_tree';
     this.entityStore.addComponent(perfComp);
     const compMsg = new ComponentMessage<PerformComponent>(perfComp);
@@ -99,7 +101,7 @@ export class ServerLocalFacade {
       const deleteMessage = new ComponentDeleteMessage(0, ComponentType.PERFORM);
       this.sendClient(deleteMessage);
     },
-      5000
+      10000
     );
   }
 

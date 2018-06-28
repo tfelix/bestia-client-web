@@ -8,7 +8,7 @@ import { PointerPriority } from './PointerPriority';
 import { Px, Point } from 'model';
 import { Entity, PlayerEntityHolder } from 'entities';
 import { ComponentType, PositionComponent, VisualComponent } from 'entities/components';
-import { EntityTypeComponent, EntityType } from 'entities/components/EntityTypeComponent';
+import { EntityTypeComponent } from 'entities/components/EntityTypeComponent';
 import { InteractionCacheLocalComponent, InteractionType } from 'entities/components/local/InteractionCacheLocalComponent';
 import { AttacksComponent } from 'entities/components/AttacksComponent';
 import { BasicAttackMessage } from 'message/BasicAttackMessage';
