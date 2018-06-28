@@ -5,6 +5,8 @@ export class PerformComponent extends Component {
 
   public skillname = '';
   public duration = 0;
+  public canMove = true;
+  public canAbort = true;
 
   constructor(
     id: number,

@@ -22,6 +22,9 @@ export class ComponentMessageHandler {
   private onComponentDeleteMessage(msg: ComponentDeleteMessage) {
     const entity = this.entityStore.getEntity(msg.entityId);
     const comp = entity.getComponent(msg.componentType);
+    if (!comp) {
+      return;
+    }
     this.entityStore.removeComponent(comp);
   }
 }

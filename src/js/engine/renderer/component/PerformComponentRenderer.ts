@@ -69,8 +69,9 @@ export class PerformComponentRenderer extends ComponentRenderer<PerformComponent
       endTime: this.game.time.now + component.duration - entity.latency,
       startTime: this.game.time.now
     };
-    PerformComponentRenderer.cancelButton.visible = true;
-
+    if (component.canAbort) {
+      PerformComponentRenderer.cancelButton.visible = true;
+    }
   }
 
   protected updateGameData(entity: Entity, component: PerformComponent) {
@@ -93,7 +94,9 @@ export class PerformComponentRenderer extends ComponentRenderer<PerformComponent
 
   private drawPerformBar(entity: Entity, component: PerformComponent) {
     const sprite = entity.data.visual && entity.data.visual.sprite;
-    if (!sprite) {
+    // If this is not the player entity we might not have the perform data setup
+    // so we must not draw the renderer.
+    if (!sprite || !entity.data.perform) {
       return;
     }
 

@@ -7,6 +7,7 @@ import { EngineContext } from '../EngineContext';
 import { Entity } from 'entities';
 import { PointerPriority } from './PointerPriority';
 import { ComponentType } from 'entities/components';
+import { PerformComponent } from 'entities/components/PerformComponent';
 
 export class MovePointer extends Pointer {
 
@@ -28,11 +29,7 @@ export class MovePointer extends Pointer {
   }
 
   public onClick(pointer: Px, entity?: Entity) {
-    if (!entity) {
-      return;
-    }
-
-    if (!this.canMove(entity)) {
+    if (!this.canMove(this.ctx.playerHolder.activeEntity)) {
       return;
     }
 
@@ -47,7 +44,8 @@ export class MovePointer extends Pointer {
   }
 
   private canMove(entity: Entity): boolean {
-    return !entity.hasComponent(ComponentType.PERFORM);
+    const performComp = entity.getComponent(ComponentType.PERFORM) as PerformComponent;
+    return performComp && performComp.canMove || true;
   }
 
   public updatePosition(px: Px) {

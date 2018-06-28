@@ -16,6 +16,7 @@ const serverEntities = new EntityStore();
 
 // Helper Classes
 class ConditionHelper {
+
   constructor(
     private readonly entityStore: EntityStore
   ) {
@@ -64,6 +65,8 @@ class ComponentCopyHelper {
 
 export class ServerLocalFacade {
 
+  private readonly PLAYER_ENTITY_ID = 1;
+
   private condHelper = new ConditionHelper(this.entityStore);
   private copyHelper = new ComponentCopyHelper(this.entityStore);
 
@@ -79,17 +82,17 @@ export class ServerLocalFacade {
     } else if (message instanceof SyncRequestMessage) {
       this.setupClient();
     } else if (message instanceof AbortPerformMessage) {
-      const deleteMessage = new ComponentDeleteMessage(0, ComponentType.PERFORM);
+      const deleteMessage = new ComponentDeleteMessage(this.PLAYER_ENTITY_ID, ComponentType.PERFORM);
       this.sendClient(deleteMessage);
     } else {
       LOG.warn(`Unknown client message received: ${JSON.stringify(message)}`);
     }
   }
-  
+
   private setupClient() {
     const perfComp = new PerformComponent(
       71235,
-      0
+      this.PLAYER_ENTITY_ID
     );
     perfComp.duration = 10000;
     perfComp.skillname = 'chop_tree';
@@ -98,7 +101,7 @@ export class ServerLocalFacade {
     this.sendClient(compMsg);
 
     window.setTimeout(() => {
-      const deleteMessage = new ComponentDeleteMessage(0, ComponentType.PERFORM);
+      const deleteMessage = new ComponentDeleteMessage(1, ComponentType.PERFORM);
       this.sendClient(deleteMessage);
     },
       10000

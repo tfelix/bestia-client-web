@@ -8,11 +8,10 @@ import { ConditionComponent } from './components/ConditionComponent';
 import { EntityTypeComponent, EntityType } from './components/EntityTypeComponent';
 import { AttacksComponent } from './components/AttacksComponent';
 import { InteractionCacheLocalComponent, InteractionType } from './components/local/InteractionCacheLocalComponent';
-import { PerformComponent } from './components/PerformComponent';
 
 export class EntityLocalFactory {
 
-  private entityCounter = 0;
+  private entityCounter = 1;
   private componentCounter = 0;
 
   constructor(

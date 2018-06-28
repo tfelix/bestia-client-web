@@ -59,11 +59,13 @@ export class PointerManager {
     return new Px(worldX, worldY);
   }
 
-  private getEntityFromGameObj(gameObj?: Phaser.GameObjects.GameObject): Entity {
+  private getEntityFromGameObj(gameObj?: Phaser.GameObjects.GameObject): Entity | null {
     const checkedGameObj = (gameObj instanceof Phaser.GameObjects.GameObject) ? gameObj : null;
-    const entityId = checkedGameObj && checkedGameObj.getData('entity_id') || -1;
-    const entity = this.engineContext.entityStore.getEntity(entityId);
-    return entity;
+    const entityId = checkedGameObj && checkedGameObj.getData('entity_id') || undefined;
+    if (!entityId) {
+      return null;
+    }
+    return this.engineContext.entityStore.getEntity(entityId);
   }
 
   private checkPointerPriority(

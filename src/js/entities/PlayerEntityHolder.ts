@@ -1,5 +1,4 @@
 import * as LOG from 'loglevel';
-import { Subject } from 'rxjs';
 
 import { EntityStore } from './EntityStore';
 import { Entity } from './Entity';
@@ -13,10 +12,13 @@ import { Component } from './components';
 
 export class PlayerEntityHolder {
 
-  private _activeEntityId = 0;
+  // THIS MUST BE CHANGED. IF PLAYER COMP IS SEND VIA MSG BACK TO 0.
+  private _activeEntityId = 1;
 
   public get activeEntity(): Entity | null {
-    return this.entityStore.getEntity(this._activeEntityId);
+    LOG.warn('THIS MUST BE CHANGED. IF PLAYER COMP IS SEND VIA MSG');
+    const devActiveEntityId = this._activeEntityId || 1;
+    return this.entityStore.getEntity(devActiveEntityId);
   }
 
   constructor(
@@ -52,6 +54,6 @@ export class PlayerEntityHolder {
     if (!entity) {
       return false;
     }
-    return this.activeEntity && this.activeEntity.id === entity.id;
+    return this._activeEntityId === entity.id;
   }
 }
