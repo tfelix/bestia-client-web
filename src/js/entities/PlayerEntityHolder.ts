@@ -12,13 +12,10 @@ import { Component } from './components';
 
 export class PlayerEntityHolder {
 
-  // THIS MUST BE CHANGED. IF PLAYER COMP IS SEND VIA MSG BACK TO 0.
-  private _activeEntityId = 1;
+  private _activeEntityId = 0;
 
   public get activeEntity(): Entity | null {
-    LOG.warn('THIS MUST BE CHANGED. IF PLAYER COMP IS SEND VIA MSG');
-    const devActiveEntityId = this._activeEntityId || 1;
-    return this.entityStore.getEntity(devActiveEntityId);
+    return this.entityStore.getEntity(this._activeEntityId);
   }
 
   constructor(
@@ -37,6 +34,7 @@ export class PlayerEntityHolder {
     const isPlayerEntity = !!playerComp && playerComp.ownerAccountId === this.info.accountId;
 
     if (isPlayerEntity) {
+      LOG.debug(`Found new player entity: ${playerComp.entityId}`);
       const playerEntity = this.entityStore.getEntity(playerComp.entityId);
       const masterComponent = new MasterLocalComponent(playerComp.entityId);
       playerEntity.addComponent(masterComponent);

@@ -5,6 +5,7 @@ import { DisplayHelper } from './DisplayHelper';
 import { SpriteHelper } from './SpriteHelper';
 import { PointerManager } from './pointer';
 import { MoveHelper } from './MoveHelper';
+import { InteractionCache } from 'entities/InteractionCache';
 
 export class EngineConfig {
 
@@ -32,6 +33,7 @@ export class EngineContext {
 
   public readonly config = new EngineConfig();
   public readonly data = new GameData();
+  public readonly interactionCache = new InteractionCache();
 
   public readonly helper: {
     display: DisplayHelper;

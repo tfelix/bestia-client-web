@@ -7,3 +7,5 @@ export * from './actions/ActionType';
 export * from './actions/ChatAction';
 export * from './actions/DamageAction';
 export * from './actions/KillAction';
+
+export * from './InteractionCache';

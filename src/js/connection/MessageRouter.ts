@@ -2,11 +2,8 @@ import * as PubSub from 'pubsub-js';
 import * as LOG from 'loglevel';
 
 import { Topics } from 'Topics';
-import { ActionMessage } from 'message/ActionMessage';
-import { ComponentMessage } from 'message/ComponentMessage';
-import { ComponentDeleteMessage } from 'message';
 
-interface Route {
+export interface Route {
   handles(msg: any): boolean;
   routeTopic: string;
 }
@@ -15,12 +12,12 @@ export class MessageRouter {
 
   private routes: Route[] = [];
 
-  constructor() {
+  constructor(
+    routes: Route[]
+  ) {
     PubSub.subscribe(Topics.IO_RECV_MSG, (_, msg) => this.onIncomingMessage(msg));
 
-    this.addRoute({ handles: (msg) => msg instanceof ActionMessage, routeTopic: Topics.IO_RECV_ACTION});
-    this.addRoute({ handles: (msg) => msg instanceof ComponentMessage, routeTopic: Topics.IO_RECV_COMP_MSG});
-    this.addRoute({ handles: (msg) => msg instanceof ComponentDeleteMessage, routeTopic: Topics.IO_RECV_DEL_COMP_MSG});
+    this.routes.push(...routes);
   }
 
   public addRoute(route: Route) {

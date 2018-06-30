@@ -6,10 +6,9 @@ import { PointerManager } from './PointerManager';
 import { EngineContext } from '../EngineContext';
 import { PointerPriority } from './PointerPriority';
 import { Px, Point } from 'model';
-import { Entity, PlayerEntityHolder } from 'entities';
+import { Entity, PlayerEntityHolder, InteractionType } from 'entities';
 import { ComponentType, PositionComponent, VisualComponent } from 'entities/components';
 import { EntityTypeComponent } from 'entities/components/EntityTypeComponent';
-import { InteractionCacheLocalComponent, InteractionType } from 'entities/components/local/InteractionCacheLocalComponent';
 import { AttacksComponent } from 'entities/components/AttacksComponent';
 import { BasicAttackMessage } from 'message/BasicAttackMessage';
 import { Topics } from 'Topics';
@@ -58,7 +57,6 @@ export class BasicAttackPointer extends Pointer {
       return false;
     }
 
-    const interactionCache = playerActive.getComponent(ComponentType.LOCAL_INTERACTION_CACHE) as InteractionCacheLocalComponent;
     const entityTypeComp = entity.getComponent(ComponentType.ENTITY_TYPE) as EntityTypeComponent;
     const conditionComp = entity.getComponent(ComponentType.CONDITION) as ConditionComponent;
 
@@ -71,7 +69,7 @@ export class BasicAttackPointer extends Pointer {
     }
 
     const entityType = entityTypeComp.entityType;
-    const chachedInteraction = interactionCache.interactionCache.get(entityType);
+    const chachedInteraction = this.ctx.interactionCache.get(entityType);
 
     return chachedInteraction === InteractionType.ATTACK;
   }

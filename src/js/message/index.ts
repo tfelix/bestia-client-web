@@ -4,3 +4,4 @@ export * from './ComponentDeleteMessage';
 export * from './ComponentMessage';
 export * from './SyncRequestMessage';
 export * from './AbortPerformMessage';
+export * from './AccountInfoMessage';

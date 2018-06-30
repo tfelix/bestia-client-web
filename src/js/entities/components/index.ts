@@ -5,3 +5,6 @@ export * from './MoveComponent';
 export * from './PlayerComponent';
 export * from './PositionComponent';
 export * from './VisualComponent';
+export * from './ConditionComponent';
+export * from './EntityTypeComponent';
+export * from './AttacksComponent';

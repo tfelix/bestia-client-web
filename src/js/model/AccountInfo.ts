@@ -1,8 +1,19 @@
+import { Topics } from 'Topics';
+import { AccountInfoMessage } from 'message';
+
 export class AccountInfo {
-  constructor(
-    public readonly username: string,
-    public readonly accountId: number,
-    public readonly masterName: string
-  ) {
+
+  public username: string;
+  public accountId: number;
+  public masterName: string;
+
+  constructor() {
+    PubSub.subscribe(Topics.IO_RECV_ACC_INFO_MSG, (_, msg) => this.handleAccountInfo(msg));
+  }
+
+  private handleAccountInfo(msg: AccountInfoMessage) {
+    this.username = msg.username;
+    this.masterName = msg.masterName;
+    this.accountId = msg.accountId;
   }
 }
