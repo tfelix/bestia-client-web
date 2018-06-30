@@ -1,16 +1,13 @@
 import { ItemPickupMessage } from 'message';
 import { EntityStore } from 'entities';
+import { ClientMessageHandler } from './ClientMessageHandler';
 
-interface ClientMessageHandler<T> {
-  isHandlingMessage(msg: any): boolean;
-  handle(msg: T);
-}
-
-export class ItemPickupHandler implements ClientMessageHandler<ItemPickupMessage> {
+export class ItemPickupHandler extends ClientMessageHandler<ItemPickupMessage> {
 
   constructor(
     private readonly serverEntities: EntityStore
   ) {
+    super();
 
   }
 
@@ -19,6 +16,8 @@ export class ItemPickupHandler implements ClientMessageHandler<ItemPickupMessage
   }
 
   public handle(msg: ItemPickupMessage) {
-    
+    const itemEntity = this.serverEntities.getEntity(msg.itemEntityId);
+    // TODO Handle the item pickup
+    this.deleteEntity(itemEntity);
   }
 }

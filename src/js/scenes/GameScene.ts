@@ -2,7 +2,6 @@ import { EntityStore, PlayerEntityHolder } from 'entities';
 import { EngineContext } from 'engine/EngineContext';
 import { EntityRenderManager, CommonRenderManager } from 'engine/renderer';
 import { ActionsRendererManager } from 'engine/renderer/actions/ActionsRenderManager';
-import { ServerLocalFacade } from 'connection/ServerLocalFacade';
 import { ConnectionLogger } from 'connection/ConnectionLogger';
 import { MessageRouter } from 'connection/MessageRouter';
 import { ActionMessageHandler } from 'engine/renderer/actions/ActionMessageHandler';
@@ -10,6 +9,7 @@ import { SyncRequestMessage, ActionMessage, ComponentMessage, ComponentDeleteMes
 import { Topics } from 'Topics';
 import { EntityComponentUpdater } from 'connection/EntityComponentUpdater';
 import { AccountInfo } from 'model';
+import { ServerLocalFacade } from 'demo';
 
 export class GameScene extends Phaser.Scene {
   private entityStore: EntityStore;
@@ -96,11 +96,6 @@ export class GameScene extends Phaser.Scene {
     this.input.keyboard.on('keydown_W', () => {
       this.engineContext.config.debug.renderInfo = !this.engineContext.config.debug.renderInfo;
     });
-
-    // Signal the server we are ready now can now receive packets/setup.
-    // This message might be needed to be send on another location in the code
-    const syncRequest = new SyncRequestMessage();
-    PubSub.publish(Topics.IO_SEND_MSG, syncRequest);
   }
 
   public update(time, delta) {

@@ -27,7 +27,6 @@ export class BasicAttackPointer extends Pointer {
 
   private activeSprite: Phaser.GameObjects.Sprite;
   private playerHolder: PlayerEntityHolder;
-  private lastAttackedEntity?: Entity;
   private nextPossibleAttack = 0;
 
   constructor(
@@ -78,12 +77,7 @@ export class BasicAttackPointer extends Pointer {
     return chachedInteraction === InteractionType.ATTACK;
   }
 
-  public activate() {
-    LOG.debug('Attack pointer activated');
-  }
-
   public deactivate() {
-    LOG.debug('Attack pointer deactivated');
     if (this.activeSprite) {
       this.activeSprite.clearTint();
       this.activeSprite = null;
@@ -119,12 +113,10 @@ export class BasicAttackPointer extends Pointer {
 
   private performContinuingAttack(attackedEntity: Entity) {
     if (!this.isAttackable(attackedEntity)) {
-      this.lastAttackedEntity = null;
       return;
     }
 
     if (!this.inRangeForBasicAttack(attackedEntity)) {
-      this.lastAttackedEntity = null;
       return;
     }
 
@@ -150,7 +142,6 @@ export class BasicAttackPointer extends Pointer {
   }
 
   private setupContiniousAttack(attackedEntity: Entity) {
-    this.lastAttackedEntity = attackedEntity;
     const playerEntity = this.ctx.playerHolder.activeEntity;
     const attackerAtkComp = playerEntity.getComponent(ComponentType.ATTACKS) as AttacksComponent;
     const atkDelay = 1000 / attackerAtkComp.basicAttacksPerSecond;

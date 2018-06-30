@@ -3,7 +3,6 @@ import * as LOG from 'loglevel';
 import { Topics } from 'Topics';
 import { BasicAttackMessage } from 'message/BasicAttackMessage';
 import { EntityStore, KillAction, DamageAction, Entity } from 'entities';
-import { Message } from 'message/Message';
 import { ActionMessage } from 'message/ActionMessage';
 import { ComponentType, Component, VisualComponent } from 'entities/components';
 import { ConditionComponent } from 'entities/components/ConditionComponent';
@@ -12,58 +11,12 @@ import { ComponentDeleteMessage } from 'message/ComponentDeleteMessage';
 import { SyncRequestMessage, AbortPerformMessage, AccountInfoMessage } from 'message';
 import { PerformComponent } from 'entities/components/PerformComponent';
 import { Point } from 'model';
+import { ClientMessageHandler, ItemPickupHandler } from 'demo';
 import { EntityLocalFactory } from './EntityLocalFactory';
+import { ConditionHelper } from './ConditionHelper';
+import { ComponentCopyHelper } from './ComponentCopyHelper';
 
 const PLAYER_ACC_ID = 1337;
-
-// Helper Classes
-class ConditionHelper {
-
-  constructor(
-    private readonly entityStore: EntityStore
-  ) {
-  }
-
-  public getCurrentHp(entityId: number): number {
-    const entity = this.entityStore.getEntity(entityId);
-    if (!entity) {
-      return 0;
-    }
-    const condComp = entity.getComponent(ComponentType.CONDITION) as ConditionComponent;
-    if (!condComp) {
-      return 0;
-    }
-
-    return condComp.currentHealth;
-  }
-
-  public setCurrentHp(entityId: number, hp: number): number {
-    const entity = this.entityStore.getEntity(entityId);
-    if (!entity) {
-      return 0;
-    }
-    const condComp = entity.getComponent(ComponentType.CONDITION) as ConditionComponent;
-    if (!condComp) {
-      return 0;
-    }
-
-    return condComp.currentHealth;
-  }
-}
-
-class ComponentCopyHelper {
-  constructor(
-    private readonly entityStore: EntityStore
-  ) {
-  }
-
-  public copyComponent(entityId: number, type: ComponentType): Component {
-    const entity = this.entityStore.getEntity(entityId);
-    const comp = entity.getComponent(type);
-    const copyComp = Object.assign({}, comp);
-    return copyComp;
-  }
-}
 
 export class ServerLocalFacade {
 
@@ -75,14 +28,23 @@ export class ServerLocalFacade {
   private serverEntities = new EntityStore();
   private entityFactory = new EntityLocalFactory(this.serverEntities);
 
+  private messageHandler: Array<ClientMessageHandler<any>> = [];
+
   constructor(
     private readonly clientEntities: EntityStore
   ) {
     PubSub.subscribe(Topics.IO_SEND_MSG, (_, msg: any) => this.receivedFromClient(msg));
 
+    this.messageHandler.push(new ItemPickupHandler(this.serverEntities));
   }
 
   private receivedFromClient(message: any) {
+    this.messageHandler.forEach(h => {
+      if (h.isHandlingMessage(message)) {
+        h.handle(message);
+      }
+    });
+
     if (message instanceof BasicAttackMessage) {
       this.handleBasicAttack(message);
     } else if (message instanceof SyncRequestMessage) {
@@ -99,7 +61,8 @@ export class ServerLocalFacade {
     const accInfoMsg = new AccountInfoMessage('roggy', PLAYER_ACC_ID, 'master');
     this.sendClient(accInfoMsg);
 
-    this.sendAllComponents(this.entityFactory.addPlayer('player_1', new Point(2, 3), PLAYER_ACC_ID));
+    const comps = this.entityFactory.addPlayer('player_1', new Point(2, 3), PLAYER_ACC_ID);
+    this.sendAllComponents(comps);
 
     this.sendAllComponents(this.entityFactory.addBestia('rabbit', new Point(5, 6)));
     this.sendAllComponents(this.entityFactory.addBestia('rabbit', new Point(12, 12)));
@@ -190,10 +153,6 @@ export class ServerLocalFacade {
       const deleteMessage = new ComponentDeleteMessage(entityId, id);
       this.sendClient(deleteMessage);
     });
-  }
-
-  public sendMessage(msg: Message<any>) {
-    throw new Error('Method not implemented.');
   }
 
   private sendClient(msg: any) {

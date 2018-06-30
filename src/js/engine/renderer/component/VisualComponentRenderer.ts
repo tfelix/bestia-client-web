@@ -114,6 +114,9 @@ export class VisualComponentRenderer extends ComponentRenderer<VisualComponent> 
     renderer.updateGameData(entity, component, px, spriteData);
   }
 
-  protected removeComponent(entity: Entity, component: VisualComponent) {
+  public removeGameData(entity: Entity) {
+    entity.data.visual.sprite.destroy();
+    entity.data.visual.childSprites.forEach(s => s.sprite.destroy());
+    entity.data.visual = null;
   }
 }

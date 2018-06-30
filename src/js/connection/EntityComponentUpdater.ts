@@ -1,3 +1,5 @@
+import * as LOG from 'loglevel';
+
 import { EntityStore } from 'entities';
 import { Topics } from 'Topics';
 import { ComponentMessage, ComponentDeleteMessage } from 'message';
@@ -15,12 +17,12 @@ export class EntityComponentUpdater {
   private onComponentMessage(msg: ComponentMessage<Component>) {
     const entity = this.entityStore.getEntity(msg.component.entityId);
     if (entity) {
-      // entity.removeComponentByType(msg.component.type);
       entity.addComponent(msg.component);
     }
   }
 
   private onComponentDeleteMessage(msg: ComponentDeleteMessage) {
+    LOG.debug(`Delete component: ${msg.componentType} from entity: ${msg.entityId}`);
     const entity = this.entityStore.getEntity(msg.entityId);
     if (entity) {
       entity.removeComponentByType(msg.componentType);
