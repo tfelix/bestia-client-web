@@ -1,5 +1,3 @@
-import { DisplayHelper } from "engine";
-
 export class LoadScene extends Phaser.Scene {
   constructor() {
     super({
@@ -7,7 +5,19 @@ export class LoadScene extends Phaser.Scene {
     });
   }
 
+  private setupProgressBar() {
+    const progress = this.add.graphics();
+    this.load.on('progress', (value) => {
+      progress.clear();
+      progress.fillStyle(0xFFFFFF, 1);
+      progress.fillRect(100, 380, 600 * value, 30);
+    });
+    this.load.on('complete', () => progress.destroy());
+  }
+
   public preload(): void {
+    this.setupProgressBar();
+
     // Load Player Sprite
     this.load.json('player_1_desc', '../assets/sprites/mob/player_1/player_1_desc.json');
     this.load.atlas(
@@ -55,7 +65,42 @@ export class LoadScene extends Phaser.Scene {
   }
 
   public create() {
-    const text = this.add.text(DisplayHelper.sceneWidth / 2, DisplayHelper.sceneHeight / 2, 'Loading...');
+    this.add.image(400, 300, 'splash-bg');
+
+    const offscreen = new Phaser.Geom.Rectangle(-400, 300, 400, 300);
+    const screen = new Phaser.Geom.Rectangle(-800, 0, 2000, 600);
+
+    this.add.particles('cloud', [
+      {
+        emitZone: { source: offscreen },
+        deathZone: { source: screen, type: 'onLeave' },
+        frequency: 90000,
+        quantity: 4,
+        speedX: { min: 10, max: 15 },
+        scale: { min: 0.8, max: 1 },
+        lifespan: 60000
+      },
+      {
+        emitZone: { source: offscreen },
+        deathZone: { source: screen, type: 'onLeave' },
+        frequency: 90000,
+        quantity: 4,
+        speedX: { min: 15, max: 30 },
+        lifespan: 60000,
+        scale: { min: 0.6, max: 0.8 },
+      },
+      {
+        emitZone: { source: offscreen },
+        deathZone: { source: screen, type: 'onLeave' },
+        frequency: 90000,
+        quantity: 4,
+        speedX: { min: 30, max: 50 },
+        scale: { min: 0.8, max: 1 },
+        lifespan: 60000
+      }
+    ]);
+
+    this.add.image(400, 200, 'logo');
   }
 
   public update(): void {
