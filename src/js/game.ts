@@ -1,3 +1,5 @@
+import '../styles/less/styles.less';
+
 import 'phaser';
 import * as LOG from 'loglevel';
 

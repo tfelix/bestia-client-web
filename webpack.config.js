@@ -29,6 +29,19 @@ module.exports = {
   module: {
     rules: [
       { test: /\.ts$/, loader: 'ts-loader', exclude: '/node_modules/' },
+      {
+        test: /\.less$/,
+        use: [{
+          loader: 'style-loader'
+        }, {
+          loader: 'css-loader'
+        }, {
+          loader: 'less-loader', options: {
+            strictMath: true,
+            noIeCompat: true
+          }
+        }]
+      },
       { test: /phaser\.js$/, loader: 'expose-loader?Phaser' }
     ]
   },
@@ -37,8 +50,8 @@ module.exports = {
       DEV: JSON.stringify(true),
     }),
     new CopyWebpackPlugin([
-      { from: 'src/styles', to: 'styles'},
-      { from: 'src/index.html'},
+      { from: 'src/styles', to: 'styles' },
+      { from: 'src/index.html' },
       { from: 'assets/**/*' }
     ])
   ]
