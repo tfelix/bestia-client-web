@@ -37,8 +37,9 @@ export class PlayerEntityHolder {
     const isPlayerEntity = !!playerComp && playerComp.ownerAccountId === this.info.accountId;
 
     if (isPlayerEntity) {
+      const playerEntity = this.entityStore.getEntity(playerComp.entityId);
       const masterComponent = new MasterLocalComponent(playerComp.entityId);
-      this.entityStore.addComponent(masterComponent);
+      playerEntity.addComponent(masterComponent);
 
       if (!this.activeEntity) {
         this._activeEntityId = playerComp.entityId;

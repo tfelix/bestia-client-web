@@ -144,7 +144,7 @@ export class MoveComponentRenderer extends ComponentRenderer<MoveComponent> {
       const standAnimation = getStandAnimationName(lastPos, currentPos);
       visual.animation = standAnimation;
       this.clearMovementData(entity);
-      this.ctx.entityStore.removeComponent(component);
+      entity.removeComponentByType(component.type);
       return;
     }
 

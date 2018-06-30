@@ -35,13 +35,13 @@ export class EntityLocalFactory {
       SpriteType.MULTI
     );
     visual.animation = 'stand_down';
-    this.entityStore.addComponent(visual);
+    entity.addComponent(visual);
     const position = new PositionComponent(
       this.componentCounter++,
       entity.id
     );
     position.position = pos;
-    this.entityStore.addComponent(position);
+    entity.addComponent(position);
     return entity;
   }
 
@@ -53,19 +53,19 @@ export class EntityLocalFactory {
       entity.id
     );
     entityTypeComp.entityType = EntityType.PLAYER_BESTIA;
-    this.entityStore.addComponent(entityTypeComp);
+    entity.addComponent(entityTypeComp);
 
     const attackComp = new AttacksComponent(
       this.componentCounter++,
       entity.id
     );
-    this.entityStore.addComponent(attackComp);
+    entity.addComponent(attackComp);
 
     const interactionCache = new InteractionCacheLocalComponent(
       entity.id
     );
     interactionCache.interactionCache.set(EntityType.BESTIA, InteractionType.ATTACK);
-    this.entityStore.addComponent(interactionCache);
+    entity.addComponent(interactionCache);
 
     const conditionComp = new ConditionComponent(
       this.componentCounter++,
@@ -75,7 +75,7 @@ export class EntityLocalFactory {
     conditionComp.maxHealth = 100;
     conditionComp.currentMana = 0;
     conditionComp.maxMana = 0;
-    this.entityStore.addComponent(attackComp);
+    entity.addComponent(attackComp);
 
     return entity;
   }
@@ -87,7 +87,7 @@ export class EntityLocalFactory {
       entity.id
     );
     entityTypeComp.entityType = EntityType.BESTIA;
-    this.entityStore.addComponent(entityTypeComp);
+    entity.addComponent(entityTypeComp);
 
     this.addConditionComponent(entity);
 
@@ -104,21 +104,21 @@ export class EntityLocalFactory {
       name,
       SpriteType.ITEM
     );
-    this.entityStore.addComponent(visual);
+    entity.addComponent(visual);
 
     const position = new PositionComponent(
       this.componentCounter++,
       entity.id
     );
     position.position = pos;
-    this.entityStore.addComponent(position);
+    entity.addComponent(position);
 
     const entityTypeComp = new EntityTypeComponent(
       this.componentCounter++,
       entity.id
     );
     entityTypeComp.entityType = EntityType.ITEM;
-    this.entityStore.addComponent(entityTypeComp);
+    entity.addComponent(entityTypeComp);
 
     return entity;
   }
@@ -133,14 +133,14 @@ export class EntityLocalFactory {
       name,
       SpriteType.SIMPLE
     );
-    this.entityStore.addComponent(visual);
+    entity.addComponent(visual);
 
     const position = new PositionComponent(
       this.componentCounter++,
       entity.id,
     );
     position.position = pos;
-    this.entityStore.addComponent(position);
+    entity.addComponent(position);
 
     return entity;
   }
@@ -152,7 +152,7 @@ export class EntityLocalFactory {
     );
     condComponent.maxHealth = maxHealth;
     condComponent.currentHealth = currentHealth;
-    this.entityStore.addComponent(condComponent);
+    entity.addComponent(condComponent);
   }
 
   public addDebugComponent(entity: Entity) {
@@ -160,7 +160,7 @@ export class EntityLocalFactory {
       this.componentCounter++,
       entity.id
     );
-    this.entityStore.addComponent(debugComp);
+    entity.addComponent(debugComp);
   }
 
   public addPlayerComponent(entity: Entity, accountId: number) {
@@ -170,6 +170,6 @@ export class EntityLocalFactory {
       ComponentType.PLAYER,
       accountId
     );
-    this.entityStore.addComponent(playerComp);
+    entity.addComponent(playerComp);
   }
 }

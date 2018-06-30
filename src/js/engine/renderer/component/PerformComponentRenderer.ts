@@ -1,13 +1,15 @@
-import { ComponentRenderer } from '.';
 import { ComponentType } from 'entities/components';
 import { Entity } from 'entities';
-import { EngineContext } from '../../EngineContext';
-import { PerformComponent } from 'entities/components/PerformComponent';
-import { Depths } from '../VisualDepths';
-import { UIConstants } from 'ui';
 import { Px } from 'model';
 import { AbortPerformMessage } from 'message';
 import { Topics } from 'Topics';
+import { UIConstants } from 'ui';
+
+import { ComponentRenderer } from '.';
+import { EngineContext } from '../../EngineContext';
+import { PerformComponent } from 'entities/components/PerformComponent';
+import { Depths } from '../VisualDepths';
+import { SoundHolder } from '../../SoundHolder';
 
 export interface PerformData {
   endTime: number;
@@ -24,8 +26,7 @@ export class PerformComponentRenderer extends ComponentRenderer<PerformComponent
   private static cancelButton: Phaser.GameObjects.Image;
   private static cancelButtonOffset = new Px(-40, 15);
 
-  // TODO The shared sound objects should be put into a central class managing all the sounds.
-  private static clickSound: Phaser.Sound.BaseSound;
+  private soundHolder = SoundHolder;
 
   constructor(
     private readonly ctx: EngineContext
@@ -36,7 +37,7 @@ export class PerformComponentRenderer extends ComponentRenderer<PerformComponent
       PerformComponentRenderer.graphicsLayer = this.game.add.graphics({ fillStyle: { color: 0x000000 } });
       PerformComponentRenderer.graphicsLayer.depth = Depths.UI;
 
-      PerformComponentRenderer.clickSound = this.game.sound.add('click', { loop: false });
+      this.soundHolder.buttonClick = this.game.sound.add('click', { loop: false });
       PerformComponentRenderer.cancelButton = this.game.add.image(0, 0, 'ui', UIConstants.CANCEL);
 
       PerformComponentRenderer.cancelButton.visible = false;
@@ -53,7 +54,7 @@ export class PerformComponentRenderer extends ComponentRenderer<PerformComponent
   }
 
   private abortPerform() {
-    PerformComponentRenderer.clickSound.play();
+    this.soundHolder.buttonClick.play();
     const abortMsg = new AbortPerformMessage();
     PubSub.publish(Topics.IO_SEND_MSG, abortMsg);
   }

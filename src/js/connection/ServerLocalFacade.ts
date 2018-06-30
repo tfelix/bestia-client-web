@@ -12,8 +12,6 @@ import { ComponentDeleteMessage } from 'message/ComponentDeleteMessage';
 import { SyncRequestMessage, AbortPerformMessage } from 'message';
 import { PerformComponent } from 'entities/components/PerformComponent';
 
-const serverEntities = new EntityStore();
-
 // Helper Classes
 class ConditionHelper {
 
@@ -96,7 +94,8 @@ export class ServerLocalFacade {
     );
     perfComp.duration = 10000;
     perfComp.skillname = 'chop_tree';
-    this.entityStore.addComponent(perfComp);
+    const playerEntity = this.entityStore.getEntity(this.PLAYER_ENTITY_ID);
+    playerEntity.addComponent(perfComp);
     const compMsg = new ComponentMessage<PerformComponent>(perfComp);
     this.sendClient(compMsg);
 

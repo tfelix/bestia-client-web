@@ -29,14 +29,14 @@ export class MoveHelper {
     const playerEntity = this.ctx.playerHolder.activeEntity;
     // We must remove the possibly currently present component so we can start new.
     playerEntity.removeComponentByType(ComponentType.MOVE);
-    
+
     const move = new MoveComponent(
       componentId,
       playerEntity.id
     );
     move.walkspeed = 1;
     move.path = shiftedPath;
-    this.ctx.entityStore.addComponent(move);
+    playerEntity.addComponent(move);
 
     if (callbackFn) {
       callbackFn();
