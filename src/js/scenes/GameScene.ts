@@ -37,10 +37,6 @@ export class GameScene extends Phaser.Scene {
     // GAME SCENE IS STARTED IF I KNOW HOW
     this.entityStore = new EntityStore();
     this.setupMessaging();
-
-    // Connection Stuff
-    // Connection Handler
-    // Renderer Stuff
   }
 
   public init(entityStore: EntityStore): void {

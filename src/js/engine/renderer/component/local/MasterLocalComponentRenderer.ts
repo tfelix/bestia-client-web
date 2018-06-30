@@ -37,7 +37,4 @@ export class MasterLocalComponentRenderer extends ComponentRenderer<MasterLocalC
 
   protected updateGameData(entity: Entity, component: MasterLocalComponent) {
   }
-
-  protected removeComponent(entity: Entity, component: MasterLocalComponent) {
-  }
 }

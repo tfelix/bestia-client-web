@@ -4,7 +4,7 @@ import { Topics } from 'Topics';
 import { BasicAttackMessage } from 'message/BasicAttackMessage';
 import { EntityStore, KillAction, DamageAction, Entity } from 'entities';
 import { ActionMessage } from 'message/ActionMessage';
-import { ComponentType, Component, VisualComponent } from 'entities/components';
+import { ComponentType, Component, VisualComponent, MoveComponent } from 'entities/components';
 import { ConditionComponent } from 'entities/components/ConditionComponent';
 import { ComponentMessage } from 'message/ComponentMessage';
 import { ComponentDeleteMessage } from 'message/ComponentDeleteMessage';
@@ -64,7 +64,23 @@ export class ServerLocalFacade {
     const comps = this.entityFactory.addPlayer('player_1', new Point(2, 3), PLAYER_ACC_ID);
     this.sendAllComponents(comps);
 
-    this.sendAllComponents(this.entityFactory.addBestia('rabbit', new Point(5, 6)));
+    // TODO Handle AI differently
+    const bestiaComps = this.entityFactory.addBestia('rabbit', new Point(5, 6));
+    const entityId = bestiaComps[0].entityId;
+    window.setTimeout(() => {
+      const moveComp = new MoveComponent(23456, entityId);
+      moveComp.path = [
+        new Point(4, 7),
+        new Point(4, 8),
+        new Point(4, 9),
+        new Point(3, 9),
+        new Point(2, 9),
+        new Point(3, 8),
+        new Point(4, 7)
+      ];
+      this.sendClient(new ComponentMessage<MoveComponent>(moveComp));
+    }, 2000);
+    this.sendAllComponents(bestiaComps);
     this.sendAllComponents(this.entityFactory.addBestia('rabbit', new Point(12, 12)));
 
     this.sendAllComponents(this.entityFactory.addObject('tree', new Point(10, 10)));

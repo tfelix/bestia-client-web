@@ -22,7 +22,7 @@ export class EntityRenderManager {
     this.addComponentRenderer(new PerformComponentRenderer(this.context));
 
     // Local Component Renderer.
-    // this.addComponentRenderer(new MasterLocalComponentRenderer(context));
+    this.addComponentRenderer(new MasterLocalComponentRenderer(context));
   }
 
   private addComponentRenderer(renderer: ComponentRenderer<Component>) {

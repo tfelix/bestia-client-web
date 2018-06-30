@@ -1,10 +1,7 @@
-import * as LOG from 'loglevel';
-
 import { Action } from './actions/Action';
 import { Component } from './components/Component';
 import { ComponentType } from './components/ComponentType';
 import { EntityData } from './EntityData';
-import { EntityStore } from '.';
 
 export class Entity {
   private readonly components = new Map<ComponentType, Component>();
@@ -18,9 +15,7 @@ export class Entity {
 
   constructor(
     public readonly id: number,
-    private readonly entityStore: EntityStore
   ) {
-
   }
 
   public hasAction(actionConstructor: { new(...args: any[]) }): boolean {

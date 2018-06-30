@@ -1,5 +1,4 @@
 import { Entity } from './Entity';
-import { Component } from './components';
 
 export class EntityStore {
   public entities: Map<number, Entity> = new Map();
@@ -11,20 +10,12 @@ export class EntityStore {
     const e = this.entities.get(id);
 
     if (!e) {
-      const newEntity = new Entity(id, this);
+      const newEntity = new Entity(id);
       this.addEntity(newEntity);
       return newEntity;
     }
 
     return e;
-  }
-
-  /**
-   * Updates the entity in the storage.
-   * @param message Server update message for this entity.
-   */
-  public updateEntity(message: any) {
-
   }
 
   public addEntity(entity: Entity) {
