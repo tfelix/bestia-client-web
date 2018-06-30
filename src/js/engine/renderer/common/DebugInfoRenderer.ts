@@ -17,6 +17,8 @@ const DEBUG_STYLE = {
 export class DebugInfoRenderer extends BaseCommonRenderer {
 
   private text: Phaser.GameObjects.Text | null = null;
+  private lastRenderTime = null;
+  private renderFrameTimesMs = [];
   private displayHelper: DisplayHelper;
 
   constructor(
@@ -43,6 +45,7 @@ export class DebugInfoRenderer extends BaseCommonRenderer {
     if (!this.text) {
       this.createData();
     }
+    this.takeFpsMeasurement();
     this.updateData();
   }
 
@@ -56,6 +59,15 @@ export class DebugInfoRenderer extends BaseCommonRenderer {
     this.text.setDepth(1000 * 1000);
   }
 
+  private takeFpsMeasurement() {
+    const d = this.ctx.game.time.now - this.lastRenderTime;
+    this.renderFrameTimesMs.push(d);
+    while (this.renderFrameTimesMs.length > 5) {
+      this.renderFrameTimesMs.shift();
+    }
+    this.lastRenderTime = this.ctx.game.time.now;
+  }
+
   private updateData() {
 
     const camScrollX = Math.floor(this.ctx.game.cameras.main.scrollX);
@@ -66,7 +78,10 @@ export class DebugInfoRenderer extends BaseCommonRenderer {
     const scrollOffset = this.displayHelper.getScrollOffset();
     const pointerMapPos = MapHelper.pixelToPoint(pointerScreenX, pointerScreenY).plus(scrollOffset);
 
-    let debugTxt = `Camera (scrollX: ${camScrollX} scrollY: ${camScrollY})`;
+    const fps = Math.round(this.renderFrameTimesMs.reduce((sum, v) => sum + v) / this.renderFrameTimesMs.length);
+
+    let debugTxt = `FPS: ${fps}`;
+    debugTxt += `\nCamera (scrollX: ${camScrollX} scrollY: ${camScrollY})`;
     debugTxt += `\nPointer (wx: ${pointerScreenX} wy: ${pointerScreenY} mx: ${pointerMapPos.x} my: ${pointerMapPos.y})`;
 
     this.text.setText(debugTxt);

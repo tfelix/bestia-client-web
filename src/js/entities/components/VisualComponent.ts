@@ -1,6 +1,7 @@
 import { Component } from './Component';
 import { ComponentType } from './ComponentType';
 import { Point } from 'model';
+import { Entity } from '..';
 
 export enum SpriteType {
   MULTI,
@@ -9,6 +10,17 @@ export enum SpriteType {
 }
 
 export class VisualComponent extends Component {
+
+  public static playOneShotAnimation(entity: Entity | null, animation: string) {
+    if (!entity) {
+      return;
+    }
+    const visualComp = entity.getComponent(ComponentType.VISUAL) as VisualComponent;
+    if (!visualComp) {
+      return;
+    }
+    visualComp.oneshotAnimation = animation;
+  }
 
   constructor(
     id: number,
