@@ -28,6 +28,7 @@ export class BasicAttackPointer extends Pointer {
   private activeSprite: Phaser.GameObjects.Sprite;
   private playerHolder: PlayerEntityHolder;
   private lastAttackedEntity?: Entity;
+  private nextPossibleAttack = 0;
 
   constructor(
     manager: PointerManager,
@@ -99,6 +100,10 @@ export class BasicAttackPointer extends Pointer {
       return;
     }
 
+    if (!this.isCooldownOver()) {
+      return;
+    }
+
     if (this.inRangeForBasicAttack(entity)) {
       this.performBasicAttack(entity);
     } else {
@@ -133,8 +138,13 @@ export class BasicAttackPointer extends Pointer {
 
     const attackerVisualComp = (attackerEntity.getComponent(ComponentType.VISUAL) as VisualComponent);
     attackerVisualComp.sightDirection = getSightDirection(attackerPos, defenderPos);
+
     const atkMsg = new BasicAttackMessage(attackedEntity.id);
     PubSub.publish(Topics.IO_SEND_MSG, atkMsg);
+
+    const attackerAtkComp = attackerEntity.getComponent(ComponentType.ATTACKS) as AttacksComponent;
+    const aspd = attackerAtkComp && attackerAtkComp.basicAttacksPerSecond || 0;
+    this.nextPossibleAttack = this.ctx.game.time.now + 1000 / aspd;
 
     this.setupContiniousAttack(attackedEntity);
   }
@@ -165,22 +175,24 @@ export class BasicAttackPointer extends Pointer {
     }
   }
 
+  private isCooldownOver(): boolean {
+    return this.nextPossibleAttack <= this.ctx.game.time.now;
+  }
+
   private inRangeForBasicAttack(entity: Entity): boolean {
     const playerEntity = this.playerHolder.activeEntity;
     if (!playerEntity) {
       return false;
     }
 
-    const playerPositionComp = playerEntity.getComponent(ComponentType.POSITION) as PositionComponent;
     const playerAttacksComp = playerEntity.getComponent(ComponentType.ATTACKS) as AttacksComponent;
-    const entityPositionComp = entity.getComponent(ComponentType.POSITION) as PositionComponent;
-    if (!playerPositionComp || !playerAttacksComp || !entityPositionComp) {
+    if (!playerAttacksComp) {
       return false;
     }
 
-    const d = entityPositionComp.position.getDistance(playerPositionComp.position);
+    const d = PositionComponent.getDistance(playerEntity, entity);
     const baseAtkRange = playerAttacksComp.basicAttackRange * SQRT_2;
-    return baseAtkRange >= d;
+    return baseAtkRange >= d && d !== -1;
   }
 
   public updatePosition(pointer: Px, entity?: Entity) {
