@@ -1,11 +1,11 @@
 import 'phaser';
 import * as LOG from 'loglevel';
-import * as store from 'store';
 
+import { LoadScene } from './scenes/LoadScene';
 import { BootScene } from './scenes/BootScene';
 import { GameScene } from './scenes/GameScene';
 
-if(DEV) {
+if (DEV) {
   // Development configs
   LOG.setLevel('debug');
   LOG.info('Bestia Client is running in DEVELOPMENT MODE');
@@ -25,7 +25,7 @@ const config: GameConfig = {
   zoom: 1,
   type: Phaser.AUTO,
   parent: 'game',
-  scene: [BootScene, GameScene],
+  scene: [BootScene, GameScene, LoadScene],
   input: {
     keyboard: true,
     mouse: true,
