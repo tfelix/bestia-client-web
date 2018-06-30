@@ -76,7 +76,13 @@ export class EntityLocalFactory {
     );
     entity.addComponent(playerComp);
 
-    return [...spriteComp, entityTypeComp, attackComp, conditionComp, playerComp];
+    return [
+      ...spriteComp,
+      entityTypeComp,
+      attackComp,
+      conditionComp,
+      playerComp
+    ];
   }
 
   public addBestia(name: string, pos: Point): Component[] {

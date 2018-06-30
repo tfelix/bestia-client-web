@@ -15,6 +15,9 @@ export class PlayerEntityHolder {
   private _activeEntityId = 0;
 
   public get activeEntity(): Entity | null {
+    if (this._activeEntityId === 0) {
+      return null;
+    }
     return this.entityStore.getEntity(this._activeEntityId);
   }
 

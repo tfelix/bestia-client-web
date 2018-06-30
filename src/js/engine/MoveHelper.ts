@@ -36,14 +36,13 @@ export class MoveHelper {
     );
     move.walkspeed = 1;
     move.path = shiftedPath;
-    playerEntity.addComponent(move);
-
     if (callbackFn) {
-      callbackFn();
+      move.onMoveFinished.push(callbackFn);
     }
+    playerEntity.addComponent(move);
   }
 
-  public moveTo(pointer: Px, callbackFn?: () => void) {
+  public moveToPoint(goal: Point, callbackFn?: () => void) {
     const activePlayerEntity = this.ctx.playerHolder.activeEntity;
     if (!activePlayerEntity) {
       return;
@@ -53,7 +52,6 @@ export class MoveHelper {
       return;
     }
     const start = playerPositionComponent.position;
-    const goal = MapHelper.pixelToPoint(pointer.x, pointer.y);
 
     const scrollOffset = this.ctx.helper.display.getScrollOffset();
     const shiftedStart = start.minus(scrollOffset);
@@ -67,5 +65,10 @@ export class MoveHelper {
       shiftedGoal.y,
       (path) => this.onPathFound(scrollOffset, path, callbackFn)
     );
+  }
+
+  public moveToPixel(pointer: Px, callbackFn?: () => void) {
+    const goal = MapHelper.pixelToPoint(pointer.x, pointer.y);
+    this.moveToPoint(goal, callbackFn);
   }
 }

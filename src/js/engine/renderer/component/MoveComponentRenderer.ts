@@ -145,6 +145,7 @@ export class MoveComponentRenderer extends ComponentRenderer<MoveComponent> {
       visual.animation = standAnimation;
       this.clearMovementData(entity);
       entity.removeComponentByType(component.type);
+      component.onMoveFinished.forEach(fn => fn());
       return;
     }
 

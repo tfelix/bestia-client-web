@@ -52,13 +52,13 @@ export abstract class Pointer {
   /**
    * Checks if the pointer should activate when under the sprite.
    */
-  public abstract checkActive(position: Px, entity?: Entity): number;
+  public abstract checkActive(position: Px, mouseoverEntity?: Entity): number;
 
-  public updatePosition(position: Px, entity?: Entity) {
+  public updatePosition(position: Px, mouseoverEntity?: Entity) {
     // no op.
   }
 
-  public onClick(position: Px, entity?: Entity) {
+  public onClick(position: Px, clickedEntity?: Entity) {
     // no op.
   }
 }

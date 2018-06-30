@@ -96,6 +96,9 @@ export class ServerLocalFacade {
   }
 
   private syncClient() {
+    const accInfoMsg = new AccountInfoMessage('roggy', PLAYER_ACC_ID, 'master');
+    this.sendClient(accInfoMsg);
+
     this.sendAllComponents(this.entityFactory.addPlayer('player_1', new Point(2, 3), PLAYER_ACC_ID));
 
     this.sendAllComponents(this.entityFactory.addBestia('rabbit', new Point(5, 6)));
@@ -119,9 +122,6 @@ export class ServerLocalFacade {
 
     this.sendAllComponents(this.entityFactory.addItem('knife', 1, new Point(12, 10)));
     this.sendAllComponents(this.entityFactory.addItem('knife', 1, new Point(3, 6)));
-  
-    const accInfoMsg = new AccountInfoMessage('roggy', PLAYER_ACC_ID, 'master');
-    this.sendClient(accInfoMsg);
   }
 
   private sendAllComponents(components: Component[]) {

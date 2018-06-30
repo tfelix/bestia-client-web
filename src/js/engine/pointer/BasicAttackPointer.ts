@@ -21,10 +21,13 @@ function getSightDirection(source: Point, lookingTo: Point): Point {
   return lookingTo.minus(source).norm();
 }
 
+const SQRT_2 = 1.41421;
+
 export class BasicAttackPointer extends Pointer {
 
   private activeSprite: Phaser.GameObjects.Sprite;
   private playerHolder: PlayerEntityHolder;
+  private lastAttackedEntity?: Entity;
 
   constructor(
     manager: PointerManager,
@@ -100,26 +103,48 @@ export class BasicAttackPointer extends Pointer {
       this.performBasicAttack(entity);
     } else {
       // The entity is probably not walkable so we need the closes walkable tile coordinate.
-      // FIXME This is currently buggy.
       const point = MapHelper.pixelToPoint(pointer.x, pointer.y);
       const spriteDesc = getSpriteDescriptionFromCache(entity.data.visual.spriteName, this.ctx.game);
-      const test = new SpriteCollision(point, spriteDesc);
+      const spriteCollision = new SpriteCollision(point, spriteDesc);
       const playerPos = (this.ctx.playerHolder.activeEntity.getComponent(ComponentType.POSITION) as PositionComponent).position;
-      const walkTarget = test.nextNonCollision(playerPos, point);
-      this.ctx.helper.move.moveTo(walkTarget, () => this.performQueuedAttack(entity));
+      const walkTarget = spriteCollision.nextNonCollision(playerPos, point);
+      this.ctx.helper.move.moveToPoint(walkTarget, () => this.performBasicAttack(entity));
     }
   }
 
-  private performBasicAttack(entity: Entity) {
+  private performContinuingAttack(attackedEntity: Entity) {
+    if (!this.isAttackable(attackedEntity)) {
+      this.lastAttackedEntity = null;
+      return;
+    }
+
+    if (!this.inRangeForBasicAttack(attackedEntity)) {
+      this.lastAttackedEntity = null;
+      return;
+    }
+
+    this.performBasicAttack(attackedEntity);
+  }
+
+  private performBasicAttack(attackedEntity: Entity) {
     const attackerEntity = this.ctx.playerHolder.activeEntity;
     const attackerPos = (attackerEntity.getComponent(ComponentType.POSITION) as PositionComponent).position;
-    const attackerPosComp = (entity.getComponent(ComponentType.POSITION) as PositionComponent);
-    const defenderPos = attackerPosComp.position;
+    const defenderPos = (attackedEntity.getComponent(ComponentType.POSITION) as PositionComponent).position;
 
     const attackerVisualComp = (attackerEntity.getComponent(ComponentType.VISUAL) as VisualComponent);
     attackerVisualComp.sightDirection = getSightDirection(attackerPos, defenderPos);
-    const atkMsg = new BasicAttackMessage(entity.id);
+    const atkMsg = new BasicAttackMessage(attackedEntity.id);
     PubSub.publish(Topics.IO_SEND_MSG, atkMsg);
+
+    this.setupContiniousAttack(attackedEntity);
+  }
+
+  private setupContiniousAttack(attackedEntity: Entity) {
+    this.lastAttackedEntity = attackedEntity;
+    const playerEntity = this.ctx.playerHolder.activeEntity;
+    const attackerAtkComp = playerEntity.getComponent(ComponentType.ATTACKS) as AttacksComponent;
+    const atkDelay = 1000 / attackerAtkComp.basicAttacksPerSecond;
+    this.ctx.game.time.addEvent({ delay: atkDelay, callback: () => this.performContinuingAttack(attackedEntity) });
   }
 
   private performQueuedAttack(entity: Entity) {
@@ -136,7 +161,7 @@ export class BasicAttackPointer extends Pointer {
         return;
       }
       const px = MapHelper.pointToPixel(positionComp.position);
-      this.ctx.helper.move.moveTo(px, () => this.performQueuedAttack(entity));
+      this.ctx.helper.move.moveToPixel(px, () => this.performQueuedAttack(entity));
     }
   }
 
@@ -154,7 +179,7 @@ export class BasicAttackPointer extends Pointer {
     }
 
     const d = entityPositionComp.position.getDistance(playerPositionComp.position);
-    const baseAtkRange = playerAttacksComp.basicAttackRange;
+    const baseAtkRange = playerAttacksComp.basicAttackRange * SQRT_2;
     return baseAtkRange >= d;
   }
 

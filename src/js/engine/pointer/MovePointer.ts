@@ -43,7 +43,7 @@ export class MovePointer extends Pointer {
     if (this.ctx.collisionUpdater.hasCollision(point.x, point.y)) {
 
     } else {
-      this.ctx.helper.move.moveTo(pointer);
+      this.ctx.helper.move.moveToPixel(pointer);
     }
   }
 

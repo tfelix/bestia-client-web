@@ -27,7 +27,7 @@ export class SpriteCollision {
    * is walkable.
    */
   public nextNonCollision(start: Point, target: Point): Point {
-    if (this.hasCollision(target)) {
+    if (!this.hasCollision(target)) {
       return target;
     }
 
@@ -42,7 +42,7 @@ export class SpriteCollision {
     let ty = target.y;
 
     while (1) {
-      if (this.hasCollision(new Point(tx, ty))) {
+      if (!this.hasCollision(new Point(tx, ty))) {
         break;
       }
       e2 = 2 * err;

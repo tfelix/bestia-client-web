@@ -6,7 +6,7 @@ import { ServerLocalFacade } from 'connection/ServerLocalFacade';
 import { ConnectionLogger } from 'connection/ConnectionLogger';
 import { MessageRouter } from 'connection/MessageRouter';
 import { ActionMessageHandler } from 'engine/renderer/actions/ActionMessageHandler';
-import { SyncRequestMessage, ActionMessage, ComponentMessage, ComponentDeleteMessage } from 'message';
+import { SyncRequestMessage, ActionMessage, ComponentMessage, ComponentDeleteMessage, AccountInfoMessage } from 'message';
 import { Topics } from 'Topics';
 import { EntityComponentUpdater } from 'connection/EntityComponentUpdater';
 import { AccountInfo } from 'model';
@@ -65,6 +65,7 @@ export class GameScene extends Phaser.Scene {
   private setupMessaging() {
     this.messageRouter = new MessageRouter([
       { handles: (msg) => msg instanceof ActionMessage, routeTopic: Topics.IO_RECV_ACTION },
+      { handles: (msg) => msg instanceof AccountInfoMessage, routeTopic: Topics.IO_RECV_ACC_INFO_MSG },
       { handles: (msg) => msg instanceof ComponentMessage, routeTopic: Topics.IO_RECV_COMP_MSG },
       { handles: (msg) => msg instanceof ComponentDeleteMessage, routeTopic: Topics.IO_RECV_DEL_COMP_MSG },
     ]);
