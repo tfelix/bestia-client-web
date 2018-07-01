@@ -3,12 +3,13 @@ import { Size, Point, Px } from 'model';
 
 export class DisplayHelper {
 
-  public static readonly sceneWidth = 800;
-  public static readonly sceneHeight = 600;
+  public readonly sceneWidth = this.scene.sys.game.config.width as number;
+  public readonly sceneHeight = this.scene.sys.game.config.height as number;
 
   constructor(
     private readonly scene: Phaser.Scene
   ) {
+
   }
 
   public getScrollOffsetPx(): Px {
@@ -16,8 +17,8 @@ export class DisplayHelper {
   }
 
   public getDisplaySizeInTiles(): Size {
-    const widthTiles = Math.ceil(DisplayHelper.sceneWidth / MapHelper.TILE_SIZE_PX);
-    const heightTiles = Math.ceil(DisplayHelper.sceneHeight / MapHelper.TILE_SIZE_PX);
+    const widthTiles = Math.ceil(this.sceneWidth / MapHelper.TILE_SIZE_PX);
+    const heightTiles = Math.ceil(this.sceneHeight / MapHelper.TILE_SIZE_PX);
     return new Size(widthTiles, heightTiles);
   }
 

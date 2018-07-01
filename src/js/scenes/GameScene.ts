@@ -10,8 +10,12 @@ import { Topics } from 'Topics';
 import { EntityComponentUpdater } from 'connection/EntityComponentUpdater';
 import { AccountInfo } from 'model';
 import { ServerLocalFacade } from 'demo';
+import { DialogModalPlugin } from 'ui/DialogModalPlugin';
 
 export class GameScene extends Phaser.Scene {
+
+  private dialogModal: DialogModalPlugin;
+
   private entityStore: EntityStore;
   private engineContext: EngineContext;
 
@@ -26,6 +30,7 @@ export class GameScene extends Phaser.Scene {
   private messageRouter: MessageRouter;
   private actionMessageHandler: ActionMessageHandler;
   private ecUpdater: EntityComponentUpdater;
+
   // /BOOTSTRAP
   constructor() {
     super({
@@ -76,6 +81,8 @@ export class GameScene extends Phaser.Scene {
 
   public create() {
     this.engineContext.game.input.mouse.disableContextMenu();
+    this.dialogModal.setup();
+    this.dialogModal.setText('This is a small test!');
 
     const map = this.make.tilemap({ key: 'map' });
     const floorTiles = map.addTilesetImage('trees_plants_rocks', 'tiles');

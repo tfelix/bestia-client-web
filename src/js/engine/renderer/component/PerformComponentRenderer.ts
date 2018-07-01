@@ -34,7 +34,8 @@ export class PerformComponentRenderer extends ComponentRenderer<PerformComponent
     super(ctx.game);
 
     if (!PerformComponentRenderer.graphicsLayer) {
-      PerformComponentRenderer.graphicsLayer = this.game.add.graphics({ fillStyle: { color: 0x000000 } });
+      PerformComponentRenderer.graphicsLayer = this.game.add.graphics();
+      PerformComponentRenderer.graphicsLayer.fillStyle(0x000000, 1);
       PerformComponentRenderer.graphicsLayer.depth = Depths.UI;
 
       this.soundHolder.buttonClick = this.game.sound.add('click', { loop: false });

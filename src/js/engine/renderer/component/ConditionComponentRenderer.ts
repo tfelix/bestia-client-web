@@ -29,8 +29,10 @@ export class ConditionComponentRenderer extends ComponentRenderer<ConditionCompo
   }
 
   protected createGameData(entity: Entity, component: ConditionComponent) {
+    const condGfx = this.game.add.graphics();
+    condGfx.fillStyle(0x00AA00, 1);
     entity.data.condition = {
-      conditionGraphic: this.game.add.graphics({ fillStyle: { color: 0x00AA00 } })
+      conditionGraphic: condGfx
     };
   }
 

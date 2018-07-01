@@ -80,7 +80,8 @@ export class ChatActionsRenderer extends ActionsRenderer {
     txt.depth = 10000;
     txt.setOrigin(0.5, 0.5);
 
-    const gfx = this.game.add.graphics({ fillStyle: { color: 0x00AA00 } });
+    const gfx = this.game.add.graphics();
+    gfx.fillStyle(0x00AA00, 1);
     this.drawChatBackground(gfx, txt);
 
     // There seems to be a bug and the childs can not be added in the constructor.

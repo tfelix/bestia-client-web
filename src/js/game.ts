@@ -6,6 +6,7 @@ import * as LOG from 'loglevel';
 import { LoadScene } from './scenes/LoadScene';
 import { BootScene } from './scenes/BootScene';
 import { GameScene } from './scenes/GameScene';
+import { DialogModalPlugin } from 'ui/DialogModalPlugin';
 
 if (DEV) {
   // Development configs
@@ -18,7 +19,7 @@ if (DEV) {
 
 const title = (DEV) ? 'Bestia Client DEVELOPMENT' : 'Bestia Client';
 
-const config: GameConfig = {
+const config = {
   title: title,
   url: 'https://bestia-game.net',
   version: '0.1-alpha',
@@ -27,6 +28,9 @@ const config: GameConfig = {
   zoom: 1,
   type: Phaser.AUTO,
   parent: 'game',
+  plugins: {
+    scene: [{ key: 'dialogModal', plugin: DialogModalPlugin, mapping: 'dialogModal' }]
+  },
   scene: [BootScene, GameScene, LoadScene],
   input: {
     keyboard: true,

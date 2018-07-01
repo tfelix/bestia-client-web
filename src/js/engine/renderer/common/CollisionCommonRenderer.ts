@@ -67,8 +67,10 @@ export class CollisionCommonRenderer extends BaseCommonRenderer {
     if (this.graphicsCollision) {
       return;
     }
-    this.graphicsCollision = this.context.game.add.graphics({ fillStyle: { color: 0x0000FF } });
-    this.graphicsNonCollision = this.context.game.add.graphics({ fillStyle: { color: 0x00FF00 } });
+    this.graphicsCollision = this.context.game.add.graphics();
+    this.graphicsCollision.fillStyle(0x0000FF, 1);
+    this.graphicsNonCollision = this.context.game.add.graphics();
+    this.graphicsNonCollision.fillStyle(0x00FF00);
     this.graphicsCollision.depth = 1000000;
     this.graphicsNonCollision.depth = 1000000;
     this.graphicsCollision.alpha = 0.3;

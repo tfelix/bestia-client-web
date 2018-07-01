@@ -3,7 +3,6 @@ import * as LOG from 'loglevel';
 import { Entity } from 'entities';
 import { DebugComponent, Component, ComponentType } from 'entities/components';
 import { ComponentRenderer } from './ComponentRenderer';
-import { VisualComponentRenderer } from './VisualComponentRenderer';
 import { MapHelper } from 'map';
 
 export interface DebugData {
@@ -33,7 +32,8 @@ export class DebugComponentRenderer extends ComponentRenderer<DebugComponent> {
     }
 
     const originCircle = new Phaser.Geom.Circle(0, 0, 5);
-    const originCircleGraphics = this.game.add.graphics({ fillStyle: { color: 0xFF0000 } });
+    const originCircleGraphics = this.game.add.graphics();
+    originCircleGraphics.fillStyle(0xFF0000, 1);
     originCircleGraphics.fillCircleShape(originCircle);
 
     entity.data.debug = {
