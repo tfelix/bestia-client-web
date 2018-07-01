@@ -11,10 +11,12 @@ import { EntityComponentUpdater } from 'connection/EntityComponentUpdater';
 import { AccountInfo } from 'model';
 import { ServerLocalFacade } from 'demo';
 import { DialogModalPlugin } from 'ui/DialogModalPlugin';
+import { UiModalMessage } from 'message/UiMessages';
+import { UIDataUpdater } from 'connection/UIDataUpdater';
 
 export class GameScene extends Phaser.Scene {
 
-  private dialogModal: DialogModalPlugin;
+  public dialogModal: DialogModalPlugin;
 
   private entityStore: EntityStore;
   private engineContext: EngineContext;
@@ -30,18 +32,14 @@ export class GameScene extends Phaser.Scene {
   private messageRouter: MessageRouter;
   private actionMessageHandler: ActionMessageHandler;
   private ecUpdater: EntityComponentUpdater;
+  private uiDataUpdater: UIDataUpdater;
 
   // /BOOTSTRAP
   constructor() {
     super({
       key: 'GameScene'
     });
-
-    // BOOTSTRAP CODE
-    // THIS CODE MUST BE CREATED EVEN EARLIER BEFORE LOADING
-    // GAME SCENE IS STARTED IF I KNOW HOW
     this.entityStore = new EntityStore();
-    this.setupMessaging();
   }
 
   public init(entityStore: EntityStore): void {
@@ -60,6 +58,12 @@ export class GameScene extends Phaser.Scene {
     this.engineContext.config.debug.renderCollision = false;
     this.engineContext.config.debug.renderInfo = false;
 
+    // BOOTSTRAP CODE
+    // THIS CODE MUST BE CREATED EVEN EARLIER BEFORE LOADING
+    // GAME SCENE IS STARTED IF I KNOW HOW
+    this.setupMessaging();
+    this.setupDataUpdater();
+
     PubSub.publish(Topics.IO_SEND_MSG, new SyncRequestMessage());
   }
 
@@ -69,10 +73,18 @@ export class GameScene extends Phaser.Scene {
       { handles: (msg) => msg instanceof AccountInfoMessage, routeTopic: Topics.IO_RECV_ACC_INFO_MSG },
       { handles: (msg) => msg instanceof ComponentMessage, routeTopic: Topics.IO_RECV_COMP_MSG },
       { handles: (msg) => msg instanceof ComponentDeleteMessage, routeTopic: Topics.IO_RECV_DEL_COMP_MSG },
+      { handles: (msg) => msg instanceof UiModalMessage, routeTopic: Topics.IO_RECV_UI_MSG }
     ]);
     this.actionMessageHandler = new ActionMessageHandler(this.entityStore);
-    this.ecUpdater = new EntityComponentUpdater(this.entityStore);
     this.connectionFacade = new ServerLocalFacade(this.entityStore);
+  }
+
+  /**
+   * Must be done after messaging was setup and after the engine context was created.
+   */
+  private setupDataUpdater() {
+    this.ecUpdater = new EntityComponentUpdater(this.entityStore);
+    this.uiDataUpdater = new UIDataUpdater(this.engineContext);
   }
 
   public preload(): void {
@@ -82,7 +94,6 @@ export class GameScene extends Phaser.Scene {
   public create() {
     this.engineContext.game.input.mouse.disableContextMenu();
     this.dialogModal.setup();
-    this.dialogModal.setText('This is a small test!');
 
     const map = this.make.tilemap({ key: 'map' });
     const floorTiles = map.addTilesetImage('trees_plants_rocks', 'tiles');

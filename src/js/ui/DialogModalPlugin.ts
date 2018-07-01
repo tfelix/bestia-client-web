@@ -56,8 +56,8 @@ export class DialogModalPlugin extends Phaser.Plugins.ScenePlugin {
     this.closeBtnColor = opts.closeBtnColor || 'darkgoldenrod';
     this.dialogSpeed = opts.dialogSpeed || 3;
 
-    // Create the dialog window
     this.createWindow();
+    this.toggleWindow();
   }
 
   public setText(text: string, animate = true) {
@@ -77,6 +77,10 @@ export class DialogModalPlugin extends Phaser.Plugins.ScenePlugin {
         callbackScope: this,
         loop: true
       });
+    }
+
+    if (!this.visible) {
+      this.toggleWindow();
     }
   }
 

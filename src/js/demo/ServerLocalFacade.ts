@@ -15,6 +15,7 @@ import { ClientMessageHandler, ItemPickupHandler } from 'demo';
 import { EntityLocalFactory } from './EntityLocalFactory';
 import { ConditionHelper } from './ConditionHelper';
 import { ComponentCopyHelper } from './ComponentCopyHelper';
+import { UiModalMessage } from 'message/UiMessages';
 
 const PLAYER_ACC_ID = 1337;
 
@@ -101,6 +102,12 @@ export class ServerLocalFacade {
 
     this.sendAllComponents(this.entityFactory.addItem('knife', 1, new Point(12, 10)));
     this.sendAllComponents(this.entityFactory.addItem('knife', 1, new Point(3, 6)));
+
+    // DEV
+    window.setTimeout(() => {
+      const modalMsg = new UiModalMessage(this.PLAYER_ENTITY_ID, 'Hello World after 5 seconds.');
+      this.sendClient(modalMsg);
+    }, 5000);
   }
 
   private sendAllComponents(components: Component[]) {

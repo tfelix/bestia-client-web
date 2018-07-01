@@ -2,6 +2,7 @@ import { EngineContext } from 'engine/EngineContext';
 import { BaseCommonRenderer } from './BaseCommonRenderer';
 import { CollisionCommonRenderer } from './CollisionCommonRenderer';
 import { DebugInfoRenderer } from './DebugInfoRenderer';
+import { UIModalRenderer } from './UIModalRenderer';
 
 export class CommonRenderManager implements RenderStatistics {
 
@@ -11,8 +12,9 @@ export class CommonRenderManager implements RenderStatistics {
     private readonly ctx: EngineContext
   ) {
 
-    this.renderer.push(new CollisionCommonRenderer(ctx));
-    this.renderer.push(new DebugInfoRenderer(ctx));
+    this.renderer.push(new CollisionCommonRenderer(this.ctx));
+    this.renderer.push(new DebugInfoRenderer(this.ctx));
+    this.renderer.push(new UIModalRenderer(this.ctx));
   }
 
   public update() {

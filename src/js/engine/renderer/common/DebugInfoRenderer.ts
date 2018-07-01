@@ -29,7 +29,7 @@ export class DebugInfoRenderer extends BaseCommonRenderer {
     this.displayHelper = new DisplayHelper(ctx.game);
   }
 
-  public needsUpdate() {
+  public needsUpdate(): boolean {
     const shouldRender = this.ctx.config.debug.renderInfo;
     const shouldCleanData = !this.ctx.config.debug.renderInfo && !!this.text;
     return shouldRender || shouldCleanData;

@@ -6,6 +6,7 @@ import { SpriteHelper } from './SpriteHelper';
 import { PointerManager } from './pointer';
 import { MoveHelper } from './MoveHelper';
 import { InteractionCache } from 'entities/InteractionCache';
+import { GameData } from '.';
 
 export class EngineConfig {
 
@@ -15,12 +16,7 @@ export class EngineConfig {
   };
 
   constructor() {
-
   }
-}
-
-export class GameData {
-  // TODO Will contain shared game data.
 }
 
 export class EngineContext {
