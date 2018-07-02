@@ -5,4 +5,4 @@ export * from './ComponentMessage';
 export * from './SyncRequestMessage';
 export * from './AbortPerformMessage';
 export * from './AccountInfoMessage';
-export * from './ItemPickupMessage';
+export * from './RequestItemLootMessage';

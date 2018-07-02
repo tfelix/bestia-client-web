@@ -8,7 +8,7 @@ import { Px } from 'model';
 import { Entity, PlayerEntityHolder } from 'entities';
 import { ComponentType, EntityTypeComponent, EntityType, VisualComponent, PositionComponent } from 'entities/components';
 import { Topics } from 'Topics';
-import { ItemPickupMessage } from 'message';
+import { RequestItemLootMessage } from 'message';
 
 export class ItemPickupPointer extends Pointer {
 
@@ -62,7 +62,7 @@ export class ItemPickupPointer extends Pointer {
 
   private pickupItem(itemEntity: Entity) {
     VisualComponent.playOneShotAnimation(itemEntity, 'item_pickup');
-    const pickupMsg = new ItemPickupMessage(itemEntity.id, 1);
+    const pickupMsg = new RequestItemLootMessage(itemEntity.id, 1);
     PubSub.publish(Topics.IO_SEND_MSG, pickupMsg);
   }
 

@@ -1,10 +1,11 @@
-import { Point } from 'model';
+import { Point, Item } from 'model';
 import { Entity, EntityStore } from 'entities';
 import {
   PlayerComponent, Component, ComponentType, ConditionComponent, VisualComponent,
   DebugComponent, SpriteType, PositionComponent, EntityTypeComponent, EntityType,
   AttacksComponent
 } from 'entities/components';
+import { InventoryComponent } from 'entities/components/InventoryComponent';
 
 export class EntityLocalFactory {
 
@@ -17,8 +18,9 @@ export class EntityLocalFactory {
 
   }
 
-  public createEntity(): Entity {
-    return this.entityStore.getEntity(this.entityCounter++);
+  public createEntity(specialId?: number): Entity {
+    const newEntityId = specialId || this.entityCounter++;
+    return this.entityStore.getEntity(newEntityId);
   }
 
   public addSprite(entity: Entity, name: string, pos: Point): Component[] {
@@ -76,12 +78,19 @@ export class EntityLocalFactory {
     );
     entity.addComponent(playerComp);
 
+    const inventoryComp = new InventoryComponent(
+      this.componentCounter++,
+      entity.id
+    );
+    entity.addComponent(inventoryComp);
+
     return [
       ...spriteComp,
       entityTypeComp,
       attackComp,
       conditionComp,
-      playerComp
+      playerComp,
+      inventoryComp
     ];
   }
 
@@ -130,11 +139,18 @@ export class EntityLocalFactory {
     entityTypeComp.entityType = EntityType.ITEM;
     entity.addComponent(entityTypeComp);
 
-    return [visual, position, entityTypeComp];
+    const inventoryComp = new InventoryComponent(
+      this.componentCounter++,
+      entity.id
+    );
+    inventoryComp.items.push(new Item(1, 2, name, 1));
+    entity.addComponent(inventoryComp);
+
+    return [visual, position, entityTypeComp, inventoryComp];
   }
 
-  public addObject(name: string, pos: Point): Component[] {
-    const entity = this.createEntity();
+  public addObject(name: string, pos: Point, givenEntityId?: number): Component[] {
+    const entity = this.createEntity(givenEntityId);
     this.entityStore.addEntity(entity);
 
     const visual = new VisualComponent(
