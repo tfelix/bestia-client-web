@@ -1,8 +1,9 @@
 import * as LOG from 'loglevel';
 
 import { Entity } from 'entities';
-import { ComponentDeleteMessage } from 'message';
+import { ComponentDeleteMessage, ComponentMessage } from 'message';
 import { Topics } from 'Topics';
+import { Component } from 'entities/components';
 
 export abstract class ClientMessageHandler<T> {
   public abstract isHandlingMessage(msg: any): boolean;
@@ -24,5 +25,12 @@ export abstract class ClientMessageHandler<T> {
 
   protected sendClient(msg: any) {
     PubSub.publish(Topics.IO_RECV_MSG, msg);
+  }
+
+  protected sendAllComponents(components: Component[]) {
+    components.forEach((c) => {
+      const compMsg = new ComponentMessage(c);
+      this.sendClient(compMsg);
+    });
   }
 }
