@@ -7,6 +7,7 @@ import { ConditionComponentRenderer } from './ConditionComponentRenderer';
 import { MasterLocalComponentRenderer } from './local/MasterLocalComponentRenderer';
 import { EngineContext } from '../../EngineContext';
 import { PerformComponentRenderer } from './PerformComponentRenderer';
+import { InventoryComponentRenderer } from './InventoryComponentRenderer';
 
 export class EntityRenderManager {
 
@@ -20,6 +21,7 @@ export class EntityRenderManager {
     this.addComponentRenderer(new MoveComponentRenderer(context));
     this.addComponentRenderer(new ConditionComponentRenderer(context));
     this.addComponentRenderer(new PerformComponentRenderer(this.context));
+    this.addComponentRenderer(new InventoryComponentRenderer(this.context));
 
     // Local Component Renderer.
     this.addComponentRenderer(new MasterLocalComponentRenderer(context));

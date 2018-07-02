@@ -34,7 +34,7 @@ export class MessageRouter {
     });
 
     if (!wasHandled) {
-      LOG.warn(`Unroutable message arrived: ${JSON.stringify(msg)}`);
+      LOG.warn(`Unroutable message arrived: ${JSON.stringify(msg)}\nDid you forget to wrap it into a ComponentMessage envelope?`);
     }
   }
 }

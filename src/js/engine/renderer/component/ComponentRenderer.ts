@@ -10,8 +10,6 @@ export abstract class ComponentRenderer<C extends Component> {
 
   }
 
-  abstract get supportedComponent(): ComponentType;
-
   public render(entity: Entity, component: Component) {
     this.update();
     if (this.hasNotSetup(entity, component as C)) {
@@ -22,14 +20,16 @@ export abstract class ComponentRenderer<C extends Component> {
   }
 
   /**
+   * This function is guranteed to be called each tick in the game loop.
+   */
+  protected update() { }
+
+  /**
    * The render must decide if there was a setup for this entity yet.
    */
   protected abstract hasNotSetup(entity: Entity, component: C): boolean;
 
-  /**
-   * This function is guranteed to be called each tick in the game loop.
-   */
-  protected update() { }
+  public abstract get supportedComponent(): ComponentType;
 
   protected abstract createGameData(entity: Entity, component: C);
 

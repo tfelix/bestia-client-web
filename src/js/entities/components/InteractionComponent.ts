@@ -9,6 +9,7 @@ enum InteractionType {
   LOOT
 }
 
+// FIXME Interaction fertigstellen
 export class InteractionComponent extends Component {
 
   public possibleInteraction: InteractionType[] = [];

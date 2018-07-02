@@ -1,4 +1,4 @@
-import { RequestItemLootMessage } from 'message';
+import { RequestItemLootMessage, ComponentMessage } from 'message';
 import { EntityStore } from 'entities';
 import { ClientMessageHandler } from './ClientMessageHandler';
 import { ComponentType } from 'entities/components';
@@ -35,7 +35,7 @@ export class ItemPickupHandler extends ClientMessageHandler<RequestItemLootMessa
     const playerInventoryComp = playerEntity.getComponent(ComponentType.INVENTORY) as InventoryComponent;
     playerInventoryComp.items.push(lootedItem);
     playerEntity.addComponent(playerInventoryComp);
-    this.sendClient(playerInventoryComp);
+    this.sendClient(new ComponentMessage<InventoryComponent>(playerInventoryComp));
 
     this.deleteEntity(itemEntity);
   }
