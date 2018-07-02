@@ -1,6 +1,6 @@
 import { Topics } from 'Topics';
 import { ComponentMessage } from 'message';
-import { Component, ComponentType } from 'entities/components';
+import { Component, ComponentType, PositionComponent } from 'entities/components';
 import { Point } from 'model';
 import { Entity, EntityStore } from 'entities';
 
@@ -21,7 +21,14 @@ export class EntityPositionCache {
       return;
     }
 
+    const posComp = msg.component as PositionComponent;
+    const spatialKey = this.pointToSpatialKey(posComp.position);
     this.deleteOldEntity(msg.component.entityId);
+    const entities = this.positionToEntity.get(spatialKey) || [];
+    entities.push(msg.component.entityId);
+
+    this.positionToEntity.set(spatialKey, entities);
+    this.entityToPosition.set(posComp.entityId, spatialKey);
   }
 
   private deleteOldEntity(entityId: number) {
@@ -36,11 +43,16 @@ export class EntityPositionCache {
   }
 
   private checkComponentDelete(msg: ComponentMessage<Component>) {
-
+    if (msg.component.type !== ComponentType.POSITION) {
+      return;
+    }
+    this.deleteOldEntity(msg.component.entityId);
   }
 
-  private getEntitiesOnTile(position: Point): Entity[] {
-    return [];
+  public getEntitiesOnTile(position: Point): Entity[] {
+    const spatialKey = this.pointToSpatialKey(position);
+    const entityIds = this.positionToEntity.get(spatialKey) || [];
+    return entityIds.map(id => this.entityStore.getEntity(id)).filter(x => x !== null);
   }
 
   private pointToSpatialKey(position: Point): string {
