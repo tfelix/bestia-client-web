@@ -43,7 +43,10 @@ export class LoadScene extends Phaser.Scene {
     });
 
     // Load Music
-    this.load.audio('click', ['../assets/audio/click.ogg'], {});
+    const audioObjects = ['click'];
+    audioObjects.forEach(x => {
+      this.load.audio(x, [`../assets/audio/${x}.ogg`, `../assets/audio/${x}.mp3`], {});
+    });
 
     // Load Tileset + Tilesheet
     this.load.image('tiles', '../assets/tilemap/tiles/trees_plants_rocks.png');

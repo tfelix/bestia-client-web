@@ -1,20 +1,60 @@
 {"frames": {
 
-"cancel.png":
+"arrowBlue_left.png":
 {
-	"frame": {"x":1,"y":1,"w":32,"h":32},
+	"frame": {"x":1,"y":342,"w":22,"h":21},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
-	"sourceSize": {"w":32,"h":32}
+	"spriteSourceSize": {"x":0,"y":0,"w":22,"h":21},
+	"sourceSize": {"w":22,"h":21}
+},
+"cancel.png":
+{
+	"frame": {"x":25,"y":342,"w":16,"h":15},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":15},
+	"sourceSize": {"w":16,"h":15}
+},
+"cursor-attack.png":
+{
+	"frame": {"x":1,"y":303,"w":34,"h":37},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":34,"h":37},
+	"sourceSize": {"w":34,"h":37}
+},
+"cursor-hand.png":
+{
+	"frame": {"x":37,"y":303,"w":30,"h":30},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":30,"h":30},
+	"sourceSize": {"w":30,"h":30}
+},
+"fish.png":
+{
+	"frame": {"x":43,"y":335,"w":38,"h":24},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":17,"y":3,"w":38,"h":24},
+	"sourceSize": {"w":64,"h":64}
+},
+"fishing-meter.png":
+{
+	"frame": {"x":1,"y":1,"w":88,"h":300},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":6,"y":0,"w":88,"h":300},
+	"sourceSize": {"w":100,"h":300}
 }},
 "meta": {
 	"app": "https://www.codeandweb.com/texturepacker",
 	"version": "1.0",
 	"image": "ui_elements.png",
 	"format": "RGBA8888",
-	"size": {"w":34,"h":34},
+	"size": {"w":90,"h":364},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:3926088886324e8194ecdc87a978755e:1620cbfdc320c26c0bcec5757f410cdc:59da2b41128548815dafec59b8f0c0ce$"
+	"smartupdate": "$TexturePacker:SmartUpdate:9dc386556c3d1be967cd1956a92b2667:58907e9e8c6fad6271bdb644031ee938:59da2b41128548815dafec59b8f0c0ce$"
 }
 }
