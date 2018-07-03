@@ -78,7 +78,7 @@ export class DebugInfoRenderer extends BaseCommonRenderer {
     const scrollOffset = this.displayHelper.getScrollOffset();
     const pointerMapPos = MapHelper.pixelToPoint(pointerScreenX, pointerScreenY).plus(scrollOffset);
 
-    const fps = Math.round(this.renderFrameTimesMs.reduce((sum, v) => sum + v) / this.renderFrameTimesMs.length);
+    const fps = Math.round(1000 / (this.renderFrameTimesMs.reduce((sum, v) => sum + v) / this.renderFrameTimesMs.length));
 
     let debugTxt = `FPS: ${fps}`;
     debugTxt += `\nCamera (scrollX: ${camScrollX} scrollY: ${camScrollY})`;

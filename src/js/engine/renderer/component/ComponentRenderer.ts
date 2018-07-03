@@ -20,6 +20,13 @@ export abstract class ComponentRenderer<C extends Component> {
   }
 
   /**
+   * Is called from the manager when phaser is in the create step.
+   * This can be useful to create a resource which should be cached for
+   * runtime.
+   */
+  public create() { }
+
+  /**
    * This function is guranteed to be called each tick in the game loop.
    */
   protected update() { }

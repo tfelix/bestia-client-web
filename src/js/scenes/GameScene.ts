@@ -92,6 +92,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   public create() {
+    this.scene.launch('UiScene');
     this.engineContext.game.input.mouse.disableContextMenu();
     this.dialogModal.setup();
 
@@ -110,6 +111,8 @@ export class GameScene extends Phaser.Scene {
     this.input.keyboard.on('keydown_W', () => {
       this.engineContext.config.debug.renderInfo = !this.engineContext.config.debug.renderInfo;
     });
+
+    this.entityRenderManager.create();
   }
 
   public update(time, delta) {

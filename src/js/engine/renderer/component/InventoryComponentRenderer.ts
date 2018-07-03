@@ -2,15 +2,36 @@ import { ComponentRenderer } from '.';
 import { InventoryComponent, ComponentType } from 'entities/components';
 import { Entity } from 'entities';
 import { EngineContext } from '../../EngineContext';
+import { UiScene } from 'scenes/UiScene';
+import { Item } from 'model';
 
-let lastItemCount = 0;
+// TODO Replace this with bitmap text
+const uiTextStyle = { fontFamily: 'Arial', fontSize: 12, color: '#000000' };
+
+let lastItemCount: number | undefined;
+const itemPickupQueue: ItemViewModel[] = [];
+
+class ItemViewModel {
+  constructor(
+    public readonly name: string,
+    public readonly amount: number,
+    public readonly spriteName: string
+  ) {
+  }
+}
 
 export class InventoryComponentRenderer extends ComponentRenderer<InventoryComponent> {
+
+  private ui: Phaser.Scene;
+  private obtainedBg: Phaser.GameObjects.Image;
+  private obtainedContainer: Phaser.GameObjects.Container;
 
   constructor(
     private readonly ctx: EngineContext
   ) {
     super(ctx.game);
+
+    this.ui = ctx.game.scene.get('UiScene');
   }
 
   get supportedComponent(): ComponentType {
@@ -18,15 +39,81 @@ export class InventoryComponentRenderer extends ComponentRenderer<InventoryCompo
   }
 
   protected hasNotSetup(entity: Entity, component: InventoryComponent): boolean {
+
+    if (!this.ctx.playerHolder.isActivePlayerEntity(entity)) {
+      return false;
+    }
+
+    if (lastItemCount === undefined) {
+      lastItemCount = component.items.length;
+    }
     return lastItemCount < component.items.length;
   }
 
   protected createGameData(entity: Entity, component: InventoryComponent) {
-    alert('Player has picked up: ' + component.items[component.items.length - 1].name);
     lastItemCount = component.items.length;
+    const lastItem = component.items[component.items.length - 1];
+
+    // TODO generalize the item key translation creation
+    const keyItemTranslation = `item.${lastItem.name}`;
+    const translateRequest = [`item.${lastItem.name}`];
+    this.ctx.i18n.translate(translateRequest, (t) => {
+      const itemViewModel = new ItemViewModel(
+        t[keyItemTranslation],
+        lastItem.amount,
+        lastItem.name
+      );
+      itemPickupQueue.push(itemViewModel);
+      this.showItemObtained();
+    });
   }
 
   protected updateGameData(entity: Entity, component: InventoryComponent) {
 
+  }
+
+  public create() {
+    this.obtainedBg = this.ui.add.image(0, 0, 'ui', 'item-obtained.png');
+    this.obtainedBg.setOrigin(0, 0);
+
+    this.obtainedContainer = this.ui.add.container(400, 10, [this.obtainedBg]);
+    this.obtainedContainer.alpha = 0;
+  }
+
+  private showItemObtained() {
+    if (itemPickupQueue.length === 0) {
+      return;
+    }
+    const viewItem = itemPickupQueue.shift();
+
+    const itemImg = this.ui.add.image(12, 12, viewItem.spriteName);
+    itemImg.setOrigin(0, 0);
+    const obtainedText = this.ui.add.text(50, 16, `${viewItem.name} x${viewItem.amount}`, uiTextStyle);
+
+    this.obtainedContainer.add([itemImg, obtainedText]);
+
+    const timeline = this.ui.tweens.timeline({
+      tweens: [
+        {
+          targets: this.obtainedContainer,
+          alpha: 1,
+          y: 30,
+          duration: 500
+        },
+        {
+          targets: this.obtainedContainer,
+          alpha: 0,
+          y: 20,
+          duration: 500,
+          delay: 2000,
+          onComplete: () => {
+            itemImg.destroy();
+            obtainedText.destroy();
+            timeline.destroy();
+            this.showItemObtained();
+          }
+        }
+      ]
+    });
   }
 }

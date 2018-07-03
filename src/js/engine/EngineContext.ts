@@ -7,6 +7,7 @@ import { PointerManager } from './pointer';
 import { MoveHelper } from './MoveHelper';
 import { InteractionCache } from 'entities/InteractionCache';
 import { GameData } from '.';
+import { TranslationService } from 'connection/TranslationService';
 
 export class EngineConfig {
 
@@ -30,6 +31,7 @@ export class EngineContext {
   public readonly config = new EngineConfig();
   public readonly data = new GameData();
   public readonly interactionCache = new InteractionCache();
+  public readonly i18n = new TranslationService();
 
   public readonly helper: {
     display: DisplayHelper;

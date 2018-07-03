@@ -31,6 +31,10 @@ export class EntityRenderManager {
     this.componentRenderer.set(renderer.supportedComponent, renderer);
   }
 
+  public create() {
+    this.componentRenderer.forEach(r => r.create());
+  }
+
   public update() {
     for (const e of this.context.entityStore.entities.values()) {
       for (const rc of e.removedComponentTypes) {
