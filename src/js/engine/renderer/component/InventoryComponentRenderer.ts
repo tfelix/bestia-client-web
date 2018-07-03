@@ -2,8 +2,6 @@ import { ComponentRenderer } from '.';
 import { InventoryComponent, ComponentType } from 'entities/components';
 import { Entity } from 'entities';
 import { EngineContext } from '../../EngineContext';
-import { UiScene } from 'scenes/UiScene';
-import { Item } from 'model';
 
 // TODO Replace this with bitmap text
 const uiTextStyle = { fontFamily: 'Arial', fontSize: 12, color: '#000000' };
@@ -47,14 +45,17 @@ export class InventoryComponentRenderer extends ComponentRenderer<InventoryCompo
     if (lastItemCount === undefined) {
       lastItemCount = component.items.length;
     }
+    // TODO what if only the amount has changed? Better calculate owned item number.
     return lastItemCount < component.items.length;
   }
 
   protected createGameData(entity: Entity, component: InventoryComponent) {
     lastItemCount = component.items.length;
+    // TODO The way how we determine the last picked up item is totally buggy. We need
+    // to consider if only the amount of a certain item went up. Must calculate delta between now and last check.
     const lastItem = component.items[component.items.length - 1];
 
-    // TODO generalize the item key translation creation
+    // TODO generalize the item key translation creation in a dedicated component
     const keyItemTranslation = `item.${lastItem.name}`;
     const translateRequest = [`item.${lastItem.name}`];
     this.ctx.i18n.translate(translateRequest, (t) => {
@@ -68,11 +69,10 @@ export class InventoryComponentRenderer extends ComponentRenderer<InventoryCompo
     });
   }
 
-  protected updateGameData(entity: Entity, component: InventoryComponent) {
-
-  }
+  protected updateGameData(entity: Entity, component: InventoryComponent) { }
 
   public create() {
+    // TODO I dont like to use these strings here. Maybe put this into a constant.
     this.obtainedBg = this.ui.add.image(0, 0, 'ui', 'item-obtained.png');
     this.obtainedBg.setOrigin(0, 0);
 

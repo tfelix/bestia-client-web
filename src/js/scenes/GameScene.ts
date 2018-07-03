@@ -115,7 +115,7 @@ export class GameScene extends Phaser.Scene {
     this.entityRenderManager.create();
   }
 
-  public update(time, delta) {
+  public update() {
     this.engineContext.pointerManager.update();
 
     this.entityRenderManager.update();
