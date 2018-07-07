@@ -10,7 +10,6 @@
   },
   "extends": ["tslint:all", "tslint-no-circular-imports"],
   "rules": {
-    // Don't want these
     "trailing-comma": false,
     "ordered-imports": false,
     "cyclomatic-complexity": false,
@@ -30,7 +29,6 @@
     "no-bitwise": false,
     "prefer-object-spread": false,
     "binary-expression-operand-order": false,
-    // TODO: Enable stricter options for these
     "comment-format": [
       true,
       "check-space"
@@ -46,7 +44,6 @@
       "allow-declarations",
       "allow-named-functions"
     ],
-    // TODO: Enable these
     "completed-docs": false,
     "no-any": false,
     "no-magic-numbers": false,

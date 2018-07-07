@@ -3,7 +3,7 @@ import { PlayerEntityHolder, EntityStore } from 'entities';
 import { CollisionUpdater } from 'map';
 import { DisplayHelper } from './DisplayHelper';
 import { SpriteHelper } from './SpriteHelper';
-import { PointerManager } from './pointer';
+import { PointerManager, CursorManager } from './pointer';
 import { MoveHelper } from './MoveHelper';
 import { InteractionCache } from 'entities/InteractionCache';
 import { GameData } from '.';
@@ -28,6 +28,7 @@ export class EngineContext {
   public pathfinder: EasyStar.js;
   public collisionUpdater: CollisionUpdater;
   public pointerManager: PointerManager;
+  public cursorManager: CursorManager;
 
   public readonly config = new EngineConfig();
   public readonly data = new GameData();
@@ -60,6 +61,7 @@ export class EngineContext {
 
     this.collisionUpdater = new CollisionUpdater(this);
     this.pointerManager = new PointerManager(this);
+    this.cursorManager = new CursorManager(this);
 
     this.sound = new StaticSoundHolder(game);
   }

@@ -89,16 +89,15 @@ export class GameScene extends Phaser.Scene {
   }
 
   public create() {
-    this.scene.launch('UiScene');
     this.engineContext.game.input.mouse.disableContextMenu();
 
+    this.scene.launch('UiScene');
+    
     const map = this.make.tilemap({ key: 'map' });
     const floorTiles = map.addTilesetImage('trees_plants_rocks', 'tiles');
     map.createStaticLayer('floor_0', floorTiles, 0, 0);
 
     this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
-
-    this.engineContext.pointerManager.create();
 
     // Setup Keys
     this.input.keyboard.on('keydown_Q', () => {
@@ -109,10 +108,14 @@ export class GameScene extends Phaser.Scene {
     });
 
     this.entityRenderManager.create();
+
+    this.engineContext.pointerManager.create();
+    this.engineContext.cursorManager.create();
   }
 
   public update() {
     this.engineContext.pointerManager.update();
+    this.engineContext.cursorManager.update();
 
     this.entityRenderManager.update();
     this.actionRenderManager.update();
