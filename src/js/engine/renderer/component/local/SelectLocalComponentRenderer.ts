@@ -49,7 +49,7 @@ export class SelectLocalComponentRenderer extends ComponentRenderer<SelectLocalC
   }
 
   protected createGameData(entity: Entity, component: SelectLocalComponent) {
-    if(entity.id !== this.selectedEntityId) {
+    if (entity.id !== this.selectedEntityId) {
       this.clearSelection();
     }
 
