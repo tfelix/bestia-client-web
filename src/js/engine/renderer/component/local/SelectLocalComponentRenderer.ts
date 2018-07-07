@@ -29,7 +29,7 @@ export class SelectLocalComponentRenderer extends ComponentRenderer<SelectLocalC
     visual.setInteractive(true);
     // visual.on('pointerover', () => { play sound });
     visual.on('pointerover', () => {
-      // this.ctx.
+      this.ctx.sound.rollover.play();
       visual.setScale(1.1);
     });
     visual.on('pointerout', () => {

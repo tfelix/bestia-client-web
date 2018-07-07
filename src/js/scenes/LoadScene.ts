@@ -43,7 +43,7 @@ export class LoadScene extends Phaser.Scene {
     });
 
     // Load Music
-    const audioObjects = ['click'];
+    const audioObjects = ['click', 'rollover'];
     audioObjects.forEach(x => {
       this.load.audio(x, [`../assets/audio/${x}.ogg`, `../assets/audio/${x}.mp3`], {});
     });

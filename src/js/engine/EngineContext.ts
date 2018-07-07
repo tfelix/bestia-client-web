@@ -8,6 +8,7 @@ import { MoveHelper } from './MoveHelper';
 import { InteractionCache } from 'entities/InteractionCache';
 import { GameData } from '.';
 import { TranslationService } from 'connection/TranslationService';
+import { StaticSoundHolder } from './StaticSoundHolder';
 
 export class EngineConfig {
 
@@ -33,6 +34,8 @@ export class EngineContext {
   public readonly interactionCache = new InteractionCache();
   public readonly i18n = new TranslationService();
 
+  public readonly sound: StaticSoundHolder;
+
   public readonly helper: {
     display: DisplayHelper;
     sprite: SpriteHelper;
@@ -57,5 +60,7 @@ export class EngineContext {
 
     this.collisionUpdater = new CollisionUpdater(this);
     this.pointerManager = new PointerManager(this);
+
+    this.sound = new StaticSoundHolder(game);
   }
 }

@@ -9,7 +9,7 @@ import { ComponentRenderer } from '.';
 import { EngineContext } from '../../EngineContext';
 import { PerformComponent } from 'entities/components/PerformComponent';
 import { VisualDepth } from '../VisualDepths';
-import { SoundHolder } from '../../SoundHolder';
+import { StaticSoundHolder } from '../../StaticSoundHolder';
 
 export interface PerformData {
   endTime: number;
@@ -26,8 +26,6 @@ export class PerformComponentRenderer extends ComponentRenderer<PerformComponent
   private static cancelButton: Phaser.GameObjects.Image;
   private static cancelButtonOffset = new Px(-40, 15);
 
-  private soundHolder = SoundHolder;
-
   constructor(
     private readonly ctx: EngineContext
   ) {
@@ -38,7 +36,6 @@ export class PerformComponentRenderer extends ComponentRenderer<PerformComponent
       PerformComponentRenderer.graphicsLayer.fillStyle(0x000000, 1);
       PerformComponentRenderer.graphicsLayer.depth = VisualDepth.UI;
 
-      this.soundHolder.buttonClick = this.game.sound.add('click', { loop: false });
       PerformComponentRenderer.cancelButton = this.game.add.image(0, 0, 'ui', UIConstants.CANCEL);
 
       PerformComponentRenderer.cancelButton.visible = false;
@@ -55,7 +52,7 @@ export class PerformComponentRenderer extends ComponentRenderer<PerformComponent
   }
 
   private abortPerform() {
-    this.soundHolder.buttonClick.play();
+    this.ctx.sound.buttonClick.play();
     const abortMsg = new AbortPerformMessage();
     PubSub.publish(Topics.IO_SEND_MSG, abortMsg);
   }
