@@ -10,13 +10,10 @@ import { Topics } from 'Topics';
 import { EntityComponentUpdater } from 'connection/EntityComponentUpdater';
 import { AccountInfo } from 'model';
 import { ServerLocalFacade } from 'demo';
-import { DialogModalPlugin } from 'ui/DialogModalPlugin';
 import { UiModalMessage } from 'message/UiMessages';
 import { UIDataUpdater } from 'connection/UIDataUpdater';
 
 export class GameScene extends Phaser.Scene {
-
-  public dialogModal: DialogModalPlugin;
 
   private entityStore: EntityStore;
   private engineContext: EngineContext;
@@ -94,7 +91,6 @@ export class GameScene extends Phaser.Scene {
   public create() {
     this.scene.launch('UiScene');
     this.engineContext.game.input.mouse.disableContextMenu();
-    this.dialogModal.setup();
 
     const map = this.make.tilemap({ key: 'map' });
     const floorTiles = map.addTilesetImage('trees_plants_rocks', 'tiles');

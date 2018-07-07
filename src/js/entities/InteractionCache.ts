@@ -1,11 +1,5 @@
 import { EntityType } from './components';
-
-export enum InteractionType {
-  ATTACK,
-  PICKUP,
-  INTERACT,
-  NONE
-}
+import { InteractionType } from './components/local/InteractionLocalComponent';
 
 export class InteractionCache {
 
@@ -14,7 +8,7 @@ export class InteractionCache {
   constructor() {
 
     this.interactionCache.set(EntityType.BESTIA, InteractionType.ATTACK);
-    this.interactionCache.set(EntityType.ITEM, InteractionType.PICKUP);
+    this.interactionCache.set(EntityType.ITEM, InteractionType.LOOT);
   }
 
   public get(type: EntityType): InteractionType | null {

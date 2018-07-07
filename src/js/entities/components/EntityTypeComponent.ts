@@ -12,7 +12,7 @@ export enum EntityType {
 
 export class EntityTypeComponent extends Component {
 
-  public entityType = EntityType.OBJECT;
+  public entityType?: EntityType = EntityType.OBJECT;
 
   constructor(
     id: number,

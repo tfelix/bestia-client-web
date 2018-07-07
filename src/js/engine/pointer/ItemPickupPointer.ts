@@ -1,11 +1,9 @@
-import * as LOG from 'loglevel';
-
 import { Pointer } from './Pointer';
 import { PointerManager } from './PointerManager';
 import { EngineContext } from '../EngineContext';
 import { PointerPriority } from './PointerPriority';
 import { Px } from 'model';
-import { Entity, PlayerEntityHolder } from 'entities';
+import { Entity } from 'entities';
 import { ComponentType, EntityTypeComponent, EntityType, VisualComponent, PositionComponent } from 'entities/components';
 import { Topics } from 'Topics';
 import { RequestItemLootMessage } from 'message';
@@ -13,15 +11,12 @@ import { RequestItemLootMessage } from 'message';
 export class ItemPickupPointer extends Pointer {
 
   private activeSprite: Phaser.GameObjects.Sprite;
-  private playerHolder: PlayerEntityHolder;
 
   constructor(
     manager: PointerManager,
     ctx: EngineContext
   ) {
     super(manager, ctx);
-
-    this.playerHolder = ctx.playerHolder;
   }
 
   public allowOverwrite(): boolean {

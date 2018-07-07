@@ -1,3 +1,3 @@
 export * from './ConnectionLogger';
 export * from './MessageRouter';
-export * from '../demo/ServerLocalFacade';
+export * from '../demo/ServerEmulator';

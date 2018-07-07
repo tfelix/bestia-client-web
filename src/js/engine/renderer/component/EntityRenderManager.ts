@@ -8,6 +8,7 @@ import { MasterLocalComponentRenderer } from './local/MasterLocalComponentRender
 import { EngineContext } from '../../EngineContext';
 import { PerformComponentRenderer } from './PerformComponentRenderer';
 import { InventoryComponentRenderer } from './InventoryComponentRenderer';
+import { SelectLocalComponentRenderer } from './local/SelectLocalComponentRenderer';
 
 export class EntityRenderManager {
 
@@ -25,6 +26,7 @@ export class EntityRenderManager {
 
     // Local Component Renderer.
     this.addComponentRenderer(new MasterLocalComponentRenderer(context));
+    this.addComponentRenderer(new SelectLocalComponentRenderer(this.context));
   }
 
   private addComponentRenderer(renderer: ComponentRenderer<Component>) {

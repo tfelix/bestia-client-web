@@ -1,4 +1,5 @@
-import { Component, ComponentType } from 'entities/components';
+import { Component } from '../Component';
+import { ComponentType } from '../ComponentType';
 
 export const LOCAL_COMPONENT_ID = -1;
 

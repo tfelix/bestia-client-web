@@ -1,4 +1,3 @@
-import * as LOG from 'loglevel';
 import * as PubSub from 'pubsub-js';
 
 import { Pointer } from './Pointer';
@@ -6,8 +5,8 @@ import { PointerManager } from './PointerManager';
 import { EngineContext } from '../EngineContext';
 import { PointerPriority } from './PointerPriority';
 import { Px, Point } from 'model';
-import { Entity, PlayerEntityHolder, InteractionType } from 'entities';
-import { ComponentType, PositionComponent, VisualComponent } from 'entities/components';
+import { Entity, PlayerEntityHolder } from 'entities';
+import { ComponentType, PositionComponent, VisualComponent, InteractionType } from 'entities/components';
 import { EntityTypeComponent } from 'entities/components/EntityTypeComponent';
 import { AttacksComponent } from 'entities/components/AttacksComponent';
 import { BasicAttackMessage } from 'message/BasicAttackMessage';

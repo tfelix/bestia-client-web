@@ -8,7 +8,7 @@ import { UIConstants } from 'ui';
 import { ComponentRenderer } from '.';
 import { EngineContext } from '../../EngineContext';
 import { PerformComponent } from 'entities/components/PerformComponent';
-import { Depths } from '../VisualDepths';
+import { VisualDepth } from '../VisualDepths';
 import { SoundHolder } from '../../SoundHolder';
 
 export interface PerformData {
@@ -36,13 +36,13 @@ export class PerformComponentRenderer extends ComponentRenderer<PerformComponent
     if (!PerformComponentRenderer.graphicsLayer) {
       PerformComponentRenderer.graphicsLayer = this.game.add.graphics();
       PerformComponentRenderer.graphicsLayer.fillStyle(0x000000, 1);
-      PerformComponentRenderer.graphicsLayer.depth = Depths.UI;
+      PerformComponentRenderer.graphicsLayer.depth = VisualDepth.UI;
 
       this.soundHolder.buttonClick = this.game.sound.add('click', { loop: false });
       PerformComponentRenderer.cancelButton = this.game.add.image(0, 0, 'ui', UIConstants.CANCEL);
 
       PerformComponentRenderer.cancelButton.visible = false;
-      PerformComponentRenderer.cancelButton.depth = Depths.UI;
+      PerformComponentRenderer.cancelButton.depth = VisualDepth.UI;
       PerformComponentRenderer.cancelButton.setInteractive();
       PerformComponentRenderer.cancelButton.on('pointerout', () => this.ctx.pointerManager.show());
       PerformComponentRenderer.cancelButton.on('pointerover', () => this.ctx.pointerManager.hide());

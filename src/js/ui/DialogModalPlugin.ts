@@ -1,8 +1,10 @@
-import { Depths } from 'engine/renderer/VisualDepths';
+import { VisualDepth } from 'engine/renderer/VisualDepths';
+import { UIAtlas, UIConstants } from './UiConstants';
+import { ScaleModes } from 'phaser';
 
 export class DialogModalPlugin extends Phaser.Plugins.ScenePlugin {
 
-  private closeBtn: Phaser.GameObjects.Text;
+  private closeBtn: Phaser.GameObjects.Image;
   private graphics: Phaser.GameObjects.Graphics;
   private text: Phaser.GameObjects.Text;
   private timedEvent?: Phaser.Time.TimerEvent;
@@ -14,7 +16,6 @@ export class DialogModalPlugin extends Phaser.Plugins.ScenePlugin {
   private windowColor = 0x303030;
   private windowHeight = 150;
   private padding = 32;
-  private closeBtnColor = 'darkgoldenrod';
   private dialogSpeed = 3;
 
   private eventCounter = 0;
@@ -53,7 +54,6 @@ export class DialogModalPlugin extends Phaser.Plugins.ScenePlugin {
     this.windowColor = opts.windowColor || 0x303030;
     this.windowHeight = opts.windowHeight || 150;
     this.padding = opts.padding || 32;
-    this.closeBtnColor = opts.closeBtnColor || 'darkgoldenrod';
     this.dialogSpeed = opts.dialogSpeed || 3;
 
     this.createWindow();
@@ -108,7 +108,7 @@ export class DialogModalPlugin extends Phaser.Plugins.ScenePlugin {
         wordWrap: { width: this.getGameWidth() - (this.padding * 2) - 25 }
       }
     });
-    this.text.depth = Depths.UI;
+    this.text.depth = VisualDepth.UI;
   }
 
   private getGameWidth(): number {
@@ -154,33 +154,28 @@ export class DialogModalPlugin extends Phaser.Plugins.ScenePlugin {
   }
 
   private createCloseModalButton() {
-    this.closeBtn = this.scene.make.text({
-      x: this.getGameWidth() - this.padding - 14,
-      y: this.getGameHeight() - this.windowHeight - this.padding + 3,
-      text: 'X',
-      style: {
-        font: 'bold 12px Arial',
-        fill: this.closeBtnColor
-      }
-    });
-    this.closeBtn.depth = Depths.UI;
+    this.closeBtn = this.scene.add.image(
+      this.getGameWidth() - this.padding - 5,
+      this.getGameHeight() - this.windowHeight - this.padding - 5,
+      UIAtlas,
+      UIConstants.CANCEL
+    );
+    this.closeBtn.setScale(0.7);
+    this.closeBtn.setScaleMode(ScaleModes.NEAREST);
+    this.closeBtn.depth = VisualDepth.UI;
     this.closeBtn.setInteractive();
 
     this.closeBtn.on('pointerover', () => {
-      this.closeBtn.setTint(0xFF0000);
+      this.closeBtn.setScale(0.8);
+      this.closeBtn.setTint(0xFFFFFF);
     });
     this.closeBtn.on('pointerout', () => {
+      this.closeBtn.setScale(0.7);
       this.closeBtn.clearTint();
     });
     this.closeBtn.on('pointerdown', () => {
       this.toggleWindow();
     });
-  }
-
-  private createCloseModalButtonBorder() {
-    const x = this.getGameWidth() - this.padding - 20;
-    const y = this.getGameHeight() - this.windowHeight - this.padding;
-    this.graphics.strokeRect(x, y, 20, 20);
   }
 
   private toggleWindow() {
@@ -201,11 +196,10 @@ export class DialogModalPlugin extends Phaser.Plugins.ScenePlugin {
     const gameWidth = this.getGameWidth();
     const dimensions = this.calculateWindowDimensions(gameWidth, gameHeight);
     this.graphics = this.scene.add.graphics();
-    this.graphics.depth = Depths.UI;
+    this.graphics.depth = VisualDepth.UI;
 
     this.createOuterWindow(dimensions.x, dimensions.y, dimensions.rectWidth, dimensions.rectHeight);
     this.createInnerWindow(dimensions.x, dimensions.y, dimensions.rectWidth, dimensions.rectHeight);
     this.createCloseModalButton();
-    this.createCloseModalButtonBorder();
   }
 }

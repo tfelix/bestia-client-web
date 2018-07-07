@@ -8,6 +8,7 @@ import { BasicAttackPointer } from './BasicAttackPointer';
 import { Entity } from 'entities';
 import { Px } from 'model';
 import { ItemPickupPointer } from './ItemPickupPointer';
+import { InteractionPointer } from './InteractionPointer';
 
 /**
  * The manager is responsible for switching the indicator depending on the needs
@@ -40,6 +41,7 @@ export class PointerManager {
     this.pointers.push(this.movePointer);
     this.pointers.push(new BasicAttackPointer(this, engineContext));
     this.pointers.push(new ItemPickupPointer(this, engineContext));
+    this.pointers.push(new InteractionPointer(this, engineContext));
 
     this.engineContext.game.input.on('pointermove', this.updateActivePointerPosition, this);
 

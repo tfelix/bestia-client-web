@@ -169,7 +169,15 @@ export class EntityLocalFactory {
     position.position = pos;
     entity.addComponent(position);
 
-    return [visual, position];
+    // TODO This is a test. Maybe put this to a different, better place
+    const type = new EntityTypeComponent(
+      this.componentCounter++,
+      entity.id
+    );
+    type.entityType = EntityType.OBJECT;
+    entity.addComponent(type);
+
+    return [visual, position, type];
   }
 
   public addConditionComponent(

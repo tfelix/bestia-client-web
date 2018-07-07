@@ -2,7 +2,7 @@
 
 "arrowBlue_left.png":
 {
-	"frame": {"x":167,"y":48,"w":22,"h":21},
+	"frame": {"x":193,"y":1,"w":22,"h":21},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":22,"h":21},
@@ -10,15 +10,23 @@
 },
 "cancel.png":
 {
-	"frame": {"x":167,"y":71,"w":16,"h":15},
+	"frame": {"x":91,"y":48,"w":64,"h":64},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":15},
-	"sourceSize": {"w":16,"h":15}
+	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
+	"sourceSize": {"w":64,"h":64}
+},
+"card-pickup.png":
+{
+	"frame": {"x":157,"y":48,"w":64,"h":64},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
+	"sourceSize": {"w":64,"h":64}
 },
 "cursor-attack.png":
 {
-	"frame": {"x":131,"y":48,"w":34,"h":37},
+	"frame": {"x":157,"y":206,"w":34,"h":37},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":34,"h":37},
@@ -26,7 +34,7 @@
 },
 "cursor-hand.png":
 {
-	"frame": {"x":125,"y":87,"w":30,"h":30},
+	"frame": {"x":157,"y":245,"w":30,"h":30},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":30,"h":30},
@@ -34,7 +42,7 @@
 },
 "fish.png":
 {
-	"frame": {"x":91,"y":48,"w":38,"h":24},
+	"frame": {"x":157,"y":180,"w":38,"h":24},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":17,"y":3,"w":38,"h":24},
@@ -48,14 +56,6 @@
 	"spriteSourceSize": {"x":6,"y":0,"w":88,"h":300},
 	"sourceSize": {"w":100,"h":300}
 },
-"interact-read.png":
-{
-	"frame": {"x":91,"y":74,"w":32,"h":24},
-	"rotated": false,
-	"trimmed": true,
-	"spriteSourceSize": {"x":0,"y":4,"w":32,"h":24},
-	"sourceSize": {"w":32,"h":32}
-},
 "item-obtained.png":
 {
 	"frame": {"x":1,"y":1,"w":190,"h":45},
@@ -63,14 +63,38 @@
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":190,"h":45},
 	"sourceSize": {"w":190,"h":45}
+},
+"read.png":
+{
+	"frame": {"x":91,"y":114,"w":64,"h":64},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
+	"sourceSize": {"w":64,"h":64}
+},
+"sword-clash.png":
+{
+	"frame": {"x":157,"y":114,"w":64,"h":64},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
+	"sourceSize": {"w":64,"h":64}
+},
+"talk.png":
+{
+	"frame": {"x":91,"y":180,"w":64,"h":64},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
+	"sourceSize": {"w":64,"h":64}
 }},
 "meta": {
 	"app": "https://www.codeandweb.com/texturepacker",
 	"version": "1.0",
 	"image": "ui_elements.png",
 	"format": "RGBA8888",
-	"size": {"w":192,"h":349},
+	"size": {"w":222,"h":349},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:14ef813346336ffb3b3cbe2bc29a33b0:03c34c77611d8440c0ded31f7cd339ac:59da2b41128548815dafec59b8f0c0ce$"
+	"smartupdate": "$TexturePacker:SmartUpdate:8bb395e20b8f44e712bde254028d08d1:a8d4a41b9689c963863362ad9a044ea7:59da2b41128548815dafec59b8f0c0ce$"
 }
 }

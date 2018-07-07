@@ -8,7 +8,7 @@
       "Phaser"
     ]
   },
-  "extends": "tslint:all",
+  "extends": ["tslint:all", "tslint-no-circular-imports"],
   "rules": {
     // Don't want these
     "trailing-comma": false,
