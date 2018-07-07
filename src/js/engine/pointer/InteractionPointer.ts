@@ -19,6 +19,8 @@ import { Topics } from 'Topics';
 export class InteractionPointer extends Pointer {
 
   private activeSprite: Phaser.GameObjects.Sprite;
+  private activeEntity?: Entity = null;
+
   private interactionCache = new InteractionCache();
 
   constructor(
@@ -54,13 +56,15 @@ export class InteractionPointer extends Pointer {
       return false;
     }
 
-    const newInteractions = this.getPossibleInteractions(entity);
-    this.requestInteractionFromServer(newInteractions, entity);
-    this.setupDefaultInteraction(newInteractions, entity);
-    entity.addComponent(newInteractions);
+    if (!interactionComp) {
+      const newInteractions = this.getPossibleInteractions(entity);
+      this.requestInteractionFromServer(newInteractions, entity);
+      this.setupDefaultInteraction(newInteractions, entity);
+      entity.addComponent(newInteractions);
 
-    if (newInteractions.activeInteraction) {
-      return false;
+      if (newInteractions.activeInteraction) {
+        return false;
+      }
     }
 
     return true;
@@ -114,7 +118,20 @@ export class InteractionPointer extends Pointer {
       return;
     }
 
-    clickedEntity.addComponent(new SelectLocalComponent(clickedEntity.id));
+    const wasAlreadyActive = clickedEntity.hasComponent(ComponentType.LOCAL_SELECT);
+    if (wasAlreadyActive) {
+      clickedEntity.removeComponentByType(ComponentType.LOCAL_SELECT);
+      this.activeEntity = null;
+      return;
+    } else {
+      if (this.activeEntity) {
+        this.activeEntity.removeComponentByType(ComponentType.LOCAL_SELECT);
+        this.activeEntity = null;
+      }
+
+      clickedEntity.addComponent(new SelectLocalComponent(clickedEntity.id));
+      this.activeEntity = clickedEntity;
+    }
   }
 
   public updatePosition(pointer: Px, entity?: Entity) {

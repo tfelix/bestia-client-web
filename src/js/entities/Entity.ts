@@ -1,3 +1,4 @@
+import * as LOG from 'loglevel';
 import { Action } from './actions/Action';
 import { Component } from './components/Component';
 import { ComponentType } from './components/ComponentType';
@@ -27,6 +28,7 @@ export class Entity {
   }
 
   public addComponent(component: Component) {
+    LOG.debug(`Add component ${component.type} to entity ${this.id}`);
     this.components.set(component.type, component);
   }
 
@@ -39,6 +41,7 @@ export class Entity {
   }
 
   public removeComponentByType(type: ComponentType) {
+    LOG.debug(`Remove component ${type} from entity ${this.id}`);
     this.components.delete(type);
     this.removedComponentTypes.push(type);
   }

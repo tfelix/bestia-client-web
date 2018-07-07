@@ -4,10 +4,11 @@ import { Entity } from 'entities';
 import { EngineContext } from 'engine';
 import { VisualDepth } from '../../VisualDepths';
 import { UIConstants, UIAtlas } from 'ui';
+import { ScaleModes } from 'phaser';
 
 export class SelectLocalComponentRenderer extends ComponentRenderer<SelectLocalComponent> {
 
-  private selectionActiveEntity = 0;
+  private selectedEntityId = 0;
   private gfx: Phaser.GameObjects.Graphics;
   private circle = new Phaser.Geom.Circle(0, 0, 20);
   private iconCircle = new Phaser.Geom.Circle(0, 0, 60);
@@ -23,11 +24,11 @@ export class SelectLocalComponentRenderer extends ComponentRenderer<SelectLocalC
     this.gfx.depth = VisualDepth.MARKER;
   }
 
-  // TODO Place at a better place
+  // TODO Place at a better place since this logic might be needed elsewhere.
   private setupSpriteAsButton(visual: Phaser.GameObjects.Image) {
     visual.depth = VisualDepth.UI;
-    visual.setInteractive(true);
-    // visual.on('pointerover', () => { play sound });
+    visual.setInteractive();
+    visual.setScaleMode(ScaleModes.LINEAR);
     visual.on('pointerover', () => {
       this.ctx.sound.rollover.play();
       visual.setScale(1.1);
@@ -44,21 +45,25 @@ export class SelectLocalComponentRenderer extends ComponentRenderer<SelectLocalC
   }
 
   protected hasNotSetup(entity: Entity, component: SelectLocalComponent): boolean {
-    return this.selectionActiveEntity !== entity.id;
+    return this.selectedEntityId !== entity.id;
   }
 
   protected createGameData(entity: Entity, component: SelectLocalComponent) {
+    if(entity.id !== this.selectedEntityId) {
+      this.clearSelection();
+    }
+
     this.gfx.clear();
     const sprite = entity.data.visual && entity.data.visual.sprite;
     if (!sprite) {
-      this.selectionActiveEntity = 0;
+      this.selectedEntityId = 0;
       return;
     }
 
     this.createMarker(sprite);
     this.createOptionsButtons(entity, sprite);
 
-    this.selectionActiveEntity = entity.id;
+    this.selectedEntityId = entity.id;
   }
 
   private createMarker(sprite: Phaser.GameObjects.Sprite) {
@@ -77,12 +82,7 @@ export class SelectLocalComponentRenderer extends ComponentRenderer<SelectLocalC
     const interactionNames = [];
     interactComp.possibleInteraction.forEach(inter => interactionNames.push(this.typeToIcon(inter)));
     this.icons = interactionNames.map(name => this.ctx.game.add.image(0, 0, UIAtlas, name));
-
-    this.icons.forEach(s => {
-      s.depth = VisualDepth.UI;
-
-      s.setInteractive(true);
-    });
+    this.icons.forEach(s => this.setupSpriteAsButton(s));
 
     for (let i = 0; i < interactionNames.length; i++) {
       const angle = i / interactionNames.length * Phaser.Math.PI2;
@@ -118,7 +118,14 @@ export class SelectLocalComponentRenderer extends ComponentRenderer<SelectLocalC
 
   }
 
-  public removeGameData(entity: Entity) {
+  private clearSelection() {
     this.icons.forEach(i => i.destroy());
+    this.selectedEntityId = 0;
+    this.icons = [];
+    this.gfx.clear();
+  }
+
+  public removeGameData(entity: Entity) {
+    this.clearSelection();
   }
 }
