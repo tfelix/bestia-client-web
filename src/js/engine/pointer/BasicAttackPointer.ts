@@ -15,6 +15,7 @@ import { ConditionComponent, ConditionHelper } from 'entities/components/Conditi
 import { MapHelper } from 'map';
 import { getSpriteDescriptionFromCache } from '../renderer';
 import { SpriteCollision } from 'map/SpriteCollision';
+import { CursorType } from './CursorManager';
 
 function getSightDirection(source: Point, lookingTo: Point): Point {
   return lookingTo.minus(source).norm();
@@ -76,11 +77,16 @@ export class BasicAttackPointer extends Pointer {
     return chachedInteraction === InteractionType.ATTACK;
   }
 
+  public activate() {
+    this.ctx.cursorManager.setCursorSprite(CursorType.ATTACK);
+  }
+
   public deactivate() {
     if (this.activeSprite) {
       this.activeSprite.clearTint();
       this.activeSprite = null;
     }
+    this.ctx.cursorManager.setCursorSprite(CursorType.DEFAULT);
   }
 
   public onClick(pointer: Px, entity?: Entity) {
