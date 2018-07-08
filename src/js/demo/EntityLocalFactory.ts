@@ -1,25 +1,31 @@
 import { Point, Item } from 'model';
-import { Entity, EntityStore } from 'entities';
+import { Entity } from 'entities';
 import {
   PlayerComponent, Component, ComponentType, ConditionComponent, VisualComponent,
   DebugComponent, SpriteType, PositionComponent, EntityTypeComponent, EntityType,
   AttacksComponent
 } from 'entities/components';
 import { InventoryComponent } from 'entities/components/InventoryComponent';
+import { ServerEntityStore } from './ServerEntityStore';
 
 export class EntityLocalFactory {
 
   private entityCounter = 1;
   private componentCounter = 0;
+  private lastInsertedEntityId = 0;
 
   constructor(
-    private readonly entityStore: EntityStore
+    private readonly entityStore: ServerEntityStore
   ) {
+  }
 
+  public getLastInsertedEntityId(): number {
+    return this.lastInsertedEntityId;
   }
 
   public createEntity(specialId?: number): Entity {
     const newEntityId = specialId || this.entityCounter++;
+    this.lastInsertedEntityId = newEntityId;
     return this.entityStore.getEntity(newEntityId);
   }
 
@@ -169,7 +175,6 @@ export class EntityLocalFactory {
     position.position = pos;
     entity.addComponent(position);
 
-    // TODO This is a test. Maybe put this to a different, better place
     const type = new EntityTypeComponent(
       this.componentCounter++,
       entity.id

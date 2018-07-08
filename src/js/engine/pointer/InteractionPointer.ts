@@ -1,4 +1,3 @@
-import * as LOG from 'loglevel';
 import { Pointer, PointerManager } from '.';
 import { EngineContext } from '../EngineContext';
 import { PointerPriority } from './PointerPriority';
@@ -71,7 +70,8 @@ export class InteractionPointer extends Pointer {
   }
 
   private requestInteractionFromServer(interactions: InteractionLocalComponent, entity: Entity) {
-
+    const requestMsg = new RequestInteractionMessage(entity.id);
+    PubSub.publish(Topics.IO_SEND_MSG, requestMsg);
   }
 
   private setupDefaultInteraction(interactions: InteractionLocalComponent, entity: Entity) {
@@ -91,6 +91,7 @@ export class InteractionPointer extends Pointer {
       return interactionComp;
     }
 
+    // TODO Check if this should not go to the interaction cache.
     switch (entityTypeComp.entityType) {
       case EntityType.BESTIA:
         interactionComp.possibleInteraction.add(InteractionType.ATTACK);
@@ -98,16 +99,7 @@ export class InteractionPointer extends Pointer {
       case EntityType.ITEM:
         interactionComp.possibleInteraction.add(InteractionType.LOOT);
         break;
-      case EntityType.OBJECT:
-        // FIXME This is a test to implement the options rendering.
-        // Replace this with the server request asap.
-        interactionComp.possibleInteraction.add(InteractionType.READ);
-        interactionComp.possibleInteraction.add(InteractionType.SPEAK);
-        interactionComp.possibleInteraction.add(InteractionType.ATTACK);
-        interactionComp.possibleInteraction.add(InteractionType.LOOT);
-        break;
       default:
-        LOG.info('Unknown entity type. No default interactions.');
     }
 
     return interactionComp;

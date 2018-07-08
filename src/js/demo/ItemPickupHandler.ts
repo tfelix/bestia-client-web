@@ -3,15 +3,15 @@ import { EntityStore } from 'entities';
 import { ClientMessageHandler } from './ClientMessageHandler';
 import { ComponentType } from 'entities/components';
 import { InventoryComponent } from 'entities/components/InventoryComponent';
+import { ServerEntityStore } from './ServerEntityStore';
 
 export class ItemPickupHandler extends ClientMessageHandler<RequestItemLootMessage> {
 
   constructor(
-    private readonly serverEntities: EntityStore,
+    private readonly serverEntities: ServerEntityStore,
     private readonly playerEntityId: number
   ) {
     super();
-
   }
 
   public isHandlingMessage(msg: any): boolean {

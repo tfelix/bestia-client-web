@@ -1,17 +1,16 @@
-import { ClientMessageHandler } from './ClientMessageHandler';
 import { SyncRequestMessage, AccountInfoMessage, ComponentMessage } from 'message';
 import { MoveComponent } from 'entities/components';
 import { Point } from 'model';
-import { EntityStore } from 'entities';
 import { EntityLocalFactory } from './EntityLocalFactory';
-import { UiModalMessage } from 'message/UiMessages';
+import { ServerEntityStore } from './ServerEntityStore';
+import { ClientMessageHandler } from './ClientMessageHandler';
 
 export class RequestSyncHandler extends ClientMessageHandler<SyncRequestMessage> {
 
   private entityFactory = new EntityLocalFactory(this.serverEntities);
 
   constructor(
-    private readonly serverEntities: EntityStore,
+    private readonly serverEntities: ServerEntityStore,
     private readonly playerAccId: number,
     private readonly playerEntityId: number
   ) {
@@ -46,6 +45,9 @@ export class RequestSyncHandler extends ClientMessageHandler<SyncRequestMessage>
       this.sendClient(new ComponentMessage<MoveComponent>(moveComp));
     }, 2000);
     this.sendAllComponents(bestiaComps);
+
+    // The creation of the server side entities should be done in a seperate component
+    // fueld by the game demo scripts.
     this.sendAllComponents(this.entityFactory.addBestia('rabbit', new Point(12, 12)));
 
     this.sendAllComponents(this.entityFactory.addObject('tree', new Point(10, 10)));
@@ -60,17 +62,14 @@ export class RequestSyncHandler extends ClientMessageHandler<SyncRequestMessage>
     this.sendAllComponents(this.entityFactory.addObject('water', new Point(5, 8)));
 
     this.sendAllComponents(this.entityFactory.addObject('sign', new Point(2, 8)));
+    const signEntityId = this.entityFactory.getLastInsertedEntityId();
+    const signEntity = this.serverEntities.getEntity(signEntityId);
+    this.serverEntities.addIdentifier('sign_post', signEntity);
 
     this.sendAllComponents(this.entityFactory.addItem('empty_bottle', 2, new Point(3, 12)));
     this.sendAllComponents(this.entityFactory.addItem('empty_bottle', 1, new Point(7, 18)));
 
     this.sendAllComponents(this.entityFactory.addItem('knife', 1, new Point(12, 10)));
     this.sendAllComponents(this.entityFactory.addItem('knife', 1, new Point(3, 6)));
-
-    // DEV
-    window.setTimeout(() => {
-      const modalMsg = new UiModalMessage(this.playerEntityId, 'Hello World after 5 seconds.');
-      this.sendClient(modalMsg);
-    }, 5000);
   }
 }

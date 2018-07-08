@@ -6,13 +6,15 @@ import { BasicAttackHandler } from './BasicAttackHandler';
 import { EntityStore } from 'entities';
 import { RequestSyncHandler } from './RequestSyncHandler';
 import { AbortPerformHandler } from './AbortPerformHandler';
+import { InteractionHandler } from './InteractionHandler';
+import { ServerEntityStore } from './ServerEntityStore';
 
 const PLAYER_ACC_ID = 1337;
 const PLAYER_ENTITY_ID = 1;
 
 export class ServerLocalFacade {
 
-  private serverEntities = new EntityStore();
+  private serverEntities = new ServerEntityStore();
   private messageHandler: Array<ClientMessageHandler<any>> = [];
 
   constructor(
@@ -24,6 +26,7 @@ export class ServerLocalFacade {
     this.messageHandler.push(new BasicAttackHandler(this.clientEntities, this.serverEntities));
     this.messageHandler.push(new RequestSyncHandler(this.serverEntities, PLAYER_ACC_ID, PLAYER_ENTITY_ID));
     this.messageHandler.push(new AbortPerformHandler(this.serverEntities, PLAYER_ENTITY_ID));
+    this.messageHandler.push(new InteractionHandler(this.serverEntities));
   }
 
   private receivedFromClient(message: any) {

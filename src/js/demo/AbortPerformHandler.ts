@@ -1,12 +1,12 @@
 import { ClientMessageHandler } from './ClientMessageHandler';
 import { AbortPerformMessage, ComponentMessage, ComponentDeleteMessage } from 'message';
 import { ComponentType, PerformComponent } from 'entities/components';
-import { EntityStore } from 'entities';
+import { ServerEntityStore } from './ServerEntityStore';
 
 export class AbortPerformHandler extends ClientMessageHandler<AbortPerformMessage> {
 
   constructor(
-    private readonly serverEntities: EntityStore,
+    private readonly serverEntities: ServerEntityStore,
     private readonly playerEntityId: number
   ) {
     super();

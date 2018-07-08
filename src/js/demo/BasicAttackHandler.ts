@@ -4,15 +4,18 @@ import { EntityStore, DamageAction, KillAction } from 'entities';
 import { ConditionHelper } from './ConditionHelper';
 import { ComponentCopyHelper } from './ComponentCopyHelper';
 import { ConditionComponent, ComponentType, VisualComponent } from 'entities/components';
+import { ServerEntityStore } from './ServerEntityStore';
 
 export class BasicAttackHandler extends ClientMessageHandler<BasicAttackMessage> {
 
+  // TODO Do we really keep track of the client entities?
+  // All entities should reside on the server anyways.
   private condHelper = new ConditionHelper(this.clientEntities);
   private copyHelper = new ComponentCopyHelper(this.clientEntities);
 
   constructor(
     private readonly clientEntities: EntityStore,
-    private readonly serverEntities: EntityStore
+    private readonly serverEntities: ServerEntityStore
   ) {
     super();
 

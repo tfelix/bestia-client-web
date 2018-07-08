@@ -11,7 +11,7 @@ export class SelectLocalComponentRenderer extends ComponentRenderer<SelectLocalC
   private selectedEntityId = 0;
   private gfx: Phaser.GameObjects.Graphics;
   private circle = new Phaser.Geom.Circle(0, 0, 20);
-  private iconCircle = new Phaser.Geom.Circle(0, 0, 60);
+  private iconCircle = new Phaser.Geom.Circle(0, 0, 40);
   private icons: Phaser.GameObjects.Image[] = [];
 
   constructor(
@@ -24,7 +24,6 @@ export class SelectLocalComponentRenderer extends ComponentRenderer<SelectLocalC
     this.gfx.depth = VisualDepth.MARKER;
   }
 
-  // TODO Place at a better place since this logic might be needed elsewhere.
   private setupSpriteAsButton(visual: Phaser.GameObjects.Image) {
     visual.depth = VisualDepth.UI;
     visual.setInteractive();
@@ -35,8 +34,6 @@ export class SelectLocalComponentRenderer extends ComponentRenderer<SelectLocalC
     });
     visual.on('pointerout', () => {
       visual.setScale(1);
-    });
-    visual.on('pointerdown', () => {
     });
   }
 
@@ -73,19 +70,44 @@ export class SelectLocalComponentRenderer extends ComponentRenderer<SelectLocalC
     this.gfx.strokeCircleShape(this.circle);
   }
 
+  private setDefaultInteraction(entity: Entity, interaction: InteractionType) {
+    const interactComp = entity.getComponent(ComponentType.LOCAL_INTERACTION) as InteractionLocalComponent;
+    if (!interactComp) {
+      return;
+    }
+    interactComp.activeInteraction = interaction;
+  }
+
   private createOptionsButtons(entity: Entity, sprite: Phaser.GameObjects.Sprite) {
     const interactComp = entity.getComponent(ComponentType.LOCAL_INTERACTION) as InteractionLocalComponent;
     if (!interactComp) {
       return;
     }
 
+    // TODO This solution is a bit clunky. If you have some better idea/style
+    // refactor it.
     const interactionNames = [];
-    interactComp.possibleInteraction.forEach(inter => interactionNames.push(this.typeToIcon(inter)));
-    this.icons = interactionNames.map(name => this.ctx.game.add.image(0, 0, UIAtlas, name));
-    this.icons.forEach(s => this.setupSpriteAsButton(s));
+    for (let interaction of interactComp.possibleInteraction) {
+      interactionNames.push({
+        interaction: interaction,
+        interactionIconName: this.typeToIcon(interaction)
+      });
+    }
+    this.icons = interactionNames.map(v => this.ctx.game.add.image(0, 0, UIAtlas, v.interactionIconName));
+    this.icons.forEach((s, i) => {
+      this.setupSpriteAsButton(s);
+      s.on('pointerup', () => {
+        // TODO Refactor this as an own function.
+        const defaultInteraction = interactionNames[i].interaction;
+        this.setDefaultInteraction(entity, defaultInteraction);
+        this.ctx.sound.buttonClick.play();
+        entity.removeComponentByType(ComponentType.LOCAL_SELECT);
+        this.clearSelection();
+      });
+    });
 
     for (let i = 0; i < interactionNames.length; i++) {
-      const angle = i / interactionNames.length * Phaser.Math.PI2;
+      const angle = i * Phaser.Math.PI2 / 6;
 
       const xOffset = Math.cos(angle) * this.iconCircle.diameter;
       const yOffset = Math.sin(angle) * this.iconCircle.diameter;
@@ -115,7 +137,7 @@ export class SelectLocalComponentRenderer extends ComponentRenderer<SelectLocalC
   }
 
   protected updateGameData(entity: Entity, component: SelectLocalComponent) {
-
+    // TODO If the entity moves the position of the visuals must be updated
   }
 
   private clearSelection() {
