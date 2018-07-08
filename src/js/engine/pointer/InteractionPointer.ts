@@ -36,11 +36,6 @@ export class InteractionPointer extends Pointer {
     return PointerPriority.NONE;
   }
 
-  private requestInteractions(entity: Entity) {
-    const requestMsg = new RequestInteractionMessage(entity.id);
-    PubSub.publish(Topics.IO_SEND_MSG, requestMsg);
-  }
-
   private canInteractWithTile(position: Px) {
     return false;
   }

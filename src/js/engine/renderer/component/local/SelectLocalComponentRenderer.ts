@@ -9,6 +9,8 @@ import { ScaleModes } from 'phaser';
 export class SelectLocalComponentRenderer extends ComponentRenderer<SelectLocalComponent> {
 
   private selectedEntityId = 0;
+
+  private guiScene: Phaser.Scene;
   private gfx: Phaser.GameObjects.Graphics;
   private circle = new Phaser.Geom.Circle(0, 0, 20);
   private iconCircle = new Phaser.Geom.Circle(0, 0, 40);
@@ -19,7 +21,9 @@ export class SelectLocalComponentRenderer extends ComponentRenderer<SelectLocalC
   ) {
     super(ctx.game);
 
-    this.gfx = ctx.game.add.graphics();
+    this.guiScene = ctx.game.scene.get('UiScene');
+
+    this.gfx = this.game.add.graphics();
     this.gfx.lineStyle(20, 0xFF0000);
     this.gfx.depth = VisualDepth.MARKER;
   }
@@ -93,7 +97,7 @@ export class SelectLocalComponentRenderer extends ComponentRenderer<SelectLocalC
         interactionIconName: this.typeToIcon(interaction)
       });
     }
-    this.icons = interactionNames.map(v => this.ctx.game.add.image(0, 0, UIAtlas, v.interactionIconName));
+    this.icons = interactionNames.map(v => this.guiScene.add.image(0, 0, UIAtlas, v.interactionIconName));
     this.icons.forEach((s, i) => {
       this.setupSpriteAsButton(s);
       s.on('pointerup', () => {
