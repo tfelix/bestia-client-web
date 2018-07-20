@@ -1,6 +1,6 @@
-import { EntityStore } from '../entities/EntityStore';
-import { Point } from '../model';
-import { ComponentType, PositionComponent } from '../entities/components';
+import { EntityStore } from 'entities/EntityStore';
+import { Point } from 'model';
+import { ComponentType, PositionComponent } from 'entities/components';
 
 export class Message<T extends ComponentMessage> {
 

@@ -3,10 +3,11 @@ import '../styles/less/styles.less';
 import 'phaser';
 import * as LOG from 'loglevel';
 
-import { LoadScene } from './scenes/LoadScene';
-import { BootScene } from './scenes/BootScene';
-import { GameScene } from './scenes/GameScene';
-import { UiScene } from './scenes/UiScene';
+import { LoadScene } from 'scenes/LoadScene';
+import { BootScene } from 'scenes/BootScene';
+import { GameScene } from 'scenes/GameScene';
+import { UiScene } from 'scenes/UiScene';
+import { WeatherScene } from 'scenes/WeatherScene';
 import { DialogModalPlugin } from 'ui/DialogModalPlugin';
 
 if (DEV) {
@@ -32,7 +33,7 @@ const config = {
   plugins: {
     scene: [{ key: 'dialogModal', plugin: DialogModalPlugin, mapping: 'dialogModal' }]
   },
-  scene: [BootScene, GameScene, LoadScene, UiScene],
+  scene: [BootScene, GameScene, LoadScene, UiScene, WeatherScene],
   input: {
     keyboard: true,
     mouse: true,

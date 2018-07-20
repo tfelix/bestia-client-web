@@ -1,5 +1,5 @@
 import { Entity } from 'entities';
-import { SpriteData } from 'engine/renderer';
+import { SpriteData } from '..';
 import { SpriteType, VisualComponent } from 'entities/components';
 import { Px } from 'model';
 

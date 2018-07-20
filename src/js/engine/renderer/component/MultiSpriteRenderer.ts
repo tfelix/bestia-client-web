@@ -5,7 +5,7 @@ import { Entity } from 'entities';
 import { Px, Point } from 'model';
 import { SpriteData, SpriteDescription, getSpriteDescriptionFromCache } from '.';
 import { SpriteRenderer } from './SpriteRenderer';
-import { EngineContext } from 'engine';
+import { EngineContext } from '../..';
 
 export interface SpriteOffsets {
   targetSprite: string;

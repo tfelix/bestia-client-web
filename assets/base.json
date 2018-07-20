@@ -26,7 +26,7 @@
 },
 "cursor-attack.png":
 {
-	"frame": {"x":157,"y":206,"w":34,"h":37},
+	"frame": {"x":91,"y":246,"w":34,"h":37},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":34,"h":37},
@@ -34,7 +34,7 @@
 },
 "cursor-hand.png":
 {
-	"frame": {"x":157,"y":245,"w":30,"h":30},
+	"frame": {"x":91,"y":285,"w":30,"h":30},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":30,"h":30},
@@ -42,10 +42,18 @@
 },
 "fish.png":
 {
-	"frame": {"x":157,"y":180,"w":38,"h":24},
+	"frame": {"x":91,"y":317,"w":38,"h":24},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":17,"y":3,"w":38,"h":24},
+	"sourceSize": {"w":64,"h":64}
+},
+"fishing-hook.png":
+{
+	"frame": {"x":91,"y":114,"w":64,"h":64},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
 	"sourceSize": {"w":64,"h":64}
 },
 "fishing-meter.png":
@@ -64,15 +72,15 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":190,"h":45},
 	"sourceSize": {"w":190,"h":45}
 },
-"read.png":
+"rain_01.png":
 {
-	"frame": {"x":91,"y":114,"w":64,"h":64},
+	"frame": {"x":217,"y":1,"w":3,"h":5},
 	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
-	"sourceSize": {"w":64,"h":64}
+	"trimmed": true,
+	"spriteSourceSize": {"x":1,"y":0,"w":3,"h":5},
+	"sourceSize": {"w":5,"h":5}
 },
-"sword-clash.png":
+"read.png":
 {
 	"frame": {"x":157,"y":114,"w":64,"h":64},
 	"rotated": false,
@@ -80,9 +88,17 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
 	"sourceSize": {"w":64,"h":64}
 },
-"talk.png":
+"sword-clash.png":
 {
 	"frame": {"x":91,"y":180,"w":64,"h":64},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
+	"sourceSize": {"w":64,"h":64}
+},
+"talk.png":
+{
+	"frame": {"x":157,"y":180,"w":64,"h":64},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
@@ -91,10 +107,10 @@
 "meta": {
 	"app": "https://www.codeandweb.com/texturepacker",
 	"version": "1.0",
-	"image": "ui_elements.png",
+	"image": "base.png",
 	"format": "RGBA8888",
 	"size": {"w":222,"h":349},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:8bb395e20b8f44e712bde254028d08d1:a8d4a41b9689c963863362ad9a044ea7:59da2b41128548815dafec59b8f0c0ce$"
+	"smartupdate": "$TexturePacker:SmartUpdate:de20641a86cfba94b466df3a94e97e92:dec29d9e6e713ded012212d31b8e888a:7232e5c4564c48ce7821741e80f218b0$"
 }
 }

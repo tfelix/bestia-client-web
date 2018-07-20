@@ -1,4 +1,4 @@
-import { EngineContext } from 'engine/EngineContext';
+import { EngineContext } from '../../EngineContext';
 import { MapHelper } from 'map';
 import { BaseCommonRenderer } from './BaseCommonRenderer';
 import { DisplayHelper } from '../../DisplayHelper';

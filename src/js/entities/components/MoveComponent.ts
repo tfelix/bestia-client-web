@@ -1,5 +1,5 @@
 import { Component } from './Component';
-import { Point } from '../../model/Point';
+import { Point } from 'model/Point';
 import { ComponentType } from './ComponentType';
 
 export class MoveComponent extends Component {

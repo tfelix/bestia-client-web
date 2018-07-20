@@ -12,6 +12,7 @@ import { AccountInfo } from 'model';
 import { ServerLocalFacade } from 'demo';
 import { UiModalMessage } from 'message/UiMessages';
 import { UIDataUpdater } from 'connection/UIDataUpdater';
+import { SceneNames } from './SceneNames';
 
 export class GameScene extends Phaser.Scene {
 
@@ -91,8 +92,9 @@ export class GameScene extends Phaser.Scene {
   public create() {
     this.engineContext.game.input.mouse.disableContextMenu();
 
-    this.scene.launch('UiScene');
-    
+    this.scene.launch(SceneNames.WEATHER);
+    this.scene.launch(SceneNames.UI);
+
     const map = this.make.tilemap({ key: 'map' });
     const floorTiles = map.addTilesetImage('trees_plants_rocks', 'tiles');
     map.createStaticLayer('floor_0', floorTiles, 0, 0);
@@ -108,9 +110,27 @@ export class GameScene extends Phaser.Scene {
     });
 
     this.entityRenderManager.create();
+    this.commonRenderManager.create();
 
     this.engineContext.pointerManager.create();
     this.engineContext.cursorManager.create();
+
+    // this.createParticleTest();
+  }
+
+  private createParticleTest() {
+    const particles = this.add.particles('fx_smoke');
+
+    particles.createEmitter({
+      frame: ['flame_01.png', 'flame_02.png', 'flame_03.png'],
+      x: 400,
+      y: 300,
+      speed: 10,
+      tint: [0xFF0000],
+      lifespan: 2000,
+      frequency: 20,
+      blendMode: 'MULTIPLY'
+    });
   }
 
   public update() {

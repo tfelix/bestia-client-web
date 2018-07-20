@@ -1,7 +1,7 @@
 import * as PubSub from 'pubsub-js';
 import * as LOG from 'loglevel';
 import { Topics } from 'Topics';
-import { ClientMessageHandler, ItemPickupHandler } from 'demo';
+import { ClientMessageHandler, ItemPickupHandler } from '.';
 import { BasicAttackHandler } from './BasicAttackHandler';
 import { EntityStore } from 'entities';
 import { RequestSyncHandler } from './RequestSyncHandler';

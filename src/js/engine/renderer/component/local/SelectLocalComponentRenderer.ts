@@ -1,7 +1,7 @@
 import { ComponentRenderer } from '../ComponentRenderer';
 import { ComponentType, SelectLocalComponent, InteractionLocalComponent, InteractionType } from 'entities/components';
 import { Entity } from 'entities';
-import { EngineContext } from 'engine';
+import { EngineContext } from '../../..';
 import { VisualDepth } from '../../VisualDepths';
 import { UIConstants, UIAtlas } from 'ui';
 import { ScaleModes } from 'phaser';

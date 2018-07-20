@@ -4,7 +4,7 @@ import { EntityStore } from './EntityStore';
 import { Entity } from './Entity';
 import { ComponentType } from './components/ComponentType';
 import { PlayerComponent } from './components/PlayerComponent';
-import { AccountInfo } from '../model/AccountInfo';
+import { AccountInfo } from 'model/AccountInfo';
 import { MasterLocalComponent } from './components/local/MasterLocalComponent';
 import { Topics } from 'Topics';
 import { ComponentMessage } from 'message';

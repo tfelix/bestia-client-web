@@ -1,7 +1,7 @@
 import { MapHelper } from 'map/MapHelper';
 
 import { EngineContext } from '../EngineContext';
-import { MovePointer } from '../pointer/MovePointer';
+import { MovePointer } from './MovePointer';
 import { NullPointer } from './NullPointer';
 import { Pointer } from './Pointer';
 import { BasicAttackPointer } from './BasicAttackPointer';

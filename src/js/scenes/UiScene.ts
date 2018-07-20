@@ -1,4 +1,5 @@
 import { DialogModalPlugin } from 'ui/DialogModalPlugin';
+import { SceneNames } from './SceneNames';
 
 export class UiScene extends Phaser.Scene {
 
@@ -6,7 +7,7 @@ export class UiScene extends Phaser.Scene {
 
   constructor() {
     super({
-      key: 'UiScene'
+      key: SceneNames.UI
     });
   }
 

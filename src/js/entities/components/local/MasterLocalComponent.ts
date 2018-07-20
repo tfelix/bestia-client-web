@@ -1,5 +1,5 @@
 import { LocalComponent } from './LocalComponent';
-import { ComponentType } from 'entities/components';
+import { ComponentType } from '..';
 
 export class MasterLocalComponent extends LocalComponent {
 

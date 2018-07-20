@@ -1,9 +1,9 @@
-import { EngineContext } from 'engine';
+import { EngineContext } from '../..';
 import { SpriteRenderer } from './SpriteRenderer';
 import { Entity } from 'entities';
 import { VisualComponent, SpriteType } from 'entities/components';
 import { Px } from 'model';
-import { SpriteData } from 'engine/renderer';
+import { SpriteData } from '..';
 import { bhash } from 'utils';
 
 export class ItemSpriteRenderer extends SpriteRenderer {

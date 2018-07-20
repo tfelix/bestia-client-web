@@ -1,7 +1,7 @@
 import { MapHelper } from 'map';
 
 import { Point, Size } from 'model';
-import { EngineContext } from 'engine/EngineContext';
+import { EngineContext } from '../../EngineContext';
 import { BaseCommonRenderer } from './BaseCommonRenderer';
 import { DisplayHelper } from '../../DisplayHelper';
 

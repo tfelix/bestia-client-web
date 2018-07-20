@@ -25,7 +25,7 @@ export class CursorManager {
   public setCursorSprite(cursorType: CursorType) {
     const newCursor = this.cursors.get(cursorType);
     if (!newCursor) {
-      LOG.warn(`Unknown cursor type requested: ${cursorType}`)
+      LOG.warn(`Unknown cursor type requested: ${cursorType}`);
     }
     this.activeCursor.visible = false;
     this.activeCursor = newCursor;
