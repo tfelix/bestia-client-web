@@ -2,6 +2,7 @@ import { ComponentRenderer } from '.';
 import { InventoryComponent, ComponentType } from 'entities/components';
 import { Entity } from 'entities';
 import { EngineContext } from '../../EngineContext';
+import { UIConstants, UIAtlas } from 'ui';
 
 // TODO Replace this with bitmap text
 const uiTextStyle = { fontFamily: 'Arial', fontSize: 12, color: '#000000' };
@@ -72,8 +73,7 @@ export class InventoryComponentRenderer extends ComponentRenderer<InventoryCompo
   protected updateGameData(entity: Entity, component: InventoryComponent) { }
 
   public create() {
-    // TODO I dont like to use these strings here. Maybe put this into a constant.
-    this.obtainedBg = this.ui.add.image(0, 0, 'ui', 'item-obtained.png');
+    this.obtainedBg = this.ui.add.image(0, 0, UIAtlas, UIConstants.UI_ITEM_OBTAINED_BG);
     this.obtainedBg.setOrigin(0, 0);
 
     this.obtainedContainer = this.ui.add.container(400, 10, [this.obtainedBg]);

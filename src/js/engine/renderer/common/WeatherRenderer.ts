@@ -25,9 +25,8 @@ export class WeatherRenderer extends BaseCommonRenderer {
   }
 
   public update() {
-    // TODO Implement weather rendering.
     this.weatherGfx.clear();
-    this.weatherGfx.fillStyle(this.makeColorFromWeatherAndLight(), 0.8);
+    this.weatherGfx.fillStyle(this.makeColorFromWeatherAndLight(), 1);
     this.weatherGfx.fillRectShape(this.screenRect);
 
     /*
@@ -40,7 +39,31 @@ export class WeatherRenderer extends BaseCommonRenderer {
   }
 
   private makeColorFromWeatherAndLight(): number {
-    return 0x00FF00;
+    const dayProgress = 0.5;
+    const weather = this.ctx.data.weather;
+    let brigtness = weather.brightness;
+    if (weather.rain <= 1) {
+      brigtness -= weather.rain * 0.3;
+    } else {
+      // Begins from 0.3 and reaches 1 on rain = 4
+      brigtness -= 0.233 * weather.rain + 0.067;
+    }
+    brigtness = Phaser.Math.Clamp(brigtness, 0, 10);
+
+    let r = 0xFF * brigtness;
+    let g = 0xFF * brigtness;
+    let b = 0xFF * brigtness;
+
+    const daylightRedshift = Math.pow(dayProgress - 0.5, 2);
+    r += r * daylightRedshift;
+    g += g * daylightRedshift * 0.2;
+    b += b * daylightRedshift * 0.2;
+
+    r = Phaser.Math.Clamp(r, 0, 255);
+    g = Phaser.Math.Clamp(g, 0, 255);
+    b = Phaser.Math.Clamp(b, 0, 255);
+
+    return r << 16 | g << 8 | b;
   }
 
   private makeLightning() {

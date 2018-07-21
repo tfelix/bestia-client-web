@@ -1,15 +1,14 @@
 import { ComponentType } from 'entities/components';
+import { PerformComponent } from 'entities/components/PerformComponent';
 import { Entity } from 'entities';
 import { Px } from 'model';
 import { AbortPerformMessage } from 'message';
 import { Topics } from 'Topics';
-import { UIConstants } from 'ui';
+import { UIConstants, UIAtlas } from 'ui';
 
 import { ComponentRenderer } from '.';
 import { EngineContext } from '../../EngineContext';
-import { PerformComponent } from 'entities/components/PerformComponent';
 import { VisualDepth } from '../VisualDepths';
-import { StaticSoundHolder } from '../../StaticSoundHolder';
 
 export interface PerformData {
   endTime: number;
@@ -36,7 +35,7 @@ export class PerformComponentRenderer extends ComponentRenderer<PerformComponent
       PerformComponentRenderer.graphicsLayer.fillStyle(0x000000, 1);
       PerformComponentRenderer.graphicsLayer.depth = VisualDepth.UI;
 
-      PerformComponentRenderer.cancelButton = this.game.add.image(0, 0, 'ui', UIConstants.CANCEL);
+      PerformComponentRenderer.cancelButton = this.game.add.image(0, 0, UIAtlas, UIConstants.CANCEL);
 
       PerformComponentRenderer.cancelButton.visible = false;
       PerformComponentRenderer.cancelButton.depth = VisualDepth.UI;

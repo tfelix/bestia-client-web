@@ -1,5 +1,4 @@
-
-const UIAtlas = 'ui';
+const UIAtlas = 'base';
 
 const UIConstants = {
   CANCEL: 'cancel.png',
