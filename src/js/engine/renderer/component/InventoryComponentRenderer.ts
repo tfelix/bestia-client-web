@@ -76,7 +76,8 @@ export class InventoryComponentRenderer extends ComponentRenderer<InventoryCompo
     this.obtainedBg = this.ui.add.image(0, 0, UIAtlas, UIConstants.UI_ITEM_OBTAINED_BG);
     this.obtainedBg.setOrigin(0, 0);
 
-    this.obtainedContainer = this.ui.add.container(400, 10, [this.obtainedBg]);
+    const xOffset = (this.ctx.helper.display.sceneWidth - this.obtainedBg.width) / 2;
+    this.obtainedContainer = this.ui.add.container(xOffset, 10, [this.obtainedBg]);
     this.obtainedContainer.alpha = 0;
   }
 
