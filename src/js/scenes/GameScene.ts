@@ -92,7 +92,6 @@ export class GameScene extends Phaser.Scene {
   public create() {
     this.engineContext.game.input.mouse.disableContextMenu();
 
-    this.scene.launch(SceneNames.WEATHER);
     this.scene.launch(SceneNames.UI);
 
     const map = this.make.tilemap({ key: 'map' });

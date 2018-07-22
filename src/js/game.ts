@@ -7,7 +7,6 @@ import { LoadScene } from 'scenes/LoadScene';
 import { BootScene } from 'scenes/BootScene';
 import { GameScene } from 'scenes/GameScene';
 import { UiScene } from 'scenes/UiScene';
-import { WeatherScene } from 'scenes/WeatherScene';
 import { DialogModalPlugin } from 'ui/DialogModalPlugin';
 
 if (DEV) {
@@ -33,7 +32,7 @@ const config = {
   plugins: {
     scene: [{ key: 'dialogModal', plugin: DialogModalPlugin, mapping: 'dialogModal' }]
   },
-  scene: [BootScene, GameScene, LoadScene, UiScene, WeatherScene],
+  scene: [BootScene, GameScene, LoadScene, UiScene],
   input: {
     keyboard: true,
     mouse: true,

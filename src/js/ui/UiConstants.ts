@@ -13,7 +13,9 @@ const UIConstants = {
   ICON_LOOT: 'card-pickup.png',
   ICON_FISHING: 'fishing-hook.png',
 
-  UI_ITEM_OBTAINED_BG: 'item-obtained.png'
+  UI_ITEM_OBTAINED_BG: 'item-obtained.png',
+
+  FX_RAIN: 'rain_01.png'
 };
 
 export { UIConstants, UIAtlas };
