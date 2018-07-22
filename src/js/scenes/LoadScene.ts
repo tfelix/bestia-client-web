@@ -67,6 +67,10 @@ export class LoadScene extends Phaser.Scene {
     );
 
     // Testing
+    this.load.image(
+      'fx_smoke_temp',
+      '../assets/fx/_muzzle.png'
+    );
     this.load.atlas(
       'fx_smoke',
       '../assets/fx/smoke.png',

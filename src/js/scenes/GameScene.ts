@@ -114,21 +114,53 @@ export class GameScene extends Phaser.Scene {
     this.engineContext.pointerManager.create();
     this.engineContext.cursorManager.create();
 
-    // this.createParticleTest();
+    this.createParticleTest();
   }
 
   private createParticleTest() {
-    const particles = this.add.particles('fx_smoke');
 
-    particles.createEmitter({
-      frame: ['flame_01.png', 'flame_02.png', 'flame_03.png'],
+    const fire = this.add.particles('fx_smoke_temp').createEmitter({
       x: 400,
       y: 300,
-      speed: 10,
-      tint: [0xFF0000],
+      speed: { min: 80, max: 160 },
+      angle: { min: -85, max: -95 },
+      scale: { start: 0, end: 0.5, ease: 'Back.easeOut' },
+      alpha: { start: 1, end: 0, ease: 'Quart.easeOut' },
+      blendMode: 'ADD',
+      lifespan: 1000
+    });
+
+    const whiteSmoke = this.add.particles('fx_smoke').createEmitter({
+      frame: ['flame_02.png'],
+      x: 400,
+      y: 300,
+      speed: { min: 20, max: 100 },
+      angle: { min: -85, max: -95 },
+      scale: { start: 1, end: 0 },
+      alpha: { start: 0, end: 0.5 },
       lifespan: 2000,
-      frequency: 20,
-      blendMode: 'MULTIPLY'
+      // active: false
+    });
+    whiteSmoke.reserve(1000);
+
+    const darkSmoke = this.add.particles('fx_smoke').createEmitter({
+      x: 400,
+      y: 300,
+      speed: { min: 20, max: 100 },
+      angle: { min: 0, max: 360 },
+      scale: { start: 1, end: 0 },
+      alpha: { start: 0, end: 0.1 },
+      blendMode: 'ADD',
+      lifespan: 2000,
+      active: false
+    });
+    darkSmoke.reserve(1000);
+
+    fire.onParticleDeath(particle => {
+      darkSmoke.setPosition(particle.x, particle.y + 40);
+      whiteSmoke.setPosition(particle.x, particle.y + 40);
+      darkSmoke.emitParticle();
+      whiteSmoke.emitParticle();
     });
   }
 
