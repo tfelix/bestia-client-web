@@ -11,6 +11,7 @@ export class WeatherRenderer extends BaseCommonRenderer {
   private weatherGfx: Phaser.GameObjects.Graphics;
   private rainParticles: Phaser.GameObjects.Particles.ParticleEmitterManager;
   private rainEmitter: Phaser.GameObjects.Particles.ParticleEmitter;
+  private lightningEvent: Phaser.Time.TimerEvent;
 
   private screenRect = new Phaser.Geom.Rectangle(0, 0, this.ctx.helper.display.sceneWidth, this.ctx.helper.display.sceneHeight);
 
@@ -46,16 +47,10 @@ export class WeatherRenderer extends BaseCommonRenderer {
     const offset = this.ctx.helper.display.getScrollOffsetPx();
 
     this.weatherGfx.setPosition(offset.x, offset.y);
-    this.rainEmitter.setPosition(offset.x, -10);
+    this.rainEmitter.setPosition(offset.x, offset.y - 10);
 
     this.makeRain();
-    /*
-    if (!this.timer) {
-      this.timer = window.setTimeout(() => {
-        this.makeLightning();
-        this.timer = null;
-      }, 3000);
-    }*/
+    this.makeLightning();
   }
 
   private makeRain() {
@@ -100,7 +95,14 @@ export class WeatherRenderer extends BaseCommonRenderer {
   }
 
   private makeLightning() {
-    this.ctx.game.cameras.main.flash(1000);
+    const weather = this.ctx.data.weather;
+    if (weather.rain < 0.5 || this.lightningEvent && !this.lightningEvent.hasDispatched) {
+      return;
+    }
+
+    const lightningEventScale = 1 / (Math.log(weather.rain + 0.1) + 1);
+    const nextLightningMs = 1000 * lightningEventScale * Phaser.Math.Between(12, 22);
+    this.lightningEvent = this.ctx.game.time.delayedCall(nextLightningMs, () => this.ctx.game.cameras.main.flash(800), [], this);
   }
 
   public needsUpdate(): boolean {
