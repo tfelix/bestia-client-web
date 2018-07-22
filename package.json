@@ -30,7 +30,7 @@
     "easystarjs": "0.4.3",
     "loglevel": "1.6.1",
     "phaser": "3.10.1",
-    "pubsub-js": "^1.6.0",
+    "pubsub-js": "1.6.0",
     "rxjs": "6.2.1",
     "store": "2.0.12"
   },
