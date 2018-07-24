@@ -29,6 +29,7 @@
     "no-bitwise": false,
     "prefer-object-spread": false,
     "binary-expression-operand-order": false,
+    "prefer-method-signature": false,
     "comment-format": [
       true,
       "check-space"

@@ -7,7 +7,7 @@ import { Entity } from 'entities';
 
 interface InteractionCallback {
   type: InteractionType;
-  fn: () => void
+  fn: () => void;
 }
 
 export class InteractionHandler extends ClientMessageHandler<RequestInteractionMessage> {

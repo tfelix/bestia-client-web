@@ -4,13 +4,11 @@ import { Point, Size } from 'model';
 import { EngineContext } from '../../EngineContext';
 import { BaseCommonRenderer } from './BaseCommonRenderer';
 import { DisplayHelper } from '../../DisplayHelper';
+import { VisualDepth } from '../VisualDepths';
 
-// TODO Das hier zu einem Abstract Common Renderer machen mit Statistic etc.
 export class CollisionCommonRenderer extends BaseCommonRenderer {
 
   private graphicsCollision: Phaser.GameObjects.Graphics | null = null;
-  private graphicsNonCollision: Phaser.GameObjects.Graphics | null = null;
-
   private rect = new Phaser.Geom.Rectangle(0, 0, MapHelper.TILE_SIZE_PX, MapHelper.TILE_SIZE_PX);
 
   private gameTileSize: Size;
@@ -44,7 +42,6 @@ export class CollisionCommonRenderer extends BaseCommonRenderer {
     this.prepareData();
 
     this.graphicsCollision.clear();
-    this.graphicsNonCollision.clear();
 
     const pxScrollOffset = this.displayHelper.getScrollOffsetPx();
 
@@ -55,9 +52,8 @@ export class CollisionCommonRenderer extends BaseCommonRenderer {
         this.rect.y = px.y + pxScrollOffset.y;
         const hasCollision = this.context.collisionUpdater.hasCollision(x, y);
         if (hasCollision) {
+          this.graphicsCollision.fillStyle(0x0000FF, 1);
           this.graphicsCollision.fillRectShape(this.rect);
-        } else {
-          this.graphicsNonCollision.fillRectShape(this.rect);
         }
       }
     }
@@ -68,19 +64,12 @@ export class CollisionCommonRenderer extends BaseCommonRenderer {
       return;
     }
     this.graphicsCollision = this.context.game.add.graphics();
-    this.graphicsCollision.fillStyle(0x0000FF, 1);
-    this.graphicsNonCollision = this.context.game.add.graphics();
-    this.graphicsNonCollision.fillStyle(0x00FF00);
-    this.graphicsCollision.depth = 1000000;
-    this.graphicsNonCollision.depth = 1000000;
-    this.graphicsCollision.alpha = 0.3;
-    this.graphicsNonCollision.alpha = 0.3;
+    this.graphicsCollision.depth = VisualDepth.UI;
+    this.graphicsCollision.alpha = 0.5;
   }
 
   private clearData() {
     this.graphicsCollision.destroy();
-    this.graphicsNonCollision.destroy();
     this.graphicsCollision = null;
-    this.graphicsNonCollision = null;
   }
 }
