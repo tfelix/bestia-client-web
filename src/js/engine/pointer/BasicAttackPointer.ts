@@ -191,7 +191,7 @@ export class BasicAttackPointer extends Pointer {
     return baseAtkRange >= d && d !== -1;
   }
 
-  public updatePosition(pointer: Px, entity?: Entity) {
+  public updatePointerPosition(pointer: Px, entity?: Entity) {
     if (entity) {
       const sprite = entity.data.visual && entity.data.visual.sprite;
       if (sprite) {

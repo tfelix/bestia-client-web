@@ -1,3 +1,4 @@
+import * as LOG from 'loglevel';
 import { ComponentRenderer } from '../ComponentRenderer';
 import { ComponentType, SelectLocalComponent, InteractionLocalComponent, InteractionType } from 'entities/components';
 import { Entity } from 'entities';
@@ -14,7 +15,9 @@ export class SelectLocalComponentRenderer extends ComponentRenderer<SelectLocalC
   private gfx: Phaser.GameObjects.Graphics;
   private circle = new Phaser.Geom.Circle(0, 0, 20);
   private iconCircle = new Phaser.Geom.Circle(0, 0, 40);
+
   private icons: Phaser.GameObjects.Image[] = [];
+  private iconsContainer: Phaser.GameObjects.Container;
 
   constructor(
     private readonly ctx: EngineContext
@@ -80,6 +83,15 @@ export class SelectLocalComponentRenderer extends ComponentRenderer<SelectLocalC
       return;
     }
     interactComp.activeInteraction = interaction;
+    LOG.debug(`Set ${interaction} as default for entity ${entity.id}`);
+  }
+
+  private isDefaultInteraction(entity: Entity, interaction: InteractionType): boolean {
+    const interactComp = entity.getComponent(ComponentType.LOCAL_INTERACTION) as InteractionLocalComponent;
+    if (!interactComp) {
+      return false;
+    }
+    return interactComp.activeInteraction === interaction;
   }
 
   private createOptionsButtons(entity: Entity, sprite: Phaser.GameObjects.Sprite) {
@@ -91,7 +103,7 @@ export class SelectLocalComponentRenderer extends ComponentRenderer<SelectLocalC
     // TODO This solution is a bit clunky. If you have some better idea/style
     // refactor it.
     const interactionNames = [];
-    for (let interaction of interactComp.possibleInteraction) {
+    for (const interaction of interactComp.possibleInteraction) {
       interactionNames.push({
         interaction: interaction,
         interactionIconName: this.typeToIcon(interaction)
@@ -99,6 +111,12 @@ export class SelectLocalComponentRenderer extends ComponentRenderer<SelectLocalC
     }
     this.icons = interactionNames.map(v => this.guiScene.add.image(0, 0, UIAtlas, v.interactionIconName));
     this.icons.forEach((s, i) => {
+
+      const interactionType = interactionNames[i].interaction;
+      if (this.isDefaultInteraction(entity, interactionType)) {
+        s.setTint(0xDCFB12);
+      }
+
       this.setupSpriteAsButton(s);
       s.on('pointerup', () => {
         // TODO Refactor this as an own function.
@@ -110,7 +128,13 @@ export class SelectLocalComponentRenderer extends ComponentRenderer<SelectLocalC
       });
     });
 
-    for (let i = 0; i < interactionNames.length; i++) {
+    this.positionIcons(sprite);
+  }
+
+  private positionIcons(sprite: Phaser.GameObjects.Sprite) {
+    const scrollOffset = this.ctx.helper.display.getScrollOffsetPx();
+
+    for (let i = 0; i < this.icons.length; i++) {
       const angle = i * Phaser.Math.PI2 / 6;
 
       const xOffset = Math.cos(angle) * this.iconCircle.diameter;
@@ -118,8 +142,8 @@ export class SelectLocalComponentRenderer extends ComponentRenderer<SelectLocalC
 
       Phaser.Geom.Circle.Offset(this.iconCircle, xOffset, yOffset);
 
-      this.icons[i].x = sprite.x + xOffset;
-      this.icons[i].y = sprite.y + yOffset;
+      this.icons[i].x = sprite.x + xOffset - scrollOffset.x;
+      this.icons[i].y = sprite.y + yOffset - scrollOffset.y;
     }
   }
 
@@ -141,7 +165,8 @@ export class SelectLocalComponentRenderer extends ComponentRenderer<SelectLocalC
   }
 
   protected updateGameData(entity: Entity, component: SelectLocalComponent) {
-    // TODO If the entity moves the position of the visuals must be updated
+    const sprite = entity.data.visual && entity.data.visual.sprite;
+    this.positionIcons(sprite);
   }
 
   private clearSelection() {

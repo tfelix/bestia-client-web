@@ -5,7 +5,7 @@ import { Px } from 'model';
 import { Entity, InteractionCache } from 'entities';
 import {
   ComponentType, EntityTypeComponent, EntityType, InteractionLocalComponent,
-  InteractionType, SelectLocalComponent
+  InteractionType, SelectLocalComponent, InventoryComponent
 } from 'entities/components';
 import { RequestInteractionMessage } from 'message/RequestInteractionMessage';
 import { Topics } from 'Topics';
@@ -46,58 +46,36 @@ export class InteractionPointer extends Pointer {
     }
 
     const interactionComp = entity.getComponent(ComponentType.LOCAL_INTERACTION) as InteractionLocalComponent;
-    if (interactionComp && interactionComp.activeInteraction) {
-      return false;
-    }
 
     if (!interactionComp) {
-      const newInteractions = this.getPossibleInteractions(entity);
-      this.requestInteractionFromServer(newInteractions, entity);
-      this.setupDefaultInteraction(newInteractions, entity);
-      entity.addComponent(newInteractions);
-
-      if (newInteractions.activeInteraction) {
-        return false;
-      }
+      this.requestInteractionFromServer(entity);
+      return false;
+    } else {
+      this.setupDefaultInteraction(interactionComp, entity);
     }
 
-    return true;
+    if (interactionComp.activeInteraction) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
-  private requestInteractionFromServer(interactions: InteractionLocalComponent, entity: Entity) {
+  private requestInteractionFromServer(entity: Entity) {
     const requestMsg = new RequestInteractionMessage(entity.id);
     PubSub.publish(Topics.IO_SEND_MSG, requestMsg);
   }
 
   private setupDefaultInteraction(interactions: InteractionLocalComponent, entity: Entity) {
+    if (interactions.activeInteraction) {
+      return;
+    }
     const entityTypeComp = entity.getComponent(ComponentType.ENTITY_TYPE) as EntityTypeComponent;
     const entityType = entityTypeComp && entityTypeComp.entityType;
     const defaultInteraction = this.interactionCache.get(entityType);
     if (defaultInteraction) {
       interactions.activeInteraction = defaultInteraction;
     }
-  }
-
-  private getPossibleInteractions(entity: Entity): InteractionLocalComponent {
-    const interactionComp = new InteractionLocalComponent(entity.id);
-    const entityTypeComp = entity.getComponent(ComponentType.ENTITY_TYPE) as EntityTypeComponent;
-    const entityType = entityTypeComp && entityTypeComp.entityType;
-    if (!entityType) {
-      return interactionComp;
-    }
-
-    // TODO Check if this should not go to the interaction cache.
-    switch (entityTypeComp.entityType) {
-      case EntityType.BESTIA:
-        interactionComp.possibleInteraction.add(InteractionType.ATTACK);
-        break;
-      case EntityType.ITEM:
-        interactionComp.possibleInteraction.add(InteractionType.LOOT);
-        break;
-      default:
-    }
-
-    return interactionComp;
   }
 
   public onClick(position: Px, clickedEntity?: Entity) {
@@ -121,7 +99,7 @@ export class InteractionPointer extends Pointer {
     }
   }
 
-  public updatePosition(pointer: Px, entity?: Entity) {
+  public updatePointerPosition(pointer: Px, entity?: Entity) {
     if (entity) {
       const sprite = entity.data.visual && entity.data.visual.sprite;
       if (sprite) {

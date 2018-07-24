@@ -52,7 +52,7 @@ export class MovePointer extends Pointer {
     return performComp && performComp.canMove || true;
   }
 
-  public updatePosition(px: Px) {
+  public updatePointerPosition(px: Px) {
     this.marker.setPosition(px.x, px.y);
 
     const offset = this.ctx.helper.display.getScrollOffset();

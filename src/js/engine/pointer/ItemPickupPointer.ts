@@ -61,7 +61,7 @@ export class ItemPickupPointer extends Pointer {
     PubSub.publish(Topics.IO_SEND_MSG, pickupMsg);
   }
 
-  public updatePosition(pointer: Px, entity?: Entity) {
+  public updatePointerPosition(pointer: Px, entity?: Entity) {
     if (entity) {
       const sprite = entity.data.visual && entity.data.visual.sprite;
       if (sprite) {

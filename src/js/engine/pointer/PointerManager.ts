@@ -89,7 +89,7 @@ export class PointerManager {
     });
     if (highestPriorityPointer !== null) {
       this.setActive(highestPriorityPointer);
-      this.activePointer.updatePosition(px, entity);
+      this.activePointer.updatePointerPosition(px, entity);
     }
   }
 
@@ -104,7 +104,7 @@ export class PointerManager {
     const worldX = this.engineContext.game.cameras.main.scrollX + pointer.x;
     const worldY = this.engineContext.game.cameras.main.scrollY + pointer.y;
     const cords = MapHelper.getClampedTilePixelXY(worldX, worldY);
-    this.activePointer.updatePosition(cords);
+    this.activePointer.updatePointerPosition(cords);
   }
 
   public hide() {

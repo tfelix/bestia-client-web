@@ -54,6 +54,9 @@ export class RequestSyncHandler extends ClientMessageHandler<SyncRequestMessage>
     this.sendAllComponents(this.entityFactory.addObject('tree', new Point(14, 12)));
     this.sendAllComponents(this.entityFactory.addObject('tree', new Point(18, 9)));
     this.sendAllComponents(this.entityFactory.addObject('tree', new Point(6, 16)));
+    const treeEntityId = this.entityFactory.getLastInsertedEntityId();
+    const treeEntity = this.serverEntities.getEntity(treeEntityId);
+    this.sendAllComponents(this.entityFactory.addDebugComponent(treeEntity));
 
     this.sendAllComponents(this.entityFactory.addObject('plant', new Point(3, 4)));
     this.sendAllComponents(this.entityFactory.addObject('plant', new Point(10, 8)));

@@ -1,13 +1,14 @@
 import * as LOG from 'loglevel';
 
 import { Entity } from 'entities';
-import { DebugComponent, Component, ComponentType } from 'entities/components';
+import { DebugComponent, Component, ComponentType, InteractionLocalComponent } from 'entities/components';
 import { ComponentRenderer } from './ComponentRenderer';
 import { MapHelper } from 'map';
+import { VisualDepth } from '../VisualDepths';
 
 export interface DebugData {
   origin: Phaser.GameObjects.Graphics;
-  depth?: Phaser.GameObjects.Text;
+  debugText?: Phaser.GameObjects.Text;
 }
 
 export class DebugComponentRenderer extends ComponentRenderer<DebugComponent> {
@@ -41,35 +42,40 @@ export class DebugComponentRenderer extends ComponentRenderer<DebugComponent> {
     };
 
     const sprite = entity.data.visual.sprite;
-    this.alignGraphics(entity.data.debug, sprite);
+    this.alignGraphics(entity.data.debug, sprite, entity);
   }
 
   protected updateGameData(entity: Entity, component: DebugComponent) {
     const sprite = entity.data.visual.sprite;
     const graphics = entity.data.debug;
-    this.alignGraphics(graphics, sprite);
+    this.alignGraphics(graphics, sprite, entity);
   }
 
   protected removeComponent(entity: Entity, component: Component) {
   }
 
-  private alignGraphics(graphics: DebugData, sprite: Phaser.GameObjects.Sprite) {
+  private alignGraphics(graphics: DebugData, sprite: Phaser.GameObjects.Sprite, entity: Entity) {
     if (!sprite || !graphics) {
       return;
     }
 
-    if (graphics.depth) {
-      graphics.depth.destroy();
+    if (graphics.debugText) {
+      graphics.debugText.destroy();
     }
 
     const entityId = sprite.getData('entity_id') || '?';
     const pos = MapHelper.pixelToPoint(sprite.x, sprite.y);
-    const text = `eid: ${entityId}  z: ${Math.floor(sprite.depth)}\nx: ${pos.x} y: ${pos.y}`;
-    graphics.depth = this.game.add.text(
+    let text = `eid: ${entityId}  z: ${Math.floor(sprite.depth)}\nx: ${pos.x} y: ${pos.y}\n`;
+    const interactionComp = entity.getComponent(ComponentType.LOCAL_INTERACTION) as InteractionLocalComponent;
+    if (interactionComp) {
+      text += `Inter: ${interactionComp.activeInteraction}, pos: ${JSON.stringify(interactionComp.possibleInteraction)}\n`;
+    }
+    graphics.debugText = this.game.add.text(
       sprite.x + 10,
       sprite.y - 32,
       text
     );
+    graphics.debugText.depth = VisualDepth.UI;
     graphics.origin.setPosition(sprite.x, sprite.y);
   }
 }

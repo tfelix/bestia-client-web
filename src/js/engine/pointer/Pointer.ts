@@ -54,7 +54,7 @@ export abstract class Pointer {
    */
   public abstract checkActive(position: Px, mouseoverEntity?: Entity): number;
 
-  public updatePosition(position: Px, mouseoverEntity?: Entity) {
+  public updatePointerPosition(position: Px, mouseoverEntity?: Entity) {
     // no op.
   }
 
