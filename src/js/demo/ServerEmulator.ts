@@ -33,10 +33,6 @@ export class ServerEmulator {
     this.messageHandler.push(new InteractionHandler(this.serverEntities));
   }
 
-  private updateWeather() {
-
-  }
-
   private sendClient(msg: any) {
     PubSub.publish(Topics.IO_RECV_MSG, msg);
   }
@@ -44,7 +40,10 @@ export class ServerEmulator {
   public create() {
     const date = new Date();
     const isRaining = date.getDay() % 2 === 0;
-    const dayBrightness = Math.abs(Math.abs(date.getHours() / 24 - 0.5) * 2 - 1);
+    let dayBrightness = Math.abs(Math.abs(date.getHours() / 24 - 0.5) * 2 - 1);
+    if (dayBrightness < 0.6) {
+      dayBrightness = 0.6;
+    }
 
     const weatherData: WeatherData = {
       rainIntensity: 0,

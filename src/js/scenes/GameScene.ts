@@ -87,7 +87,7 @@ export class GameScene extends Phaser.Scene {
   private setupDataUpdater() {
     this.ecUpdater = new EntityComponentUpdater(this.entityStore);
     this.uiDataUpdater = new UIDataUpdater(this.engineContext);
-    // this.weatherDataUpdater = new WeatherDataUpdater(this.engineContext);
+    this.weatherDataUpdater = new WeatherDataUpdater(this.engineContext);
   }
 
   public preload(): void {
