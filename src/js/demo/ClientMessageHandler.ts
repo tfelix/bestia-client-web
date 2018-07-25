@@ -2,8 +2,8 @@ import * as LOG from 'loglevel';
 
 import { Entity } from 'entities';
 import { ComponentDeleteMessage, ComponentMessage } from 'message';
-import { Topics } from 'Topics';
 import { Component } from 'entities/components';
+import { Topics } from 'connection';
 
 export abstract class ClientMessageHandler<T> {
   public abstract isHandlingMessage(msg: any): boolean;

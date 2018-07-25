@@ -8,7 +8,7 @@ import {
   InteractionType, SelectLocalComponent, InventoryComponent
 } from 'entities/components';
 import { RequestInteractionMessage } from 'message/RequestInteractionMessage';
-import { Topics } from 'Topics';
+import { Topics } from 'connection';
 
 /**
  * The interaction pointer is there to initialize a interaction which is then handled by special pointers.

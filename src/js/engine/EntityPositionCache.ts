@@ -1,8 +1,8 @@
-import { Topics } from 'Topics';
 import { ComponentMessage } from 'message';
 import { Component, ComponentType, PositionComponent } from 'entities/components';
 import { Point } from 'model';
 import { Entity, EntityStore } from 'entities';
+import { Topics } from 'connection';
 
 export class EntityPositionCache {
 

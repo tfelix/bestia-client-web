@@ -1,14 +1,19 @@
+export interface WeatherData {
+  rainIntensity: number;
+  sunBrigthness: number;
+  lightningIntensity: number;
+  thunderIntensity: number;
+  thunderDistanceM: number;
+}
+
 export class GameData {
   public uiModal: string[] = [];
   public dayProgress: 0.1;
-  public weather = {
-    rain: 0,
-    sun: 1,
-    lightning: 0,
-    thunder: {
-      intensity: 0,
-      distance: 0
-    },
-    brightness: 1
+  public weather: WeatherData = {
+    rainIntensity: 0,
+    sunBrigthness: 1,
+    lightningIntensity: 0,
+    thunderIntensity: 0,
+    thunderDistanceM: 0
   };
 }

@@ -1,9 +1,13 @@
 import * as PubSub from 'pubsub-js';
 import * as LOG from 'loglevel';
-import { Topics } from 'Topics';
+
+import { WeatherData } from 'engine';
+import { Topics } from 'connection';
+import { WeatherMessage } from 'message/WeatherDataMessage';
+import { EntityStore } from 'entities';
+
 import { ClientMessageHandler, ItemPickupHandler } from '.';
 import { BasicAttackHandler } from './BasicAttackHandler';
-import { EntityStore } from 'entities';
 import { RequestSyncHandler } from './RequestSyncHandler';
 import { AbortPerformHandler } from './AbortPerformHandler';
 import { InteractionHandler } from './InteractionHandler';
@@ -12,7 +16,7 @@ import { ServerEntityStore } from './ServerEntityStore';
 const PLAYER_ACC_ID = 1337;
 const PLAYER_ENTITY_ID = 1;
 
-export class ServerLocalFacade {
+export class ServerEmulator {
 
   private serverEntities = new ServerEntityStore();
   private messageHandler: Array<ClientMessageHandler<any>> = [];
@@ -27,6 +31,42 @@ export class ServerLocalFacade {
     this.messageHandler.push(new RequestSyncHandler(this.serverEntities, PLAYER_ACC_ID, PLAYER_ENTITY_ID));
     this.messageHandler.push(new AbortPerformHandler(this.serverEntities, PLAYER_ENTITY_ID));
     this.messageHandler.push(new InteractionHandler(this.serverEntities));
+  }
+
+  private updateWeather() {
+
+  }
+
+  private sendClient(msg: any) {
+    PubSub.publish(Topics.IO_RECV_MSG, msg);
+  }
+
+  public create() {
+    const date = new Date();
+    const isRaining = date.getDay() % 2 === 0;
+    const dayBrightness = Math.abs(Math.abs(date.getHours() / 24 - 0.5) * 2 - 1);
+
+    const weatherData: WeatherData = {
+      rainIntensity: 0,
+      sunBrigthness: dayBrightness,
+      lightningIntensity: 0,
+      thunderIntensity: 0,
+      thunderDistanceM: 0,
+    };
+
+    if (isRaining) {
+      weatherData.rainIntensity = Math.random() * 2;
+      weatherData.lightningIntensity = Math.random() * 1;
+      weatherData.thunderIntensity = 0.5;
+      weatherData.thunderDistanceM = Math.random() * 1200;
+    }
+
+    const weatherMessage = new WeatherMessage(weatherData);
+    this.sendClient(weatherMessage);
+  }
+
+  public update() {
+
   }
 
   private receivedFromClient(message: any) {

@@ -1,6 +1,6 @@
-import { Topics } from 'Topics';
 import { UiModalMessage } from 'message/UiMessages';
 import { EngineContext } from 'engine';
+import { Topics } from '.';
 
 export class UIDataUpdater {
   constructor(

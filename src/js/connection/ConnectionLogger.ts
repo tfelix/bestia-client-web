@@ -1,6 +1,7 @@
 import * as PubSub from 'pubsub-js';
 import * as LOG from 'loglevel';
-import { Topics } from 'Topics';
+
+import { Topics } from '.';
 
 export class ConnectionLogger {
 

@@ -3,12 +3,12 @@ import { PerformComponent } from 'entities/components/PerformComponent';
 import { Entity } from 'entities';
 import { Px } from 'model';
 import { AbortPerformMessage } from 'message';
-import { Topics } from 'Topics';
 import { UIConstants, UIAtlas } from 'ui';
 
 import { ComponentRenderer } from '.';
 import { EngineContext } from '../../EngineContext';
 import { VisualDepth } from '../VisualDepths';
+import { Topics } from 'connection';
 
 export interface PerformData {
   endTime: number;

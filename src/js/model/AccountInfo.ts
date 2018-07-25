@@ -1,5 +1,5 @@
-import { Topics } from 'Topics';
 import { AccountInfoMessage } from 'message';
+import { Topics } from 'connection';
 
 export class AccountInfo {
 

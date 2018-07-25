@@ -6,8 +6,6 @@ import { BlendModes } from 'phaser';
 
 export class WeatherRenderer extends BaseCommonRenderer {
 
-  private timer: any;
-
   private weatherGfx: Phaser.GameObjects.Graphics;
   private rainParticles: Phaser.GameObjects.Particles.ParticleEmitterManager;
   private rainEmitter: Phaser.GameObjects.Particles.ParticleEmitter;
@@ -55,7 +53,7 @@ export class WeatherRenderer extends BaseCommonRenderer {
 
   private makeRain() {
     const weather = this.ctx.data.weather;
-    if (weather.rain === 0) {
+    if (weather.rainIntensity === 0) {
       this.rainEmitter.pause();
     } else {
       this.rainEmitter.setFrequency(50);
@@ -69,12 +67,12 @@ export class WeatherRenderer extends BaseCommonRenderer {
     // Find out why dayProgress can not be set in the data field.
     const dayProgress = 0.5;
     const weather = this.ctx.data.weather;
-    let brigtness = weather.brightness;
-    if (weather.rain <= 1) {
-      brigtness -= weather.rain * 0.3;
+    let brigtness = weather.sunBrigthness;
+    if (weather.rainIntensity <= 1) {
+      brigtness -= weather.rainIntensity * 0.3;
     } else {
       // Begins from 0.3 and reaches 1 on rain = 4
-      brigtness -= 0.233 * weather.rain + 0.067;
+      brigtness -= 0.233 * weather.rainIntensity + 0.067;
     }
     brigtness = Phaser.Math.Clamp(brigtness, 0, 10);
 
@@ -96,11 +94,11 @@ export class WeatherRenderer extends BaseCommonRenderer {
 
   private makeLightning() {
     const weather = this.ctx.data.weather;
-    if (weather.rain < 0.5 || this.lightningEvent && !this.lightningEvent.hasDispatched) {
+    if (weather.rainIntensity < 0.5 || this.lightningEvent && !this.lightningEvent.hasDispatched) {
       return;
     }
 
-    const lightningEventScale = 1 / (Math.log(weather.rain + 0.1) + 1);
+    const lightningEventScale = 1 / (Math.log(weather.rainIntensity + 0.1) + 1);
     const nextLightningMs = 1000 * lightningEventScale * Phaser.Math.Between(12, 22);
     this.lightningEvent = this.ctx.game.time.delayedCall(nextLightningMs, () => this.ctx.game.cameras.main.flash(800), [], this);
   }

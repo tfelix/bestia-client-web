@@ -5,8 +5,8 @@ import { PointerPriority } from './PointerPriority';
 import { Px } from 'model';
 import { Entity } from 'entities';
 import { ComponentType, EntityTypeComponent, EntityType, VisualComponent, PositionComponent } from 'entities/components';
-import { Topics } from 'Topics';
 import { RequestItemLootMessage } from 'message';
+import { Topics } from 'connection';
 
 export class ItemPickupPointer extends Pointer {
 

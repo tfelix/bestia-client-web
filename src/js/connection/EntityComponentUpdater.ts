@@ -1,9 +1,9 @@
 import * as LOG from 'loglevel';
 
 import { EntityStore } from 'entities';
-import { Topics } from 'Topics';
 import { ComponentMessage, ComponentDeleteMessage } from 'message';
 import { Component } from 'entities/components';
+import { Topics } from '.';
 
 export class EntityComponentUpdater {
   constructor(

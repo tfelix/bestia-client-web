@@ -1,7 +1,7 @@
 import * as PubSub from 'pubsub-js';
 import * as LOG from 'loglevel';
 
-import { Topics } from 'Topics';
+import { Topics } from './Topics';
 
 export interface Route {
   handles(msg: any): boolean;

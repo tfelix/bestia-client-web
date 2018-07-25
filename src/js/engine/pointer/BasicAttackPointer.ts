@@ -10,12 +10,12 @@ import { ComponentType, PositionComponent, VisualComponent, InteractionType } fr
 import { EntityTypeComponent } from 'entities/components/EntityTypeComponent';
 import { AttacksComponent } from 'entities/components/AttacksComponent';
 import { BasicAttackMessage } from 'message/BasicAttackMessage';
-import { Topics } from 'Topics';
 import { ConditionComponent, ConditionHelper } from 'entities/components/ConditionComponent';
 import { MapHelper } from 'map';
 import { getSpriteDescriptionFromCache } from '../renderer';
 import { SpriteCollision } from 'map/SpriteCollision';
 import { CursorType } from './CursorManager';
+import { Topics } from 'connection';
 
 function getSightDirection(source: Point, lookingTo: Point): Point {
   return lookingTo.minus(source).norm();
