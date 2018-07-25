@@ -34,6 +34,7 @@ export class WeatherRenderer extends BaseCommonRenderer {
       quantity: 50,
       lifespan: 5000
     });
+    this.rainEmitter.manager.depth = VisualDepth.WEATHER_FX;
     this.rainEmitter.pause();
   }
 
