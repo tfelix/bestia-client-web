@@ -11,7 +11,7 @@ export enum InteractionType {
 
 export class InteractionLocalComponent extends LocalComponent {
 
-  public possibleInteraction = new Set<InteractionType>();
+  public possibleInteractions = new Set<InteractionType>();
   public activeInteraction: InteractionType | null = null;
 
   constructor(entityId: number) {

@@ -68,7 +68,7 @@ export class DebugComponentRenderer extends ComponentRenderer<DebugComponent> {
     let text = `eid: ${entityId}  z: ${Math.floor(sprite.depth)}\nx: ${pos.x} y: ${pos.y}\n`;
     const interactionComp = entity.getComponent(ComponentType.LOCAL_INTERACTION) as InteractionLocalComponent;
     if (interactionComp) {
-      text += `Inter: ${interactionComp.activeInteraction}, pos: ${JSON.stringify(interactionComp.possibleInteraction)}\n`;
+      text += `Inter: ${interactionComp.activeInteraction}, pos: ${JSON.stringify(interactionComp.possibleInteractions)}\n`;
     }
     graphics.debugText = this.game.add.text(
       sprite.x + 10,

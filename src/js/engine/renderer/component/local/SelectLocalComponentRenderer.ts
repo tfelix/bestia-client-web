@@ -103,7 +103,7 @@ export class SelectLocalComponentRenderer extends ComponentRenderer<SelectLocalC
     // TODO This solution is a bit clunky. If you have some better idea/style
     // refactor it.
     const interactionNames = [];
-    for (const interaction of interactComp.possibleInteraction) {
+    for (const interaction of interactComp.possibleInteractions) {
       interactionNames.push({
         interaction: interaction,
         interactionIconName: this.typeToIcon(interaction)

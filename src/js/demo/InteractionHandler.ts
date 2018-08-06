@@ -38,7 +38,7 @@ export class InteractionHandler extends ClientMessageHandler<RequestInteractionM
     }
     const possibleInteraction = this.getPossibleInteraction(entity);
     const interactionComp = new InteractionLocalComponent(entity.id);
-    possibleInteraction.forEach(inter => interactionComp.possibleInteraction.add(inter));
+    possibleInteraction.forEach(inter => interactionComp.possibleInteractions.add(inter));
     this.sendAllComponents([interactionComp]);
   }
 
@@ -56,10 +56,10 @@ export class InteractionHandler extends ClientMessageHandler<RequestInteractionM
     }
 
     const signEntity = this.entityStore.getEntityByIdentifier('sign_post');
-    if (!signEntity) {
-      return [];
+    if (signEntity && signEntity.id === entity.id) {
+      return [InteractionType.READ];
     }
 
-    return [InteractionType.READ];
+    return [];
   }
 }

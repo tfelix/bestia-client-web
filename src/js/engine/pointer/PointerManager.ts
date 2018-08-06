@@ -29,6 +29,8 @@ export class PointerManager {
   private movePointer: Pointer;
   private nullIndicator: Pointer;
 
+  private entityUnderPointer: Entity | null = null;
+
   constructor(
     private readonly engineContext: EngineContext
   ) {
@@ -46,13 +48,12 @@ export class PointerManager {
     this.engineContext.game.input.on('pointermove', this.updateActivePointerPosition, this);
 
     this.engineContext.game.input.on('pointerdown', this.onPointerClicked, this);
-    this.engineContext.game.input.on('gameobjectover', this.checkPointerPriority, this);
-
-    this.engineContext.game.input.on('gameobjectout', this.checkPointerOut, this);
-    // this.engineContext.game.input.on('pointerup', this.checkPointerOut, this);
+    this.engineContext.game.input.on('gameobjectover', this.activateActivePointer, this);
+    this.engineContext.game.input.on('gameobjectout', this.onPointerOut, this);
   }
 
-  private checkPointerOut() {
+  private onPointerOut() {
+    this.entityUnderPointer = null;
     this.showDefault();
   }
 
@@ -72,11 +73,13 @@ export class PointerManager {
     return this.engineContext.entityStore.getEntity(entityId);
   }
 
-  private checkPointerPriority(
+  private activateActivePointer(
     pointer: Phaser.Input.Pointer,
     gameObj: Phaser.GameObjects.Sprite
   ) {
     const entity = this.getEntityFromGameObj(gameObj);
+    this.entityUnderPointer = entity;
+
     const px = this.pointerToPx(pointer);
     let highestPriority = 0;
     let highestPriorityPointer: Pointer = null;
@@ -134,7 +137,7 @@ export class PointerManager {
   }
 
   public update() {
-    // LOG.debug(this.engineContext.game.input.mouse.target);
+    this.activePointer.update(this.entityUnderPointer);
   }
 
   public requestActive(indicator, force = false) {

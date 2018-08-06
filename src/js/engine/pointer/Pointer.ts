@@ -38,6 +38,13 @@ export abstract class Pointer {
     // no op.
   }
 
+  /**
+   * Update is called every frame and there you can perform simple updates for the pointer.
+   */
+  public update(entity?: Entity) {
+    // no op.
+  }
+
   public load(loader: Phaser.Loader.LoaderPlugin) {
     // no op.
   }

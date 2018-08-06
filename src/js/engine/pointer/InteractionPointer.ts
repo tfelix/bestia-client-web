@@ -1,11 +1,12 @@
+import * as LOG from 'loglevel';
 import { Pointer, PointerManager } from '.';
 import { EngineContext } from '../EngineContext';
 import { PointerPriority } from './PointerPriority';
 import { Px } from 'model';
 import { Entity, InteractionCache } from 'entities';
 import {
-  ComponentType, EntityTypeComponent, EntityType, InteractionLocalComponent,
-  InteractionType, SelectLocalComponent, InventoryComponent
+  ComponentType, EntityTypeComponent, InteractionLocalComponent,
+  SelectLocalComponent
 } from 'entities/components';
 import { RequestInteractionMessage } from 'message/RequestInteractionMessage';
 import { Topics } from 'connection';
@@ -30,9 +31,24 @@ export class InteractionPointer extends Pointer {
   }
 
   public checkActive(position: Px, mouseoverEntity?: Entity): number {
-    if (this.isInteractionPointerResponsible(mouseoverEntity) || this.canInteractWithTile(position)) {
+    if (!mouseoverEntity) {
+      return PointerPriority.NONE;
+    }
+
+    const interactionComp = mouseoverEntity.getComponent(ComponentType.LOCAL_INTERACTION) as InteractionLocalComponent;
+    if (!interactionComp) {
+      this.requestInteractionFromServer(mouseoverEntity);
       return PointerPriority.INTERACTION;
     }
+
+    if (this.canInteractWithTile(position)) {
+      return PointerPriority.INTERACTION;
+    }
+
+    if (!interactionComp.activeInteraction) {
+      return PointerPriority.INTERACTION;
+    }
+
     return PointerPriority.NONE;
   }
 
@@ -40,42 +56,33 @@ export class InteractionPointer extends Pointer {
     return false;
   }
 
-  private isInteractionPointerResponsible(entity?: Entity): boolean {
-    if (!entity) {
-      return false;
-    }
-
-    const interactionComp = entity.getComponent(ComponentType.LOCAL_INTERACTION) as InteractionLocalComponent;
-
-    if (!interactionComp) {
-      this.requestInteractionFromServer(entity);
-      return false;
-    } else {
-      this.setupDefaultInteraction(interactionComp, entity);
-    }
-
-    if (interactionComp.activeInteraction) {
-      return false;
-    } else {
-      return true;
-    }
-  }
-
   private requestInteractionFromServer(entity: Entity) {
     const requestMsg = new RequestInteractionMessage(entity.id);
     PubSub.publish(Topics.IO_SEND_MSG, requestMsg);
   }
 
-  private setupDefaultInteraction(interactions: InteractionLocalComponent, entity: Entity) {
-    if (interactions.activeInteraction) {
+  private trySetupDefaultInteraction(entity: Entity) {
+    const interactionComp = entity.getComponent(ComponentType.LOCAL_INTERACTION) as InteractionLocalComponent;
+    const hasDefaultInteraction = interactionComp && !!interactionComp.activeInteraction;
+
+    if (hasDefaultInteraction) {
       return;
     }
+
     const entityTypeComp = entity.getComponent(ComponentType.ENTITY_TYPE) as EntityTypeComponent;
-    const entityType = entityTypeComp && entityTypeComp.entityType;
-    const defaultInteraction = this.interactionCache.get(entityType);
-    if (defaultInteraction) {
-      interactions.activeInteraction = defaultInteraction;
+
+    const defaultInteraction = entityTypeComp && this.interactionCache.get(entityTypeComp.entityType);
+    if (interactionComp && defaultInteraction) {
+      interactionComp.activeInteraction = defaultInteraction;
     }
+  }
+
+  public update(entity?: Entity) {
+    if (!entity) {
+      return;
+    }
+
+    this.trySetupDefaultInteraction(entity);
   }
 
   public onClick(position: Px, clickedEntity?: Entity) {
@@ -83,20 +90,26 @@ export class InteractionPointer extends Pointer {
       return;
     }
 
-    const wasAlreadyActive = clickedEntity.hasComponent(ComponentType.LOCAL_SELECT);
-    if (wasAlreadyActive) {
-      clickedEntity.removeComponentByType(ComponentType.LOCAL_SELECT);
-      this.activeEntity = null;
+    if (clickedEntity === this.activeEntity) {
+      this.removeSelection();
       return;
-    } else {
-      if (this.activeEntity) {
-        this.activeEntity.removeComponentByType(ComponentType.LOCAL_SELECT);
-        this.activeEntity = null;
-      }
+    }
 
+    if (this.activeEntity) {
+      this.removeSelection();
+      return;
+    }
+
+    const interactionComp = clickedEntity.getComponent(ComponentType.LOCAL_INTERACTION) as InteractionLocalComponent;
+    if (interactionComp && interactionComp.possibleInteractions.size > 0) {
       clickedEntity.addComponent(new SelectLocalComponent(clickedEntity.id));
       this.activeEntity = clickedEntity;
     }
+  }
+
+  private removeSelection() {
+    this.activeEntity.removeComponentByType(ComponentType.LOCAL_SELECT);
+    this.activeEntity = null;
   }
 
   public updatePointerPosition(pointer: Px, entity?: Entity) {
