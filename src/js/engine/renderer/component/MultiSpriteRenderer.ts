@@ -33,8 +33,8 @@ const DIRECTION_LEFT = new Point(-1, 0);
 const DIRECTION_RIGHT = new Point(1, 0);
 const DIRECTION_UP_LEFT = new Point(-1, -1).norm();
 const DIRECTION_DOWN_LEFT = new Point(-1, 1).norm();
-const DIRECTION_UP_RIGHT = new Point(1, -1);
-const DIRECTION_DOWN_RIGHT = new Point(1, 1);
+const DIRECTION_UP_RIGHT = new Point(1, -1).norm();
+const DIRECTION_DOWN_RIGHT = new Point(1, 1).norm();
 
 function translateSightPositionToAnimationName(sightDirection: Point): StandAnimation {
   if (Math.floor(sightDirection.scalarp(DIRECTION_DOWN)) === 1) {
@@ -247,12 +247,18 @@ export class MultiSpriteRenderer extends SpriteRenderer {
         suffix: '.png'
       };
       const animationFrames = this.ctx.game.anims.generateFrameNames(description.name, config);
-      const animConfig = {
+
+      const animConfig: AnimationConfig = {
         key: `${description.name}_${anim.name}`,
         frames: animationFrames,
         frameRate: anim.fps,
         repeat: -1
       };
+
+      if (anim.name === 'kill') {
+        animConfig.repeat = 0;
+      }
+
       this.ctx.game.anims.create(animConfig);
     });
   }

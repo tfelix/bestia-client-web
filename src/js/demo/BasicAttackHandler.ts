@@ -55,7 +55,7 @@ export class BasicAttackHandler extends ClientMessageHandler<BasicAttackMessage>
     }
 
     const visualComp = this.copyHelper.copyComponent(entityId, ComponentType.VISUAL) as VisualComponent;
-    visualComp.animation = 'die';
+    visualComp.animation = 'kill';
     const compMsg = new ComponentMessage<VisualComponent>(visualComp);
     this.sendClient(compMsg);
 
