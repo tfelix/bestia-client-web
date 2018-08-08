@@ -18,7 +18,6 @@ import { Topics } from 'connection';
  */
 export class InteractionPointer extends Pointer {
 
-  private activeSprite: Phaser.GameObjects.Sprite;
   private activeEntity?: Entity = null;
 
   private interactionCache = new InteractionCache();
@@ -108,24 +107,15 @@ export class InteractionPointer extends Pointer {
   }
 
   private removeSelection() {
-    this.activeEntity.removeComponentByType(ComponentType.LOCAL_SELECT);
-    this.activeEntity = null;
+    if (this.activeEntity) {
+      this.activeEntity.removeComponentByType(ComponentType.LOCAL_SELECT);
+      this.activeEntity = null;
+    }
   }
 
   public updatePointerPosition(pointer: Px, entity?: Entity) {
-    if (entity) {
-      const sprite = entity.data.visual && entity.data.visual.sprite;
-      if (sprite) {
-        sprite.setTint(0x00FF00);
-        this.activeSprite = sprite;
-      }
-    }
   }
 
   public deactivate() {
-    if (this.activeSprite) {
-      this.activeSprite.clearTint();
-      this.activeSprite = null;
-    }
   }
 }

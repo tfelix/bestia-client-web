@@ -57,14 +57,12 @@ export class SelectLocalComponentRenderer extends ComponentRenderer<SelectLocalC
       this.clearSelection();
     }
 
-    this.gfx.clear();
     const sprite = entity.data.visual && entity.data.visual.sprite;
     if (!sprite) {
       this.selectedEntityId = 0;
       return;
     }
 
-    this.createMarker(sprite);
     this.createOptionsButtons(entity, sprite);
 
     this.selectedEntityId = entity.id;
@@ -166,6 +164,8 @@ export class SelectLocalComponentRenderer extends ComponentRenderer<SelectLocalC
 
   protected updateGameData(entity: Entity, component: SelectLocalComponent) {
     const sprite = entity.data.visual && entity.data.visual.sprite;
+    this.gfx.clear();
+    this.createMarker(sprite);
     this.positionIcons(sprite);
   }
 
