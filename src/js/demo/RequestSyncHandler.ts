@@ -7,12 +7,11 @@ import { ClientMessageHandler } from './ClientMessageHandler';
 
 export class RequestSyncHandler extends ClientMessageHandler<SyncRequestMessage> {
 
-  private entityFactory = new EntityLocalFactory(this.serverEntities);
-
   constructor(
     private readonly serverEntities: ServerEntityStore,
     private readonly playerAccId: number,
-    private readonly playerEntityId: number
+    private readonly playerEntityId: number,
+    private readonly entityFactory: EntityLocalFactory
   ) {
     super();
   }

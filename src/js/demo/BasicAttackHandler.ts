@@ -3,8 +3,10 @@ import { BasicAttackMessage, ActionMessage, ComponentMessage, ComponentDeleteMes
 import { EntityStore, DamageAction, KillAction } from 'entities';
 import { ConditionHelper } from './ConditionHelper';
 import { ComponentCopyHelper } from './ComponentCopyHelper';
-import { ConditionComponent, ComponentType, VisualComponent } from 'entities/components';
+import { ConditionComponent, ComponentType, VisualComponent, PositionComponent } from 'entities/components';
 import { ServerEntityStore } from './ServerEntityStore';
+import { EntityLocalFactory } from './EntityLocalFactory';
+import { Point } from 'model';
 
 export class BasicAttackHandler extends ClientMessageHandler<BasicAttackMessage> {
 
@@ -15,7 +17,8 @@ export class BasicAttackHandler extends ClientMessageHandler<BasicAttackMessage>
 
   constructor(
     private readonly clientEntities: EntityStore,
-    private readonly serverEntities: ServerEntityStore
+    private readonly serverEntities: ServerEntityStore,
+    private readonly entityFactory: EntityLocalFactory
   ) {
     super();
 
@@ -36,9 +39,6 @@ export class BasicAttackHandler extends ClientMessageHandler<BasicAttackMessage>
     this.sendClient(actionMsg);
 
     if (newHp <= 0) {
-      const killAction = new KillAction();
-      const killActionMsg = new ActionMessage<KillAction>(msg.targetEntityId, killAction);
-      this.sendClient(killActionMsg);
       this.killEntity(msg.targetEntityId);
     }
 
@@ -53,6 +53,13 @@ export class BasicAttackHandler extends ClientMessageHandler<BasicAttackMessage>
     if (!entity) {
       return;
     }
+
+    const killAction = new KillAction();
+    const killActionMsg = new ActionMessage<KillAction>(entityId, killAction);
+    this.sendClient(killActionMsg);
+
+    const positionComp = entity.getComponent(ComponentType.POSITION) as PositionComponent;
+    this.sendAllComponents(this.entityFactory.addItem('knife', 1, positionComp.position));
 
     const visualComp = this.copyHelper.copyComponent(entityId, ComponentType.VISUAL) as VisualComponent;
     visualComp.animation = 'kill';
