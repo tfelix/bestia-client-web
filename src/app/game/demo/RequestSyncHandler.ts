@@ -1,6 +1,7 @@
-import { SyncRequestMessage, AccountInfoMessage, ComponentMessage } from 'message';
-import { MoveComponent } from 'entities/components';
-import { Point } from 'model';
+import { SyncRequestMessage, AccountInfoMessage, ComponentMessage } from 'app/game/message';
+import { MoveComponent } from 'app/game/entities';
+import { Point } from 'app/game/model';
+
 import { EntityLocalFactory } from './EntityLocalFactory';
 import { ServerEntityStore } from './ServerEntityStore';
 import { ClientMessageHandler } from './ClientMessageHandler';

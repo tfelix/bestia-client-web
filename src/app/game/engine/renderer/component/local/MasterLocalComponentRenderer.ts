@@ -1,9 +1,7 @@
 import * as LOG from 'loglevel';
 
 import { ComponentRenderer } from '..';
-import { MasterLocalComponent } from 'entities/components/local/MasterLocalComponent';
-import { ComponentType } from 'entities/components';
-import { Entity } from 'entities';
+import { Entity, ComponentType, MasterLocalComponent } from 'app/game/entities';
 import { EngineContext } from '../../../EngineContext';
 
 let entityIdCameraFollows = -1;

@@ -1,11 +1,11 @@
-import { Point, Item } from 'model';
-import { Entity } from 'entities';
+import { Point, Item } from 'app/game/model';
 import {
   PlayerComponent, Component, ComponentType, ConditionComponent, VisualComponent,
-  DebugComponent, SpriteType, PositionComponent, EntityTypeComponent, EntityType,
-  AttacksComponent
-} from 'entities/components';
-import { InventoryComponent } from 'entities/components/InventoryComponent';
+  DebugComponent, PositionComponent, EntityTypeComponent, EntityType,
+  AttacksComponent, Entity, InventoryComponent
+} from 'app/game/entities';
+import { SpriteType } from 'app/game/engine';
+
 import { ServerEntityStore } from './ServerEntityStore';
 
 export class EntityLocalFactory {

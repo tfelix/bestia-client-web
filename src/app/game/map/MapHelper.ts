@@ -1,4 +1,4 @@
-import { Point, Px } from 'model';
+import { Point, Px } from 'app/game/model';
 
 export class MapHelper {
 

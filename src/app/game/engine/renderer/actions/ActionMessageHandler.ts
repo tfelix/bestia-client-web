@@ -1,9 +1,9 @@
 import * as PubSub from 'pubsub-js';
 import * as LOG from 'loglevel';
 
-import { ActionMessage } from 'message/ActionMessage';
-import { EntityStore } from 'entities';
-import { Topics } from 'connection';
+import { ActionMessage } from 'app/game/message';
+import { EntityStore } from 'app/game/entities';
+import { Topics } from 'app/game/connection';
 
 export class ActionMessageHandler {
   constructor(

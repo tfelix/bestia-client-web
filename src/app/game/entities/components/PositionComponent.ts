@@ -1,9 +1,13 @@
+import { Point } from 'app/game/model';
+
 import { Component } from './Component';
-import { Point } from 'model/Point';
 import { ComponentType } from './ComponentType';
 import { Entity } from '..';
 
 export class PositionComponent extends Component {
+
+  public position: Point;
+  public isSightBlocked: boolean;
 
   public static getDistance(e1: Entity, e2: Entity) {
     if (!e1 || !e2) {
@@ -17,9 +21,6 @@ export class PositionComponent extends Component {
 
     return pc1.position.getDistance(pc2.position);
   }
-
-  public position: Point;
-  public isSightBlocked: boolean;
 
   constructor(
     id: number,

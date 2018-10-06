@@ -1,9 +1,11 @@
 import * as LOG from 'loglevel';
 
-import { Point, Px } from 'model';
+import { Point, Px } from 'app/game/model';
+import { MapHelper } from 'app/game/map';
+import { MoveComponent, ComponentType, PositionComponent } from 'app/game/entities';
+
 import { EngineContext } from './EngineContext';
-import { MoveComponent, ComponentType, PositionComponent } from 'entities/components';
-import { MapHelper } from 'map';
+
 
 export class MoveHelper {
 

@@ -1,5 +1,5 @@
-import { Px, Size, Point } from 'model';
-import { MapHelper } from 'map';
+import { Size, Point } from 'app/game/model';
+import { MapHelper } from 'app/game/map';
 
 export class SpriteHelper {
 

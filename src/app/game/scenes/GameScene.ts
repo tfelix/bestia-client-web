@@ -1,20 +1,17 @@
 import { EntityStore, PlayerEntityHolder } from 'entities';
-import { EngineContext } from 'engine/EngineContext';
-import { EntityRenderManager, CommonRenderManager } from 'engine/renderer';
-import { ActionsRendererManager } from 'engine/renderer/actions/ActionsRenderManager';
-import { ConnectionLogger } from 'connection/ConnectionLogger';
-import { MessageRouter } from 'connection/MessageRouter';
-import { UIDataUpdater } from 'connection/UIDataUpdater';
-import { ActionMessageHandler } from 'engine/renderer/actions/ActionMessageHandler';
-import { SyncRequestMessage, ActionMessage, ComponentMessage, ComponentDeleteMessage, AccountInfoMessage } from 'message';
-import { EntityComponentUpdater } from 'connection/EntityComponentUpdater';
-import { AccountInfo, Point } from 'model';
-import { UiModalMessage } from 'message/UiMessages';
+import { EngineContext, EntityRenderManager, CommonRenderManager, ActionsRendererManager, ActionMessageHandler } from 'app/game/engine';
+import { ConnectionLogger, MessageRouter, UIDataUpdater } from 'app/game/connection';
+import {
+  SyncRequestMessage, ActionMessage, ComponentMessage, ComponentDeleteMessage, AccountInfoMessage,
+  UiModalMessage, WeatherMessage
+} from 'app/game/message';
+import { EntityComponentUpdater } from 'app/game/connection/EntityComponentUpdater';
+import { AccountInfo, Point } from 'app/game/model';
 import { SceneNames } from './SceneNames';
 import { BlendModes } from 'phaser';
-import { Topics, ServerEmulator, WeatherDataUpdater } from 'connection';
-import { WeatherMessage } from 'message/WeatherDataMessage';
-import { MapHelper } from 'map';
+import { Topics, WeatherDataUpdater } from 'app/game/connection';
+import { ServerEmulator } from 'app/game/demo';
+import { MapHelper } from 'app/game/map';
 
 export class GameScene extends Phaser.Scene {
 

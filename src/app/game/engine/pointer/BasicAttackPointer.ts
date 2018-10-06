@@ -1,21 +1,21 @@
 import * as PubSub from 'pubsub-js';
 
+import { Px, Point } from 'app/game/model';
+import {
+  ComponentType, PositionComponent, VisualComponent, InteractionType, EntityTypeComponent,
+  AttacksComponent, ConditionComponent, ConditionHelper, Entity, PlayerEntityHolder
+} from 'app/game/entities';
+import { BasicAttackMessage } from 'app/game/message';
+import { MapHelper } from 'app/game/map';
+import { Topics } from 'app/game/connection';
+import { SpriteCollision } from 'app/game/map';
+
 import { Pointer } from './Pointer';
 import { PointerManager } from './PointerManager';
 import { EngineContext } from '../EngineContext';
 import { PointerPriority } from './PointerPriority';
-import { Px, Point } from 'model';
-import { Entity, PlayerEntityHolder } from 'entities';
-import { ComponentType, PositionComponent, VisualComponent, InteractionType } from 'entities/components';
-import { EntityTypeComponent } from 'entities/components/EntityTypeComponent';
-import { AttacksComponent } from 'entities/components/AttacksComponent';
-import { BasicAttackMessage } from 'message/BasicAttackMessage';
-import { ConditionComponent, ConditionHelper } from 'entities/components/ConditionComponent';
-import { MapHelper } from 'map';
 import { getSpriteDescriptionFromCache } from '../renderer';
-import { SpriteCollision } from 'map/SpriteCollision';
 import { CursorType } from './CursorManager';
-import { Topics } from 'connection';
 
 function getSightDirection(source: Point, lookingTo: Point): Point {
   return lookingTo.minus(source).norm();

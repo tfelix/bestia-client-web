@@ -1,13 +1,14 @@
 import * as EasyStar from 'easystarjs';
-import { PlayerEntityHolder, EntityStore } from 'entities';
-import { CollisionUpdater } from 'map';
+
+import { TranslationService } from 'app/game/connection';
+import { CollisionUpdater } from 'app/game/map';
+import { InteractionCache, PlayerEntityHolder, EntityStore } from 'app/game/entities';
+
 import { DisplayHelper } from './DisplayHelper';
 import { SpriteHelper } from './SpriteHelper';
 import { PointerManager, CursorManager } from './pointer';
 import { MoveHelper } from './MoveHelper';
-import { InteractionCache } from 'entities/InteractionCache';
 import { GameData } from '.';
-import { TranslationService } from 'connection/TranslationService';
 import { StaticSoundHolder } from './StaticSoundHolder';
 
 export class EngineConfig {

@@ -1,5 +1,7 @@
 import * as LOG from 'loglevel';
-import { UIConstants, UIAtlas } from 'ui';
+
+import { UIConstants, UIAtlas } from 'app/game/ui';
+
 import { EngineContext } from '../EngineContext';
 import { VisualDepth } from '../renderer/VisualDepths';
 

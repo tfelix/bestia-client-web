@@ -1,9 +1,10 @@
+import { Px } from 'app/game/model';
+import { Entity } from 'app/game/entities';
+
 import { Pointer } from './Pointer';
 import { PointerManager } from './PointerManager';
 import { EngineContext } from '../EngineContext';
 import { PointerPriority } from './PointerPriority';
-import { Px } from 'model';
-import { Entity } from 'entities';
 
 export class NullPointer extends Pointer {
 

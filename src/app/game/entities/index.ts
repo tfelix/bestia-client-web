@@ -9,3 +9,5 @@ export * from './actions/DamageAction';
 export * from './actions/KillAction';
 
 export * from './InteractionCache';
+
+export * from './components';

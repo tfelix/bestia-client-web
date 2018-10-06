@@ -1,8 +1,8 @@
+import { Entity, ChatAction } from 'app/game/entities';
+import { Px } from 'app/game/model';
+
 import { ActionsRenderer } from './ActionsRenderer';
-import { Entity } from 'entities';
-import { ChatAction } from 'entities/actions/ChatAction';
 import { EngineContext } from '../../EngineContext';
-import { Px } from 'model';
 
 const CHAT_DISPLAY_DURATION_MS = 3500;
 const SPRITE_Y_OFFSET = -10;

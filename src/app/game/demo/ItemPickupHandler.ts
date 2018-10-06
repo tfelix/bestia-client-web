@@ -1,8 +1,7 @@
-import { RequestItemLootMessage, ComponentMessage } from 'message';
-import { EntityStore } from 'entities';
+import { RequestItemLootMessage, ComponentMessage } from 'app/game/message';
+import { ComponentType, InventoryComponent } from 'app/game/entities';
+
 import { ClientMessageHandler } from './ClientMessageHandler';
-import { ComponentType } from 'entities/components';
-import { InventoryComponent } from 'entities/components/InventoryComponent';
 import { ServerEntityStore } from './ServerEntityStore';
 
 export class ItemPickupHandler extends ClientMessageHandler<RequestItemLootMessage> {

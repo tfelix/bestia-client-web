@@ -1,5 +1,7 @@
-import { RequestInteractionMessage } from 'message/RequestInteractionMessage';
-import { InteractionType, InteractionLocalComponent, EntityTypeComponent, ComponentType, EntityType } from 'entities/components';
+import { RequestInteractionMessage } from 'app/game/message';
+import {
+  InteractionType, InteractionLocalComponent, EntityTypeComponent, ComponentType, EntityType
+} from 'app/game/entities/components';
 
 import { ClientMessageHandler } from '.';
 import { ServerEntityStore } from './ServerEntityStore';

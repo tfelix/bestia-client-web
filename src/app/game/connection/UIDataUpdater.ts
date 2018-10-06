@@ -1,12 +1,11 @@
-import { UiModalMessage } from 'message/UiMessages';
-import { EngineContext } from 'engine';
+import { UiModalMessage } from 'app/game/message';
+import { EngineContext } from 'app/game/engine';
 import { Topics } from '.';
 
 export class UIDataUpdater {
   constructor(
     private readonly ctx: EngineContext
   ) {
-
     PubSub.subscribe(Topics.IO_RECV_UI_MSG, (_, msg) => this.onUIUpdateMessage(msg));
   }
 

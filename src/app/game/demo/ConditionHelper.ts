@@ -1,5 +1,4 @@
-import { EntityStore } from 'entities';
-import { ComponentType, ConditionComponent } from 'entities/components';
+import { ComponentType, ConditionComponent, EntityStore } from 'app/game/entities';
 
 export class ConditionHelper {
 

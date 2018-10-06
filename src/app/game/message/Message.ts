@@ -1,6 +1,5 @@
-import { EntityStore } from 'entities/EntityStore';
-import { Point } from 'model';
-import { ComponentType, PositionComponent } from 'entities/components';
+import { EntityStore, ComponentType, PositionComponent } from 'app/game/entities';
+import { Point } from 'app/game/model';
 
 export class Message<T extends ComponentMessage> {
 

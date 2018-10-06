@@ -1,5 +1,5 @@
-import { AccountInfoMessage } from 'message';
-import { Topics } from 'connection';
+import { AccountInfoMessage } from 'app/game/message';
+import { Topics } from 'app/game/connection';
 
 export class AccountInfo {
 

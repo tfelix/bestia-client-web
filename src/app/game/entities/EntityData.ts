@@ -1,7 +1,4 @@
-import { SpriteData, DebugData, MoveData } from 'engine/renderer';
-import { ConditionData } from 'engine/renderer/component/ConditionComponentRenderer';
-import { ChatData } from 'engine/renderer/actions/ChatActionsRenderer';
-import { PerformData } from 'engine/renderer/component/PerformComponentRenderer';
+import { SpriteData, DebugData, MoveData, ChatData, PerformData, ConditionData } from 'app/game/engine';
 
 export class EntityData {
   public visual?: SpriteData;

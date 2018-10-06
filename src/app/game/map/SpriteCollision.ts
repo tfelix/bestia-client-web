@@ -1,5 +1,5 @@
-import { Point, Size } from 'model';
-import { SpriteDescription } from 'engine/renderer';
+import { Point, Size } from 'app/game/model';
+import { SpriteDescription } from 'app/game/engine';
 
 export class SpriteCollision {
 

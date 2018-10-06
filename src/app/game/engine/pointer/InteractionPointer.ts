@@ -1,15 +1,16 @@
 import * as LOG from 'loglevel';
+
+import {
+  ComponentType, EntityTypeComponent, InteractionLocalComponent,
+  SelectLocalComponent, Entity, InteractionCache
+} from 'app/game/entities';
+import { RequestInteractionMessage } from 'app/game/message';
+import { Topics } from 'app/game/connection';
+import { Px } from 'app/game/model';
+
 import { Pointer, PointerManager } from '.';
 import { EngineContext } from '../EngineContext';
 import { PointerPriority } from './PointerPriority';
-import { Px } from 'model';
-import { Entity, InteractionCache } from 'entities';
-import {
-  ComponentType, EntityTypeComponent, InteractionLocalComponent,
-  SelectLocalComponent
-} from 'entities/components';
-import { RequestInteractionMessage } from 'message/RequestInteractionMessage';
-import { Topics } from 'connection';
 
 /**
  * The interaction pointer is there to initialize a interaction which is then handled by special pointers.

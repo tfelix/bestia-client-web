@@ -1,14 +1,15 @@
 import * as LOG from 'loglevel';
 
+import { Topics } from 'app/game/connection';
+import { AccountInfo } from 'app/game/model/AccountInfo';
+import { ComponentMessage } from 'app/game/message';
+
 import { EntityStore } from './EntityStore';
 import { Entity } from './Entity';
 import { ComponentType } from './components/ComponentType';
 import { PlayerComponent } from './components/PlayerComponent';
-import { AccountInfo } from 'model/AccountInfo';
 import { MasterLocalComponent } from './components/local/MasterLocalComponent';
-import { ComponentMessage } from 'message';
 import { Component } from './components';
-import { Topics } from 'connection';
 
 export class PlayerEntityHolder {
 

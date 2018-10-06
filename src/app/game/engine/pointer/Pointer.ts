@@ -1,7 +1,8 @@
+import { Px } from 'app/game/model';
+import { Entity } from 'app/game/entities';
+
 import { PointerManager } from './PointerManager';
 import { EngineContext } from '../EngineContext';
-import { Px } from 'model';
-import { Entity } from 'entities';
 
 /**
  * Basic indicator for visualization of the mouse pointer. This visualization is

@@ -1,13 +1,12 @@
-import { Point, Px } from 'model';
-import { MapHelper } from 'map/MapHelper';
+import { Point, Px } from 'app/game/model';
+import { MapHelper } from 'app/game/map/MapHelper';
+import { ComponentType, PerformComponent } from 'app/game/entities';
 
 import { Pointer } from './Pointer';
 import { PointerManager } from './PointerManager';
 import { EngineContext } from '../EngineContext';
 import { Entity } from 'entities';
 import { PointerPriority } from './PointerPriority';
-import { ComponentType } from 'entities/components';
-import { PerformComponent } from 'entities/components/PerformComponent';
 
 export class MovePointer extends Pointer {
 

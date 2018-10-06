@@ -1,6 +1,6 @@
+import { Entity, KillAction, ComponentType, VisualComponent } from 'app/game/entities';
+
 import { ActionsRenderer } from './ActionsRenderer';
-import { Entity, KillAction } from 'entities';
-import { ComponentType, VisualComponent } from 'entities/components';
 
 export class KillActionsRenderer extends ActionsRenderer {
 

@@ -1,5 +1,5 @@
-import { EngineContext } from 'engine';
-import { WeatherMessage } from 'message/WeatherDataMessage';
+import { EngineContext } from 'app/game/engine';
+import { WeatherMessage } from 'app/game/message';
 
 import { Topics } from './Topics';
 

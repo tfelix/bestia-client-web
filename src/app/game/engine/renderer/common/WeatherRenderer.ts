@@ -1,8 +1,8 @@
+import { UIAtlas, UIConstants } from 'app/game/ui';
+
 import { BaseCommonRenderer } from './BaseCommonRenderer';
 import { EngineContext } from '../../EngineContext';
 import { VisualDepth } from '../VisualDepths';
-import { UIAtlas, UIConstants } from 'ui';
-import { BlendModes } from 'phaser';
 
 export class WeatherRenderer extends BaseCommonRenderer {
 

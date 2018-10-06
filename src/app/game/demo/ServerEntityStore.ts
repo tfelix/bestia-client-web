@@ -1,9 +1,9 @@
-import { EntityStore, Entity } from 'entities';
+import { EntityStore, Entity } from 'app/game/entities';
 
 /**
  * This is a modified version of the EntityStore which is useful too access
  * the entities via some sort of string identifier like a name.
- * 
+ *
  * TODO: It will be important to categorize entities with some kind of tag
  * in order to group them for their behavior by the demo code.
  */

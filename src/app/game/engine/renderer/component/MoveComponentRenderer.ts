@@ -1,12 +1,12 @@
 import * as LOG from 'loglevel';
 
 import {
-  ComponentType, MoveComponent, VisualComponent, PositionComponent
-} from 'entities/components';
+  Entity, ComponentType, MoveComponent, VisualComponent, PositionComponent
+} from 'app/game/entities';
+import { Point } from 'app/game/model';
+import { MapHelper } from 'app/game/map';
+
 import { ComponentRenderer } from './ComponentRenderer';
-import { Entity } from 'entities';
-import { Point } from 'model';
-import { MapHelper } from 'map';
 import { EngineContext } from '../../EngineContext';
 
 type WalkAnimationName = 'walk_up' | 'walk_up_right' | 'walk_right' | 'walk_down_right' |

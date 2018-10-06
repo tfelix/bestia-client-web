@@ -1,4 +1,3 @@
-
 export class AccountInfoMessage {
   constructor(
     public readonly username: string,

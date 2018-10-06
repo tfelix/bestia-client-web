@@ -1,5 +1,6 @@
+import { Point } from 'app/game/model/Point';
+
 import { Component } from './Component';
-import { Point } from 'model/Point';
 import { ComponentType } from './ComponentType';
 
 export class MoveComponent extends Component {

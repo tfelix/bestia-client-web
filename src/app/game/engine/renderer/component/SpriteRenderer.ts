@@ -1,7 +1,8 @@
-import { Entity } from 'entities';
+import { Px } from 'app/game/model';
+import { SpriteType } from 'app/game/engine';
+import { Entity, VisualComponent } from 'app/game/entities';
+
 import { SpriteData } from '..';
-import { SpriteType, VisualComponent } from 'entities/components';
-import { Px } from 'model';
 
 export abstract class SpriteRenderer {
 

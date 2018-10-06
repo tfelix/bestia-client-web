@@ -1,8 +1,8 @@
 import * as LOG from 'loglevel';
 
-import { EntityStore } from 'entities';
-import { ComponentMessage, ComponentDeleteMessage } from 'message';
-import { Component } from 'entities/components';
+import { EntityStore } from 'app/game/entities';
+import { ComponentMessage, ComponentDeleteMessage } from 'app/game/message';
+import { Component } from 'app/game/entities';
 import { Topics } from '.';
 
 export class EntityComponentUpdater {

@@ -1,5 +1,6 @@
+import { Item } from 'app/game/model';
+
 import { Component } from './Component';
-import { Item } from 'model';
 import { ComponentType } from './ComponentType';
 
 export class InventoryComponent extends Component {

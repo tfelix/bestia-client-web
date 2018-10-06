@@ -1,4 +1,4 @@
-import { Action } from 'entities';
+import { Action } from 'app/game/entities';
 
 export class ActionMessage<T extends Action> {
   constructor(

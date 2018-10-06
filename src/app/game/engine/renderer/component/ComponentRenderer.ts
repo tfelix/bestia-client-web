@@ -1,6 +1,5 @@
-import { Component, ComponentType } from 'entities/components';
-import { Entity } from 'entities';
-import { Px } from 'model';
+import { Entity, Component, ComponentType } from 'app/game/entities';
+import { Px } from 'app/game/model';
 
 export abstract class ComponentRenderer<C extends Component> {
 

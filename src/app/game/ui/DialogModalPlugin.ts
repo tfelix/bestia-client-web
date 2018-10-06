@@ -1,4 +1,4 @@
-import { VisualDepth } from 'engine/renderer/VisualDepths';
+import { VisualDepth } from 'app/game/engine/renderer/VisualDepths';
 import { UIAtlas, UIConstants } from './UiConstants';
 import { ScaleModes } from 'phaser';
 

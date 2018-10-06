@@ -1,4 +1,4 @@
-import { ComponentType } from 'entities/components';
+import { ComponentType } from 'app/game/entities';
 
 export class ComponentDeleteMessage {
   constructor(

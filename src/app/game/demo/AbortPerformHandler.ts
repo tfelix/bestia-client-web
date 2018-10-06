@@ -1,6 +1,7 @@
+import { AbortPerformMessage, ComponentMessage, ComponentDeleteMessage } from 'app/game/message';
+import { ComponentType, PerformComponent } from 'app/game/entities/components';
+
 import { ClientMessageHandler } from './ClientMessageHandler';
-import { AbortPerformMessage, ComponentMessage, ComponentDeleteMessage } from 'message';
-import { ComponentType, PerformComponent } from 'entities/components';
 import { ServerEntityStore } from './ServerEntityStore';
 
 export class AbortPerformHandler extends ClientMessageHandler<AbortPerformMessage> {
@@ -34,9 +35,6 @@ export class AbortPerformHandler extends ClientMessageHandler<AbortPerformMessag
     },
       10000
     );
-
-    const deleteMessage = new ComponentDeleteMessage(this.playerEntityId, ComponentType.PERFORM);
-    this.sendClient(deleteMessage);
   }
 
 }

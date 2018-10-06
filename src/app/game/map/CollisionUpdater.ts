@@ -1,18 +1,15 @@
 import * as LOG from 'loglevel';
 
-import { EngineContext } from 'engine/EngineContext';
-import { ComponentType, VisualComponent, PositionComponent } from 'entities/components';
-import { getSpriteDescriptionFromCache } from 'engine/renderer';
-import { Point, Size } from 'model';
-import { DisplayHelper } from 'engine/DisplayHelper';
-import { Entity } from 'entities';
+import { EngineContext, getSpriteDescriptionFromCache, DisplayHelper } from 'app/game/engine';
+import { Entity, ComponentType, VisualComponent, PositionComponent } from 'app/game/entities';
+import { Point, Size } from 'app/game/model';
 
 export class CollisionUpdater {
 
   private collisionMap: number[][];
   public isDirty = true;
   private displayTileSize: Size;
-  private displayHelper: DisplayHelper
+  private displayHelper: DisplayHelper;
 
   constructor(
     private readonly ctx: EngineContext

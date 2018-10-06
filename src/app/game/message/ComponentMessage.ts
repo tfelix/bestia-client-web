@@ -1,4 +1,4 @@
-import { Component } from 'entities/components';
+import { Component } from 'app/game/entities';
 
 export class ComponentMessage<T extends Component> {
   constructor(

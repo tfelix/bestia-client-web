@@ -1,14 +1,12 @@
-import { ComponentType } from 'entities/components';
-import { PerformComponent } from 'entities/components/PerformComponent';
-import { Entity } from 'entities';
-import { Px } from 'model';
-import { AbortPerformMessage } from 'message';
-import { UIConstants, UIAtlas } from 'ui';
+import { Entity, ComponentType, PerformComponent } from 'app/game/entities';
+import { Px } from 'app/game/model';
+import { AbortPerformMessage } from 'app/game/message';
+import { UIConstants, UIAtlas } from 'app/game/ui';
+import { Topics } from 'app/game/connection';
 
 import { ComponentRenderer } from '.';
 import { EngineContext } from '../../EngineContext';
 import { VisualDepth } from '../VisualDepths';
-import { Topics } from 'connection';
 
 export interface PerformData {
   endTime: number;

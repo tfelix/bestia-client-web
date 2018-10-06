@@ -1,13 +1,9 @@
+import { Point } from 'app/game/model';
+
 import { Component } from './Component';
 import { ComponentType } from './ComponentType';
-import { Point } from 'model';
+import { SpriteType } from 'app/game/engine';
 import { Entity } from '..';
-
-export enum SpriteType {
-  MULTI,
-  SIMPLE,
-  ITEM
-}
 
 export class VisualComponent extends Component {
 

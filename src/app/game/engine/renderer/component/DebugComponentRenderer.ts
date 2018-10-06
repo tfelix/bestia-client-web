@@ -1,9 +1,7 @@
-import * as LOG from 'loglevel';
+import { Entity, DebugComponent, Component, ComponentType, InteractionLocalComponent } from 'app/game/entities';
+import { MapHelper } from 'app/game/map';
 
-import { Entity } from 'entities';
-import { DebugComponent, Component, ComponentType, InteractionLocalComponent } from 'entities/components';
 import { ComponentRenderer } from './ComponentRenderer';
-import { MapHelper } from 'map';
 import { VisualDepth } from '../VisualDepths';
 
 export interface DebugData {

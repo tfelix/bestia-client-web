@@ -1,12 +1,15 @@
+import { Px } from 'app/game/model';
+import {
+  Entity, ComponentType, EntityTypeComponent, EntityType,
+  VisualComponent, PositionComponent
+} from 'app/game/entities';
+import { RequestItemLootMessage } from 'app/game/message';
+import { Topics } from 'app/game/connection';
+
 import { Pointer } from './Pointer';
 import { PointerManager } from './PointerManager';
 import { EngineContext } from '../EngineContext';
 import { PointerPriority } from './PointerPriority';
-import { Px } from 'model';
-import { Entity } from 'entities';
-import { ComponentType, EntityTypeComponent, EntityType, VisualComponent, PositionComponent } from 'entities/components';
-import { RequestItemLootMessage } from 'message';
-import { Topics } from 'connection';
 
 export class ItemPickupPointer extends Pointer {
 

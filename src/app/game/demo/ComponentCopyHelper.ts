@@ -1,5 +1,4 @@
-import { EntityStore } from 'entities';
-import { ComponentType, Component } from 'entities/components';
+import { EntityStore, ComponentType, Component } from 'app/game/entities';
 
 export class ComponentCopyHelper {
   constructor(

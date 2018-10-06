@@ -1,8 +1,7 @@
-import { ComponentMessage } from 'message';
-import { Component, ComponentType, PositionComponent } from 'entities/components';
-import { Point } from 'model';
-import { Entity, EntityStore } from 'entities';
-import { Topics } from 'connection';
+import { ComponentMessage } from 'app/game/message';
+import { Component, ComponentType, PositionComponent, Entity, EntityStore } from 'app/game/entities';
+import { Point } from 'app/game/model';
+import { Topics } from 'app/game/connection';
 
 export class EntityPositionCache {
 

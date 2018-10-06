@@ -1,8 +1,8 @@
+import { Entity, InventoryComponent, ComponentType } from 'app/game/entities';
+import { UIConstants, UIAtlas } from 'app/game/ui';
+
 import { ComponentRenderer } from '.';
-import { InventoryComponent, ComponentType } from 'entities/components';
-import { Entity } from 'entities';
 import { EngineContext } from '../../EngineContext';
-import { UIConstants, UIAtlas } from 'ui';
 
 // TODO Replace this with bitmap text
 const uiTextStyle = { fontFamily: 'Arial', fontSize: 12, color: '#000000' };

@@ -1,11 +1,14 @@
 import * as LOG from 'loglevel';
+import { ScaleModes } from 'phaser';
+
+import { UIConstants, UIAtlas } from 'app/game/ui';
+import {
+  Entity, ComponentType, SelectLocalComponent, InteractionLocalComponent, InteractionType
+} from 'app/game/entities';
+
 import { ComponentRenderer } from '../ComponentRenderer';
-import { ComponentType, SelectLocalComponent, InteractionLocalComponent, InteractionType } from 'entities/components';
-import { Entity } from 'entities';
 import { EngineContext } from '../../..';
 import { VisualDepth } from '../../VisualDepths';
-import { UIConstants, UIAtlas } from 'ui';
-import { ScaleModes } from 'phaser';
 
 export class SelectLocalComponentRenderer extends ComponentRenderer<SelectLocalComponent> {
 

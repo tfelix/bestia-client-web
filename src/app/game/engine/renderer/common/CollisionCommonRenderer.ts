@@ -1,6 +1,6 @@
-import { MapHelper } from 'map';
+import { MapHelper } from 'app/game/map';
+import { Point, Size } from 'app/game/model';
 
-import { Point, Size } from 'model';
 import { EngineContext } from '../../EngineContext';
 import { BaseCommonRenderer } from './BaseCommonRenderer';
 import { DisplayHelper } from '../../DisplayHelper';

@@ -1,4 +1,4 @@
-import { WeatherData } from 'engine';
+import { WeatherData } from 'app/game/engine';
 
 import { DataMessage } from './DataMessage';
 

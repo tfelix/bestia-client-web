@@ -1,10 +1,10 @@
 import * as PubSub from 'pubsub-js';
 import * as LOG from 'loglevel';
 
-import { WeatherData } from 'engine';
-import { Topics } from 'connection';
-import { WeatherMessage } from 'message/WeatherDataMessage';
-import { EntityStore } from 'entities';
+import { WeatherData } from 'app/game/engine';
+import { Topics } from 'app/game/connection';
+import { WeatherMessage } from 'app/game/message';
+import { EntityStore } from 'app/game/entities';
 
 import { ClientMessageHandler, ItemPickupHandler } from '.';
 import { BasicAttackHandler } from './BasicAttackHandler';

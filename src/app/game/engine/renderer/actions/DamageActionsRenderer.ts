@@ -1,6 +1,6 @@
+import { Entity, DamageAction, ComponentType, VisualComponent } from 'app/game/entities';
+
 import { ActionsRenderer } from './ActionsRenderer';
-import { Entity, DamageAction } from 'entities';
-import { ComponentType, VisualComponent } from 'entities/components';
 
 export class DamageActionsRenderer extends ActionsRenderer {
 

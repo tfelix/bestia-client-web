@@ -1,12 +1,12 @@
-import { MapHelper } from 'map/MapHelper';
+import { MapHelper } from 'app/game/map';
+import { Entity } from 'app/game/entities';
+import { Px } from 'app/game/model';
 
 import { EngineContext } from '../EngineContext';
 import { MovePointer } from './MovePointer';
 import { NullPointer } from './NullPointer';
 import { Pointer } from './Pointer';
 import { BasicAttackPointer } from './BasicAttackPointer';
-import { Entity } from 'entities';
-import { Px } from 'model';
 import { ItemPickupPointer } from './ItemPickupPointer';
 import { InteractionPointer } from './InteractionPointer';
 

@@ -1,4 +1,5 @@
-import { Component, ComponentType } from 'entities/components';
+import { Component, ComponentType } from 'app/game/entities';
+
 import { ComponentRenderer } from './ComponentRenderer';
 import { VisualComponentRenderer } from './VisualComponentRenderer';
 import { DebugComponentRenderer } from './DebugComponentRenderer';

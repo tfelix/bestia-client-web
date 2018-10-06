@@ -1,4 +1,4 @@
-import { DialogModalPlugin } from 'ui/DialogModalPlugin';
+import { DialogModalPlugin } from 'app/game/ui';
 import { SceneNames } from './SceneNames';
 
 export class UiScene extends Phaser.Scene {

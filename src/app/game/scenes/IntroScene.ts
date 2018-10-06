@@ -1,4 +1,4 @@
-export class GameScene extends Phaser.Scene {
+export class IntroScene extends Phaser.Scene {
 
   private introTextStyle =  { fontFamily: 'Verdana', fontSize: 12, color: '#ffffff' };
 

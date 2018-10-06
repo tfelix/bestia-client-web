@@ -1,11 +1,10 @@
 import * as LOG from 'loglevel';
 
 import {
-  VisualComponent, SpriteType, PositionComponent, ComponentType
-} from 'entities/components';
-import { Entity } from 'entities';
-import { Point, Px } from 'model';
-import { MapHelper } from 'map/MapHelper';
+  Entity, VisualComponent, PositionComponent, ComponentType
+} from 'app/game/entities';
+import { Point, Px } from 'app/game/model';
+import { MapHelper } from 'app/game/map/MapHelper';
 
 import { ComponentRenderer } from './ComponentRenderer';
 import { EngineContext } from '../../EngineContext';
@@ -13,41 +12,7 @@ import { SpriteRenderer } from './SpriteRenderer';
 import { ItemSpriteRenderer } from './ItemSpriteRenderer';
 import { MultiSpriteRenderer } from './MultiSpriteRenderer';
 import { SimpleSpriteRenderer } from './SimpleSpriteRenderer';
-
-export interface SpriteData {
-  sprite: Phaser.GameObjects.Sprite;
-  spriteName: string;
-  lastPlayedAnimation?: string;
-  childSprites: Array<{
-    spriteName: string;
-    sprite: Phaser.GameObjects.Sprite;
-  }>;
-}
-
-interface SpriteAnimation {
-  name: string;
-  from: number;
-  to: number;
-  fps: number;
-}
-
-export interface SpriteDescription {
-  name: string;
-  type: SpriteType;
-  version: number;
-  scale: number;
-  animations: SpriteAnimation[];
-  anchor: Point;
-  multiSprite: string[];
-  collision?: number[][];
-}
-
-export function getSpriteDescriptionFromCache(
-  spriteName: string,
-  scene: Phaser.Scene
-): SpriteDescription {
-  return scene.cache.json.get(`${spriteName}_desc`);
-}
+import { SpriteType } from './SpriteDescription';
 
 export class VisualComponentRenderer extends ComponentRenderer<VisualComponent> {
 

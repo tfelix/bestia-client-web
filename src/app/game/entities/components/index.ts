@@ -11,5 +11,4 @@ export * from './AttacksComponent';
 export * from './PerformComponent';
 export * from './InventoryComponent';
 
-export * from './local/InteractionLocalComponent';
-export * from './local/SelectLocalComponent';
+export * from './local';

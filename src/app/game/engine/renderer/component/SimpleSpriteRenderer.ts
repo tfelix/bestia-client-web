@@ -1,28 +1,11 @@
 import * as LOG from 'loglevel';
 
-import { VisualComponent, SpriteType } from 'entities/components';
-import { Entity } from 'entities';
-import { Px, Point } from 'model';
-import { SpriteData, SpriteDescription, getSpriteDescriptionFromCache } from '.';
+import { Entity, VisualComponent } from 'app/game/entities';
+import { Px, Point } from 'app/game/model';
 import { SpriteRenderer } from './SpriteRenderer';
 import { EngineContext } from '../..';
-
-export interface SpriteOffsets {
-  targetSprite: string;
-  scale: number;
-  defaultCords: {
-    x: number;
-    y: number;
-  };
-  offsets: Array<{
-    name: string;
-    triggered: string;
-    offsets: Array<{
-      x: number;
-      y: number;
-    }>;
-  }>;
-}
+import { SpriteDescription, SpriteType, SpriteData, getSpriteDescriptionFromCache } from './SpriteDescription';
+import { SpriteOffsets } from './SpriteOffsets';
 
 type StandAnimation = 'stand_down' | 'stand_up' | 'stand_left' | 'stand_right' | 'stand_down_left'
   | 'stand_up_left' | 'stand_down_right' | 'stand_up_right';
