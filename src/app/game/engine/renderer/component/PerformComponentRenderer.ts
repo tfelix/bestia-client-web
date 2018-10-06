@@ -4,7 +4,7 @@ import { AbortPerformMessage } from 'app/game/message';
 import { UIConstants, UIAtlas } from 'app/game/ui';
 import { Topics } from 'app/game/connection';
 
-import { ComponentRenderer } from '.';
+import { ComponentRenderer } from './ComponentRenderer';
 import { EngineContext } from '../../EngineContext';
 import { VisualDepth } from '../VisualDepths';
 

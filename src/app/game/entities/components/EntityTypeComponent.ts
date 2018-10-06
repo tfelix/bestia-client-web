@@ -1,5 +1,5 @@
 import { Component } from './Component';
-import { ComponentType } from '.';
+import { ComponentType } from './ComponentType';
 
 export enum EntityType {
   BESTIA,

@@ -4,8 +4,8 @@ import {
   Entity, ComponentType, MoveComponent, VisualComponent, PositionComponent
 } from 'app/game/entities';
 import { Point } from 'app/game/model';
-import { MapHelper } from 'app/game/map';
 
+import { MapHelper } from '../../MapHelper';
 import { ComponentRenderer } from './ComponentRenderer';
 import { EngineContext } from '../../EngineContext';
 

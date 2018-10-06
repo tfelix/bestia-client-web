@@ -1,11 +1,11 @@
 import { RequestInteractionMessage } from 'app/game/message';
 import {
-  InteractionType, InteractionLocalComponent, EntityTypeComponent, ComponentType, EntityType
-} from 'app/game/entities/components';
+  InteractionType, InteractionLocalComponent, EntityTypeComponent, ComponentType, EntityType,
+  Entity
+} from 'app/game/entities';
 
-import { ClientMessageHandler } from '.';
+import { ClientMessageHandler } from './ClientMessageHandler';
 import { ServerEntityStore } from './ServerEntityStore';
-import { Entity } from 'entities';
 
 interface InteractionCallback {
   type: InteractionType;

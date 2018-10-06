@@ -3,7 +3,7 @@ import * as LOG from 'loglevel';
 import { EntityStore } from 'app/game/entities';
 import { ComponentMessage, ComponentDeleteMessage } from 'app/game/message';
 import { Component } from 'app/game/entities';
-import { Topics } from '.';
+import { Topics } from './Topics';
 
 export class EntityComponentUpdater {
   constructor(

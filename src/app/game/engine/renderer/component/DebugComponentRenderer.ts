@@ -1,8 +1,8 @@
 import { Entity, DebugComponent, Component, ComponentType, InteractionLocalComponent } from 'app/game/entities';
-import { MapHelper } from 'app/game/map';
 
 import { ComponentRenderer } from './ComponentRenderer';
 import { VisualDepth } from '../VisualDepths';
+import { MapHelper } from '../../MapHelper';
 
 export interface DebugData {
   origin: Phaser.GameObjects.Graphics;

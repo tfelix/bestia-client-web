@@ -1,5 +1,6 @@
-import { MapHelper } from 'app/game/map';
 import { Size, Point, Px } from 'app/game/model';
+
+import { MapHelper } from './MapHelper';
 
 export class DisplayHelper {
 

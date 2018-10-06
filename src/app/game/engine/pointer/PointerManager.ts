@@ -1,7 +1,7 @@
-import { MapHelper } from 'app/game/map';
 import { Entity } from 'app/game/entities';
 import { Px } from 'app/game/model';
 
+import { MapHelper } from '../MapHelper';
 import { EngineContext } from '../EngineContext';
 import { MovePointer } from './MovePointer';
 import { NullPointer } from './NullPointer';

@@ -1,4 +1,5 @@
-import { Component, ComponentType } from '.';
+import { Component } from './Component';
+import { ComponentType } from './ComponentType';
 
 export class ConditionComponent extends Component {
 

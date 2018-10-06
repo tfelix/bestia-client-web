@@ -1,6 +1,6 @@
 import { UiModalMessage } from 'app/game/message';
 import { EngineContext } from 'app/game/engine';
-import { Topics } from '.';
+import { Topics } from './Topics';
 
 export class UIDataUpdater {
   constructor(

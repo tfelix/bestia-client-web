@@ -1,6 +1,6 @@
 import * as LOG from 'loglevel';
 
-import { ComponentRenderer } from '..';
+import { ComponentRenderer } from '../ComponentRenderer';
 import { Entity, ComponentType, MasterLocalComponent } from 'app/game/entities';
 import { EngineContext } from '../../../EngineContext';
 

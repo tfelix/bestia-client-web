@@ -6,7 +6,8 @@ import { Topics } from 'app/game/connection';
 import { WeatherMessage } from 'app/game/message';
 import { EntityStore } from 'app/game/entities';
 
-import { ClientMessageHandler, ItemPickupHandler } from '.';
+import { ClientMessageHandler } from './ClientMessageHandler';
+import { ItemPickupHandler } from './ItemPickupHandler';
 import { BasicAttackHandler } from './BasicAttackHandler';
 import { RequestSyncHandler } from './RequestSyncHandler';
 import { AbortPerformHandler } from './AbortPerformHandler';

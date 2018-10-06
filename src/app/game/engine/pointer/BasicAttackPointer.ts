@@ -6,15 +6,15 @@ import {
   AttacksComponent, ConditionComponent, ConditionHelper, Entity, PlayerEntityHolder
 } from 'app/game/entities';
 import { BasicAttackMessage } from 'app/game/message';
-import { MapHelper } from 'app/game/map';
 import { Topics } from 'app/game/connection';
-import { SpriteCollision } from 'app/game/map';
 
 import { Pointer } from './Pointer';
+import { SpriteCollision } from '../SpriteCollision';
+import { MapHelper } from '../MapHelper';
 import { PointerManager } from './PointerManager';
 import { EngineContext } from '../EngineContext';
 import { PointerPriority } from './PointerPriority';
-import { getSpriteDescriptionFromCache } from '../renderer';
+import { getSpriteDescriptionFromCache } from '../renderer/component/SpriteDescription';
 import { CursorType } from './CursorManager';
 
 function getSightDirection(source: Point, lookingTo: Point): Point {

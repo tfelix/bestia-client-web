@@ -1,5 +1,6 @@
-import { ComponentRenderer } from '.';
 import { Entity, ComponentType, ConditionComponent } from 'app/game/entities';
+
+import { ComponentRenderer } from './ComponentRenderer';
 import { EngineContext } from '../../EngineContext';
 
 export interface ConditionData {

@@ -8,7 +8,8 @@ import { RequestInteractionMessage } from 'app/game/message';
 import { Topics } from 'app/game/connection';
 import { Px } from 'app/game/model';
 
-import { Pointer, PointerManager } from '.';
+import { Pointer } from './Pointer';
+import { PointerManager } from './PointerManager';
 import { EngineContext } from '../EngineContext';
 import { PointerPriority } from './PointerPriority';
 

@@ -1,17 +1,22 @@
-import { EntityStore, PlayerEntityHolder } from 'entities';
-import { EngineContext, EntityRenderManager, CommonRenderManager, ActionsRendererManager, ActionMessageHandler } from 'app/game/engine';
-import { ConnectionLogger, MessageRouter, UIDataUpdater } from 'app/game/connection';
-import {
-  SyncRequestMessage, ActionMessage, ComponentMessage, ComponentDeleteMessage, AccountInfoMessage,
-  UiModalMessage, WeatherMessage
-} from 'app/game/message';
-import { EntityComponentUpdater } from 'app/game/connection/EntityComponentUpdater';
-import { AccountInfo, Point } from 'app/game/model';
-import { SceneNames } from './SceneNames';
 import { BlendModes } from 'phaser';
-import { Topics, WeatherDataUpdater } from 'app/game/connection';
+
+import { EntityStore, PlayerEntityHolder } from 'app/game/entities';
+import {
+  EngineContext, EntityRenderManager, CommonRenderManager, ActionsRendererManager,
+  ActionMessageHandler, MapHelper
+} from 'app/game/engine';
+import {
+  ConnectionLogger, MessageRouter, UIDataUpdater, Topics, WeatherDataUpdater,
+  EntityComponentUpdater
+} from 'app/game/connection';
+import {
+  SyncRequestMessage, ActionMessage, ComponentMessage, ComponentDeleteMessage,
+  AccountInfoMessage, UiModalMessage, WeatherMessage
+} from 'app/game/message';
 import { ServerEmulator } from 'app/game/demo';
-import { MapHelper } from 'app/game/map';
+import { AccountInfo, Point } from 'app/game/model';
+
+import { SceneNames } from './SceneNames';
 
 export class GameScene extends Phaser.Scene {
 

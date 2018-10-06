@@ -1,7 +1,7 @@
 import { Entity, InventoryComponent, ComponentType } from 'app/game/entities';
 import { UIConstants, UIAtlas } from 'app/game/ui';
 
-import { ComponentRenderer } from '.';
+import { ComponentRenderer } from './ComponentRenderer';
 import { EngineContext } from '../../EngineContext';
 
 // TODO Replace this with bitmap text

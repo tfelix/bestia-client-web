@@ -1,10 +1,10 @@
 import { Component, OnInit, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 
-// import 'phaser';
-// import * as LOG from 'loglevel';
+import 'phaser';
+import * as LOG from 'loglevel';
 
-// import { LoadScene, BootScene, GameScene, UiScene } from './scenes';
-// import { DialogModalPlugin } from './ui/DialogModalPlugin';
+import { LoadScene, BootScene, GameScene, UiScene } from './scenes';
+import { DialogModalPlugin } from './ui/DialogModalPlugin';
 
 @Component({
   selector: 'app-game',
@@ -13,7 +13,7 @@ import { Component, OnInit, ElementRef, ViewChild, AfterViewInit } from '@angula
 })
 export class GameComponent implements OnInit, AfterViewInit {
 
-  // private game: Phaser.Game;
+  private game: Phaser.Game;
 
   @ViewChild('gameCanvas', {read: ElementRef})
   private canvasDomRef: ElementRef;
@@ -21,7 +21,7 @@ export class GameComponent implements OnInit, AfterViewInit {
   constructor() { }
 
   ngOnInit() {
-    /*
+
     if (DEV) {
       // Development configs
       LOG.setLevel('debug');
@@ -56,7 +56,6 @@ export class GameComponent implements OnInit, AfterViewInit {
       backgroundColor: '#000000',
     };
     this.game = new Phaser.Game(bestiaGameConfig);
-    */
   }
 
   ngAfterViewInit() {

@@ -1,11 +1,11 @@
 import { Px } from 'app/game/model';
 import { bhash } from 'app/game/utils';
 import { Entity, VisualComponent } from 'app/game/entities';
-import { SpriteType } from 'app/game/engine';
 
-import { EngineContext } from '../..';
+import { EngineContext } from '../../EngineContext';
 import { SpriteRenderer } from './SpriteRenderer';
-import { SpriteData } from '..';
+import { SpriteData } from './SpriteDescription';
+import { SpriteType } from '../component/SpriteDescription';
 
 export class ItemSpriteRenderer extends SpriteRenderer {
   constructor(

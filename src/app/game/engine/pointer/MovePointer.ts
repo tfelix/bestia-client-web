@@ -1,7 +1,7 @@
 import { Point, Px } from 'app/game/model';
-import { MapHelper } from 'app/game/map/MapHelper';
 import { ComponentType, PerformComponent } from 'app/game/entities';
 
+import { MapHelper } from '../MapHelper';
 import { Pointer } from './Pointer';
 import { PointerManager } from './PointerManager';
 import { EngineContext } from '../EngineContext';

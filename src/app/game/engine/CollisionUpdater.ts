@@ -1,8 +1,11 @@
 import * as LOG from 'loglevel';
 
-import { EngineContext, getSpriteDescriptionFromCache, DisplayHelper } from 'app/game/engine';
 import { Entity, ComponentType, VisualComponent, PositionComponent } from 'app/game/entities';
 import { Point, Size } from 'app/game/model';
+
+import { EngineContext } from './EngineContext';
+import { getSpriteDescriptionFromCache } from './renderer/component/SpriteDescription';
+import { DisplayHelper } from './DisplayHelper';
 
 export class CollisionUpdater {
 

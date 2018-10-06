@@ -1,8 +1,7 @@
-import { MapHelper } from 'app/game/map';
-
 import { EngineContext } from '../../EngineContext';
 import { BaseCommonRenderer } from './BaseCommonRenderer';
 import { DisplayHelper } from '../../DisplayHelper';
+import { MapHelper } from '../../MapHelper';
 
 const DEBUG_STYLE = {
   fontFamily: 'Courier New',
