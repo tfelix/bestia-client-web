@@ -1,5 +1,4 @@
 import * as LOG from 'loglevel';
-import { ScaleModes } from 'phaser';
 
 import { UIConstants, UIAtlas } from 'app/game/ui';
 import {
@@ -37,7 +36,7 @@ export class SelectLocalComponentRenderer extends ComponentRenderer<SelectLocalC
   private setupSpriteAsButton(visual: Phaser.GameObjects.Image) {
     visual.depth = VisualDepth.UI;
     visual.setInteractive();
-    visual.setScaleMode(ScaleModes.LINEAR);
+    visual.setScaleMode(Phaser.ScaleModes.LINEAR);
     visual.on('pointerover', () => {
       this.ctx.sound.rollover.play();
       visual.setScale(1.1);

@@ -27,7 +27,7 @@
     "easystarjs": "0.4.3",
     "loglevel": "1.6.1",
     "milligram": "^1.3.0",
-    "phaser": "3.11.0",
+    "phaser": "3.14.0",
     "phaser-component-library": "^2.0.0",
     "pubsub-js": "^1.6.0",
     "rxjs": "~6.2.0",

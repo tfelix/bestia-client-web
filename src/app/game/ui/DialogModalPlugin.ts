@@ -1,6 +1,5 @@
 import { VisualDepth } from 'app/game/engine/renderer/VisualDepths';
 import { UIAtlas, UIConstants } from './UiConstants';
-import { ScaleModes } from 'phaser';
 
 export class DialogModalPlugin extends Phaser.Plugins.ScenePlugin {
 
@@ -161,7 +160,7 @@ export class DialogModalPlugin extends Phaser.Plugins.ScenePlugin {
       UIConstants.CANCEL
     );
     this.closeBtn.setScale(0.7);
-    this.closeBtn.setScaleMode(ScaleModes.NEAREST);
+    this.closeBtn.setScaleMode(Phaser.ScaleModes.NEAREST);
     this.closeBtn.depth = VisualDepth.UI;
     this.closeBtn.setInteractive();
 

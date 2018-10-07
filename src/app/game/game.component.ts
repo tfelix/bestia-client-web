@@ -1,9 +1,11 @@
 import { Component, OnInit, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 
-// import * as Phaser from 'phaser';
 import * as LOG from 'loglevel';
 
-import { LoadScene, BootScene, GameScene, UiScene } from './scenes';
+import { BootScene } from './scenes/BootScene';
+import { LoadScene } from './scenes/LoadScene';
+import { GameScene } from './scenes/GameScene';
+import { UiScene } from './scenes/UiScene';
 import { DialogModalPlugin } from './ui/DialogModalPlugin';
 
 @Component({
@@ -24,10 +26,9 @@ export class GameComponent implements OnInit, AfterViewInit {
     render: { pixelArt: true },
     parent: 'game',
     plugins: {
-      // mapping: 'dialogModal'
-      scene: [{ key: 'dialogModal', plugin: DialogModalPlugin }]
+      scene: [{ key: 'UiScene', plugin: DialogModalPlugin, mapping: 'dialogModal' }]
     },
-    scene: [BootScene, GameScene, LoadScene, UiScene],
+    scene: [BootScene, LoadScene, GameScene, UiScene],
     input: {
       keyboard: true,
       mouse: true,
@@ -37,7 +38,7 @@ export class GameComponent implements OnInit, AfterViewInit {
     backgroundColor: '#000000',
   };
 
-  public readonly phaser = Phaser;
+  public game: Phaser.Game;
 
   constructor() { }
 
@@ -46,15 +47,10 @@ export class GameComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     // this.canvasDomRef.nativeElement.textContent = 'HelloWorld';
-    alert('geht');
   }
 
-  private resizeGame() {
-    // this.game.resize(window.innerWidth, window.innerHeight);
-  }
-
-  public onGameReady(game): void {
+  public onGameReady(game: Phaser.Game): void {
     // Dynamically add to Phaser our scene that utilizes Angular DI.
-    // game.scene.add('Scene', GameScene, true);
+    this.game = game;
   }
 }

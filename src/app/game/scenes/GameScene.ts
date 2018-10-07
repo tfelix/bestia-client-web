@@ -1,5 +1,4 @@
-import { BlendModes } from 'phaser';
-
+import { environment as env } from 'app/../environments/environment';
 import { EntityStore, PlayerEntityHolder } from 'app/game/entities';
 import {
   EngineContext, EntityRenderManager, CommonRenderManager, ActionsRendererManager,
@@ -54,7 +53,7 @@ export class GameScene extends Phaser.Scene {
     this.commonRenderManager = new CommonRenderManager(this.engineContext);
     this.actionRenderManager = new ActionsRendererManager(this.engineContext);
 
-    if (DEV) {
+    if (env.production) {
       this.connectionLogger = new ConnectionLogger();
     }
 
@@ -138,7 +137,7 @@ export class GameScene extends Phaser.Scene {
       angle: { min: -85, max: -95 },
       scale: { start: 0, end: 0.5, ease: 'Back.easeOut' },
       alpha: { start: 1, end: 0, ease: 'Quart.easeOut' },
-      blendMode: BlendModes.ADD,
+      blendMode: Phaser.BlendModes.ADD,
       lifespan: 1000
     });
     fire.manager.depth = 10000;
