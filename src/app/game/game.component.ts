@@ -26,7 +26,9 @@ export class GameComponent implements OnInit, AfterViewInit {
     render: { pixelArt: true },
     parent: 'game',
     plugins: {
+      // TS sys no
       scene: [{ key: 'UiScene', plugin: DialogModalPlugin, mapping: 'dialogModal' }]
+      // scene: [{ key: 'DialogModalPlugin', plugin: DialogModalPlugin, systemKey: 'dialogModal', sceneKey: 'dialogModal', start: true }]
     },
     scene: [BootScene, LoadScene, GameScene, UiScene],
     input: {

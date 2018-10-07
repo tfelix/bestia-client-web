@@ -1,7 +1,7 @@
 language: node_js
 node_js:
   - node
-script: npm run build:prod
+script: npm run build
 deploy:
   provider: cloudfoundry
   username: YdtQsbf50R
