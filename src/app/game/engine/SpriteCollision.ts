@@ -65,8 +65,8 @@ export class SpriteCollision {
 
     if (localPos.x < 0
       || localPos.y < 0
-      || localPos.y > this.spriteSizePoints.height
-      || localPos.x > this.spriteSizePoints.width) {
+      || localPos.y >= this.spriteSizePoints.height
+      || localPos.x >= this.spriteSizePoints.width) {
       return null;
     }
     return new Point(localPos.x, localPos.y);
