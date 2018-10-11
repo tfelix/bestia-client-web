@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 
+import { environment } from '../environments/environment';
+
 @Injectable()
 export class AuthService {
 
@@ -8,6 +10,8 @@ export class AuthService {
   }
 
   getToken(): string {
-    return localStorage.getItem('loginToken');
+    const token = localStorage.getItem('loginToken') || environment.devAuthToken;
+
+    return token;
   }
 }

@@ -10,7 +10,7 @@ import { MESSAGE_ID } from '../message/message-id';
 @Injectable()
 export class WebSocketService {
 
-  private readonly socket: WebSocket;
+  private socket: WebSocket;
 
   private isAuthenticated = false;
   private isConnected = false;
@@ -18,13 +18,6 @@ export class WebSocketService {
   constructor(
     private readonly authService: AuthService
   ) {
-    this.socket = new WebSocket(environment.socketUrl);
-    this.socket.onopen = this.onOpen;
-    this.socket.onclose = this.onClose;
-    this.socket.onerror = this.onError;
-    this.socket.onmessage = this.onMessage;
-
-    LOG.debug('Connecting to: ' + environment.socketUrl);
   }
 
   private sendJson(msg: any) {
@@ -53,6 +46,16 @@ export class WebSocketService {
 
   private onMessage(msg: any) {
     console.log(msg);
+  }
+
+  public connect() {
+    this.socket = new WebSocket(environment.socketUrl);
+    this.socket.onopen = this.onOpen.bind(this);
+    this.socket.onclose = this.onClose.bind(this);
+    this.socket.onerror = this.onError.bind(this);
+    this.socket.onmessage = this.onMessage.bind(this);
+
+    LOG.debug('Connecting to: ' + environment.socketUrl);
   }
 
   public send(msg: any) {

@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  socketUrl: 'ws://localhost:8990'
+  socketUrl: 'ws://localhost:8990/socket',
+  devAuthToken: 'b53dc8ce-9702-4aeb-aa60-4ed33f314965'
 };
 
 /*

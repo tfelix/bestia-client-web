@@ -1,3 +1,4 @@
+import * as LOG from 'loglevel';
 import { Component } from '@angular/core';
 
 @Component({
@@ -7,4 +8,8 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'Bestia Browsergame';
+
+  constructor() {
+    LOG.setDefaultLevel('DEBUG');
+  }
 }
