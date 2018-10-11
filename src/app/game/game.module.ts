@@ -3,8 +3,11 @@ import { CommonModule } from '@angular/common';
 
 import { PhaserModule } from 'phaser-component-library';
 
-import { WebSocketService } from './websocket.service';
 import { GameComponent } from './game.component';
+import { ChatComponent } from './chat/chat.component';
+
+import { WebSocketService } from './connection/websocket.service';
+import { ChatService } from './chat/chat.service';
 
 @NgModule({
   imports: [
@@ -12,10 +15,12 @@ import { GameComponent } from './game.component';
     PhaserModule
   ],
   declarations: [
-    GameComponent
+    GameComponent,
+    ChatComponent
   ],
   providers: [
-    WebSocketService
+    WebSocketService,
+    ChatService
   ]
 })
 export class GameModule { }

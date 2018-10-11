@@ -1,11 +1,14 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
-import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import { GameModule } from './game/game.module';
+
+import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { ModalComponent } from './modal.component';
-import { GameModule } from './game/game.module';
+
+import { AuthService } from './auth.service';
 
 @NgModule({
   declarations: [
@@ -18,7 +21,9 @@ import { GameModule } from './game/game.module';
     AppRoutingModule,
     GameModule
   ],
-  providers: [],
+  providers: [
+    AuthService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,0 +1,9 @@
+
+.chat {
+  width: 80%;
+  color: darkgray;
+  position: absolute;
+  bottom: 0px;
+  background-color: gainsboro;
+  padding: 4px;
+}

@@ -1,6 +1,10 @@
 import { EntityStore, ComponentType, PositionComponent } from 'app/game/entities';
 import { Point } from 'app/game/model';
 
+export interface IMessage {
+  messageId: String;
+}
+
 export class Message<T extends ComponentMessage> {
 
   public componentName: string;
