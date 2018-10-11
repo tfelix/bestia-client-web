@@ -1,12 +1,15 @@
-<form>
-  <p>Bestia - The Browsergame Login</p>
-  <fieldset>
-    <label for="username">E-Mail</label>
-    <input type="email" placeholder="Enter E-Mail" id="username">
-    <label for="password">Password</label>
-    <input type="password" placeholder="Enter E-Mail" id="username">
-    <label for="commentField">Comment</label>
-    <input class="button-primary" type="submit" value="Login">
-    <a href="Forgot Password"></a>
-  </fieldset>
-</form>
+<app-modal id="login-dialog">
+  <div class="modal-body">
+    <form>
+      <p>Bestia - The Browsergame Login</p>
+      <fieldset>
+        <label for="username">E-Mail</label>
+        <input type="email" placeholder="Enter E-Mail" id="username">
+        <label for="password">Password</label>
+        <input type="password" placeholder="Password" autocomplete="current-password" id="password">
+        <input class="button-primary" type="submit" value="Login">
+        <a href="Forgot Password"></a>
+      </fieldset>
+    </form>
+  </div>
+</app-modal>
