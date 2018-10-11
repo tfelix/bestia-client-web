@@ -1,6 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
-
-import * as LOG from 'loglevel';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 
 import { BootScene } from './scenes/BootScene';
 import { LoadScene } from './scenes/LoadScene';
