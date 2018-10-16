@@ -27,11 +27,6 @@ export class WebSocketService {
   private onOpen() {
     LOG.debug('Socket is connected');
     this.isConnected = true;
-    const authMessage: LoginAuthRequestMessage = {
-      messageId: MESSAGE_ID.LoginAuthRequestMessage,
-      token: this.authService.getToken()
-    };
-    this.sendJson(authMessage);
   }
 
   private onClose() {
@@ -44,7 +39,13 @@ export class WebSocketService {
     LOG.error('Socket was closed because of an error');
   }
 
-  private onMessage(msg: any) {
+  private onMessage(msgEvent: any) {
+    if (msgEvent.data === 'connected') {
+      this.sendAuthentication();
+      return;
+    }
+
+    const msg = JSON.parse(msgEvent.data);
     console.log(msg);
   }
 
@@ -56,6 +57,14 @@ export class WebSocketService {
     this.socket.onmessage = this.onMessage.bind(this);
 
     LOG.debug('Connecting to: ' + environment.socketUrl);
+  }
+
+  private sendAuthentication() {
+    const authMessage: LoginAuthRequestMessage = {
+      mid: MESSAGE_ID.LoginAuthRequestMessage,
+      token: this.authService.getToken()
+    };
+    this.sendJson(authMessage);
   }
 
   public send(msg: any) {
