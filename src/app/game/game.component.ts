@@ -1,6 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
-
-import * as LOG from 'loglevel';
+import { Component, OnInit } from '@angular/core';
 
 import { BootScene } from './scenes/BootScene';
 import { LoadScene } from './scenes/LoadScene';
@@ -15,7 +13,7 @@ import { EngineEvents } from './message';
   templateUrl: './game.component.html',
   styleUrls: ['./game.component.css']
 })
-export class GameComponent implements OnInit, AfterViewInit {
+export class GameComponent implements OnInit {
 
   public readonly config: GameConfig = {
     title: 'Test',
@@ -28,7 +26,6 @@ export class GameComponent implements OnInit, AfterViewInit {
     render: { pixelArt: true },
     parent: 'game',
     plugins: {
-      // TS sys no
       scene: [{ key: 'UiScene', plugin: DialogModalPlugin, mapping: 'dialogModal' }]
       // scene: [{ key: 'DialogModalPlugin', plugin: DialogModalPlugin, systemKey: 'dialogModal', sceneKey: 'dialogModal', start: true }]
     },
@@ -52,13 +49,13 @@ export class GameComponent implements OnInit, AfterViewInit {
     this.websocketService.connect();
   }
 
-  ngAfterViewInit() {
-    // this.canvasDomRef.nativeElement.textContent = 'HelloWorld';
+  public onGameReady(game: Phaser.Game): void {
+    this.game = game;
+    window.addEventListener('resize', () => this.resizeGameCanvas());
   }
 
-  public onGameReady(game: Phaser.Game): void {
-    // Dynamically add to Phaser our scene that utilizes Angular DI.
-    this.game = game;
+  private resizeGameCanvas() {
+    this.game.resize(window.innerWidth, window.innerHeight);
   }
 
   public onMouseOut() {
