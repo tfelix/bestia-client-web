@@ -1,5 +1,6 @@
 import { Entity } from 'app/game/entities';
 import { Px } from 'app/game/model';
+import { EngineEvents } from 'app/game/message';
 
 import { MapHelper } from '../MapHelper';
 import { EngineContext } from '../EngineContext';
@@ -46,10 +47,12 @@ export class PointerManager {
     this.pointers.push(new InteractionPointer(this, engineContext));
 
     this.engineContext.game.input.on('pointermove', this.updateActivePointerPosition, this);
-
     this.engineContext.game.input.on('pointerdown', this.onPointerClicked, this);
     this.engineContext.game.input.on('gameobjectover', this.activateActivePointer, this);
     this.engineContext.game.input.on('gameobjectout', this.onPointerOut, this);
+
+    PubSub.subscribe(EngineEvents.GAME_MOUSE_OUT, () => this.hide());
+    PubSub.subscribe(EngineEvents.GAME_MOUSE_OVER, () => this.show());
   }
 
   private onPointerOut() {

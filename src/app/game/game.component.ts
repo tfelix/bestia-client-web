@@ -1,11 +1,14 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 
+import * as LOG from 'loglevel';
+
 import { BootScene } from './scenes/BootScene';
 import { LoadScene } from './scenes/LoadScene';
 import { GameScene } from './scenes/GameScene';
 import { UiScene } from './scenes/UiScene';
 import { DialogModalPlugin } from './ui/DialogModalPlugin';
 import { WebSocketService } from './connection/websocket.service';
+import { EngineEvents } from './message';
 
 @Component({
   selector: 'app-game',
@@ -56,5 +59,13 @@ export class GameComponent implements OnInit, AfterViewInit {
   public onGameReady(game: Phaser.Game): void {
     // Dynamically add to Phaser our scene that utilizes Angular DI.
     this.game = game;
+  }
+
+  public onMouseOut() {
+    PubSub.publish(EngineEvents.GAME_MOUSE_OUT, null);
+  }
+
+  public onMouseOver() {
+    PubSub.publish(EngineEvents.GAME_MOUSE_OVER, null);
   }
 }

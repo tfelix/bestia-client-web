@@ -1,6 +1,7 @@
 import * as LOG from 'loglevel';
 
 import { UIConstants, UIAtlas } from 'app/game/ui';
+import { EngineEvents } from 'app/game/message';
 
 import { EngineContext } from '../EngineContext';
 import { VisualDepth } from '../renderer/VisualDepths';
@@ -22,6 +23,8 @@ export class CursorManager {
   constructor(
     private readonly ctx: EngineContext
   ) {
+    PubSub.subscribe(EngineEvents.GAME_MOUSE_OUT, () => this.hide());
+    PubSub.subscribe(EngineEvents.GAME_MOUSE_OVER, () => this.show());
   }
 
   public setCursorSprite(cursorType: CursorType) {
@@ -29,9 +32,10 @@ export class CursorManager {
     if (!newCursor) {
       LOG.warn(`Unknown cursor type requested: ${cursorType}`);
     }
+    const currentVisibility = this.activeCursor.visible;
     this.activeCursor.visible = false;
     this.activeCursor = newCursor;
-    this.activeCursor.visible = true;
+    this.activeCursor.visible = currentVisibility;
   }
 
   public create() {
@@ -51,5 +55,13 @@ export class CursorManager {
   public update() {
     const pointerPos = this.ctx.game.input.activePointer.position;
     this.activeCursor.setPosition(pointerPos.x, pointerPos.y);
+  }
+
+  public hide() {
+    this.activeCursor.visible = false;
+  }
+
+  public show() {
+    this.activeCursor.visible = true;
   }
 }
