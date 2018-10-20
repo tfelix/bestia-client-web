@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 
 import { BootScene } from './scenes/BootScene';
 import { LoadScene } from './scenes/LoadScene';
@@ -7,20 +7,29 @@ import { UiScene } from './scenes/UiScene';
 import { DialogModalPlugin } from './ui/DialogModalPlugin';
 import { WebSocketService } from './connection/websocket.service';
 import { EngineEvents } from './message';
+import { ChatComponent } from './chat/chat.component';
 
 @Component({
   selector: 'app-game',
   templateUrl: './game.component.html',
-  styleUrls: ['./game.component.css']
+  styleUrls: ['./game.component.scss']
 })
 export class GameComponent implements OnInit {
+
+  public componentVisibility = {
+    chat: false,
+    inventory: false
+  }
+
+  @ViewChild(ChatComponent)
+  public chatComponent: ChatComponent
 
   public readonly config: GameConfig = {
     title: 'Test',
     url: 'https://bestia-game.net',
     version: '0.1.0-alpha',
-    width: window.innerWidth,
-    height: window.innerHeight,
+    width: 800, // window.innerWidth,
+    height: 600, // window.innerHeight,
     zoom: 1,
     type: Phaser.WEBGL,
     render: { pixelArt: true },
@@ -54,7 +63,7 @@ export class GameComponent implements OnInit {
   }
 
   private resizeGameCanvas() {
-    this.game.resize(window.innerWidth, window.innerHeight);
+    // this.game.resize(window.innerWidth, window.innerHeight);
   }
 
   public onMouseOut() {
@@ -63,5 +72,17 @@ export class GameComponent implements OnInit {
 
   public onMouseOver() {
     PubSub.publish(EngineEvents.GAME_MOUSE_OVER, null);
+  }
+
+  public toggleChat() {
+    if (this.chatComponent.isOpen) {
+      this.chatComponent.close();
+    } else {
+      this.chatComponent.open();
+    }
+  }
+
+  public toggleInventory() {
+
   }
 }

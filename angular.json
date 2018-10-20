@@ -24,7 +24,7 @@
             ],
             "styles": [
               "node_modules/milligram/dist/milligram.css",
-              "src/styles.css"
+              "src/sass/styles.scss"
             ],
             "scripts": [
               "node_modules/phaser/dist/phaser.js"
@@ -75,7 +75,7 @@
             "tsConfig": "src/tsconfig.spec.json",
             "karmaConfig": "src/karma.conf.js",
             "styles": [
-              "src/styles.css"
+              "src/sass/styles.scss"
             ],
             "scripts": [],
             "assets": [

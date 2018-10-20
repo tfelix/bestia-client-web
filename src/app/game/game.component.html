@@ -1,3 +1,15 @@
-<phaser-component class="no-cursor" (gameReady)="onGameReady($event)" [gameConfig]="config" [Phaser]="phaser" (mouseout)="onMouseOut()" (mouseover)="onMouseOver()"></phaser-component>
+<div class="wrapper">
+  <div class="sidebar">
+    <ul>
+      <li><button (click)="toggleChat()">Chat</button></li>
+      <li><button>Inventory</button></li>
+    </ul>
+  </div>
+  <div class="content">
+    <phaser-component class="no-cursor" (gameReady)="onGameReady($event)" [gameConfig]="config" [Phaser]="phaser"
+      (mouseout)="onMouseOut()" (mouseover)="onMouseOver()"></phaser-component>
+
+  </div>
+</div>
 
 <app-chat></app-chat>

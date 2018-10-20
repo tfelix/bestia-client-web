@@ -6,7 +6,7 @@ import { ChatMessage, ChatMode } from './chat-message';
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
-  styleUrls: ['./chat.component.css'],
+  styleUrls: ['./chat.component.scss'],
   animations: [
     trigger('openClose', [
       state('open', style({
@@ -18,10 +18,10 @@ import { ChatMessage, ChatMode } from './chat-message';
         bottom: '-200px'
       })),
       transition('open => closed', [
-        animate('0.5s')
+        animate('0.3s')
       ]),
       transition('closed => open', [
-        animate('0.5s')
+        animate('0.3s')
       ]),
     ])
   ]
@@ -42,12 +42,17 @@ export class ChatComponent implements OnInit {
     ];
   }
 
-  clickSend() {
-    // TODO Implementieren :)
+  onSubmit(event) {
+    event.preventDefault();
+    
     console.log('send message');
   }
 
-  clickClose() {
-    this.isOpen = !this.isOpen;
+  close() {
+    this.isOpen = false
+  }
+
+  open() {
+    this.isOpen = true;
   }
 }

@@ -1,0 +1,28 @@
+.no-cursor {
+  cursor: none;
+}
+
+.wrapper {
+  height: auto;
+  overflow: hidden;
+}
+
+.content {
+  background-color: red;
+  width: auto;
+  overflow: hidden;
+}
+
+.sidebar {
+  float: left;
+  width: 200px;
+  padding: 10px;
+
+  ul {
+    list-style: none;
+  }
+
+  button {
+    width: 100%;
+  }
+}

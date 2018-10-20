@@ -2,20 +2,26 @@
 .chat {
   width: 80%;
   color: rgb(238, 238, 238);
-  position: absolute;
-  margin: 0 auto;
-  bottom: 0px;
   background-color: rgba(100, 100, 100, 0.8);
   padding: 4px;
-  border: 1px solid #5e5e5e
+  border: 1px solid #5e5e5e;
+  position: fixed;
+  left: 50%;
+  bottom: 0;
+  transform: translate(-50%, 0%);
+  margin: 0 auto;
 }
 
 .chat-header {
   text-align: right;
 }
 
-.chat form input {
+.chat input {
   display: inline-block;
+}
+
+.chat-input {
+  width: 100%;
 }
 
 .whisper {

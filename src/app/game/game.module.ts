@@ -8,6 +8,7 @@ import { ChatComponent } from './chat/chat.component';
 
 import { WebSocketService } from './connection/websocket.service';
 import { ChatService } from './chat/chat.service';
+import { InventoryComponent } from './inventory/inventory.component';
 
 @NgModule({
   imports: [
@@ -16,7 +17,8 @@ import { ChatService } from './chat/chat.service';
   ],
   declarations: [
     GameComponent,
-    ChatComponent
+    ChatComponent,
+    InventoryComponent
   ],
   providers: [
     WebSocketService,
