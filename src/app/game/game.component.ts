@@ -11,6 +11,7 @@ import { DialogModalPlugin } from './ui/DialogModalPlugin';
 import { WebSocketService } from './connection/websocket.service';
 import { EngineEvents } from './message';
 import { ChatComponent } from './chat/chat.component';
+import { InventoryComponent } from './inventory/inventory.component';
 
 @Component({
   selector: 'app-game',
@@ -26,6 +27,9 @@ export class GameComponent implements OnInit {
 
   @ViewChild(ChatComponent)
   public chatComponent: ChatComponent
+
+  @ViewChild(InventoryComponent)
+  public inventoryComponent: InventoryComponent
 
   public readonly config: GameConfig = {
     title: 'Test',
@@ -87,6 +91,10 @@ export class GameComponent implements OnInit {
   }
 
   public toggleInventory() {
-
+    if(this.inventoryComponent.isOpen) {
+      this.inventoryComponent.close();
+    } else {
+      this.inventoryComponent.open();
+    }
   }
 }

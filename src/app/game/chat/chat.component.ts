@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ChatService } from './chat.service';
 import { state, style, transition, animate, trigger } from '@angular/animations';
-import { ChatMessage, ChatMode } from './chat-message';
+
+import { ChatService } from './chat.service';
+import { ChatMessage } from './chat-message';
 
 @Component({
   selector: 'app-chat',
