@@ -1,8 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 
+import * as PubSub from 'pubsub-js';
+
 import { BootScene } from './scenes/BootScene';
 import { LoadScene } from './scenes/LoadScene';
 import { GameScene } from './scenes/GameScene';
+import { IntroScene } from './scenes/IntroScene';
 import { UiScene } from './scenes/UiScene';
 import { DialogModalPlugin } from './ui/DialogModalPlugin';
 import { WebSocketService } from './connection/websocket.service';
@@ -37,7 +40,8 @@ export class GameComponent implements OnInit {
     plugins: {
       scene: [{ key: 'UiScene', plugin: DialogModalPlugin, mapping: 'dialogModal' }]
     },
-    // scene: [BootScene, LoadScene, GameScene, UiScene],
+    //scene: [BootScene, LoadScene, IntroScene, GameScene, UiScene],
+    scene: [IntroScene],
     input: {
       keyboard: true,
       mouse: true,

@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 import { PhaserModule } from 'phaser-component-library';
@@ -13,7 +14,8 @@ import { InventoryComponent } from './inventory/inventory.component';
 @NgModule({
   imports: [
     CommonModule,
-    PhaserModule
+    PhaserModule,
+    FormsModule
   ],
   declarations: [
     GameComponent,

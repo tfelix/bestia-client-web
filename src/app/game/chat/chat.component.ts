@@ -28,8 +28,10 @@ import { ChatMessage, ChatMode } from './chat-message';
 })
 export class ChatComponent implements OnInit {
 
-  public isOpen = true;
+  public playerName = 'rocket';
+  public isOpen = false;
   public messages: ChatMessage[];
+  public chatInput: string 
 
   constructor(
     private readonly chatService: ChatService
@@ -41,11 +43,26 @@ export class ChatComponent implements OnInit {
       { time: 12346, text: "Das ist eine Direktnachricht.", mode: 'WHISPER', sender: 'MaBoi' }
     ];
   }
+  
+  onKey() {
+
+  }
 
   onSubmit(event) {
     event.preventDefault();
+
+    const message: ChatMessage = {
+      sender: this.playerName,
+      text: this.chatInput,
+      time: new Date().getMilliseconds(),
+      mode: 'PUBLIC'
+    }
+
+    this.messages.push(message);
     
-    console.log('send message');
+    // TODO Publish the Chat to the Server.
+
+    this.chatInput = '';
   }
 
   close() {

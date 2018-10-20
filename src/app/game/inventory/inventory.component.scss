@@ -1,0 +1,26 @@
+.inventory {
+  color: rgb(238, 238, 238);
+  background-color: rgba(100, 100, 100, 0.8);
+  padding: 4px;
+  border: 1px solid #5e5e5e;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: auto;
+  height: auto;
+  text-align: center;
+}
+
+.item {
+  img {
+    position: relative;
+  }
+
+  span {
+	position: absolute;
+	background: rgba(100, 100, 100, 0.8);
+	padding: 0 0.1em;
+	border-radius: 10%;
+	z-index: 10;
+  }
+}

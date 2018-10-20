@@ -7,7 +7,7 @@
   </div>
   <div class="inputs" style="overflow: hidden">
     <form (submit)="onSubmit($event)">
-      <input type="text" placeholder="Chat" class="chat-input">
+      <input [(ngModel)]="chatInput" [ngModelOptions]="{standalone: true}" type="text" placeholder="Chat" #chat class="chat-input" (keyup)="onKey()">
       <input class="button-primary" type="submit" value="Send">
     </form>
   </div>

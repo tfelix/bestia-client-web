@@ -1,12 +1,11 @@
 export class IntroScene extends Phaser.Scene {
-
-  private introTextStyle =  { fontFamily: 'Verdana', fontSize: 12, color: '#ffffff' };
-
   constructor() {
     super({
       key: 'IntroScene'
     });
   }
+
+  private introTextStyle =  { fontFamily: 'Verdana', fontSize: 12, color: '#ffffff' };
 
   public create() {
     const introText = [
