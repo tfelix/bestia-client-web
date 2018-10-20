@@ -1,16 +1,9 @@
 
-export class ChatMessage {
-  constructor(
-    readonly text: string
-  ) {
-  }
-}
+export type ChatMode = 'PUBLIC' | 'PARTY' | 'GUILD' | 'WHISPER' | 'SYSTEM';
 
-export class WhisperChatMessage extends ChatMessage {
-  constructor(
-    readonly receiver: string,
-    readonly text: string
-  ) {
-    super(text);
-  }
+export interface ChatMessage {
+  time: number;
+  text: string;
+  mode: ChatMode;
+  sender?: string;
 }

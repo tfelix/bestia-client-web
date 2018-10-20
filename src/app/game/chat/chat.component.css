@@ -1,9 +1,23 @@
 
 .chat {
   width: 80%;
-  color: darkgray;
+  color: rgb(238, 238, 238);
   position: absolute;
+  margin: 0 auto;
   bottom: 0px;
-  background-color: gainsboro;
+  background-color: rgba(100, 100, 100, 0.8);
   padding: 4px;
+  border: 1px solid #5e5e5e
+}
+
+.chat-header {
+  text-align: right;
+}
+
+.chat form input {
+  display: inline-block;
+}
+
+.whisper {
+  color: #ffcb22;
 }

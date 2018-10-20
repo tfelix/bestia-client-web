@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ChatService } from './chat.service';
 import { state, style, transition, animate, trigger } from '@angular/animations';
+import { ChatMessage, ChatMode } from './chat-message';
 
 @Component({
   selector: 'app-chat',
@@ -28,12 +29,17 @@ import { state, style, transition, animate, trigger } from '@angular/animations'
 export class ChatComponent implements OnInit {
 
   public isOpen = true;
+  public messages: ChatMessage[];
 
   constructor(
     private readonly chatService: ChatService
   ) { }
 
   ngOnInit() {
+    this.messages = [
+      { time: 12345, text: "Hello World, das ist ein Test", mode: 'PUBLIC' },
+      { time: 12346, text: "Das ist eine Direktnachricht.", mode: 'WHISPER', sender: 'MaBoi' }
+    ];
   }
 
   clickSend() {
