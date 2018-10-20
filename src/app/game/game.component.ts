@@ -27,7 +27,6 @@ export class GameComponent implements OnInit {
     parent: 'game',
     plugins: {
       scene: [{ key: 'UiScene', plugin: DialogModalPlugin, mapping: 'dialogModal' }]
-      // scene: [{ key: 'DialogModalPlugin', plugin: DialogModalPlugin, systemKey: 'dialogModal', sceneKey: 'dialogModal', start: true }]
     },
     scene: [BootScene, LoadScene, GameScene, UiScene],
     input: {
