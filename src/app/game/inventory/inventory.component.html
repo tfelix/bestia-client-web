@@ -1,12 +1,14 @@
 <div class="inventory" [@openClose]="isOpen ? 'open' : 'closed'">
-  <div class="inventory-header">
+  <!--
+    <div class="inventory-header">
     <button>Items</button>
     <button>Crafting</button>
   </div>
+-->
   <div class="inventory-content">
-    <div>
+    <div *ngFor="let item of items">
       <div class="item">
-        <img src="/assets/sprites/items/knife.png" alt="Item Name">
+        <img [src]="item.imageUrl" [alt]="item.name">
         <span>10</span>
       </div>
     </div>

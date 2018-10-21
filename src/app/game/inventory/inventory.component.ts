@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { state, style, transition, animate, trigger } from '@angular/animations';
+import { ItemModel } from './item';
 
 @Component({
   selector: 'app-inventory',
@@ -27,10 +28,21 @@ import { state, style, transition, animate, trigger } from '@angular/animations'
 export class InventoryComponent implements OnInit {
 
   public isOpen = false;
+  public items: ItemModel[] = [];
 
   constructor() { }
 
   ngOnInit() {
+    this.items = [
+      new ItemModel(
+        1,
+        'empty_bottle.png',
+        10,
+        'Empty Bottle',
+        0.1,
+        10
+      )
+    ];
   }
 
   close() {
