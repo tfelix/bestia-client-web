@@ -86,6 +86,7 @@ export class GameComponent implements OnInit {
     if (this.chatComponent.isOpen) {
       this.chatComponent.close();
     } else {
+      this.inventoryComponent.close();
       this.chatComponent.open();
     }
   }
@@ -94,6 +95,7 @@ export class GameComponent implements OnInit {
     if(this.inventoryComponent.isOpen) {
       this.inventoryComponent.close();
     } else {
+      this.chatComponent.close();
       this.inventoryComponent.open();
     }
   }
