@@ -1,6 +1,7 @@
 const UIAtlas = 'base';
 
 const UIConstants = {
+  PLACEHOLDER: 'placeholder.png',
   CANCEL: 'cancel.png',
 
   CURSOR_ATTACK: 'cursor-attack.png',
