@@ -35,8 +35,8 @@ export class GameComponent implements OnInit {
     title: 'Test',
     url: 'https://bestia-game.net',
     version: '0.1.0-alpha',
-    width: 800, // window.innerWidth,
-    height: 600, // window.innerHeight,
+    width: window.innerWidth,
+    height: window.innerHeight,
     zoom: 1,
     type: Phaser.WEBGL,
     render: { pixelArt: true },
@@ -71,7 +71,7 @@ export class GameComponent implements OnInit {
   }
 
   private resizeGameCanvas() {
-    // this.game.resize(window.innerWidth, window.innerHeight);
+    this.game.resize(window.innerWidth, window.innerHeight);
   }
 
   public onMouseOut() {
@@ -92,7 +92,7 @@ export class GameComponent implements OnInit {
   }
 
   public toggleInventory() {
-    if(this.inventoryComponent.isOpen) {
+    if (this.inventoryComponent.isOpen) {
       this.inventoryComponent.close();
     } else {
       this.chatComponent.close();

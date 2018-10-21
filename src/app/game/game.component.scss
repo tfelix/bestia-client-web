@@ -8,15 +8,18 @@
 }
 
 .content {
-  background-color: red;
   width: auto;
   overflow: hidden;
+  position: relative;
+  z-index: 1;
 }
 
 .sidebar {
-  float: left;
+  position: absolute;
+  left: 0;
   width: 200px;
   padding: 10px;
+  z-index: 10;
 
   ul {
     list-style: none;

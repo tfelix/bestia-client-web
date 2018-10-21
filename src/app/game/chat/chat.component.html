@@ -1,5 +1,5 @@
 <div class="chat" [@openClose]="isOpen ? 'open' : 'closed'">
-  <div class="chat-header"><button class="button" (click)="clickClose()">Close</button></div>
+  <div class="chat-header"><button class="button" (click)="close()">Close</button></div>
   <div class="messages" *ngFor="let message of messages">
     <div class="message" [ngClass]="{'whisper': message.mode == 'WHISPER'}">
       <span *ngIf="message.sender">{{message.sender}}: </span>{{message.text}}
