@@ -42,7 +42,7 @@ export class ServerEmulator {
 
   public create() {
     const date = new Date();
-    const isRaining = date.getDay() % 2 === 0;
+    const isRaining = false; // date.getDay() % 2 === 0;
     let dayBrightness = Math.abs(Math.abs(date.getHours() / 24 - 0.5) * 2 - 1);
     if (dayBrightness < 0.6) {
       dayBrightness = 0.6;

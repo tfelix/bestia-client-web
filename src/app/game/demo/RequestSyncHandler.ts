@@ -1,5 +1,5 @@
 import { SyncRequestMessage, AccountInfoMessage, ComponentMessage } from 'app/game/message';
-import { MoveComponent } from 'app/game/entities';
+import { MoveComponent, FxComponent } from 'app/game/entities';
 import { Point } from 'app/game/model';
 
 import { EntityLocalFactory } from './EntityLocalFactory';
@@ -53,9 +53,13 @@ export class RequestSyncHandler extends ClientMessageHandler<SyncRequestMessage>
     this.sendAllComponents(this.entityFactory.addObject('tree', new Point(10, 10)));
     this.sendAllComponents(this.entityFactory.addObject('tree', new Point(14, 12)));
     this.sendAllComponents(this.entityFactory.addObject('tree', new Point(18, 9)));
+
     this.sendAllComponents(this.entityFactory.addObject('tree', new Point(6, 16)));
     const treeEntityId = this.entityFactory.getLastInsertedEntityId();
     const treeEntity = this.serverEntities.getEntity(treeEntityId);
+    const fxCompTree = this.entityFactory.addFx(treeEntity)[0] as FxComponent;
+    fxCompTree.fxTags.add('BURNING');
+    this.sendAllComponents([fxCompTree]);
     this.sendAllComponents(this.entityFactory.addDebugComponent(treeEntity));
 
     this.sendAllComponents(this.entityFactory.addObject('plant', new Point(3, 4)));

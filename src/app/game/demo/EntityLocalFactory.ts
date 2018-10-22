@@ -2,14 +2,13 @@ import { Point, Item } from 'app/game/model';
 import {
   PlayerComponent, Component, ComponentType, ConditionComponent, VisualComponent,
   DebugComponent, PositionComponent, EntityTypeComponent, EntityType,
-  AttacksComponent, Entity, InventoryComponent
+  AttacksComponent, Entity, InventoryComponent, FxComponent
 } from 'app/game/entities';
 import { SpriteType } from 'app/game/engine';
 
 import { ServerEntityStore } from './ServerEntityStore';
 
 export class EntityLocalFactory {
-
   private entityCounter = 1;
   private componentCounter = 0;
   private lastInsertedEntityId = 0;
@@ -207,5 +206,14 @@ export class EntityLocalFactory {
     );
     entity.addComponent(debugComp);
     return [debugComp];
+  }
+
+  addFx(entity: Entity): Component[] {
+    const fxComp = new FxComponent(
+      this.componentCounter++,
+      entity.id
+    );
+    entity.addComponent(fxComp);
+    return [fxComp];
   }
 }

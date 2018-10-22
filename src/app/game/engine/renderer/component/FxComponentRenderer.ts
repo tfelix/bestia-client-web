@@ -23,21 +23,25 @@ export class BurnFxComponentDelegate extends RenderDelegate<FxComponent> {
   }
 
   public hasNotSetup(entity: Entity, component: FxComponent): boolean {
-    return !!entity.data.fx;
+    return !entity.data.fx;
   }
 
   createGameData(entity: Entity, component: FxComponent) {
+    // TODO Adds Data to the Visual Sprite to help determine where to place the fire visuals.
+    const x = entity.data.visual.sprite.x;
+    const y = entity.data.visual.sprite.y;
+    this.createFireParticle(new Point(x, y));
+    // TODO Save better data.
+    entity.data.fx = { burning: true };
   }
 
   updateGameData(entity: Entity, component: FxComponent) {
   }
 
   private createFireParticle(pos: Point) {
-    const px = MapHelper.pointToPixel(pos);
-
     const fire = this.ctx.game.add.particles('fx_smoke_temp').createEmitter({
-      x: px.x,
-      y: px.y,
+      x: pos.x,
+      y: pos.y,
       speed: { min: 80, max: 160 },
       angle: { min: -85, max: -95 },
       scale: { start: 0, end: 0.5, ease: 'Back.easeOut' },
@@ -49,19 +53,19 @@ export class BurnFxComponentDelegate extends RenderDelegate<FxComponent> {
 
     const whiteSmoke = this.ctx.game.add.particles('fx_smoke').createEmitter({
       frames: ['flame_02.png'],
-      x: px.x,
-      y: px.y,
+      x: pos.x,
+      y: pos.y,
       speed: { min: 20, max: 100 },
       angle: { min: -85, max: -95 },
       scale: { start: 1, end: 0 },
       alpha: { start: 0, end: 0.5 },
       lifespan: 2000,
     });
-    whiteSmoke.reserve(1000);
+    whiteSmoke.manager.depth = 9000;
 
     const darkSmoke = this.ctx.game.add.particles('fx_smoke').createEmitter({
-      x: px.x,
-      y: px.y,
+      x: pos.x,
+      y: pos.y,
       speed: { min: 20, max: 100 },
       angle: { min: 0, max: 360 },
       scale: { start: 1, end: 0 },
@@ -69,7 +73,6 @@ export class BurnFxComponentDelegate extends RenderDelegate<FxComponent> {
       lifespan: 2000,
       active: false
     });
-    darkSmoke.reserve(1000);
 
     fire.onParticleDeath(particle => {
       darkSmoke.setPosition(particle.x, particle.y + 40);
@@ -89,7 +92,6 @@ export class FxComponentRenderer extends DelegateComponentRenderer<FxComponent> 
 
     this.addSubRenderer(new BurnFxComponentDelegate(ctx));
   }
-
 
   get supportedComponent(): ComponentType {
     return ComponentType.FX;
