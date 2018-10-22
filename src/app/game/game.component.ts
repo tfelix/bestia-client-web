@@ -23,13 +23,15 @@ export class GameComponent implements OnInit {
   public componentVisibility = {
     chat: false,
     inventory: false
-  }
+  };
 
   @ViewChild(ChatComponent)
-  public chatComponent: ChatComponent
+  public chatComponent: ChatComponent;
 
   @ViewChild(InventoryComponent)
-  public inventoryComponent: InventoryComponent
+  public inventoryComponent: InventoryComponent;
+
+  public hideDefaultCursorOverGame = false;
 
   public readonly config: GameConfig = {
     title: 'Test',
@@ -44,8 +46,8 @@ export class GameComponent implements OnInit {
     plugins: {
       scene: [{ key: 'UiScene', plugin: DialogModalPlugin, mapping: 'dialogModal' }]
     },
-    //scene: [BootScene, LoadScene, IntroScene, GameScene, UiScene],
-    scene: [IntroScene],
+    scene: [BootScene, LoadScene, IntroScene, GameScene, UiScene],
+    // scene: [IntroScene],
     input: {
       keyboard: true,
       mouse: true,
@@ -75,11 +77,15 @@ export class GameComponent implements OnInit {
   }
 
   public onMouseOut() {
-    PubSub.publish(EngineEvents.GAME_MOUSE_OUT, null);
+    if (this.hideDefaultCursorOverGame) {
+      PubSub.publish(EngineEvents.GAME_MOUSE_OUT, null);
+    }
   }
 
   public onMouseOver() {
-    PubSub.publish(EngineEvents.GAME_MOUSE_OVER, null);
+    if (this.hideDefaultCursorOverGame) {
+      PubSub.publish(EngineEvents.GAME_MOUSE_OVER, null);
+    }
   }
 
   public toggleChat() {

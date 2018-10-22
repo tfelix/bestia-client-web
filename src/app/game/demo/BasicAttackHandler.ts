@@ -1,6 +1,6 @@
 import { ClientMessageHandler } from './ClientMessageHandler';
 import { BasicAttackMessage, ActionMessage, ComponentMessage, ComponentDeleteMessage } from 'app/game/message';
-import { EntityStore, DamageAction, KillAction } from 'entities';
+import { EntityStore, DamageAction, KillAction } from 'app/game/entities';
 import { ConditionHelper } from './ConditionHelper';
 import { ComponentCopyHelper } from './ComponentCopyHelper';
 import { ConditionComponent, ComponentType, VisualComponent, PositionComponent } from 'app/game/entities/components';

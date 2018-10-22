@@ -32,7 +32,7 @@ export class ChatComponent implements OnInit {
   public playerName = 'rocket';
   public isOpen = false;
   public messages: ChatMessage[];
-  public chatInput: string 
+  public chatInput: string;
 
   constructor(
     private readonly chatService: ChatService
@@ -44,7 +44,7 @@ export class ChatComponent implements OnInit {
       { time: 12346, text: "Das ist eine Direktnachricht.", mode: 'WHISPER', sender: 'MaBoi' }
     ];
   }
-  
+
   onKey() {
 
   }
@@ -60,14 +60,14 @@ export class ChatComponent implements OnInit {
     }
 
     this.messages.push(message);
-    
+
     // TODO Publish the Chat to the Server.
 
     this.chatInput = '';
   }
 
   close() {
-    this.isOpen = false
+    this.isOpen = false;
   }
 
   open() {

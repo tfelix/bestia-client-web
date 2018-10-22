@@ -23,8 +23,8 @@ export class IntroScene extends Phaser.Scene {
     ];
 
     const texts = introText.map(txt => this.add.text(100, 200, txt, this.introTextStyle));
-    
-    const skipButton = this.add.image(0, 0, UIAtlas, UIConstants.PLACEHOLDER);
+
+    // const skipButton = this.add.image(height - 100, width - 100, UIAtlas, UIConstants.PLACEHOLDER);
     // TODO Add Intro Skip code to button
   }
 }
