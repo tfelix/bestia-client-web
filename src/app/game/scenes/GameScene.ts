@@ -121,57 +121,6 @@ export class GameScene extends Phaser.Scene {
     this.engineContext.cursorManager.create();
 
     this.serverEmulator.create();
-
-    this.createParticleTest(new Point(15, 13));
-    this.createParticleTest(new Point(20, 10));
-  }
-
-  private createParticleTest(pos: Point) {
-
-    const px = MapHelper.pointToPixel(pos);
-
-    const fire = this.add.particles('fx_smoke_temp').createEmitter({
-      x: px.x,
-      y: px.y,
-      speed: { min: 80, max: 160 },
-      angle: { min: -85, max: -95 },
-      scale: { start: 0, end: 0.5, ease: 'Back.easeOut' },
-      alpha: { start: 1, end: 0, ease: 'Quart.easeOut' },
-      blendMode: Phaser.BlendModes.ADD,
-      lifespan: 1000
-    });
-    fire.manager.depth = 10000;
-
-    const whiteSmoke = this.add.particles('fx_smoke').createEmitter({
-      frames: ['flame_02.png'],
-      x: px.x,
-      y: px.y,
-      speed: { min: 20, max: 100 },
-      angle: { min: -85, max: -95 },
-      scale: { start: 1, end: 0 },
-      alpha: { start: 0, end: 0.5 },
-      lifespan: 2000,
-    });
-    whiteSmoke.reserve(1000);
-
-    const darkSmoke = this.add.particles('fx_smoke').createEmitter({
-      x: px.x,
-      y: px.y,
-      speed: { min: 20, max: 100 },
-      angle: { min: 0, max: 360 },
-      scale: { start: 1, end: 0 },
-      alpha: { start: 0, end: 0.1 },
-      lifespan: 2000,
-      active: false
-    });
-    darkSmoke.reserve(1000);
-
-    fire.onParticleDeath(particle => {
-      darkSmoke.setPosition(particle.x, particle.y + 40);
-      whiteSmoke.setPosition(particle.x, particle.y + 40);
-      darkSmoke.emitParticle();
-      whiteSmoke.emitParticle();
-    });
   }
 
   public update() {

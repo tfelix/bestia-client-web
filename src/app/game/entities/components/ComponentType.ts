@@ -9,6 +9,7 @@ export enum ComponentType {
   ATTACKS = 8,
   PERFORM = 9,
   INVENTORY = 10,
+  FX = 11,
 
   // This are local only components which will never get send from the server
   // to the client. They exist for local housekeeping.

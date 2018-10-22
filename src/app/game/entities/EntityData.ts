@@ -1,4 +1,7 @@
-import { SpriteData, DebugData, MoveData, ChatData, PerformData, ConditionData } from 'app/game/engine';
+import {
+  SpriteData, DebugData, MoveData, ChatData, PerformData, ConditionData,
+  FxData
+} from 'app/game/engine';
 
 export class EntityData {
   public visual?: SpriteData;
@@ -7,4 +10,5 @@ export class EntityData {
   public condition?: ConditionData;
   public chat?: ChatData;
   public perform?: PerformData;
+  public fx?: FxData;
 }

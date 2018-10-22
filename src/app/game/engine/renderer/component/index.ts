@@ -13,5 +13,6 @@ export * from './SpriteRenderer';
 export * from './SpriteDescription';
 export * from './SpriteOffsets';
 export * from './ConditionComponentRenderer';
+export * from './FxComponentRenderer';
 
 export * from './local';
