@@ -1,15 +1,5 @@
 import { Point } from 'app/game/model';
 
-export interface SpriteData {
-  sprite: Phaser.GameObjects.Sprite;
-  spriteName: string;
-  lastPlayedAnimation?: string;
-  childSprites: Array<{
-    spriteName: string;
-    sprite: Phaser.GameObjects.Sprite;
-  }>;
-}
-
 export interface SpriteAnimation {
   name: string;
   from: number;
@@ -23,6 +13,13 @@ export enum SpriteType {
   ITEM
 }
 
+export interface FxDescriptionData {
+  burning: [{
+    x: number,
+    y: number
+  }];
+}
+
 export interface SpriteDescription {
   name: string;
   type: SpriteType;
@@ -32,6 +29,7 @@ export interface SpriteDescription {
   anchor: Point;
   multiSprite: string[];
   collision?: number[][];
+  fxData?: FxDescriptionData;
 }
 
 export function getSpriteDescriptionFromCache(

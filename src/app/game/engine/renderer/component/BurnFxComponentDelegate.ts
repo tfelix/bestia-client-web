@@ -1,14 +1,10 @@
-import { ComponentType, Entity, FxComponent } from 'app/game/entities';
+import { Entity, FxComponent } from 'app/game/entities';
 import { Point } from 'app/game/model';
 
-import { DelegateComponentRenderer } from './DelegateComponentRenderer';
+import { SubComponentRenderer } from './SubComponentRenderer';
 import { RenderDelegate } from './RenderDelegate';
 import { EngineContext } from '../../EngineContext';
-import { MapHelper } from '../../MapHelper';
-
-export interface FxData {
-  burning: any;
-}
+import { getSpriteDescriptionFromCache } from './SpriteDescription';
 
 export class BurnFxComponentDelegate extends RenderDelegate<FxComponent> {
 
@@ -27,9 +23,11 @@ export class BurnFxComponentDelegate extends RenderDelegate<FxComponent> {
   }
 
   createGameData(entity: Entity, component: FxComponent) {
-    // TODO Adds Data to the Visual Sprite to help determine where to place the fire visuals.
     const x = entity.data.visual.sprite.x;
     const y = entity.data.visual.sprite.y;
+    const spriteDesc = getSpriteDescriptionFromCache(entity.data.visual.spriteName, this.ctx.game);
+    // entity.data.visual.
+
     this.createFireParticle(new Point(x, y));
     // TODO Save better data.
     entity.data.fx = { burning: true };
@@ -80,20 +78,5 @@ export class BurnFxComponentDelegate extends RenderDelegate<FxComponent> {
       darkSmoke.emitParticle();
       whiteSmoke.emitParticle();
     });
-  }
-}
-
-export class FxComponentRenderer extends DelegateComponentRenderer<FxComponent>  {
-
-  constructor(
-    ctx: EngineContext,
-  ) {
-    super(ctx.game);
-
-    this.addSubRenderer(new BurnFxComponentDelegate(ctx));
-  }
-
-  get supportedComponent(): ComponentType {
-    return ComponentType.FX;
   }
 }

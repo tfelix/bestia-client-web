@@ -10,7 +10,7 @@ import { EngineContext } from '../../EngineContext';
 import { PerformComponentRenderer } from './PerformComponentRenderer';
 import { InventoryComponentRenderer } from './InventoryComponentRenderer';
 import { SelectLocalComponentRenderer } from './local/SelectLocalComponentRenderer';
-import { FxComponentRenderer } from './FxComponentRenderer';
+import { SubFxComponentRenderer } from './SubFxComponentRenderer';
 
 export class EntityRenderManager {
 
@@ -25,7 +25,7 @@ export class EntityRenderManager {
     this.addComponentRenderer(new ConditionComponentRenderer(context));
     this.addComponentRenderer(new PerformComponentRenderer(this.context));
     this.addComponentRenderer(new InventoryComponentRenderer(this.context));
-    this.addComponentRenderer(new FxComponentRenderer(this.context));
+    this.addComponentRenderer(new SubFxComponentRenderer(this.context));
 
     // Local Component Renderer.
     this.addComponentRenderer(new MasterLocalComponentRenderer(context));

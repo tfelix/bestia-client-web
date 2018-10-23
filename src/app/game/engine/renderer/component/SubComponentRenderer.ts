@@ -6,7 +6,7 @@ import { RenderDelegate } from './RenderDelegate';
  * Sub-Renderer can be attached to this class and the component gets filtered and each sub-component
  * renderer gets the delegate to render its component on its own.
  */
-export abstract class DelegateComponentRenderer<C extends Component> extends ComponentRenderer<C> {
+export abstract class SubComponentRenderer<C extends Component> extends ComponentRenderer<C> {
 
   private subRenderer: RenderDelegate<C>[] = [];
 
