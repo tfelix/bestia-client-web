@@ -1,3 +1,5 @@
+import * as LOG from 'loglevel';
+
 import { Entity } from 'app/game/entities';
 import { Px } from 'app/game/model';
 import { EngineEvents } from 'app/game/message';
@@ -49,7 +51,7 @@ export class PointerManager {
     this.engineContext.game.input.on('pointermove', this.updateActivePointerPosition, this);
     this.engineContext.game.input.on('pointerdown', this.onPointerClicked, this);
     this.engineContext.game.input.on('gameobjectover', this.activateActivePointer, this);
-    this.engineContext.game.input.on('gwameobjectout', this.onPointerOut, this);
+    this.engineContext.game.input.on('gameobjectout', this.onPointerOut, this);
 
     PubSub.subscribe(EngineEvents.GAME_MOUSE_OUT, () => this.hide());
     PubSub.subscribe(EngineEvents.GAME_MOUSE_OVER, () => this.show());
@@ -162,6 +164,7 @@ export class PointerManager {
     if (!this.activePointer.allowOverwrite(indicator)) {
       return;
     }
+    LOG.debug(`Set active pointer: ${indicator}`);
     this.activePointer.deactivate();
     this.activePointer = indicator;
     this.activePointer.activate();
