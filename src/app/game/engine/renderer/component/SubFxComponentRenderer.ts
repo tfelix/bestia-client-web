@@ -5,7 +5,7 @@ import { EngineContext } from '../../EngineContext';
 import { BurnFxComponentDelegate } from './BurnFxComponentDelegate';
 
 export interface FxData {
-  burningEmitter: Phaser.GameObjects.Particles.ParticleEmitter[];
+  burningEmitter?: Phaser.GameObjects.Particles.ParticleEmitter[];
 }
 
 export class SubFxComponentRenderer extends SubComponentRenderer<FxComponent>  {

@@ -1,10 +1,12 @@
+import * as LOG from 'loglevel';
+
 import { Entity, FxComponent } from 'app/game/entities';
 import { Point } from 'app/game/model';
 
-import { SubComponentRenderer } from './SubComponentRenderer';
 import { RenderDelegate } from './RenderDelegate';
 import { EngineContext } from '../../EngineContext';
-import { getSpriteDescriptionFromCache } from './SpriteDescription';
+import { getSpriteDescriptionFromCache, SpriteDescription, FxDescriptionData } from './SpriteDescription';
+import { SpriteData } from './SpriteRenderer';
 
 export class BurnFxComponentDelegate extends RenderDelegate<FxComponent> {
 
@@ -19,24 +21,61 @@ export class BurnFxComponentDelegate extends RenderDelegate<FxComponent> {
   }
 
   public hasNotSetup(entity: Entity, component: FxComponent): boolean {
-    return !entity.data.fx;
+    return !(entity.data.fx && entity.data.fx.burningEmitter);
   }
 
   createGameData(entity: Entity, component: FxComponent) {
-    const x = entity.data.visual.sprite.x;
-    const y = entity.data.visual.sprite.y;
-    const spriteDesc = getSpriteDescriptionFromCache(entity.data.visual.spriteName, this.ctx.game);
-    // entity.data.visual.
+    const visualData = entity.data.visual;
 
-    this.createFireParticle(new Point(x, y));
-    // TODO Save better data.
-    entity.data.fx = { burning: true };
+    if (!visualData) {
+      LOG.warn(`Entity ${entity} has no attached visual data (sprite). Can not attach BurnFx.`);
+      entity.data.fx = { burningEmitter: [] };
+      return;
+    }
+
+    const fxData = entity.data.fx || { burningEmitter: [] };
+
+    const spriteDesc = getSpriteDescriptionFromCache(visualData.spriteName, this.ctx.game);
+    const burningAnchors = spriteDesc.fxData && spriteDesc.fxData.burning || [];
+
+    if (!burningAnchors) {
+      LOG.warn(`Sprite had no attached spriteDesc.fxData.burning data. Can not render fire.`);
+      fxData.burningEmitter = [];
+    }
+
+    const fireSpawn = this.getFireSpawnPoints(visualData, spriteDesc);
+    const fireEmitter = this.createFireParticle(fireSpawn);
+    fxData.burningEmitter = fireEmitter;
+    entity.data.fx = fxData;
   }
 
   updateGameData(entity: Entity, component: FxComponent) {
   }
 
-  private createFireParticle(pos: Point) {
+  private getFireSpawnPoints(
+    visualData: SpriteData,
+    spriteDesc: SpriteDescription,
+  ): Point {
+    const offsets = spriteDesc.fxData && spriteDesc.fxData.burning || [];
+    const i = Math.floor(Math.random() * offsets.length);
+
+    const offset = new Point(offsets[i].x, offsets[i].y);
+
+    const anchorX = visualData.sprite.x;
+    const anchorY = visualData.sprite.y;
+
+    const scaledOffsetX = offset.x * spriteDesc.scale;
+    const scaledOffsetY = offset.y * spriteDesc.scale;
+
+    const x = anchorX + scaledOffsetX;
+    const y = anchorY + scaledOffsetY;
+
+    return new Point(x, y);
+  }
+
+  private createFireParticle(pos: Point): Phaser.GameObjects.Particles.ParticleEmitter[] {
+
+
     const fire = this.ctx.game.add.particles('fx_smoke_temp').createEmitter({
       x: pos.x,
       y: pos.y,
@@ -78,5 +117,7 @@ export class BurnFxComponentDelegate extends RenderDelegate<FxComponent> {
       darkSmoke.emitParticle();
       whiteSmoke.emitParticle();
     });
+
+    return [fire, whiteSmoke, darkSmoke];
   }
 }
