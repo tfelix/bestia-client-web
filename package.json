@@ -30,6 +30,7 @@
     "phaser-component-library": "^2.0.0",
     "pubsub-js": "^1.6.0",
     "rxjs": "~6.2.0",
+    "seedrandom": "^2.4.4",
     "store": "2.0.12",
     "zone.js": "~0.8.26"
   },
