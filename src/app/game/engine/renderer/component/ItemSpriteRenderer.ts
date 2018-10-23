@@ -3,8 +3,7 @@ import { bhash } from 'app/game/utils';
 import { Entity, VisualComponent } from 'app/game/entities';
 
 import { EngineContext } from '../../EngineContext';
-import { SpriteRenderer } from './SpriteRenderer';
-import { SpriteData } from './SpriteDescription';
+import { SpriteRenderer, SpriteData } from './SpriteRenderer';
 import { SpriteType } from '../component/SpriteDescription';
 
 export class ItemSpriteRenderer extends SpriteRenderer {

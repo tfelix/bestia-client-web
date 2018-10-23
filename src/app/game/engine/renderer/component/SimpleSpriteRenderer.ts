@@ -2,9 +2,9 @@ import * as LOG from 'loglevel';
 
 import { Entity, VisualComponent } from 'app/game/entities';
 import { Px, Point } from 'app/game/model';
-import { SpriteRenderer } from './SpriteRenderer';
+import { SpriteRenderer, SpriteData } from './SpriteRenderer';
 import { EngineContext } from '../..';
-import { SpriteDescription, SpriteType, SpriteData, getSpriteDescriptionFromCache } from './SpriteDescription';
+import { SpriteDescription, SpriteType, getSpriteDescriptionFromCache } from './SpriteDescription';
 import { SpriteOffsets } from './SpriteOffsets';
 
 type StandAnimation = 'stand_down' | 'stand_up' | 'stand_left' | 'stand_right' | 'stand_down_left'

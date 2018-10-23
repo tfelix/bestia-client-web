@@ -3,9 +3,9 @@ import * as LOG from 'loglevel';
 import { Entity, VisualComponent } from 'app/game/entities';
 import { Px, Point } from 'app/game/model';
 
-import { SpriteData, SpriteDescription, getSpriteDescriptionFromCache } from './SpriteDescription';
+import { SpriteDescription, getSpriteDescriptionFromCache } from './SpriteDescription';
 import { SpriteType } from './SpriteDescription';
-import { SpriteRenderer } from './SpriteRenderer';
+import { SpriteRenderer, SpriteData } from './SpriteRenderer';
 import { SpriteOffsets } from './SpriteOffsets';
 import { EngineContext } from '../../EngineContext';
 
