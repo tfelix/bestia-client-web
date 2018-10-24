@@ -10,6 +10,7 @@ import { LoginComponent } from './login/login.component';
 import { ModalComponent } from './modal.component';
 
 import { AuthService } from './auth.service';
+import { AuthGuardService } from './auth-guard.service';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { AuthService } from './auth.service';
     GameModule
   ],
   providers: [
-    AuthService
+    AuthService,
+    AuthGuardService
   ],
   bootstrap: [AppComponent]
 })

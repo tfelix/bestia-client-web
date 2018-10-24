@@ -10,8 +10,10 @@ export class AuthService {
   }
 
   getToken(): string {
-    const token = localStorage.getItem('loginToken') || environment.devAuthToken;
+    return localStorage.getItem('loginToken') || environment.devAuthToken;
+  }
 
-    return token;
+  hasToken(): boolean {
+    return !!localStorage.getItem('loginToken');
   }
 }
