@@ -9,8 +9,13 @@ import { ModalService } from 'app/modal.service';
 })
 export class LoginComponent implements OnInit {
 
+  public model = {
+    username: '',
+    password: ''
+  };
+
   constructor(
-    private modalService: ModalService
+    private readonly modalService: ModalService
   ) { }
 
   ngOnInit() {
