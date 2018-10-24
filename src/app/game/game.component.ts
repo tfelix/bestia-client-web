@@ -31,7 +31,7 @@ export class GameComponent implements OnInit {
   @ViewChild(InventoryComponent)
   public inventoryComponent: InventoryComponent;
 
-  public hideDefaultCursorOverGame = false;
+  public hideDefaultCursorOverGame = true;
 
   public readonly config: GameConfig = {
     title: 'Test',

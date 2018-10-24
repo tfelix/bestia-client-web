@@ -6,7 +6,11 @@
   </div>
 -->
   <div class="inventory-content">
-    <div *ngFor="let item of items">
+    <div class="inventory-container">
+      <div>Items: 123 / 1000</div>
+      <div>Weight: 10 / 80</div>
+    </div>
+    <div class="inventory-container items" *ngFor="let item of items">
       <div class="item">
         <img [src]="item.imageUrl" [alt]="item.name">
         <span>10</span>

@@ -1,0 +1,15 @@
+%ui-base {
+  width: 80%;
+  color: rgb(238, 238, 238);
+  background-color: rgba(100, 100, 100, 0.8);
+  padding: 4px;
+  border: 1px solid #5e5e5e;
+  position: fixed;
+  left: 50%;
+  bottom: 0;
+  transform: translate(-50%, 0%);
+  margin: 0 auto;
+  z-index: 100;
+  border: 1px solid #1e1e1e;
+  box-shadow: 0px 0px 1px #888888 inset;
+}

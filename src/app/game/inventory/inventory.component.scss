@@ -1,28 +1,45 @@
+@import '../ui.scss';
+
 .inventory {
-  color: rgb(238, 238, 238);
-  background-color: rgba(100, 100, 100, 0.8);
-  padding: 4px;
-  border: 1px solid #5e5e5e;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  width: auto;
-  height: auto;
-  text-align: center;
-  min-width: 300px;
-  min-height: 500px;
+  @extend %ui-base;
+}
+
+.inventory-container {
+  display: inline-block;
+}
+
+.item:hover {
+  background-color: red;
+}
+
+.items {
+  margin: 0 10px;
 }
 
 .item {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  display: inline-block;
+
   img {
-    position: relative;
+    margin: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
   }
 
   span {
-	position: absolute;
-	background: rgba(100, 100, 100, 0.8);
-	padding: 0 0.1em;
-	border-radius: 10%;
-	z-index: 10;
+    background: rgba(134, 134, 134, 0.8);
+    border-radius: 5px;
+    z-index: 10;
+    position: absolute;
+    right: -5px;
+    top: 5px;
+    font-size: 0.8em;
+    text-align: center;
+    color: white;
   }
 }
