@@ -25,14 +25,20 @@ export class WeatherRenderer extends BaseCommonRenderer {
     this.weatherGfx.blendMode = Phaser.BlendModes.MULTIPLY;
 
     this.rainParticles = this.ctx.game.add.particles(UIAtlas, UIConstants.FX_RAIN);
+
+    // const deathZone = new Phaser.GameObjects.Particles.DeathZone(this.screenRect, false);
+
     this.rainEmitter = this.rainParticles.createEmitter({
       x: 0,
       y: -10,
-      frequency: 100,
       emitZone: { source: new Phaser.Geom.Rectangle(0, 0, this.ctx.helper.display.sceneWidth, 20) },
-      speedY: { min: 150, max: 170 },
-      quantity: 50,
-      lifespan: 5000
+      speedY: { min: 300, max: 400 },
+      frequency: 100,
+      quantity: 1,
+      rotate: 135,
+      scale: { min: 0.5, max: 0.8 },
+      angle: 330,
+      lifespan: { min: 10, max: 4000 }
     });
     this.rainEmitter.manager.depth = VisualDepth.WEATHER_FX;
     this.rainEmitter.pause();

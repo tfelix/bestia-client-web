@@ -1,116 +1,293 @@
-{"frames": {
-
-"arrowBlue_left.png":
 {
-	"frame": {"x":193,"y":1,"w":22,"h":21},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":22,"h":21},
-	"sourceSize": {"w":22,"h":21}
-},
-"cancel.png":
-{
-	"frame": {"x":91,"y":48,"w":64,"h":64},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
-	"sourceSize": {"w":64,"h":64}
-},
-"card-pickup.png":
-{
-	"frame": {"x":157,"y":48,"w":64,"h":64},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
-	"sourceSize": {"w":64,"h":64}
-},
-"cursor-attack.png":
-{
-	"frame": {"x":91,"y":246,"w":34,"h":37},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":34,"h":37},
-	"sourceSize": {"w":34,"h":37}
-},
-"cursor-hand.png":
-{
-	"frame": {"x":91,"y":285,"w":30,"h":30},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":30,"h":30},
-	"sourceSize": {"w":30,"h":30}
-},
-"fish.png":
-{
-	"frame": {"x":91,"y":317,"w":38,"h":24},
-	"rotated": false,
-	"trimmed": true,
-	"spriteSourceSize": {"x":17,"y":3,"w":38,"h":24},
-	"sourceSize": {"w":64,"h":64}
-},
-"fishing-hook.png":
-{
-	"frame": {"x":91,"y":114,"w":64,"h":64},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
-	"sourceSize": {"w":64,"h":64}
-},
-"fishing-meter.png":
-{
-	"frame": {"x":1,"y":48,"w":88,"h":300},
-	"rotated": false,
-	"trimmed": true,
-	"spriteSourceSize": {"x":6,"y":0,"w":88,"h":300},
-	"sourceSize": {"w":100,"h":300}
-},
-"item-obtained.png":
-{
-	"frame": {"x":1,"y":1,"w":190,"h":45},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":190,"h":45},
-	"sourceSize": {"w":190,"h":45}
-},
-"rain_01.png":
-{
-	"frame": {"x":217,"y":1,"w":3,"h":5},
-	"rotated": false,
-	"trimmed": true,
-	"spriteSourceSize": {"x":1,"y":0,"w":3,"h":5},
-	"sourceSize": {"w":5,"h":5}
-},
-"read.png":
-{
-	"frame": {"x":157,"y":114,"w":64,"h":64},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
-	"sourceSize": {"w":64,"h":64}
-},
-"sword-clash.png":
-{
-	"frame": {"x":91,"y":180,"w":64,"h":64},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
-	"sourceSize": {"w":64,"h":64}
-},
-"talk.png":
-{
-	"frame": {"x":157,"y":180,"w":64,"h":64},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
-	"sourceSize": {"w":64,"h":64}
-}},
-"meta": {
-	"app": "https://www.codeandweb.com/texturepacker",
-	"version": "1.0",
-	"image": "base.png",
-	"format": "RGBA8888",
-	"size": {"w":222,"h":349},
-	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:de20641a86cfba94b466df3a94e97e92:dec29d9e6e713ded012212d31b8e888a:7232e5c4564c48ce7821741e80f218b0$"
-}
+	"textures": [
+		{
+			"image": "base.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 156,
+				"h": 470
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "placeholder.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 100,
+						"h": 100
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 100,
+						"h": 100
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 100,
+						"h": 100
+					}
+				},
+				{
+					"filename": "fish.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 17,
+						"y": 3,
+						"w": 38,
+						"h": 24
+					},
+					"frame": {
+						"x": 103,
+						"y": 1,
+						"w": 38,
+						"h": 24
+					}
+				},
+				{
+					"filename": "rain_01.png",
+					"rotated": true,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 8,
+						"h": 9
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 8,
+						"h": 9
+					},
+					"frame": {
+						"x": 143,
+						"y": 1,
+						"w": 8,
+						"h": 9
+					}
+				},
+				{
+					"filename": "cursor-attack.png",
+					"rotated": true,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 34,
+						"h": 37
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 34,
+						"h": 37
+					},
+					"frame": {
+						"x": 103,
+						"y": 27,
+						"w": 34,
+						"h": 37
+					}
+				},
+				{
+					"filename": "cursor-hand.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 30,
+						"h": 30
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 30,
+						"h": 30
+					},
+					"frame": {
+						"x": 103,
+						"y": 63,
+						"w": 30,
+						"h": 30
+					}
+				},
+				{
+					"filename": "arrowBlue_left.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 22,
+						"h": 21
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 22,
+						"h": 21
+					},
+					"frame": {
+						"x": 103,
+						"y": 95,
+						"w": 22,
+						"h": 21
+					}
+				},
+				{
+					"filename": "fishing-meter.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 100,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 6,
+						"y": 0,
+						"w": 88,
+						"h": 300
+					},
+					"frame": {
+						"x": 1,
+						"y": 103,
+						"w": 88,
+						"h": 300
+					}
+				},
+				{
+					"filename": "cancel.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 64,
+						"h": 64
+					},
+					"frame": {
+						"x": 1,
+						"y": 405,
+						"w": 64,
+						"h": 64
+					}
+				},
+				{
+					"filename": "card-pickup.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 64,
+						"h": 64
+					},
+					"frame": {
+						"x": 67,
+						"y": 405,
+						"w": 64,
+						"h": 64
+					}
+				},
+				{
+					"filename": "fishing-hook.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 64,
+						"h": 64
+					},
+					"frame": {
+						"x": 91,
+						"y": 118,
+						"w": 64,
+						"h": 64
+					}
+				},
+				{
+					"filename": "read.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 64,
+						"h": 64
+					},
+					"frame": {
+						"x": 91,
+						"y": 184,
+						"w": 64,
+						"h": 64
+					}
+				},
+				{
+					"filename": "sword-clash.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 64,
+						"h": 64
+					},
+					"frame": {
+						"x": 91,
+						"y": 250,
+						"w": 64,
+						"h": 64
+					}
+				},
+				{
+					"filename": "talk.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 64,
+						"h": 64
+					},
+					"frame": {
+						"x": 91,
+						"y": 316,
+						"w": 64,
+						"h": 64
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:e0bd4ab88284c1ae5824a9f8d78a8b81:f4a1ecdcfbee5e637f6cd9c85dd80a5d:7232e5c4564c48ce7821741e80f218b0$"
+	}
 }
