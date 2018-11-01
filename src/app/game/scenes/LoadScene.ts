@@ -49,8 +49,11 @@ export class LoadScene extends Phaser.Scene {
     });
 
     // Load Tileset + Tilesheet
-    this.load.image('tiles', '../assets/tilemap/tiles/trees_plants_rocks.png');
-    this.load.tilemapTiledJSON('map', '../assets/tilemap/maps/demo.json');
+    this.load.image('tiles_trees_plants_rocks', '../assets/tilemap/tiles/trees_plants_rocks.png');
+    this.load.image('tiles_town', '../assets/tilemap/tiles/town.png');
+    this.load.image('tiles_wood_tileset', '../assets/tilemap/tiles/wood_tileset.png');
+    this.load.image('tiles_mountain_tileset', '../assets/tilemap/tiles/mountain_landscape.png');
+    this.load.tilemapTiledJSON('map', '../assets/tilemap/maps/intro.json');
 
     // Load Items
     this.load.image('empty_bottle', '../assets/sprites/items/empty_bottle.png');

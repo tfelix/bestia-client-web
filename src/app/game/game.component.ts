@@ -33,7 +33,8 @@ export class GameComponent implements OnInit {
 
   public hideDefaultCursorOverGame = true;
 
-  public readonly config: GameConfig = {
+  // GameConfig type mapping key is broken
+  public readonly config = {
     title: 'Test',
     url: 'https://bestia-game.net',
     version: '0.1.0-alpha',
@@ -44,7 +45,13 @@ export class GameComponent implements OnInit {
     render: { pixelArt: true },
     parent: 'game',
     plugins: {
-      scene: [{ key: 'UiScene', plugin: DialogModalPlugin, mapping: 'dialogModal' }]
+      scene: [{
+        key: 'UiScenePlugin',
+        plugin: DialogModalPlugin,
+        systemKey: 'uiScenePlugin',
+        sceneKey: 'dialogModal',
+        mapping: 'dialogModal'
+      }]
     },
     scene: [BootScene, LoadScene, IntroScene, GameScene, UiScene],
     // scene: [IntroScene],

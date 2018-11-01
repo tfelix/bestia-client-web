@@ -33,8 +33,8 @@ export class WeatherRenderer extends BaseCommonRenderer {
       y: -10,
       emitZone: { source: new Phaser.Geom.Rectangle(0, 0, this.ctx.helper.display.sceneWidth, 20) },
       speedY: { min: 300, max: 400 },
-      frequency: 100,
-      quantity: 1,
+      frequency: 1,
+      quantity: 10,
       rotate: 135,
       scale: { min: 0.5, max: 0.8 },
       angle: 330,
@@ -63,9 +63,6 @@ export class WeatherRenderer extends BaseCommonRenderer {
     if (weather.rainIntensity === 0) {
       this.rainEmitter.pause();
     } else {
-      this.rainEmitter.setFrequency(50);
-      this.rainEmitter.setQuantity(30);
-      this.rainEmitter.depthSort();
       this.rainEmitter.resume();
     }
   }

@@ -11,6 +11,10 @@ export class BootScene extends Phaser.Scene {
     this.load.image('splash-bg', '../assets/img/splash-bg.jpg');
   }
 
+  public create() {
+    this.game.input.mouse.disableContextMenu();
+  }
+
   public update(): void {
     this.scene.start('LoadScene');
   }

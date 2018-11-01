@@ -96,13 +96,21 @@ export class GameScene extends Phaser.Scene {
   }
 
   public create() {
-    this.engineContext.game.input.mouse.disableContextMenu();
-
     this.scene.launch(SceneNames.UI);
 
     const map = this.make.tilemap({ key: 'map' });
-    const floorTiles = map.addTilesetImage('trees_plants_rocks', 'tiles');
-    map.createStaticLayer('floor_0', floorTiles, 0, 0);
+
+    const tiles1 = map.addTilesetImage('trees_plants_rocks', 'tiles_trees_plants_rocks');
+    const tiles2 = map.addTilesetImage('town', 'tiles_town');
+    const tiles3 = map.addTilesetImage('lost-garden_wood', 'tiles_wood_tileset');
+    const tiles4 = map.addTilesetImage('lost-garden_mountain', 'tiles_mountain_tileset');
+
+    map.createStaticLayer('Ebene 1', [tiles4, tiles3], 0, 0);
+    map.createStaticLayer('Ebene 2', [tiles1, tiles4], 0, 0);
+    map.createStaticLayer('Plants', [tiles1, tiles2, tiles3, tiles4], 0, 0);
+    map.createStaticLayer('House', [tiles2], 0, 0);
+    map.createStaticLayer('House 2', [tiles2], 0, 0);
+
 
     this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 
