@@ -13,6 +13,14 @@ export class BootScene extends Phaser.Scene {
 
   public create() {
     this.game.input.mouse.disableContextMenu();
+
+    this.events.on('resize', this.resize, this);
+  }
+
+  private resize(width, height) {
+    if (width === undefined) { width = this.sys.game.config.width; }
+    if (height === undefined) { height = this.sys.game.config.height; }
+    this.cameras.resize(width, height);
   }
 
   public update(): void {

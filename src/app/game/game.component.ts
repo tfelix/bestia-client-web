@@ -76,11 +76,10 @@ export class GameComponent implements OnInit {
 
   public onGameReady(game: Phaser.Game): void {
     this.game = game;
-    window.addEventListener('resize', () => this.resizeGameCanvas());
-  }
 
-  private resizeGameCanvas() {
-    this.game.resize(window.innerWidth, window.innerHeight);
+    window.addEventListener('resize', () => {
+      game.resize(window.innerWidth, window.innerHeight);
+    }, false);
   }
 
   public onMouseOut() {

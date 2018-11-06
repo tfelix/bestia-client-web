@@ -48,7 +48,7 @@ export class PointerManager {
     this.pointers.push(new ItemPickupPointer(this, engineContext));
     this.pointers.push(new InteractionPointer(this, engineContext));
 
-    this.engineContext.game.input.on('pointermove', this.updateActivePointerPosition, this);
+    // this.engineContext.game.input.on('pointermove', this.updateActivePointerPosition, this);
     this.engineContext.game.input.on('pointerdown', this.onPointerClicked, this);
     this.engineContext.game.input.on('gameobjectover', this.activateActivePointer, this);
     this.engineContext.game.input.on('gameobjectout', this.onPointerOut, this);
@@ -142,6 +142,8 @@ export class PointerManager {
   }
 
   public update() {
+    const activePointer = this.engineContext.game.input.activePointer;
+    this.updateActivePointerPosition(activePointer);
     this.activePointer.update(this.entityUnderPointer);
   }
 
