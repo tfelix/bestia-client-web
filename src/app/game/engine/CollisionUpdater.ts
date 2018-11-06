@@ -1,6 +1,6 @@
 import * as LOG from 'loglevel';
 
-import { Entity, ComponentType, VisualComponent, PositionComponent } from 'app/game/entities';
+import { Entity, ComponentType, VisualComponent, PositionComponent, PlayerComponent } from 'app/game/entities';
 import { Point, Size } from 'app/game/model';
 
 import { EngineContext } from './EngineContext';
@@ -97,7 +97,11 @@ export class CollisionUpdater {
   }
 
   private hasEntityAllRequirements(entity: Entity) {
-    return entity.hasComponent(ComponentType.VISUAL) && entity.hasComponent(ComponentType.POSITION);
+    const isPlayerEntity = this.ctx.playerHolder.isActivePlayerEntity(entity);
+
+    return !isPlayerEntity
+      && entity.hasComponent(ComponentType.VISUAL)
+      && entity.hasComponent(ComponentType.POSITION);
   }
 
   private isEntityInRange(pos: Point, displayOffset: Point, displaySize: Size): boolean {
