@@ -105,11 +105,18 @@ export class GameScene extends Phaser.Scene {
     const tiles3 = map.addTilesetImage('lost-garden_wood', 'tiles_wood_tileset');
     const tiles4 = map.addTilesetImage('lost-garden_mountain', 'tiles_mountain_tileset');
 
-    map.createStaticLayer('Ebene 1', [tiles4, tiles3], 0, 0);
-    map.createStaticLayer('Ebene 2', [tiles1, tiles4], 0, 0);
-    map.createStaticLayer('Plants', [tiles1, tiles2, tiles3, tiles4], 0, 0);
-    map.createStaticLayer('House', [tiles2], 0, 0);
-    map.createStaticLayer('House 2', [tiles2], 0, 0);
+    const layer1 = map.createStaticLayer('Ebene 1', [tiles4, tiles3], 0, 0);
+    const layer2 = map.createStaticLayer('Ebene 2', [tiles1, tiles4], 0, 0);
+    const layer3 = map.createStaticLayer('Plants', [tiles1, tiles2, tiles3, tiles4], 0, 0);
+    const layer4 = map.createStaticLayer('House', [tiles2], 0, 0);
+    const layer5 = map.createStaticLayer('House 2', [tiles2], 0, 0);
+
+    this.engineContext.data.tilemap = {
+      map: map,
+      layers: [layer1, layer2, layer3, layer4, layer5]
+    }
+
+    this.engineContext.collisionUpdater.resetCollisionMapSize();
 
     this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 

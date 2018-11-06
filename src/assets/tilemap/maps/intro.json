@@ -75,7 +75,15 @@
             },
          "spacing":0,
          "tileheight":32,
-         "tilewidth":32
+         "tilewidth":32,
+         "tileproperties": {
+             "189": {
+                 "collision": true
+             },
+             "815": {
+                "collision": true
+            }
+         }
         }, 
         {
          "firstgid":257,

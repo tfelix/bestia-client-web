@@ -8,7 +8,7 @@ import { getSpriteDescriptionFromCache } from './renderer/component/SpriteDescri
 
 export class CollisionUpdater {
 
-  private collisionMap: number[][];
+  private collisionMap: number[][] = [[]];
   public isDirty = true;
   private displayTileSize: Size;
 
@@ -16,7 +16,6 @@ export class CollisionUpdater {
     private readonly ctx: EngineContext
   ) {
 
-    this.resetCollisionMapSize();
     ctx.pathfinder.setAcceptableTiles(0);
   }
 
@@ -36,6 +35,7 @@ export class CollisionUpdater {
     }
 
     this.ctx.pathfinder.setGrid(this.collisionMap);
+    this.updateCollisionMap();
   }
 
   private clearCollisionMap() {
@@ -59,8 +59,7 @@ export class CollisionUpdater {
       return;
     }
 
-    const scrollOffset = this.ctx.helper.display.getScrollOffset();
-    const displaySize = this.ctx.helper.display.getDisplaySizeInTiles();
+    this.updateCollisionMapFromTilemap();
 
     this.ctx.entityStore.entities.forEach(entity => {
       if (!this.hasEntityAllRequirements(entity)) {
@@ -72,6 +71,9 @@ export class CollisionUpdater {
       if (!visualComp.visible) {
         return;
       }
+
+      const scrollOffset = this.ctx.helper.display.getScrollOffset();
+      const displaySize = this.ctx.helper.display.getDisplaySizeInTiles();
 
       if (!this.isEntityInRange(
         positionComp.position,
@@ -103,6 +105,28 @@ export class CollisionUpdater {
     this.isDirty = false;
   }
 
+  private updateCollisionMapFromTilemap() {
+    const scrollOffset = this.ctx.helper.display.getScrollOffset();
+    const displaySize = this.ctx.helper.display.getDisplaySizeInTiles();
+
+    for (let y = 0; y < displaySize.height; y++) {
+      for (let x = 0; x < displaySize.width; x++) {
+        this.ctx.data.tilemap.layers.forEach((layer: Phaser.Tilemaps.StaticTilemapLayer) => {
+          const tile = layer.getTileAt(x + scrollOffset.x, y + scrollOffset.y);
+
+          if (tile == null) {
+            return;
+          }
+
+          const doesCollideOnTile = (tile.properties as any).collision || false;
+          if (doesCollideOnTile) {
+            this.collisionMap[y][x] = 1;
+          }
+        });
+      }
+    }
+  }
+
   private hasEntityAllRequirements(entity: Entity) {
     const isPlayerEntity = this.ctx.playerHolder.isActivePlayerEntity(entity);
 
@@ -118,7 +142,7 @@ export class CollisionUpdater {
   }
 
   public hasCollision(x: number, y: number): boolean {
-    if (this.displayTileSize.height < y || this.displayTileSize.width < x || x < 0 || y < 0) {
+    if (this.collisionMap.length < y || this.collisionMap[0].width < x || x < 0 || y < 0) {
       LOG.warn(`Requested coordinate ${x}-${y} is not inside collision map.`);
       return true;
     }
