@@ -3,7 +3,7 @@ import * as LOG from 'loglevel';
 import {
   Entity, ComponentType, MoveComponent, VisualComponent, PositionComponent
 } from 'app/game/entities';
-import { Point } from 'app/game/model';
+import { Point, Px } from 'app/game/model';
 
 import { MapHelper } from '../../MapHelper';
 import { ComponentRenderer } from './ComponentRenderer';
@@ -24,10 +24,13 @@ export interface MoveData {
 /**
  * Calculates the duration in ms of the total walk of the given path.
  * Depends upon the relative walkspeed of the entity.
+ * We must use pixel presion here to avoid flucatiations in walkspeed when
+ * direction changes in the middle of a tile transition.
  * @returns Total walkspeed in ms.
  */
-function getWalkDuration(length, walkspeed) {
+function getWalkDuration(currentPos: Px, targetPosition: Px, walkspeed) {
   // Usual walkspeed is 1.4 tiles / s -> 0,74 s/tile.
+  const length = currentPos.getDistance(targetPosition) / MapHelper.TILE_SIZE_PX;
   return Math.round((1 / 1.4) * length / walkspeed * 1000);
 }
 
@@ -151,7 +154,11 @@ export class MoveComponentRenderer extends ComponentRenderer<MoveComponent> {
 
     const nextPosition = component.path[nextPathPosition];
     const walkAnimation = getWalkAnimationName(currentPos, nextPosition);
-    const stepDuration = getWalkDuration(currentPos.getDistance(nextPosition), 1);
+
+    const currentPosPx = new Px(spriteData.sprite.x, spriteData.sprite.y);
+    const targetPosPx = MapHelper.pointToPixelCentered(nextPosition);
+
+    const stepDuration = getWalkDuration(currentPosPx, targetPosPx, 1);
     visual.animation = walkAnimation;
 
     const nextPosPx = MapHelper.pointToPixelCentered(nextPosition);
@@ -188,13 +195,10 @@ export class MoveComponentRenderer extends ComponentRenderer<MoveComponent> {
     this.clearMovementData(entity);
   }
 
-  private isMoving(sprite): boolean {
-    return sprite._movingTween !== null && sprite._movingTween.isRunning;
-  }
-
   /**
    * Later when connected to the server only the server has the right to update position
    * components. This wont be done in the client anymore.
+   * TODO Move this logic into the server emulator part.
    */
   private updatePositionComponentLocalOnly(entity: Entity, position: Point) {
     LOG.debug(`Updating entity ${entity.id} position: ${JSON.stringify(position)}`);
