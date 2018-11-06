@@ -111,7 +111,6 @@ export class GameScene extends Phaser.Scene {
     map.createStaticLayer('House', [tiles2], 0, 0);
     map.createStaticLayer('House 2', [tiles2], 0, 0);
 
-
     this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 
     // Setup Keys

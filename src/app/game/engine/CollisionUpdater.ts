@@ -5,35 +5,42 @@ import { Point, Size } from 'app/game/model';
 
 import { EngineContext } from './EngineContext';
 import { getSpriteDescriptionFromCache } from './renderer/component/SpriteDescription';
-import { DisplayHelper } from './DisplayHelper';
 
 export class CollisionUpdater {
 
   private collisionMap: number[][];
   public isDirty = true;
   private displayTileSize: Size;
-  private displayHelper: DisplayHelper;
 
   constructor(
     private readonly ctx: EngineContext
   ) {
 
-    this.displayTileSize = ctx.helper.display.getDisplaySizeInTiles();
-    LOG.debug(`Found collision map size: w: ${this.displayTileSize.width}, h: ${this.displayTileSize.height}`);
-
-    this.collisionMap = new Array(this.displayTileSize.height);
-    this.clearCollisionMap();
-    ctx.pathfinder.setGrid(this.collisionMap);
+    this.resetCollisionMapSize();
     ctx.pathfinder.setAcceptableTiles(0);
-
-    this.displayHelper = new DisplayHelper(this.ctx.game);
   }
 
-  private clearCollisionMap() {
+  /**
+   * Everytime the visible parts of the game canvas have changed (resized) this method
+   * must be called to adapt the collision map accordingly.
+   */
+  resetCollisionMapSize() {
+    this.displayTileSize = this.ctx.helper.display.getDisplaySizeInTiles();
+    LOG.debug(`Collision map size: w: ${this.displayTileSize.width}, h: ${this.displayTileSize.height}`);
+    this.collisionMap = new Array(this.displayTileSize.height);
+
     for (let i = 0; i < this.collisionMap.length; i++) {
       const element = new Array(this.displayTileSize.width);
       element.fill(0);
       this.collisionMap[i] = element;
+    }
+
+    this.ctx.pathfinder.setGrid(this.collisionMap);
+  }
+
+  private clearCollisionMap() {
+    for (let i = 0; i < this.collisionMap.length; i++) {
+      this.collisionMap[i].fill(0);
     }
   }
 
@@ -52,8 +59,8 @@ export class CollisionUpdater {
       return;
     }
 
-    const scrollOffset = this.displayHelper.getScrollOffset();
-    const displaySize = this.displayHelper.getDisplaySizeInTiles();
+    const scrollOffset = this.ctx.helper.display.getScrollOffset();
+    const displaySize = this.ctx.helper.display.getDisplaySizeInTiles();
 
     this.ctx.entityStore.entities.forEach(entity => {
       if (!this.hasEntityAllRequirements(entity)) {

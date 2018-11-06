@@ -15,6 +15,11 @@ const cursorSprites = new Map<CursorType, string>();
 cursorSprites.set(CursorType.DEFAULT, UIConstants.CURSOR_HAND);
 cursorSprites.set(CursorType.ATTACK, UIConstants.CURSOR_ATTACK);
 
+/**
+ * The cursor manager is responsible for the graphics shown to the user as the
+ * cursor. The PointerManager is reponsible for the actions taken. Yet their workings
+ * are quite similiar. Maybe their function will be unified at some point.
+ */
 export class CursorManager {
 
   private readonly cursors = new Map<CursorType, Phaser.GameObjects.Image>();
