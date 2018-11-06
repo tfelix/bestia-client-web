@@ -16,6 +16,9 @@ const DEBUG_STYLE = {
  */
 export class DebugInfoRenderer extends BaseCommonRenderer {
 
+  private readonly textOffsetX = 200;
+  private readonly textOffsetY = 20;
+
   private text: Phaser.GameObjects.Text | null = null;
   private lastRenderTime = null;
   private renderFrameTimesMs = [];
@@ -51,8 +54,8 @@ export class DebugInfoRenderer extends BaseCommonRenderer {
 
   private createData() {
     this.text = this.ctx.game.add.text(
-      50,
-      50,
+      this.textOffsetX,
+      this.textOffsetY,
       '',
       DEBUG_STYLE
     );
@@ -85,7 +88,10 @@ export class DebugInfoRenderer extends BaseCommonRenderer {
     debugTxt += `\nPointer (wx: ${pointerScreenX} wy: ${pointerScreenY} mx: ${pointerMapPos.x} my: ${pointerMapPos.y})`;
 
     this.text.setText(debugTxt);
-    this.text.setPosition(this.ctx.game.cameras.main.scrollX + 50, this.ctx.game.cameras.main.scrollY + 50);
+    this.text.setPosition(
+      this.ctx.game.cameras.main.scrollX + this.textOffsetX,
+      this.ctx.game.cameras.main.scrollY + this.textOffsetY
+    );
   }
 
   private clearAllData() {

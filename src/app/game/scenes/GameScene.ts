@@ -121,6 +121,9 @@ export class GameScene extends Phaser.Scene {
     this.input.keyboard.on('keydown_W', () => {
       this.engineContext.config.debug.renderInfo = !this.engineContext.config.debug.renderInfo;
     });
+    this.input.keyboard.on('keydown_E', () => {
+      this.engineContext.config.debug.renderGrid = !this.engineContext.config.debug.renderGrid;
+    });
 
     this.entityRenderManager.create();
     this.commonRenderManager.create();

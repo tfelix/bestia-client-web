@@ -4,6 +4,7 @@ import { CollisionCommonRenderer } from './CollisionCommonRenderer';
 import { DebugInfoRenderer } from './DebugInfoRenderer';
 import { UIModalRenderer } from './UIModalRenderer';
 import { WeatherRenderer } from './WeatherRenderer';
+import { GridCommonRenderer } from './GridCommonRenderer';
 
 export class CommonRenderManager implements RenderStatistics {
 
@@ -15,6 +16,8 @@ export class CommonRenderManager implements RenderStatistics {
 
     this.renderer.push(new CollisionCommonRenderer(this.ctx));
     this.renderer.push(new DebugInfoRenderer(this.ctx));
+    this.renderer.push(new GridCommonRenderer(this.ctx));
+
     this.renderer.push(new UIModalRenderer(this.ctx));
     this.renderer.push(new WeatherRenderer(this.ctx));
   }

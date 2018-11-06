@@ -15,6 +15,7 @@ export class EngineConfig {
 
   public readonly debug = {
     renderCollision: false,
+    renderGrid: false,
     renderInfo: false
   };
 
