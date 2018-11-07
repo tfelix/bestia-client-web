@@ -33,7 +33,7 @@ export class LoadScene extends Phaser.Scene {
       '../assets/sprites/mob/rabbit/rabbit.json'
     );
 
-    const additionalObjects = ['tree', 'plant', 'water', 'sign'];
+    const additionalObjects = ['tree', 'tree_01', 'plant', 'water', 'sign'];
     additionalObjects.forEach(x => {
       const baseUrl = `../assets/sprites/object/${x}`;
       const pngUrl = `${baseUrl}/${x}.png`;

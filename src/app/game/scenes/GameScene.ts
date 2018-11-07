@@ -92,7 +92,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   public preload(): void {
-    this.engineContext.pointerManager.load(this.load);
+    this.engineContext.pointerManager.load();
   }
 
   public create() {

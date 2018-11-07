@@ -5,6 +5,7 @@ import { EngineEvents } from 'app/game/message';
 
 import { EngineContext } from '../EngineContext';
 import { VisualDepth } from '../renderer/VisualDepths';
+import { Px } from 'app/game/model';
 
 export enum CursorType {
   DEFAULT,
@@ -25,11 +26,16 @@ export class CursorManager {
   private readonly cursors = new Map<CursorType, Phaser.GameObjects.Image>();
   private activeCursor: Phaser.GameObjects.Image;
 
+  private readonly pointerClickedOffset = new Px(-5, -5);
+  private isClicked = false;
+
   constructor(
     private readonly ctx: EngineContext
   ) {
     PubSub.subscribe(EngineEvents.GAME_MOUSE_OUT, () => this.hide());
     PubSub.subscribe(EngineEvents.GAME_MOUSE_OVER, () => this.show());
+    this.ctx.game.input.on('pointerdown', this.onPointerDown, this);
+    this.ctx.game.input.on('pointerup', this.onPointerUp, this);
   }
 
   public setCursorSprite(cursorType: CursorType) {
@@ -59,7 +65,15 @@ export class CursorManager {
 
   public update() {
     const pointerPos = this.ctx.game.input.activePointer.position;
-    this.activeCursor.setPosition(pointerPos.x, pointerPos.y);
+
+    if (this.isClicked) {
+      this.activeCursor.setPosition(
+        pointerPos.x + this.pointerClickedOffset.x,
+        pointerPos.y + this.pointerClickedOffset.y
+      );
+    } else {
+      this.activeCursor.setPosition(pointerPos.x, pointerPos.y);
+    }
   }
 
   public hide() {
@@ -68,5 +82,13 @@ export class CursorManager {
 
   public show() {
     this.activeCursor.visible = true;
+  }
+
+  private onPointerDown() {
+    this.isClicked = true;
+  }
+
+  private onPointerUp() {
+    this.isClicked = false;
   }
 }
