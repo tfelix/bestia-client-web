@@ -77,7 +77,23 @@
          "tileheight":32,
          "tileproperties":
             {
+             "1":
+                {
+                 "collision":"true"
+                },
              "100":
+                {
+                 "collision":"true"
+                },
+             "103":
+                {
+                 "collision":"true"
+                },
+             "104":
+                {
+                 "collision":"true"
+                },
+             "112":
                 {
                  "collision":"true"
                 },
@@ -85,7 +101,31 @@
                 {
                  "collision":"true"
                 },
+             "160":
+                {
+                 "collision":"true"
+                },
+             "163":
+                {
+                 "collision":"true"
+                },
              "17":
+                {
+                 "collision":"true"
+                },
+             "176":
+                {
+                 "collision":"true"
+                },
+             "179":
+                {
+                 "collision":"true"
+                },
+             "192":
+                {
+                 "collision":"true"
+                },
+             "195":
                 {
                  "collision":"true"
                 },
@@ -93,7 +133,19 @@
                 {
                  "collision":"true"
                 },
+             "208":
+                {
+                 "collision":"true"
+                },
              "21":
+                {
+                 "collision":"true"
+                },
+             "210":
+                {
+                 "collision":"true"
+                },
+             "211":
                 {
                  "collision":"true"
                 },
@@ -101,11 +153,51 @@
                 {
                  "collision":"true"
                 },
+             "22":
+                {
+                 "collision":"true"
+                },
              "221":
                 {
                  "collision":"true"
                 },
+             "224":
+                {
+                 "collision":"true"
+                },
+             "225":
+                {
+                 "collision":"true"
+                },
+             "226":
+                {
+                 "collision":"true"
+                },
+             "227":
+                {
+                 "collision":"true"
+                },
+             "23":
+                {
+                 "collision":"true"
+                },
              "236":
+                {
+                 "collision":"true"
+                },
+             "24":
+                {
+                 "collision":"true"
+                },
+             "241":
+                {
+                 "collision":"true"
+                },
+             "242":
+                {
+                 "collision":"true"
+                },
+             "25":
                 {
                  "collision":"true"
                 },
@@ -149,6 +241,22 @@
                 {
                  "collision":"true"
                 },
+             "7":
+                {
+                 "collision":"true"
+                },
+             "70":
+                {
+                 "collision":"true"
+                },
+             "73":
+                {
+                 "collision":"true"
+                },
+             "8":
+                {
+                 "collision":"true"
+                },
              "80":
                 {
                  "collision":"true"
@@ -170,6 +278,22 @@
                  "collision":"true"
                 },
              "85":
+                {
+                 "collision":"true"
+                },
+             "86":
+                {
+                 "collision":"true"
+                },
+             "87":
+                {
+                 "collision":"true"
+                },
+             "88":
+                {
+                 "collision":"true"
+                },
+             "89":
                 {
                  "collision":"true"
                 },
@@ -207,6 +331,14 @@
          "tileheight":32,
          "tileproperties":
             {
+             "102":
+                {
+                 "collision":"true"
+                },
+             "103":
+                {
+                 "collision":"true"
+                },
              "21":
                 {
                  "collision":"true"
@@ -275,6 +407,14 @@
              "85":
                 {
                  "collision":"true"
+                },
+             "86":
+                {
+                 "collision":"true"
+                },
+             "87":
+                {
+                 "collision":"true"
                 }
             },
          "tilewidth":32
@@ -292,6 +432,49 @@
             },
          "spacing":0,
          "tileheight":32,
+         "tileproperties":
+            {
+             "147":
+                {
+                 "collision":"true"
+                },
+             "148":
+                {
+                 "collision":"true"
+                },
+             "16":
+                {
+                 "collision":"true"
+                },
+             "17":
+                {
+                 "collision":"true"
+                },
+             "18":
+                {
+                 "collision":"true"
+                },
+             "19":
+                {
+                 "collision":"true"
+                },
+             "33":
+                {
+                 "collision":"true"
+                },
+             "34":
+                {
+                 "collision":"true"
+                },
+             "35":
+                {
+                 "collision":"true"
+                },
+             "64":
+                {
+                 "collision":"true"
+                }
+            },
          "tilewidth":32
         }, 
         {
