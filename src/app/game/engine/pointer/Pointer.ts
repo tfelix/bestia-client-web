@@ -25,12 +25,12 @@ export abstract class Pointer {
     // no op.
   }
 
-	/**
-	 * Checks if this indicator can be overwritten by the new one. Usually this
-	 * is the default behaviour.
-	 *
-	 * @param indicator - The new indicator intended to override the currently active one.
-	 */
+  /**
+ * Checks if this indicator can be overwritten by the new one. Usually this
+ * is the default behaviour.
+ *
+ * @param indicator - The new indicator intended to override the currently active one.
+ */
   public allowOverwrite(otherPointer: Pointer) {
     return true;
   }
@@ -46,7 +46,7 @@ export abstract class Pointer {
     // no op.
   }
 
-  public load(loader: Phaser.Loader.LoaderPlugin) {
+  public load() {
     // no op.
   }
 

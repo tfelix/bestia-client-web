@@ -14,6 +14,7 @@ import { AbortPerformHandler } from './AbortPerformHandler';
 import { InteractionHandler } from './InteractionHandler';
 import { ServerEntityStore } from './ServerEntityStore';
 import { EntityLocalFactory } from './EntityLocalFactory';
+import { MoveComponentHandler } from './MoveComponentHandler';
 
 const PLAYER_ACC_ID = 1337;
 const PLAYER_ENTITY_ID = 1;
@@ -34,6 +35,7 @@ export class ServerEmulator {
     this.messageHandler.push(new RequestSyncHandler(this.serverEntities, PLAYER_ACC_ID, PLAYER_ENTITY_ID, this.entityFactory));
     this.messageHandler.push(new AbortPerformHandler(this.serverEntities, PLAYER_ENTITY_ID));
     this.messageHandler.push(new InteractionHandler(this.serverEntities));
+    this.messageHandler.push(new MoveComponentHandler(this.serverEntities));
   }
 
   private sendClient(msg: any) {

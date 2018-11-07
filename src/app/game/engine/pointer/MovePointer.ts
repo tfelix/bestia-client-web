@@ -63,7 +63,7 @@ export class MovePointer extends Pointer {
     return this.ctx.collisionUpdater.hasCollision(point.x, point.y);
   }
 
-  public load(loader) {
+  public load() {
     this.ctx.game.load.spritesheet(
       'indicator_move',
       '../assets/sprites/indicators/cursor.png',

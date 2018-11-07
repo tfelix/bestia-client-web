@@ -10,7 +10,7 @@ import {
 } from 'app/game/connection';
 import {
   SyncRequestMessage, ActionMessage, ComponentMessage, ComponentDeleteMessage,
-  AccountInfoMessage, UiModalMessage, WeatherMessage
+  AccountInfoMessage, UiModalMessage, WeatherMessage, sendToServer
 } from 'app/game/message';
 import { ServerEmulator } from 'app/game/demo';
 import { AccountInfo } from 'app/game/model';
@@ -66,7 +66,7 @@ export class GameScene extends Phaser.Scene {
     this.setupMessaging();
     this.setupDataUpdater();
 
-    PubSub.publish(Topics.IO_SEND_MSG, new SyncRequestMessage());
+    sendToServer(new SyncRequestMessage());
   }
 
   private setupMessaging() {

@@ -9,4 +9,6 @@ export * from './RequestItemLootMessage';
 export * from './UiModalMessages';
 export * from './WeatherMessage';
 export * from './RequestInteractionMessage';
-export * from './engine-events';
+export * from './EngineEvents';
+export * from './UpdateComponentMessage';
+export * from './SendToServer';

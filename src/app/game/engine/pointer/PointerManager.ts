@@ -132,8 +132,8 @@ export class PointerManager {
     this.pointerStack = [];
   }
 
-  public load(loader: Phaser.Loader.LoaderPlugin) {
-    this.pointers.forEach(x => x.load(loader));
+  public load() {
+    this.pointers.forEach(x => x.load());
   }
 
   public create() {
@@ -166,7 +166,6 @@ export class PointerManager {
     if (!this.activePointer.allowOverwrite(indicator)) {
       return;
     }
-    LOG.debug(`Set active pointer: ${indicator}`);
     this.activePointer.deactivate();
     this.activePointer = indicator;
     this.activePointer.activate();

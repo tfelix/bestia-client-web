@@ -2,13 +2,12 @@ import * as LOG from 'loglevel';
 
 import { Point, Px } from 'app/game/model';
 import { MoveComponent, ComponentType, PositionComponent } from 'app/game/entities';
+import { sendToServer, UpdateComponentMessage } from 'app/game/message';
 
 import { MapHelper } from './MapHelper';
 import { EngineContext } from './EngineContext';
 
-
 export class MoveHelper {
-
   constructor(
     private readonly ctx: EngineContext
   ) {
@@ -32,16 +31,19 @@ export class MoveHelper {
     // We must remove the possibly currently present component so we can start new.
     playerEntity.removeComponentByType(ComponentType.MOVE);
 
-    const move = new MoveComponent(
+    const moveComponent = new MoveComponent(
       componentId,
       playerEntity.id
     );
-    move.walkspeed = 1;
-    move.path = shiftedPath;
+    moveComponent.walkspeed = 1;
+    moveComponent.path = shiftedPath;
     if (callbackFn) {
-      move.onMoveFinished.push(callbackFn);
+      moveComponent.onMoveFinished.push(callbackFn);
     }
-    playerEntity.addComponent(move);
+
+    playerEntity.addComponent(moveComponent);
+    const updateMsg = new UpdateComponentMessage(moveComponent);
+    sendToServer(updateMsg);
   }
 
   public moveToPoint(goal: Point, callbackFn?: () => void) {

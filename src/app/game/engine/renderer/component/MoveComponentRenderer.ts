@@ -131,8 +131,6 @@ export class MoveComponentRenderer extends ComponentRenderer<MoveComponent> {
     const currentPos = component.path[moveData.currentPathPosition];
     const nextPathPosition = moveData.currentPathPosition + 1;
 
-    this.updatePositionComponentLocalOnly(entity, currentPos);
-
     const spriteData = entity.data.visual;
     const visual = entity.getComponent(ComponentType.VISUAL) as VisualComponent;
     if (!visual || !spriteData) {
@@ -193,19 +191,5 @@ export class MoveComponentRenderer extends ComponentRenderer<MoveComponent> {
 
   public removeGameData(entity: Entity) {
     this.clearMovementData(entity);
-  }
-
-  /**
-   * Later when connected to the server only the server has the right to update position
-   * components. This wont be done in the client anymore.
-   * TODO Move this logic into the server emulator part.
-   */
-  private updatePositionComponentLocalOnly(entity: Entity, position: Point) {
-    LOG.debug(`Updating entity ${entity.id} position: ${JSON.stringify(position)}`);
-    const posComp = entity.getComponent(ComponentType.POSITION) as PositionComponent;
-    if (!posComp) {
-      return;
-    }
-    posComp.position = position;
   }
 }
