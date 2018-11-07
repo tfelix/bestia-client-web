@@ -15,7 +15,6 @@ export class CollisionUpdater {
   constructor(
     private readonly ctx: EngineContext
   ) {
-
     ctx.pathfinder.setAcceptableTiles(0);
   }
 
@@ -142,7 +141,7 @@ export class CollisionUpdater {
   }
 
   public hasCollision(x: number, y: number): boolean {
-    if (this.collisionMap.length < y || this.collisionMap[0].width < x || x < 0 || y < 0) {
+    if (this.collisionMap.length < y || this.collisionMap[0].length < x || x < 0 || y < 0) {
       LOG.warn(`Requested coordinate ${x}-${y} is not inside collision map.`);
       return true;
     }

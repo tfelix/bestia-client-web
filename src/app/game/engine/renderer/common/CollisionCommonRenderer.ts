@@ -1,4 +1,4 @@
-import { Point, Size } from '../../../model';
+import { Point } from '../../../model';
 
 import { MapHelper } from '../../MapHelper';
 import { EngineContext } from '../../EngineContext';
@@ -38,17 +38,18 @@ export class CollisionCommonRenderer extends BaseCommonRenderer {
     this.graphicsCollision.clear();
 
     const gameTileSize = this.context.helper.display.getDisplaySizeInTiles();
-    const pxScrollOffset = this.context.helper.display.getScrollOffsetPx();
+    const scrollOffset = this.context.helper.display.getScrollOffset();
+
+    const startX = scrollOffset.x * MapHelper.TILE_SIZE_PX;
+    const startY = scrollOffset.y * MapHelper.TILE_SIZE_PX;
 
     for (let y = 0; y < gameTileSize.height; y++) {
       for (let x = 0; x < gameTileSize.width; x++) {
         const hasCollision = this.context.collisionUpdater.hasCollision(x, y);
         if (hasCollision) {
-          console.info(`Found collision: ${x}-${y}`);
-          console.info(`Scroll Offset: ${JSON.stringify(pxScrollOffset)}`)
           const px = MapHelper.pointToPixel(new Point(x, y));
-          this.rect.x = px.x + pxScrollOffset.x;
-          this.rect.y = px.y + pxScrollOffset.y;
+          this.rect.x = px.x + startX;
+          this.rect.y = px.y + startY;
           this.graphicsCollision.fillStyle(0x0000FF, 1);
           this.graphicsCollision.fillRectShape(this.rect);
         }
