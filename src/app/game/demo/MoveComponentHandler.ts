@@ -1,7 +1,9 @@
+import * as LOG from 'loglevel';
+
 import { ClientMessageHandler } from './ClientMessageHandler';
 import { UpdateComponentMessage } from 'app/game/message';
 import { Entity } from 'app/game/entities';
-import { MoveComponent, ComponentType } from 'app/game/entities/components';
+import { MoveComponent, ComponentType, PositionComponent } from 'app/game/entities/components';
 import { ServerEntityStore } from './ServerEntityStore';
 
 export class MoveComponentHandler extends ClientMessageHandler<UpdateComponentMessage<MoveComponent>> {
@@ -39,7 +41,17 @@ export class MoveComponentHandler extends ClientMessageHandler<UpdateComponentMe
   }
 
   private moveTick(entity: Entity, move: MoveComponent) {
-    move.path.shift();
+    const currentPosition = move.path.shift();
+    LOG.debug(`Updating entity ${entity.id} position: ${JSON.stringify(currentPosition)}`);
+
+    const posComp = entity.getComponent(ComponentType.POSITION) as PositionComponent;
+    if (!posComp) {
+      return;
+    }
+    posComp.position = currentPosition;
+
+    this.sendComponent(posComp);
+    this.sendComponent(move);
 
     if (move.path.length > 0) {
       window.setTimeout(() => {

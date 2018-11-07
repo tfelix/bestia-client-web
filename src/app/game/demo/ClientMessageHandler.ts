@@ -33,4 +33,9 @@ export abstract class ClientMessageHandler<T> {
       this.sendClient(compMsg);
     });
   }
+
+  protected sendComponent(component: Component) {
+    const compMsg = new ComponentMessage(component);
+    this.sendClient(compMsg);
+  }
 }
