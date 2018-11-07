@@ -2,7 +2,7 @@ import { environment as env } from 'app/../environments/environment';
 import { EntityStore, PlayerEntityHolder } from 'app/game/entities';
 import {
   EngineContext, EntityRenderManager, CommonRenderManager, ActionsRendererManager,
-  ActionMessageHandler, MapHelper
+  ActionMessageHandler
 } from 'app/game/engine';
 import {
   ConnectionLogger, MessageRouter, UIDataUpdater, Topics, WeatherDataUpdater,
@@ -13,7 +13,7 @@ import {
   AccountInfoMessage, UiModalMessage, WeatherMessage
 } from 'app/game/message';
 import { ServerEmulator } from 'app/game/demo';
-import { AccountInfo, Point } from 'app/game/model';
+import { AccountInfo } from 'app/game/model';
 
 import { SceneNames } from './SceneNames';
 
@@ -44,7 +44,7 @@ export class GameScene extends Phaser.Scene {
     this.entityStore = new EntityStore();
   }
 
-  public init(entityStore: EntityStore): void {
+  public init(): void {
     const accountInfo = new AccountInfo();
     const playerEntityHolder = new PlayerEntityHolder(accountInfo, this.entityStore);
     this.engineContext = new EngineContext(this, this.entityStore, playerEntityHolder);
@@ -114,11 +114,12 @@ export class GameScene extends Phaser.Scene {
     this.engineContext.data.tilemap = {
       map: map,
       layers: [layer1, layer2, layer3, layer4, layer5]
-    }
+    };
 
     this.engineContext.collisionUpdater.resetCollisionMapSize();
 
-    this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+    // TODO Investigate why there are 2 tiles missing in the height size of the map.
+    this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels + 64);
 
     // Setup Keys
     this.input.keyboard.on('keydown_Q', () => {
