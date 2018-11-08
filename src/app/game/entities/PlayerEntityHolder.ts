@@ -1,8 +1,7 @@
 import * as LOG from 'loglevel';
 
-import { Topics } from 'app/game/connection';
 import { AccountInfo } from 'app/game/model/AccountInfo';
-import { ComponentMessage } from 'app/game/message';
+import { ComponentMessage, EngineEvents } from 'app/game/message';
 
 import { EntityStore } from './EntityStore';
 import { Entity } from './Entity';
@@ -26,7 +25,7 @@ export class PlayerEntityHolder {
     private readonly info: AccountInfo,
     private readonly entityStore: EntityStore
   ) {
-    PubSub.subscribe(Topics.IO_RECV_COMP_MSG, (_, msg) => this.checkEntity(msg));
+    PubSub.subscribe(EngineEvents.IO_RECV_COMP_MSG, (_, msg) => this.checkEntity(msg));
   }
 
   private checkEntity(data: ComponentMessage<Component>) {
@@ -46,6 +45,8 @@ export class PlayerEntityHolder {
       if (!this.activeEntity) {
         this._activeEntityId = playerComp.entityId;
       }
+
+      PubSub.publish(EngineEvents.GAME_NEW_PLAYER_ENTITY, playerEntity);
     }
   }
 

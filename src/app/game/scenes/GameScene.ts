@@ -5,12 +5,12 @@ import {
   ActionMessageHandler
 } from 'app/game/engine';
 import {
-  ConnectionLogger, MessageRouter, UIDataUpdater, Topics, WeatherDataUpdater,
+  ConnectionLogger, MessageRouter, UIDataUpdater, WeatherDataUpdater,
   EntityComponentUpdater
 } from 'app/game/connection';
 import {
   SyncRequestMessage, ActionMessage, ComponentMessage, ComponentDeleteMessage,
-  AccountInfoMessage, UiModalMessage, WeatherMessage, sendToServer
+  AccountInfoMessage, UiModalMessage, WeatherMessage, sendToServer, EngineEvents
 } from 'app/game/message';
 import { ServerEmulator } from 'app/game/demo';
 import { AccountInfo } from 'app/game/model';
@@ -71,15 +71,15 @@ export class GameScene extends Phaser.Scene {
 
   private setupMessaging() {
     this.messageRouter = new MessageRouter([
-      { handles: (msg) => msg instanceof ActionMessage, routeTopic: Topics.IO_RECV_ACTION },
-      { handles: (msg) => msg instanceof AccountInfoMessage, routeTopic: Topics.IO_RECV_ACC_INFO_MSG },
-      { handles: (msg) => msg instanceof ComponentMessage, routeTopic: Topics.IO_RECV_COMP_MSG },
-      { handles: (msg) => msg instanceof ComponentDeleteMessage, routeTopic: Topics.IO_RECV_DEL_COMP_MSG },
-      { handles: (msg) => msg instanceof UiModalMessage, routeTopic: Topics.IO_RECV_UI_MSG },
-      { handles: (msg) => msg instanceof WeatherMessage, routeTopic: Topics.IO_RECV_WEATHER_MSG }
+      { handles: (msg) => msg instanceof ActionMessage, routeTopic: EngineEvents.IO_RECV_ACTION },
+      { handles: (msg) => msg instanceof AccountInfoMessage, routeTopic: EngineEvents.IO_RECV_ACC_INFO_MSG },
+      { handles: (msg) => msg instanceof ComponentMessage, routeTopic: EngineEvents.IO_RECV_COMP_MSG },
+      { handles: (msg) => msg instanceof ComponentDeleteMessage, routeTopic: EngineEvents.IO_RECV_DEL_COMP_MSG },
+      { handles: (msg) => msg instanceof UiModalMessage, routeTopic: EngineEvents.IO_RECV_UI_MSG },
+      { handles: (msg) => msg instanceof WeatherMessage, routeTopic: EngineEvents.IO_RECV_WEATHER_MSG }
     ]);
     this.actionMessageHandler = new ActionMessageHandler(this.entityStore);
-    this.serverEmulator = new ServerEmulator(this.entityStore);
+    this.serverEmulator = new ServerEmulator(this.entityStore, this.engineContext);
   }
 
   /**

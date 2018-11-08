@@ -1,5 +1,5 @@
-import { Topics } from 'app/game/connection';
+import { EngineEvents } from './EngineEvents';
 
 export function sendToServer(msg: any) {
-  PubSub.publish(Topics.IO_SEND_MSG, msg);
+  PubSub.publish(EngineEvents.IO_SEND_MSG, msg);
 }

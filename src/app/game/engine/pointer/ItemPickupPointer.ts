@@ -3,8 +3,7 @@ import {
   Entity, ComponentType, EntityTypeComponent, EntityType,
   VisualComponent, PositionComponent
 } from 'app/game/entities';
-import { RequestItemLootMessage } from 'app/game/message';
-import { Topics } from 'app/game/connection';
+import { RequestItemLootMessage, EngineEvents } from 'app/game/message';
 
 import { Pointer } from './Pointer';
 import { PointerManager } from './PointerManager';
@@ -61,7 +60,7 @@ export class ItemPickupPointer extends Pointer {
   private pickupItem(itemEntity: Entity) {
     VisualComponent.playOneShotAnimation(itemEntity, 'item_pickup');
     const pickupMsg = new RequestItemLootMessage(itemEntity.id, 1);
-    PubSub.publish(Topics.IO_SEND_MSG, pickupMsg);
+    PubSub.publish(EngineEvents.IO_SEND_MSG, pickupMsg);
   }
 
   public updatePointerPosition(pointer: Px, entity?: Entity) {

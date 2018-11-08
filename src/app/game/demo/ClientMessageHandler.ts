@@ -1,9 +1,8 @@
 import * as LOG from 'loglevel';
 
 import { Entity } from 'entities';
-import { ComponentDeleteMessage, ComponentMessage } from 'app/game/message';
+import { ComponentDeleteMessage, ComponentMessage, EngineEvents } from 'app/game/message';
 import { Component } from 'app/game/entities';
-import { Topics } from 'app/game/connection';
 
 export abstract class ClientMessageHandler<T> {
   public abstract isHandlingMessage(msg: any): boolean;
@@ -24,7 +23,7 @@ export abstract class ClientMessageHandler<T> {
   }
 
   protected sendClient(msg: any) {
-    PubSub.publish(Topics.IO_RECV_MSG, msg);
+    PubSub.publish(EngineEvents.IO_RECV_MSG, msg);
   }
 
   protected sendAllComponents(components: Component[]) {

@@ -54,6 +54,30 @@
          "width":100,
          "x":0,
          "y":0
+        }, 
+        {
+         "height":100,
+         "name":"Trigger",
+         "objects":[
+                {
+                 "height":96,
+                 "name":"hello_world",
+                 "properties":
+                    {
+                     "triggers":"helloWorld"
+                    },
+                 "type":"event",
+                 "visible":true,
+                 "width":96,
+                 "x":2464,
+                 "y":2912
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "width":100,
+         "x":0,
+         "y":0
         }],
  "orientation":"orthogonal",
  "properties":

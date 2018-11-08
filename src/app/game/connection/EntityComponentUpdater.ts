@@ -1,17 +1,16 @@
 import * as LOG from 'loglevel';
 
 import { EntityStore } from 'app/game/entities';
-import { ComponentMessage, ComponentDeleteMessage } from 'app/game/message';
+import { ComponentMessage, ComponentDeleteMessage, EngineEvents } from 'app/game/message';
 import { Component } from 'app/game/entities';
-import { Topics } from './Topics';
 
 export class EntityComponentUpdater {
   constructor(
     private readonly entityStore: EntityStore
   ) {
 
-    PubSub.subscribe(Topics.IO_RECV_COMP_MSG, (_, msg) => this.onComponentMessage(msg));
-    PubSub.subscribe(Topics.IO_RECV_DEL_COMP_MSG, (_, msg) => this.onComponentDeleteMessage(msg));
+    PubSub.subscribe(EngineEvents.IO_RECV_COMP_MSG, (_, msg) => this.onComponentMessage(msg));
+    PubSub.subscribe(EngineEvents.IO_RECV_DEL_COMP_MSG, (_, msg) => this.onComponentDeleteMessage(msg));
   }
 
   private onComponentMessage(msg: ComponentMessage<Component>) {

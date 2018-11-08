@@ -1,11 +1,10 @@
 import * as PubSub from 'pubsub-js';
 import * as LOG from 'loglevel';
-
-import { Topics } from './Topics';
+import { EngineEvents } from '../message';
 
 export interface Route {
-  handles(msg: any): boolean;
   routeTopic: string;
+  handles(msg: any): boolean;
 }
 
 export class MessageRouter {
@@ -15,7 +14,7 @@ export class MessageRouter {
   constructor(
     routes: Route[]
   ) {
-    PubSub.subscribe(Topics.IO_RECV_MSG, (_, msg) => this.onIncomingMessage(msg));
+    PubSub.subscribe(EngineEvents.IO_RECV_MSG, (_, msg) => this.onIncomingMessage(msg));
 
     this.routes.push(...routes);
   }

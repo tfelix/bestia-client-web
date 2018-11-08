@@ -1,8 +1,7 @@
 import { Entity, ComponentType, PerformComponent } from 'app/game/entities';
 import { Px } from 'app/game/model';
-import { AbortPerformMessage } from 'app/game/message';
+import { AbortPerformMessage, EngineEvents } from 'app/game/message';
 import { UIConstants, UIAtlas } from 'app/game/ui';
-import { Topics } from 'app/game/connection';
 
 import { ComponentRenderer } from './ComponentRenderer';
 import { EngineContext } from '../../EngineContext';
@@ -51,7 +50,7 @@ export class PerformComponentRenderer extends ComponentRenderer<PerformComponent
   private abortPerform() {
     this.ctx.sound.buttonClick.play();
     const abortMsg = new AbortPerformMessage();
-    PubSub.publish(Topics.IO_SEND_MSG, abortMsg);
+    PubSub.publish(EngineEvents.IO_SEND_MSG, abortMsg);
   }
 
   protected update() {

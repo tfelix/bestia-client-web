@@ -1,11 +1,8 @@
-import * as LOG from 'loglevel';
-
 import {
   ComponentType, EntityTypeComponent, InteractionLocalComponent,
   SelectLocalComponent, Entity, InteractionCache
 } from 'app/game/entities';
-import { RequestInteractionMessage } from 'app/game/message';
-import { Topics } from 'app/game/connection';
+import { RequestInteractionMessage, EngineEvents } from 'app/game/message';
 import { Px } from 'app/game/model';
 
 import { Pointer } from './Pointer';
@@ -59,7 +56,7 @@ export class InteractionPointer extends Pointer {
 
   private requestInteractionFromServer(entity: Entity) {
     const requestMsg = new RequestInteractionMessage(entity.id);
-    PubSub.publish(Topics.IO_SEND_MSG, requestMsg);
+    PubSub.publish(EngineEvents.IO_SEND_MSG, requestMsg);
   }
 
   private trySetupDefaultInteraction(entity: Entity) {

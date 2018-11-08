@@ -1,10 +1,9 @@
 import * as PubSub from 'pubsub-js';
 import * as LOG from 'loglevel';
 
-import { WeatherData } from 'app/game/engine';
-import { Topics } from 'app/game/connection';
-import { WeatherMessage } from 'app/game/message';
-import { EntityStore } from 'app/game/entities';
+import { WeatherData, EngineContext } from 'app/game/engine';
+import { WeatherMessage, EngineEvents } from 'app/game/message';
+import { EntityStore, Entity, ComponentType, VisualComponent } from 'app/game/entities';
 
 import { ClientMessageHandler } from './ClientMessageHandler';
 import { ItemPickupHandler } from './ItemPickupHandler';
@@ -15,6 +14,7 @@ import { InteractionHandler } from './InteractionHandler';
 import { ServerEntityStore } from './ServerEntityStore';
 import { EntityLocalFactory } from './EntityLocalFactory';
 import { MoveComponentHandler } from './MoveComponentHandler';
+import { trigger } from '@angular/animations';
 
 const PLAYER_ACC_ID = 1337;
 const PLAYER_ENTITY_ID = 1;
@@ -26,9 +26,10 @@ export class ServerEmulator {
   private messageHandler: Array<ClientMessageHandler<any>> = [];
 
   constructor(
-    private readonly clientEntities: EntityStore
+    private readonly clientEntities: EntityStore,
+    private readonly ctx: EngineContext
   ) {
-    PubSub.subscribe(Topics.IO_SEND_MSG, (_, msg: any) => this.receivedFromClient(msg));
+    PubSub.subscribe(EngineEvents.IO_SEND_MSG, (_, msg: any) => this.receivedFromClient(msg));
 
     this.messageHandler.push(new ItemPickupHandler(this.serverEntities, PLAYER_ENTITY_ID));
     this.messageHandler.push(new BasicAttackHandler(this.clientEntities, this.serverEntities, this.entityFactory));
@@ -39,7 +40,7 @@ export class ServerEmulator {
   }
 
   private sendClient(msg: any) {
-    PubSub.publish(Topics.IO_RECV_MSG, msg);
+    PubSub.publish(EngineEvents.IO_RECV_MSG, msg);
   }
 
   public create() {
@@ -67,6 +68,24 @@ export class ServerEmulator {
 
     const weatherMessage = new WeatherMessage(weatherData);
     this.sendClient(weatherMessage);
+
+    PubSub.subscribe(EngineEvents.GAME_NEW_PLAYER_ENTITY, this.setupEventTriggers.bind(this));
+  }
+
+  // TODO Put this into an own manager: EventEmulatorManager.ts
+  private setupEventTriggers(_, playerEntity: Entity) {
+    LOG.debug('Setup the event trigger for new player entity');
+
+    const sprite = playerEntity.data.visual.sprite;
+
+      const triggerLayer = this.ctx.data.tilemap.map.getObjectLayer('Trigger');
+      triggerLayer.objects.forEach(obj => {
+        this.ctx.game.physics.add.overlap(obj, sprite, this.triggerEvent, null, this);
+      });
+  }
+
+  private triggerEvent(obj1: Phaser.GameObjects.GameObject, obj2: Phaser.GameObjects.GameObject) {
+    alert('geht');
   }
 
   public update() {

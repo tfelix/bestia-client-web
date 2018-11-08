@@ -1,5 +1,4 @@
-import { AccountInfoMessage } from 'app/game/message';
-import { Topics } from 'app/game/connection';
+import { AccountInfoMessage, EngineEvents } from 'app/game/message';
 
 export class AccountInfo {
 
@@ -8,7 +7,7 @@ export class AccountInfo {
   public masterName: string;
 
   constructor() {
-    PubSub.subscribe(Topics.IO_RECV_ACC_INFO_MSG, (_, msg) => this.handleAccountInfo(msg));
+    PubSub.subscribe(EngineEvents.IO_RECV_ACC_INFO_MSG, (_, msg) => this.handleAccountInfo(msg));
   }
 
   private handleAccountInfo(msg: AccountInfoMessage) {

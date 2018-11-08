@@ -43,6 +43,10 @@ export class GameComponent implements OnInit {
     zoom: 1,
     type: Phaser.WEBGL,
     render: { pixelArt: true },
+    physics: {
+      default: 'arcade',
+      arcade: { debug: true }
+    },
     parent: 'game',
     plugins: {
       scene: [{

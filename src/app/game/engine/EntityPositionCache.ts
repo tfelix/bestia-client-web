@@ -1,7 +1,6 @@
-import { ComponentMessage } from 'app/game/message';
+import { ComponentMessage, EngineEvents } from 'app/game/message';
 import { Component, ComponentType, PositionComponent, Entity, EntityStore } from 'app/game/entities';
 import { Point } from 'app/game/model';
-import { Topics } from 'app/game/connection';
 
 export class EntityPositionCache {
 
@@ -11,8 +10,8 @@ export class EntityPositionCache {
   constructor(
     private readonly entityStore: EntityStore
   ) {
-    PubSub.subscribe(Topics.IO_RECV_COMP_MSG, (_, msg) => this.checkComponentUpdate(msg as ComponentMessage<Component>));
-    PubSub.subscribe(Topics.IO_RECV_DEL_COMP_MSG, (_, msg) => this.checkComponentDelete(msg as ComponentMessage<Component>));
+    PubSub.subscribe(EngineEvents.IO_RECV_COMP_MSG, (_, msg) => this.checkComponentUpdate(msg as ComponentMessage<Component>));
+    PubSub.subscribe(EngineEvents.IO_RECV_DEL_COMP_MSG, (_, msg) => this.checkComponentDelete(msg as ComponentMessage<Component>));
   }
 
   private checkComponentUpdate(msg: ComponentMessage<Component>) {

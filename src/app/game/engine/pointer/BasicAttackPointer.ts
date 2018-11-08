@@ -5,8 +5,7 @@ import {
   ComponentType, PositionComponent, VisualComponent, InteractionType, EntityTypeComponent,
   AttacksComponent, ConditionComponent, ConditionHelper, Entity, PlayerEntityHolder
 } from 'app/game/entities';
-import { BasicAttackMessage } from 'app/game/message';
-import { Topics } from 'app/game/connection';
+import { BasicAttackMessage, EngineEvents } from 'app/game/message';
 
 import { Pointer } from './Pointer';
 import { SpriteCollision } from '../SpriteCollision';
@@ -137,7 +136,7 @@ export class BasicAttackPointer extends Pointer {
     attackerVisualComp.sightDirection = getSightDirection(attackerPos, defenderPos);
 
     const atkMsg = new BasicAttackMessage(attackedEntity.id);
-    PubSub.publish(Topics.IO_SEND_MSG, atkMsg);
+    PubSub.publish(EngineEvents.IO_SEND_MSG, atkMsg);
 
     const attackerAtkComp = attackerEntity.getComponent(ComponentType.ATTACKS) as AttacksComponent;
     const aspd = attackerAtkComp && attackerAtkComp.basicAttacksPerSecond || 0;
