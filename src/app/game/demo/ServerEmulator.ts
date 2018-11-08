@@ -14,7 +14,6 @@ import { InteractionHandler } from './InteractionHandler';
 import { ServerEntityStore } from './ServerEntityStore';
 import { EntityLocalFactory } from './EntityLocalFactory';
 import { MoveComponentHandler } from './MoveComponentHandler';
-import { trigger } from '@angular/animations';
 
 const PLAYER_ACC_ID = 1337;
 const PLAYER_ENTITY_ID = 1;
@@ -57,7 +56,7 @@ export class ServerEmulator {
 
   public create() {
     const date = new Date();
-    const isRaining = true; // date.getDay() % 2 === 0;
+    const isRaining = false; // date.getDay() % 2 === 0;
     let dayBrightness = Math.abs(Math.abs(date.getHours() / 24 - 0.5) * 2 - 1);
     if (dayBrightness < 0.6) {
       dayBrightness = 0.6;

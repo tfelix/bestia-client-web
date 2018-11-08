@@ -20,7 +20,7 @@ export abstract class SpriteRenderer {
     spriteName: string
   ) {
     sprite.setData('entity_id', entity.id);
-    sprite.setInteractive();
+    sprite.setInteractive({ pixelPerfect: true });
     const spriteData: SpriteData = {
       sprite: sprite,
       spriteName: spriteName,
