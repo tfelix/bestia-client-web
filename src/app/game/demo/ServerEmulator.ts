@@ -2,7 +2,7 @@ import * as PubSub from 'pubsub-js';
 import * as LOG from 'loglevel';
 
 import { WeatherData, EngineContext } from 'app/game/engine';
-import { WeatherMessage, EngineEvents } from 'app/game/message';
+import { WeatherMessage, EngineEvents, UiModalMessage } from 'app/game/message';
 import { EntityStore, Entity, ComponentType, VisualComponent } from 'app/game/entities';
 
 import { ClientMessageHandler } from './ClientMessageHandler';
@@ -18,6 +18,18 @@ import { trigger } from '@angular/animations';
 
 const PLAYER_ACC_ID = 1337;
 const PLAYER_ENTITY_ID = 1;
+
+interface TiledObject {
+  height: number;
+  name: string;
+  properties: { [s: string]: string; };
+  rectangle: boolean;
+  type: string;
+  visible: boolean;
+  width: number;
+  x: number;
+  y: number;
+}
 
 export class ServerEmulator {
 
@@ -45,7 +57,7 @@ export class ServerEmulator {
 
   public create() {
     const date = new Date();
-    const isRaining = false; // date.getDay() % 2 === 0;
+    const isRaining = true; // date.getDay() % 2 === 0;
     let dayBrightness = Math.abs(Math.abs(date.getHours() / 24 - 0.5) * 2 - 1);
     if (dayBrightness < 0.6) {
       dayBrightness = 0.6;
@@ -78,14 +90,30 @@ export class ServerEmulator {
 
     const sprite = playerEntity.data.visual.sprite;
 
-      const triggerLayer = this.ctx.data.tilemap.map.getObjectLayer('Trigger');
-      triggerLayer.objects.forEach(obj => {
-        this.ctx.game.physics.add.overlap(obj, sprite, this.triggerEvent, null, this);
-      });
+    // Enabling collision on the player sprite should not be done here. Maybe its better
+    // to do this on the renderer but I am unsure where. The best would be to add this on
+    // the player component renderer which needs to be created.
+    this.ctx.game.physics.world.enable(sprite, Phaser.Physics.Arcade.DYNAMIC_BODY);
+
+    const triggerLayer = this.ctx.data.tilemap.map.getObjectLayer('Trigger');
+    triggerLayer.objects.forEach(o => {
+      // Workaround as the phaser type is wrong here
+      const obj = o as any as TiledObject;
+
+      const zone = this.ctx.game.add.zone(obj.x, obj.y, obj.width, obj.height);
+      zone.setOrigin(0, 0);
+      this.ctx.game.physics.world.enable(zone, Phaser.Physics.Arcade.STATIC_BODY);
+      const zoneBody = zone.body as Phaser.Physics.Arcade.Body;
+      zoneBody.moves = false;
+
+      this.ctx.game.physics.add.overlap(zone, sprite, this.triggerEvent, null, this);
+    });
   }
 
   private triggerEvent(obj1: Phaser.GameObjects.GameObject, obj2: Phaser.GameObjects.GameObject) {
-    alert('geht');
+    // TODO This is a test and needs proper event handling
+    const msg = new UiModalMessage(0, 'Hello Darkness my old friend');
+    PubSub.publish(EngineEvents.IO_RECV_MSG, msg);
   }
 
   public update() {
