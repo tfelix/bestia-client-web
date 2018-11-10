@@ -31,6 +31,7 @@ export class GameComponent implements OnInit {
   @ViewChild(InventoryComponent)
   public inventoryComponent: InventoryComponent;
 
+  public hasActiveGame = false;
   public hideDefaultCursorOverGame = true;
 
   // GameConfig type mapping key is broken
@@ -72,7 +73,9 @@ export class GameComponent implements OnInit {
 
   constructor(
     private readonly websocketService: WebSocketService
-  ) { }
+  ) {
+    PubSub.subscribe(EngineEvents.GAME_READY, (_, isReady) => this.hasActiveGame = isReady);
+  }
 
   ngOnInit() {
     this.websocketService.connect();
@@ -80,6 +83,7 @@ export class GameComponent implements OnInit {
 
   public onGameReady(game: Phaser.Game): void {
     this.game = game;
+    this.game.scene.start('BootScene');
 
     window.addEventListener('resize', () => {
       game.resize(window.innerWidth, window.innerHeight);

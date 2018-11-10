@@ -1,3 +1,7 @@
+/**
+ * The BootScene loads the really important stuff so the loading screen can
+ * be displayed.
+ */
 export class BootScene extends Phaser.Scene {
   constructor() {
     super({
@@ -9,11 +13,28 @@ export class BootScene extends Phaser.Scene {
     this.load.image('cloud', '../assets/img/cloud.png');
     this.load.image('logo', '../assets/img/logo.png');
     this.load.image('splash-bg', '../assets/img/splash-bg.jpg');
+
+    const widthHalf = (this.game.config.width as any) / 2;
+    const heightHalf = (this.game.config.height as any) / 2;
+
+    const circles = [
+      new Phaser.Geom.Circle(widthHalf - 20, heightHalf, 5),
+      new Phaser.Geom.Circle(widthHalf, heightHalf, 5),
+      new Phaser.Geom.Circle(widthHalf + 20, heightHalf, 5)
+    ];
+
+    const graphics = this.add.graphics({ fillStyle: { color: 0xFFFFFF } });
+
+    circles.forEach(c => graphics.fillCircleShape(c));
+    graphics.alpha = 0;
+
+    this.load.on('progress', value => {
+      graphics.alpha = value;
+    });
   }
 
   public create() {
     this.game.input.mouse.disableContextMenu();
-
     this.events.on('resize', this.resize, this);
   }
 

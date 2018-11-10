@@ -82,7 +82,9 @@ export class LoadScene extends Phaser.Scene {
   }
 
   public create() {
-    this.add.image(400, 300, 'splash-bg');
+    const bg = this.add.image(0, 0, 'splash-bg')
+      .setOrigin(0)
+      .setDisplaySize(this.game.config.width, this.game.config.height);
 
     const offscreen = new Phaser.Geom.Rectangle(-400, 300, 400, 300);
     const screen = new Phaser.Geom.Rectangle(-800, 0, 2000, 600);
@@ -121,6 +123,6 @@ export class LoadScene extends Phaser.Scene {
   }
 
   public update(): void {
-    this.scene.start('GameScene');
+    // this.scene.start('GameScene');
   }
 }

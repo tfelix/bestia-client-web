@@ -1,5 +1,5 @@
 <div class="wrapper">
-  <div class="sidebar">
+  <div class="sidebar" *ngIf="hasActiveGame">
     <ul>
       <li><button (click)="toggleChat()">Chat</button></li>
       <li><button (click)="toggleInventory()">Inventory</button></li>

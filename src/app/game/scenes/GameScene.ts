@@ -139,6 +139,8 @@ export class GameScene extends Phaser.Scene {
     this.engineContext.cursorManager.create();
 
     this.serverEmulator.create();
+
+    PubSub.publish(EngineEvents.GAME_READY, true);
   }
 
   public update() {
