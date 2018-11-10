@@ -2,8 +2,8 @@ import * as PubSub from 'pubsub-js';
 import * as LOG from 'loglevel';
 
 import { WeatherData, EngineContext } from 'app/game/engine';
-import { WeatherMessage, EngineEvents, UiModalMessage } from 'app/game/message';
-import { EntityStore, Entity, ComponentType, VisualComponent } from 'app/game/entities';
+import { WeatherMessage, EngineEvents } from 'app/game/message';
+import { EntityStore } from 'app/game/entities';
 
 import { ClientMessageHandler } from './ClientMessageHandler';
 import { ItemPickupHandler } from './ItemPickupHandler';
@@ -14,33 +14,24 @@ import { InteractionHandler } from './InteractionHandler';
 import { ServerEntityStore } from './ServerEntityStore';
 import { EntityLocalFactory } from './EntityLocalFactory';
 import { MoveComponentHandler } from './MoveComponentHandler';
+import { EventTriggerManager } from './events/EventTriggerManager';
 
 const PLAYER_ACC_ID = 1337;
 const PLAYER_ENTITY_ID = 1;
 
-interface TiledObject {
-  height: number;
-  name: string;
-  properties: { [s: string]: string; };
-  rectangle: boolean;
-  type: string;
-  visible: boolean;
-  width: number;
-  x: number;
-  y: number;
-}
-
 export class ServerEmulator {
-
   private serverEntities = new ServerEntityStore();
   private entityFactory = new EntityLocalFactory(this.serverEntities);
   private messageHandler: Array<ClientMessageHandler<any>> = [];
+  private eventManager: EventTriggerManager;
 
   constructor(
     private readonly clientEntities: EntityStore,
     private readonly ctx: EngineContext
   ) {
     PubSub.subscribe(EngineEvents.IO_SEND_MSG, (_, msg: any) => this.receivedFromClient(msg));
+
+    this.eventManager = new EventTriggerManager(this.ctx);
 
     this.messageHandler.push(new ItemPickupHandler(this.serverEntities, PLAYER_ENTITY_ID));
     this.messageHandler.push(new BasicAttackHandler(this.clientEntities, this.serverEntities, this.entityFactory));
@@ -79,44 +70,10 @@ export class ServerEmulator {
 
     const weatherMessage = new WeatherMessage(weatherData);
     this.sendClient(weatherMessage);
-
-    PubSub.subscribe(EngineEvents.GAME_NEW_PLAYER_ENTITY, this.setupEventTriggers.bind(this));
-  }
-
-  // TODO Put this into an own manager: EventEmulatorManager.ts
-  private setupEventTriggers(_, playerEntity: Entity) {
-    LOG.debug('Setup the event trigger for new player entity');
-
-    const sprite = playerEntity.data.visual.sprite;
-
-    // Enabling collision on the player sprite should not be done here. Maybe its better
-    // to do this on the renderer but I am unsure where. The best would be to add this on
-    // the player component renderer which needs to be created.
-    this.ctx.game.physics.world.enable(sprite, Phaser.Physics.Arcade.DYNAMIC_BODY);
-
-    const triggerLayer = this.ctx.data.tilemap.map.getObjectLayer('Trigger');
-    triggerLayer.objects.forEach(o => {
-      // Workaround as the phaser type is wrong here
-      const obj = o as any as TiledObject;
-
-      const zone = this.ctx.game.add.zone(obj.x, obj.y, obj.width, obj.height);
-      zone.setOrigin(0, 0);
-      this.ctx.game.physics.world.enable(zone, Phaser.Physics.Arcade.STATIC_BODY);
-      const zoneBody = zone.body as Phaser.Physics.Arcade.Body;
-      zoneBody.moves = false;
-
-      this.ctx.game.physics.add.overlap(zone, sprite, this.triggerEvent, null, this);
-    });
-  }
-
-  private triggerEvent(obj1: Phaser.GameObjects.GameObject, obj2: Phaser.GameObjects.GameObject) {
-    // TODO This is a test and needs proper event handling
-    const msg = new UiModalMessage(0, 'Hello Darkness my old friend');
-    PubSub.publish(EngineEvents.IO_RECV_MSG, msg);
   }
 
   public update() {
-
+    this.eventManager.update();
   }
 
   private receivedFromClient(message: any) {
