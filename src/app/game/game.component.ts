@@ -83,7 +83,6 @@ export class GameComponent implements OnInit {
 
   public onGameReady(game: Phaser.Game): void {
     this.game = game;
-    this.game.scene.start('BootScene');
 
     window.addEventListener('resize', () => {
       game.resize(window.innerWidth, window.innerHeight);
