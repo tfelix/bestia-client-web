@@ -10,8 +10,6 @@ export class BootScene extends Phaser.Scene {
   }
 
   public preload(): void {
-    this.load.image('cloud', '../assets/img/cloud.png');
-    this.load.image('logo', '../assets/img/logo.png');
     this.load.image('splash-bg', '../assets/img/splash-bg.jpg');
 
     const widthHalf = (this.game.config.width as any) / 2;
