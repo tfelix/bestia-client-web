@@ -3,7 +3,7 @@ import {
   SelectLocalComponent, Entity, InteractionCache
 } from 'app/game/entities';
 import { RequestInteractionMessage, EngineEvents } from 'app/game/message';
-import { Px } from 'app/game/model';
+import { Px, Point } from 'app/game/model';
 
 import { Pointer } from './Pointer';
 import { PointerManager } from './PointerManager';
@@ -16,7 +16,6 @@ import { PointerPriority } from './PointerPriority';
  * or ask the server.
  */
 export class InteractionPointer extends Pointer {
-
   private activeEntity?: Entity = null;
 
   private interactionCache = new InteractionCache();
@@ -28,18 +27,18 @@ export class InteractionPointer extends Pointer {
     super(manager, ctx);
   }
 
-  public checkActive(position: Px, mouseoverEntity?: Entity): number {
-    if (!mouseoverEntity) {
+  public reportPriority(px: Px, pos: Point, overEntity?: Entity): number {
+    if (!overEntity) {
       return PointerPriority.NONE;
     }
 
-    const interactionComp = mouseoverEntity.getComponent(ComponentType.LOCAL_INTERACTION) as InteractionLocalComponent;
+    const interactionComp = overEntity.getComponent(ComponentType.LOCAL_INTERACTION) as InteractionLocalComponent;
     if (!interactionComp) {
-      this.requestInteractionFromServer(mouseoverEntity);
+      this.requestInteractionFromServer(overEntity);
       return PointerPriority.INTERACTION;
     }
 
-    if (this.canInteractWithTile(position)) {
+    if (this.canInteractWithTile(pos)) {
       return PointerPriority.INTERACTION;
     }
 
@@ -51,6 +50,10 @@ export class InteractionPointer extends Pointer {
   }
 
   private canInteractWithTile(position: Px) {
+    const tile = this.ctx.data.tilemap.map.getTileAtWorldXY(position.x, position.y);
+    if ((tile.properties as any).fishing) {
+      return true;
+    }
     return false;
   }
 
@@ -83,7 +86,7 @@ export class InteractionPointer extends Pointer {
     this.trySetupDefaultInteraction(entity);
   }
 
-  public onClick(position: Px, clickedEntity?: Entity) {
+  public onClick(position: Px, pos: Point, clickedEntity?: Entity) {
     if (!clickedEntity) {
       return;
     }
@@ -110,11 +113,5 @@ export class InteractionPointer extends Pointer {
       this.activeEntity.removeComponentByType(ComponentType.LOCAL_SELECT);
       this.activeEntity = null;
     }
-  }
-
-  public updatePointerPosition(pointer: Px, entity?: Entity) {
-  }
-
-  public deactivate() {
   }
 }

@@ -25,6 +25,8 @@ interface ZoneTriggered {
   eventName: string;
 }
 
+// TODO To fix the not very good fitting collision system maybe
+// use manual checks: https://labs.phaser.io/edit.html?src=src/geom/rectangle/overlaps.js
 export class EventTriggerManager {
 
   private triggers = new Map<string, EventTrigger>();

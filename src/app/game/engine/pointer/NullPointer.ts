@@ -1,4 +1,4 @@
-import { Px } from 'app/game/model';
+import { Px, Point } from 'app/game/model';
 import { Entity } from 'app/game/entities';
 
 import { Pointer } from './Pointer';
@@ -7,7 +7,6 @@ import { EngineContext } from '../EngineContext';
 import { PointerPriority } from './PointerPriority';
 
 export class NullPointer extends Pointer {
-
   constructor(
     manager: PointerManager,
     ctx: EngineContext
@@ -19,7 +18,7 @@ export class NullPointer extends Pointer {
     return true;
   }
 
-  public checkActive(position: Px, entity?: Entity): number {
+  public reportPriority(px: Px, pos: Point, overEntity?: Entity): number {
     return PointerPriority.NONE;
   }
 }

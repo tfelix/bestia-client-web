@@ -9,7 +9,6 @@ import { Entity } from 'entities';
 import { PointerPriority } from './PointerPriority';
 
 export class MovePointer extends Pointer {
-
   private marker: Phaser.GameObjects.Sprite;
 
   constructor(
@@ -17,10 +16,6 @@ export class MovePointer extends Pointer {
     ctx: EngineContext
   ) {
     super(manager, ctx);
-  }
-
-  public checkActive(pointer: Px, entity?: Entity): number {
-    return PointerPriority.MOVE;
   }
 
   public activate() {
@@ -31,17 +26,12 @@ export class MovePointer extends Pointer {
     this.marker.visible = false;
   }
 
-  public onClick(pointer: Px, entity?: Entity) {
+  public onClick(pointer: Px, pos: Point, entity?: Entity) {
     if (!this.canMove(this.ctx.playerHolder.activeEntity)) {
       return;
     }
 
-    const offset = this.ctx.helper.display.getScrollOffset();
-    const point = MapHelper.pixelToPoint(pointer.x, pointer.y).minus(offset);
-
-    if (this.ctx.collisionUpdater.hasCollision(point.x, point.y)) {
-
-    } else {
+    if (!this.isNotWalkable(pointer)) {
       this.ctx.helper.move.moveToPixel(pointer);
     }
   }
@@ -51,15 +41,18 @@ export class MovePointer extends Pointer {
     return performComp && performComp.canMove || true;
   }
 
-  public updatePointerPosition(px: Px) {
+  public updatePointerPosition(px: Px, pos: Point, overEntity?: Entity) {
     this.marker.setPosition(px.x, px.y);
-
-    const offset = this.ctx.helper.display.getScrollOffset();
-    const point = MapHelper.pixelToPoint(px.x, px.y).minus(offset);
-    this.marker.visible = !this.isNotWalkable(point);
+    this.marker.visible = !this.isNotWalkable(px);
   }
 
-  private isNotWalkable(point: Point) {
+  public reportPriority(px: Px, pos: Point, overEntity?: Entity): number {
+    return PointerPriority.MOVE;
+  }
+
+  private isNotWalkable(pointerPx: Px) {
+    const offset = this.ctx.helper.display.getScrollOffset();
+    const point = MapHelper.pixelToPoint(pointerPx.x, pointerPx.y).minus(offset);
     return this.ctx.collisionUpdater.hasCollision(point.x, point.y);
   }
 

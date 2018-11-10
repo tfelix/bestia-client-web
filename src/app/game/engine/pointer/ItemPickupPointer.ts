@@ -1,4 +1,4 @@
-import { Px } from 'app/game/model';
+import { Px, Point } from 'app/game/model';
 import {
   Entity, ComponentType, EntityTypeComponent, EntityType,
   VisualComponent, PositionComponent
@@ -11,7 +11,6 @@ import { EngineContext } from '../EngineContext';
 import { PointerPriority } from './PointerPriority';
 
 export class ItemPickupPointer extends Pointer {
-
   private activeSprite: Phaser.GameObjects.Sprite;
 
   constructor(
@@ -21,12 +20,8 @@ export class ItemPickupPointer extends Pointer {
     super(manager, ctx);
   }
 
-  public allowOverwrite(): boolean {
-    return true;
-  }
-
-  public checkActive(pointer: Px, entity?: Entity): number {
-    return this.isEntityItem(entity) ? PointerPriority.ITEM_PICKUP : PointerPriority.NONE;
+  public reportPriority(px: Px, pos: Point, overEntity?: Entity): number {
+    return this.isEntityItem(overEntity) ? PointerPriority.ITEM_PICKUP : PointerPriority.NONE;
   }
 
   public deactivate() {
@@ -44,16 +39,16 @@ export class ItemPickupPointer extends Pointer {
     return entityTypeComp && entityTypeComp.entityType === EntityType.ITEM;
   }
 
-  public onClick(pointer: Px, entity?: Entity) {
-    if (!this.isEntityItem(entity)) {
+  public onClick(position: Px, pos: Point, clickedEntity?: Entity) {
+    if (!this.isEntityItem(clickedEntity)) {
       return;
     }
 
-    const d = PositionComponent.getDistance(this.ctx.playerHolder.activeEntity, entity);
+    const d = PositionComponent.getDistance(this.ctx.playerHolder.activeEntity, clickedEntity);
     if (d > 0) {
-      this.ctx.helper.move.moveToPixel(pointer, () => this.pickupItem(entity));
+      this.ctx.helper.move.moveToPixel(position, () => this.pickupItem(clickedEntity));
     } else {
-      this.pickupItem(entity);
+      this.pickupItem(clickedEntity);
     }
   }
 
@@ -63,9 +58,9 @@ export class ItemPickupPointer extends Pointer {
     PubSub.publish(EngineEvents.IO_SEND_MSG, pickupMsg);
   }
 
-  public updatePointerPosition(pointer: Px, entity?: Entity) {
-    if (entity) {
-      const sprite = entity.data.visual && entity.data.visual.sprite;
+  public updatePointerPosition(px: Px, pos: Point, overEntity?: Entity) {
+    if (overEntity) {
+      const sprite = overEntity.data.visual && overEntity.data.visual.sprite;
       if (sprite) {
         sprite.setTint(0x0000FF);
         this.activeSprite = sprite;

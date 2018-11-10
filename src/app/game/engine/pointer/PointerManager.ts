@@ -1,7 +1,7 @@
 import * as LOG from 'loglevel';
 
 import { Entity } from 'app/game/entities';
-import { Px } from 'app/game/model';
+import { Px, Point } from 'app/game/model';
 import { EngineEvents } from 'app/game/message';
 
 import { MapHelper } from '../MapHelper';
@@ -26,9 +26,15 @@ import { InteractionPointer } from './InteractionPointer';
 export class PointerManager {
 
   private pointers: Pointer[] = [];
+  // FIXME We probably dont need a stack here and can simple have the active pointer
+  // with the prio system
   private pointerStack: Pointer[] = [];
 
-  private activePointer: Pointer;
+  get activePointer(): Pointer {
+    const pointer = this.pointerStack[this.pointerStack.length - 1];
+    return (!pointer) ? this.nullIndicator : pointer;
+  }
+
   private movePointer: Pointer;
   private nullIndicator: Pointer;
 
@@ -39,26 +45,32 @@ export class PointerManager {
   ) {
 
     this.nullIndicator = new NullPointer(this, engineContext);
-    this.activePointer = this.nullIndicator;
     this.movePointer = new MovePointer(this, engineContext);
 
     // Register the available indicators.
     this.pointers.push(this.movePointer);
-    this.pointers.push(new BasicAttackPointer(this, engineContext));
-    this.pointers.push(new ItemPickupPointer(this, engineContext));
-    this.pointers.push(new InteractionPointer(this, engineContext));
+    // this.pointers.push(new BasicAttackPointer(this, engineContext));
+    // this.pointers.push(new ItemPickupPointer(this, engineContext));
+    // this.pointers.push(new InteractionPointer(this, engineContext));
 
     this.engineContext.game.input.on('pointerdown', this.onPointerClicked, this);
-    this.engineContext.game.input.on('gameobjectover', this.activateActivePointer, this);
-    this.engineContext.game.input.on('gameobjectout', this.onPointerOut, this);
+    this.engineContext.game.input.on('gameobjectover', this.onGameObjectOver, this);
+    this.engineContext.game.input.on('gameobjectout', this.onGameObjectOut, this);
 
     PubSub.subscribe(EngineEvents.GAME_MOUSE_OUT, () => this.hide());
     PubSub.subscribe(EngineEvents.GAME_MOUSE_OVER, () => this.show());
   }
 
-  private onPointerOut() {
+  private onGameObjectOut() {
     this.entityUnderPointer = null;
-    this.showDefault();
+  }
+
+  private onGameObjectOver(
+    pointer: Phaser.Input.Pointer,
+    gameObj: Phaser.GameObjects.Sprite
+  ) {
+    const entity = this.getEntityFromGameObj(gameObj);
+    this.entityUnderPointer = entity;
   }
 
   // This method is here because it uses the phaser pointer to avoid object creation
@@ -77,58 +89,24 @@ export class PointerManager {
     return this.engineContext.entityStore.getEntity(entityId);
   }
 
-  private activateActivePointer(
-    pointer: Phaser.Input.Pointer,
-    gameObj: Phaser.GameObjects.Sprite
-  ) {
-    const entity = this.getEntityFromGameObj(gameObj);
-    this.entityUnderPointer = entity;
-
-    const px = this.pointerToPx(pointer);
-    let highestPriority = 0;
-    let highestPriorityPointer: Pointer = null;
-    this.pointers.forEach(x => {
-      const pointerPrio = x.checkActive(pointer, entity);
-      if (pointerPrio > highestPriority && highestPriority > -1) {
-        highestPriority = pointerPrio;
-        highestPriorityPointer = x;
-      }
-    });
-    if (highestPriorityPointer !== null) {
-      this.setActive(highestPriorityPointer);
-      this.activePointer.updatePointerPosition(px, entity);
-    }
-  }
-
   private onPointerClicked(pointer: Phaser.Input.Pointer, gameObj?: Phaser.GameObjects.GameObject[]) {
     const gameObjSingle = gameObj && (gameObj.length > 0) ? gameObj[0] : null;
     const entity = this.getEntityFromGameObj(gameObjSingle);
     const px = this.pointerToPx(pointer);
-    this.activePointer.onClick(px, entity);
-  }
+    const pos = MapHelper.pixelToPoint(px.x, px.y);
 
-  private updateActivePointerPosition(pointer: Phaser.Input.Pointer) {
-    const worldX = this.engineContext.game.cameras.main.scrollX + pointer.x;
-    const worldY = this.engineContext.game.cameras.main.scrollY + pointer.y;
-    const cords = MapHelper.getClampedTilePixelXY(worldX, worldY);
-    this.activePointer.updatePointerPosition(cords);
+    this.activePointer.onClick(px, pos, entity);
   }
 
   public hide() {
-    this.requestActive(this.nullIndicator, true);
+    // this.setActive(this.nullIndicator, true);
   }
 
   public show() {
-    // We can only show when previously hidden.
     if (this.activePointer !== this.nullIndicator) {
       return;
     }
     this.dismissActive();
-  }
-
-  public showDefault() {
-    this.requestActive(this.movePointer);
-    this.pointerStack = [];
   }
 
   public load() {
@@ -142,41 +120,47 @@ export class PointerManager {
 
   public update() {
     const activePointer = this.engineContext.game.input.activePointer;
-    this.updateActivePointerPosition(activePointer);
-    this.activePointer.update(this.entityUnderPointer);
+    const worldX = this.engineContext.game.cameras.main.scrollX + activePointer.x;
+    const worldY = this.engineContext.game.cameras.main.scrollY + activePointer.y;
+    const pxClamped = MapHelper.getClampedTilePixelXY(worldX, worldY);
+    const pos = MapHelper.pixelToPoint(worldX, worldY);
+
+    this.checkPointerPriority(pxClamped, pos);
+
+    this.activePointer.updatePointerPosition(pxClamped, pos, this.entityUnderPointer);
   }
 
-  public requestActive(indicator, force = false) {
-    // Ask the active pointer if he allows to be overwritten by the new
-    // indicator.
-    if (!force && !this.activePointer.allowOverwrite(indicator)) {
-      return;
-    }
+  private checkPointerPriority(px: Px, pos: Point) {
+    let maxPrio = -1;
+    let maxPrioPointer: Pointer = null;
 
-    this.pointerStack.push(this.activePointer);
-    this.activePointer.deactivate();
-    this.activePointer = indicator;
-    this.activePointer.activate();
+    this.pointers.forEach(p => {
+      const pointerPrio = p.reportPriority(px, pos, this.entityUnderPointer);
+      if (pointerPrio > maxPrio) {
+        maxPrio = pointerPrio;
+        maxPrioPointer = p;
+      }
+    });
+
+    if (maxPrioPointer !== this.activePointer) {
+      this.setActive(maxPrioPointer);
+    }
   }
 
-  private setActive(indicator) {
-    // Ask the active pointer if he allows to be overwritten by the new
-    // indicator.
-    if (!this.activePointer.allowOverwrite(indicator)) {
-      return;
-    }
+  public setActive(pointer: Pointer) {
     this.activePointer.deactivate();
-    this.activePointer = indicator;
+    this.pointerStack.push(pointer);
     this.activePointer.activate();
   }
 
   public dismissActive() {
     this.activePointer.deactivate();
     if (this.pointerStack.length === 0) {
-      this.activePointer = this.movePointer;
+      this.pointerStack.push(this.movePointer);
     } else {
-      this.setActive(this.pointerStack.pop());
+      this.pointerStack.pop();
     }
-    this.updateActivePointerPosition(this.engineContext.game.input.activePointer);
+
+    this.activePointer.activate();
   }
 }

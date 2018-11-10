@@ -1,4 +1,4 @@
-import { Px } from 'app/game/model';
+import { Px, Point } from 'app/game/model';
 import { Entity } from 'app/game/entities';
 
 import { PointerManager } from './PointerManager';
@@ -25,24 +25,7 @@ export abstract class Pointer {
     // no op.
   }
 
-  /**
- * Checks if this indicator can be overwritten by the new one. Usually this
- * is the default behaviour.
- *
- * @param indicator - The new indicator intended to override the currently active one.
- */
-  public allowOverwrite(otherPointer: Pointer) {
-    return true;
-  }
-
   public create() {
-    // no op.
-  }
-
-  /**
-   * Update is called every frame and there you can perform simple updates for the pointer.
-   */
-  public update(entity?: Entity) {
     // no op.
   }
 
@@ -51,22 +34,16 @@ export abstract class Pointer {
   }
 
   /**
-   * Shortcut method so set itself active.
+   * Reports the current pointer priority. The pointer with the highest priority will
+   * get activated.
    */
-  protected setSelfActive() {
-    return this.manager.requestActive(this);
-  }
+  public abstract reportPriority(px: Px, pos: Point, overEntity?: Entity): number;
 
-  /**
-   * Checks if the pointer should activate when under the sprite.
-   */
-  public abstract checkActive(position: Px, mouseoverEntity?: Entity): number;
-
-  public updatePointerPosition(position: Px, mouseoverEntity?: Entity) {
+  public updatePointerPosition(px: Px, pos: Point, overEntity?: Entity) {
     // no op.
   }
 
-  public onClick(position: Px, clickedEntity?: Entity) {
+  public onClick(position: Px, pos: Point, clickedEntity?: Entity) {
     // no op.
   }
 }

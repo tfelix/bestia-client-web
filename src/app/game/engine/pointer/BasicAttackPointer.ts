@@ -41,12 +41,12 @@ export class BasicAttackPointer extends Pointer {
     return true;
   }
 
-  public checkActive(pointer: Px, entity?: Entity): number {
-    if (!entity) {
+  public reportPriority(px: Px, pos: Point, overEntity?: Entity): number {
+    if (!overEntity) {
       return PointerPriority.NONE;
     }
 
-    if (!this.isAttackable(entity)) {
+    if (!this.isAttackable(overEntity)) {
       return PointerPriority.NONE;
     }
 
@@ -88,12 +88,12 @@ export class BasicAttackPointer extends Pointer {
     this.ctx.cursorManager.setCursorSprite(CursorType.DEFAULT);
   }
 
-  public onClick(pointer: Px, entity?: Entity) {
-    if (!entity) {
+  public onClick(position: Px, pos: Point, clickedEntity?: Entity) {
+    if (!clickedEntity) {
       return;
     }
 
-    if (!this.isAttackable(entity)) {
+    if (!this.isAttackable(clickedEntity)) {
       this.manager.dismissActive();
       return;
     }
@@ -102,16 +102,16 @@ export class BasicAttackPointer extends Pointer {
       return;
     }
 
-    if (this.inRangeForBasicAttack(entity)) {
-      this.performBasicAttack(entity);
+    if (this.inRangeForBasicAttack(clickedEntity)) {
+      this.performBasicAttack(clickedEntity);
     } else {
       // The entity is probably not walkable so we need the closes walkable tile coordinate.
-      const point = MapHelper.pixelToPoint(pointer.x, pointer.y);
-      const spriteDesc = getSpriteDescriptionFromCache(entity.data.visual.spriteName, this.ctx.game);
+      const point = MapHelper.pixelToPoint(position.x, position.y);
+      const spriteDesc = getSpriteDescriptionFromCache(clickedEntity.data.visual.spriteName, this.ctx.game);
       const spriteCollision = new SpriteCollision(point, spriteDesc);
       const playerPos = (this.ctx.playerHolder.activeEntity.getComponent(ComponentType.POSITION) as PositionComponent).position;
       const walkTarget = spriteCollision.nextNonCollision(playerPos, point);
-      this.ctx.helper.move.moveToPoint(walkTarget, () => this.performBasicAttack(entity));
+      this.ctx.helper.move.moveToPoint(walkTarget, () => this.performBasicAttack(clickedEntity));
     }
   }
 
@@ -190,9 +190,9 @@ export class BasicAttackPointer extends Pointer {
     return baseAtkRange >= d && d !== -1;
   }
 
-  public updatePointerPosition(pointer: Px, entity?: Entity) {
-    if (entity) {
-      const sprite = entity.data.visual && entity.data.visual.sprite;
+  public updatePointerPosition(px: Px, pos: Point, overEntity?: Entity) {
+    if (overEntity) {
+      const sprite = overEntity.data.visual && overEntity.data.visual.sprite;
       if (sprite) {
         sprite.setTint(0xFF0000);
         this.activeSprite = sprite;
