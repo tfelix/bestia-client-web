@@ -2,7 +2,7 @@ import { Point, Item } from 'app/game/model';
 import {
   PlayerComponent, Component, ComponentType, ConditionComponent, VisualComponent,
   DebugComponent, PositionComponent, EntityTypeComponent, EntityType,
-  AttacksComponent, Entity, InventoryComponent, FxComponent
+  AttacksComponent, Entity, InventoryComponent, FxComponent, FishingComponent
 } from 'app/game/entities';
 import { SpriteType } from 'app/game/engine';
 
@@ -89,12 +89,22 @@ export class EntityLocalFactory {
     );
     entity.addComponent(inventoryComp);
 
+    // TODO For testing
+    const fishingComp = new FishingComponent(
+      this.componentCounter++,
+      entity.id
+    );
+    fishingComp.seed = 123;
+    fishingComp.targetPoint = { x: 23, y: 98 };
+    entity.addComponent(fishingComp);
+
     return [
       ...spriteComp,
       entityTypeComp,
       attackComp,
       conditionComp,
       playerComp,
+      fishingComp,
       inventoryComp
     ];
   }

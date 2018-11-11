@@ -26,7 +26,7 @@ export class RequestSyncHandler extends ClientMessageHandler<SyncRequestMessage>
     this.sendClient(accInfoMsg);
 
     // const comps = this.entityFactory.addPlayer('player_1', new Point(86, 94), this.playerAccId);
-    const comps = this.entityFactory.addPlayer('player_1', new Point(20, 94), this.playerAccId);
+    const comps = this.entityFactory.addPlayer('player_1', new Point(20, 96), this.playerAccId);
     this.sendAllComponents(comps);
 
     // TODO Handle AI differently

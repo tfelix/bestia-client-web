@@ -1,4 +1,4 @@
-import { Component, ComponentType, HighlightComponent } from 'app/game/entities';
+import { Component, ComponentType, HighlightComponent, FishingComponent } from 'app/game/entities';
 
 import { ComponentRenderer } from './ComponentRenderer';
 import { VisualComponentRenderer } from './VisualComponentRenderer';
@@ -12,6 +12,7 @@ import { InventoryComponentRenderer } from './InventoryComponentRenderer';
 import { SelectLocalComponentRenderer } from './local/SelectLocalComponentRenderer';
 import { SubFxComponentRenderer } from './SubFxComponentRenderer';
 import { HighlightLocalComponentRenderer } from './local/HighlightLocalComponentRenderer';
+import { FishingComponentRenderer } from './FishingComponetRenderer';
 
 export class EntityRenderManager {
 
@@ -27,6 +28,7 @@ export class EntityRenderManager {
     this.addComponentRenderer(new PerformComponentRenderer(context));
     this.addComponentRenderer(new InventoryComponentRenderer(context));
     this.addComponentRenderer(new SubFxComponentRenderer(context));
+    this.addComponentRenderer(new FishingComponentRenderer(context));
 
     // Local Component Renderer.
     this.addComponentRenderer(new MasterLocalComponentRenderer(context));

@@ -10,12 +10,12 @@ export enum ComponentType {
   PERFORM = 9,
   INVENTORY = 10,
   FX = 11,
+  FISHING = 12,
 
   // This are local only components which will never get send from the server
   // to the client. They exist for local housekeeping.
-
   LOCAL_MASTER = 300,
   LOCAL_INTERACTION = 301,
   LOCAL_SELECT = 302,
-  LOCAL_HIGHLIGHT = 303
+  LOCAL_HIGHLIGHT = 303,
 }

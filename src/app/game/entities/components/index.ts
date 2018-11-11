@@ -11,5 +11,6 @@ export * from './AttacksComponent';
 export * from './PerformComponent';
 export * from './InventoryComponent';
 export * from './FxComponent';
+export * from './FishingComponent';
 
 export * from './local';
