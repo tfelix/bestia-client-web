@@ -16,5 +16,6 @@ export enum ComponentType {
 
   LOCAL_MASTER = 300,
   LOCAL_INTERACTION = 301,
-  LOCAL_SELECT = 302
+  LOCAL_SELECT = 302,
+  LOCAL_HIGHLIGHT = 303
 }

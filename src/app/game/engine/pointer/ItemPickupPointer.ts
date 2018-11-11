@@ -1,7 +1,7 @@
 import { Px, Point } from 'app/game/model';
 import {
   Entity, ComponentType, EntityTypeComponent, EntityType,
-  VisualComponent, PositionComponent
+  VisualComponent, PositionComponent, HighlightComponent
 } from 'app/game/entities';
 import { RequestItemLootMessage, EngineEvents } from 'app/game/message';
 
@@ -11,7 +11,7 @@ import { EngineContext } from '../EngineContext';
 import { PointerPriority } from './PointerPriority';
 
 export class ItemPickupPointer extends Pointer {
-  private activeSprite: Phaser.GameObjects.Sprite;
+  private activeEntity: Entity;
 
   constructor(
     manager: PointerManager,
@@ -25,9 +25,9 @@ export class ItemPickupPointer extends Pointer {
   }
 
   public deactivate() {
-    if (this.activeSprite) {
-      this.activeSprite.clearTint();
-      this.activeSprite = null;
+    if (this.activeEntity) {
+      this.activeEntity.removeComponentByType(ComponentType.LOCAL_HIGHLIGHT);
+      this.activeEntity = null;
     }
   }
 
@@ -60,11 +60,10 @@ export class ItemPickupPointer extends Pointer {
 
   public updatePointerPosition(px: Px, pos: Point, overEntity?: Entity) {
     if (overEntity) {
-      const sprite = overEntity.data.visual && overEntity.data.visual.sprite;
-      if (sprite) {
-        sprite.setTint(0x0000FF);
-        this.activeSprite = sprite;
-      }
+      const highlightComponent = new HighlightComponent(overEntity.id);
+      highlightComponent.color = 0x0000FF;
+      overEntity.addComponent(highlightComponent);
+      this.activeEntity = overEntity;
     }
   }
 }

@@ -1,4 +1,4 @@
-import { Component, ComponentType } from 'app/game/entities';
+import { Component, ComponentType, HighlightComponent } from 'app/game/entities';
 
 import { ComponentRenderer } from './ComponentRenderer';
 import { VisualComponentRenderer } from './VisualComponentRenderer';
@@ -11,6 +11,7 @@ import { PerformComponentRenderer } from './PerformComponentRenderer';
 import { InventoryComponentRenderer } from './InventoryComponentRenderer';
 import { SelectLocalComponentRenderer } from './local/SelectLocalComponentRenderer';
 import { SubFxComponentRenderer } from './SubFxComponentRenderer';
+import { HighlightLocalComponentRenderer } from './local/HighlightLocalComponentRenderer';
 
 export class EntityRenderManager {
 
@@ -19,17 +20,18 @@ export class EntityRenderManager {
   constructor(
     private readonly context: EngineContext
   ) {
-    this.addComponentRenderer(new VisualComponentRenderer(this.context));
-    this.addComponentRenderer(new DebugComponentRenderer(this.context.game));
+    this.addComponentRenderer(new VisualComponentRenderer(context));
+    this.addComponentRenderer(new DebugComponentRenderer(context.game));
     this.addComponentRenderer(new MoveComponentRenderer(context));
     this.addComponentRenderer(new ConditionComponentRenderer(context));
-    this.addComponentRenderer(new PerformComponentRenderer(this.context));
-    this.addComponentRenderer(new InventoryComponentRenderer(this.context));
-    this.addComponentRenderer(new SubFxComponentRenderer(this.context));
+    this.addComponentRenderer(new PerformComponentRenderer(context));
+    this.addComponentRenderer(new InventoryComponentRenderer(context));
+    this.addComponentRenderer(new SubFxComponentRenderer(context));
 
     // Local Component Renderer.
     this.addComponentRenderer(new MasterLocalComponentRenderer(context));
-    this.addComponentRenderer(new SelectLocalComponentRenderer(this.context));
+    this.addComponentRenderer(new SelectLocalComponentRenderer(context));
+    this.addComponentRenderer(new HighlightLocalComponentRenderer(context));
   }
 
   private addComponentRenderer(renderer: ComponentRenderer<Component>) {
