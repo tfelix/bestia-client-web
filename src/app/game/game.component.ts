@@ -46,7 +46,7 @@ export class GameComponent implements OnInit {
     render: { pixelArt: true },
     physics: {
       default: 'arcade',
-      arcade: { debug: true }
+      arcade: { debug: false }
     },
     parent: 'game',
     plugins: {

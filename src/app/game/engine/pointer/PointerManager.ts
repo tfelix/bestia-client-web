@@ -49,8 +49,8 @@ export class PointerManager {
 
     // Register the available indicators.
     this.pointers.push(this.movePointer);
-    // this.pointers.push(new BasicAttackPointer(this, engineContext));
-    // this.pointers.push(new ItemPickupPointer(this, engineContext));
+    this.pointers.push(new BasicAttackPointer(this, engineContext));
+    this.pointers.push(new ItemPickupPointer(this, engineContext));
     // this.pointers.push(new InteractionPointer(this, engineContext));
 
     this.engineContext.game.input.on('pointerdown', this.onPointerClicked, this);

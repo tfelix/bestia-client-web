@@ -20,13 +20,11 @@ interface TiledObject {
 }
 
 interface ZoneTriggered {
-  body: Phaser.Physics.Arcade.Body;
+  zone: Phaser.GameObjects.Zone;
   playerSprite: Phaser.GameObjects.Sprite;
   eventName: string;
 }
 
-// TODO To fix the not very good fitting collision system maybe
-// use manual checks: https://labs.phaser.io/edit.html?src=src/geom/rectangle/overlaps.js
 export class EventTriggerManager {
 
   private triggers = new Map<string, EventTrigger>();
@@ -69,8 +67,6 @@ export class EventTriggerManager {
       const zone = this.ctx.game.add.zone(obj.x, obj.y, obj.width, obj.height);
       zone.setOrigin(0, 0);
       this.ctx.game.physics.world.enable(zone, Phaser.Physics.Arcade.STATIC_BODY);
-      const zoneBody = zone.body as Phaser.Physics.Arcade.Body;
-      zoneBody.moves = false;
 
       const eventHandler = () => {
         const triggerKey = this.getTriggerKey(obj.name);
@@ -80,7 +76,7 @@ export class EventTriggerManager {
         LOG.debug('Triggers event: ' + obj.name);
 
         this.activeTriggers.push({
-          body: zoneBody,
+          zone: zone,
           playerSprite: playerSprite,
           eventName: obj.name
         });
@@ -101,10 +97,23 @@ export class EventTriggerManager {
    * Clears zones which are not active anymore.
    */
   public update() {
-    // TODO Make sure it triggers only once.
     for (let i = 0; i < this.activeTriggers.length; i++) {
       const trigger = this.activeTriggers[i];
-      if ((trigger.playerSprite.body as Phaser.Physics.Arcade.Body).touching.none) {
+
+      const rect1 = new Phaser.Geom.Rectangle(
+        trigger.zone.x,
+        trigger.zone.y,
+        trigger.zone.width,
+        trigger.zone.height
+      );
+      const rect2 = new Phaser.Geom.Rectangle(
+        trigger.playerSprite.x,
+        trigger.playerSprite.y,
+        trigger.playerSprite.width,
+        trigger.playerSprite.height
+      );
+
+      if (!Phaser.Geom.Rectangle.Overlaps(rect1, rect2)) {
         const triggerKey = this.getTriggerKey(trigger.eventName);
         trigger.playerSprite.setData(triggerKey, false);
         this.activeTriggers.splice(i, 1);
