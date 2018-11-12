@@ -2,22 +2,28 @@ import { ComponentRenderer } from './ComponentRenderer';
 import { FishingComponent, ComponentType, Entity, PositionComponent } from 'app/game/entities';
 import { EngineContext } from '../../EngineContext';
 import { MapHelper } from '../../MapHelper';
-import { Point } from 'app/game/model';
+import { Point, Px } from 'app/game/model';
+import { UIAtlas, UIConstants } from 'app/game/ui';
 
 export class FishingComponentRenderer extends ComponentRenderer<FishingComponent> {
 
-  // TODO Replace this by an animated sprite
-  private fishingGraphics: Phaser.GameObjects.Graphics;
+  private readonly indicatorOffset = new Px(20, -120);
+  private readonly fishlineMoveTickMs = 300;
+
+  private lastFishlineMoveTick = 0;
+  private fishingTarget: Phaser.Math.Vector2;
+  private fishingArea: Phaser.Geom.Rectangle;
+
+  private graphicsFishline: Phaser.GameObjects.Graphics;
+  private graphicsArea: Phaser.GameObjects.Graphics;
+  private fishingIndicator: Phaser.GameObjects.Image;
+  private fishingIcon: Phaser.GameObjects.Image;
   private hasSetup = false;
 
   constructor(
     private readonly ctx: EngineContext
   ) {
     super(ctx.game);
-  }
-
-  public create() {
-    this.fishingGraphics = this.ctx.game.add.graphics();
   }
 
   protected hasNotSetup(entity: Entity, component: FishingComponent): boolean {
@@ -29,36 +35,107 @@ export class FishingComponentRenderer extends ComponentRenderer<FishingComponent
   }
 
   protected createGameData(entity: Entity, component: FishingComponent) {
-    const fishingLinePx = MapHelper.pointToPixelCentered(new Point(
-      component.targetPoint.x,
-      component.targetPoint.y
-    ));
-
     const posComp = entity.getComponent(ComponentType.POSITION) as PositionComponent;
     if (!posComp) {
       return;
     }
 
-    // const path = new Phaser.Curves.Path(fishingLinePx.x, fishingLinePx.y);
-    // path.lineTo(entityPx.x, entityPx.y);
+    const centered = MapHelper.pointToPixelCentered(new Point(
+      component.targetPoint.x,
+      component.targetPoint.y
+    ));
+    this.fishingTarget = new Phaser.Math.Vector2(centered.x, centered.y);
 
-    /*
-    const startPoint = new Phaser.Math.Vector2(entityPx.x, entityPx.y);
-    const controlPoint1 = new Phaser.Math.Vector2(50, 100);
-    const controlPoint2 = new Phaser.Math.Vector2(600, 100);
-    const endPoint = new Phaser.Math.Vector2(fishingLinePx.x, fishingLinePx.y);
-    const curve = new Phaser.Curves.CubicBezier(startPoint, controlPoint1, controlPoint2, endPoint);
-    */
+    this.graphicsFishline = this.ctx.game.add.graphics();
+    this.graphicsArea = this.ctx.game.add.graphics();
 
-    this.fishingGraphics.clear();
-    const entityPx = MapHelper.pointToPixelCentered(posComp.position);
-    this.fishingGraphics.strokeCircle(fishingLinePx.x, fishingLinePx.y, 5);
-    this.fishingGraphics.lineStyle(1, 0xffffff, 1);
-    this.fishingGraphics.lineBetween(entityPx.x + 10, entityPx.y - 30, fishingLinePx.x, fishingLinePx.y);
+    this.fishingIndicator = this.ctx.game.add.image(
+      this.fishingTarget.x + this.indicatorOffset.x,
+      this.fishingTarget.y + this.indicatorOffset.y,
+      UIAtlas,
+      UIConstants.ICON_FISHING_METER
+    );
+
+    this.fishingIcon = this.ctx.game.physics.add.image(
+      this.fishingTarget.x + this.indicatorOffset.x,
+      this.fishingTarget.y + this.indicatorOffset.y,
+      UIAtlas,
+      UIConstants.ICON_FISHING
+    );
+    const arcadeBody = this.fishingIcon.body as Phaser.Physics.Arcade.Body;
+    arcadeBody.collideWorldBounds = false;
+    arcadeBody.setGravityY(50);
+
+    this.fishingArea = new Phaser.Geom.Rectangle(
+      this.fishingTarget.x,
+      this.fishingTarget.y,
+      50,
+      50
+    );
+
+    // UPON ACTIVATION WE MUST REQUEST THE FISHING POINTER
 
     this.hasSetup = true;
   }
 
+  public removeGameData(entity: Entity) {
+    this.hasSetup = false;
+    this.fishingIcon.destroy();
+    this.fishingIcon = null;
+    this.fishingIndicator.destroy();
+    this.fishingIndicator = null;
+
+    this.graphicsFishline.destroy();
+    this.graphicsFishline = null;
+    this.graphicsArea.destroy();
+    this.graphicsArea = null;
+  }
+
   protected updateGameData(entity: Entity, component: FishingComponent) {
+    this.updateFishingRectPosition();
+    this.updateFishlineTargetPosition(entity, component);
+    this.updateFishVelocity();
+
+    this.checkEndConditions();
+  }
+
+  private checkEndConditions() {
+    // TODO End the game and send data to the server.
+  }
+
+  private updateFishVelocity() {
+
+  }
+
+  private getFishYPositionPercentage() {
+    const fishIndicatorHeight = this.fishingIndicator.displayHeight;
+    const fishY = this.fishingIcon.y;
+  }
+
+  private updateFishingRectPosition() {
+    this.graphicsArea.fillStyle(0xff0000);
+    this.graphicsArea.fillRectShape(this.fishingArea);
+  }
+
+  private updateFishlineTargetPosition(entity: Entity, component: FishingComponent) {
+    if (this.ctx.game.time.now - this.lastFishlineMoveTick > this.fishlineMoveTickMs) {
+      return;
+    }
+
+    this.graphicsFishline.clear();
+    const posComp = entity.getComponent(ComponentType.POSITION) as PositionComponent;
+    if (!posComp) {
+      return;
+    }
+
+    const offset = Phaser.Math.RandomXY(new Phaser.Math.Vector2(1, 1));
+    this.fishingTarget = offset.add(this.fishingTarget);
+
+    const entityPx = MapHelper.pointToPixelCentered(posComp.position);
+    this.graphicsFishline.strokeCircle(this.fishingTarget.x, this.fishingTarget.y, 5);
+    this.graphicsFishline.lineStyle(1, 0xffffff, 1);
+    this.graphicsFishline.lineBetween(entityPx.x + 10, entityPx.y - 30, this.fishingTarget.x, this.fishingTarget.y);
+
+    this.lastFishlineMoveTick = this.ctx.game.time.now;
   }
 }

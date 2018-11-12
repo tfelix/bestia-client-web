@@ -12,7 +12,8 @@ const UIConstants = {
   ICON_ATTACK: 'sword-clash.png',
   ICON_TALK: 'talk.png',
   ICON_LOOT: 'card-pickup.png',
-  ICON_FISHING: 'fishing-hook.png',
+  ICON_FISHING_METER: 'fishing-meter.png',
+  ICON_FISHING: 'fish.png',
 
   UI_ITEM_OBTAINED_BG: 'item-obtained.png',
 
