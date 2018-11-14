@@ -8,6 +8,7 @@ const PointerPriority = {
   ITEM_PICKUP: 90,
   BASIC_ATTACK: 100,
   INTERACTION: 110,
+  FISHING: 1000
 };
 
 export { PointerPriority };

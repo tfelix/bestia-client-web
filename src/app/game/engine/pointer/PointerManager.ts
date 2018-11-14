@@ -12,6 +12,7 @@ import { Pointer } from './Pointer';
 import { BasicAttackPointer } from './BasicAttackPointer';
 import { ItemPickupPointer } from './ItemPickupPointer';
 import { InteractionPointer } from './InteractionPointer';
+import { FishingPointer } from './FishingPointer';
 
 /**
  * The manager is responsible for switching the indicator depending on the needs
@@ -52,6 +53,7 @@ export class PointerManager {
     this.pointers.push(new BasicAttackPointer(this, engineContext));
     this.pointers.push(new ItemPickupPointer(this, engineContext));
     // this.pointers.push(new InteractionPointer(this, engineContext));
+    this.pointers.push(new FishingPointer(this, engineContext));
 
     this.engineContext.game.input.on('pointerdown', this.onPointerClicked, this);
     this.engineContext.game.input.on('gameobjectover', this.onGameObjectOver, this);

@@ -5,6 +5,7 @@ export class FishingComponent extends Component {
 
   public seed: number;
   public targetPoint: { x: number, y: number };
+  public hasClickedFishingAction = false;
 
   constructor(
     id: number,

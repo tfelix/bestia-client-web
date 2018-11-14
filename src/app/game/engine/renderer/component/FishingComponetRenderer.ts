@@ -10,6 +10,7 @@ export class FishingComponentRenderer extends ComponentRenderer<FishingComponent
   private readonly indicatorOffset = new Px(20, -120);
   private readonly fishlineMoveTickMs = 300;
 
+  private gravity = 50;
   private lastFishlineMoveTick = 0;
   private fishingTarget: Phaser.Math.Vector2;
   private fishingArea: Phaser.Geom.Rectangle;
@@ -18,6 +19,7 @@ export class FishingComponentRenderer extends ComponentRenderer<FishingComponent
   private graphicsArea: Phaser.GameObjects.Graphics;
   private fishingIndicator: Phaser.GameObjects.Image;
   private fishingIcon: Phaser.GameObjects.Image;
+  private fishingZone: Phaser.GameObjects.Zone;
   private hasSetup = false;
 
   constructor(
@@ -64,7 +66,7 @@ export class FishingComponentRenderer extends ComponentRenderer<FishingComponent
     );
     const arcadeBody = this.fishingIcon.body as Phaser.Physics.Arcade.Body;
     arcadeBody.collideWorldBounds = false;
-    arcadeBody.setGravityY(50);
+    arcadeBody.setGravityY(this.gravity);
 
     this.fishingArea = new Phaser.Geom.Rectangle(
       this.fishingTarget.x,
@@ -73,7 +75,18 @@ export class FishingComponentRenderer extends ComponentRenderer<FishingComponent
       50
     );
 
-    // UPON ACTIVATION WE MUST REQUEST THE FISHING POINTER
+    this.fishingZone = this.ctx.game.add.zone(
+      this.fishingTarget.x,
+      this.fishingTarget.y,
+      50,
+      50
+    );
+    this.game.physics.add.existing(this.fishingZone);
+    const arcadeAreaBody = this.fishingZone.body as Phaser.Physics.Arcade.Body;
+    arcadeAreaBody.collideWorldBounds = false;
+    arcadeAreaBody.setGravityY(this.gravity + 10);
+
+    this.lastFishlineMoveTick = this.ctx.game.time.now;
 
     this.hasSetup = true;
   }
@@ -92,33 +105,53 @@ export class FishingComponentRenderer extends ComponentRenderer<FishingComponent
   }
 
   protected updateGameData(entity: Entity, component: FishingComponent) {
-    this.updateFishingRectPosition();
+    this.updateFishingRectPosition(component);
+
     this.updateFishlineTargetPosition(entity, component);
+
     this.updateFishVelocity();
 
-    this.checkEndConditions();
+    this.checkEndConditions(entity);
   }
 
-  private checkEndConditions() {
-    // TODO End the game and send data to the server.
+  private checkEndConditions(entity: Entity) {
+    const relPosition = this.getPositionPercentageToIndicator(this.fishingIcon.y);
+    if (relPosition <= 0) {
+      entity.removeComponentByType(ComponentType.FISHING);
+    }
   }
 
   private updateFishVelocity() {
 
   }
 
-  private getFishYPositionPercentage() {
+  private getPositionPercentageToIndicator(posY: number): number {
     const fishIndicatorHeight = this.fishingIndicator.displayHeight;
-    const fishY = this.fishingIcon.y;
+    const originOffsetY = this.fishingIndicator.originY * fishIndicatorHeight;
+    const topY = this.fishingIndicator.y - originOffsetY;
+    const bottomY = topY + fishIndicatorHeight;
+    const relPosY = Phaser.Math.Clamp(1 - (posY - topY) / (bottomY - topY), 0, 1);
+    return relPosY;
   }
 
-  private updateFishingRectPosition() {
+  private updateFishingRectPosition(component: FishingComponent) {
+    if (component.hasClickedFishingAction) {
+      component.hasClickedFishingAction = false;
+      const zoneBody = (this.fishingZone.body as Phaser.Physics.Arcade.Body);
+      zoneBody.setVelocityY(zoneBody.velocity.y - 50);
+    }
+
+    this.graphicsArea.clear();
+    this.fishingArea.setPosition(this.fishingZone.x, this.fishingZone.y);
+    this.fishingArea.width = this.fishingZone.width;
+    this.fishingArea.height = this.fishingZone.height;
+
     this.graphicsArea.fillStyle(0xff0000);
     this.graphicsArea.fillRectShape(this.fishingArea);
   }
 
   private updateFishlineTargetPosition(entity: Entity, component: FishingComponent) {
-    if (this.ctx.game.time.now - this.lastFishlineMoveTick > this.fishlineMoveTickMs) {
+    if (this.ctx.game.time.now - this.lastFishlineMoveTick < this.fishlineMoveTickMs) {
       return;
     }
 
