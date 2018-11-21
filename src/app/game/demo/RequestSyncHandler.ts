@@ -9,12 +9,11 @@ import { ClientMessageHandler } from './ClientMessageHandler';
 export class RequestSyncHandler extends ClientMessageHandler<SyncRequestMessage> {
 
   constructor(
-    private readonly serverEntities: ServerEntityStore,
+    serverEntities: ServerEntityStore,
     private readonly playerAccId: number,
-    private readonly playerEntityId: number,
     private readonly entityFactory: EntityLocalFactory
   ) {
-    super();
+    super(serverEntities);
   }
 
   public isHandlingMessage(msg: any): boolean {

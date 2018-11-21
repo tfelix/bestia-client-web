@@ -4,7 +4,8 @@ const VisualDepth = {
 
   WEATHER_FX: 90000,
 
-  UI: 10000,
+  UI_LOWER: 10000,
+  UI: 10100,
   UI_CURSOR: 10100
 };
 

@@ -8,6 +8,7 @@ const PointerPriority = {
   ITEM_PICKUP: 90,
   BASIC_ATTACK: 100,
   INTERACTION: 110,
+  CHOP_WOOD: 120,
   FISHING: 1000
 };
 

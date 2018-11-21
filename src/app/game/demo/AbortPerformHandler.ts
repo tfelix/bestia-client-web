@@ -7,10 +7,10 @@ import { ServerEntityStore } from './ServerEntityStore';
 export class AbortPerformHandler extends ClientMessageHandler<AbortPerformMessage> {
 
   constructor(
-    private readonly serverEntities: ServerEntityStore,
+    serverEntities: ServerEntityStore,
     private readonly playerEntityId: number
   ) {
-    super();
+    super(serverEntities);
   }
 
   public isHandlingMessage(msg: any): boolean {

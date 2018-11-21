@@ -16,10 +16,10 @@ export class BasicAttackHandler extends ClientMessageHandler<BasicAttackMessage>
 
   constructor(
     private readonly clientEntities: EntityStore,
-    private readonly serverEntities: ServerEntityStore,
+    serverEntities: ServerEntityStore,
     private readonly entityFactory: EntityLocalFactory
   ) {
-    super();
+    super(serverEntities);
 
   }
 

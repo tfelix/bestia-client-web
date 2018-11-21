@@ -46,13 +46,13 @@ export class EntityRenderManager {
 
   public update() {
     for (const e of this.context.entityStore.entities.values()) {
-      for (const rc of e.removedComponentTypes) {
+      e.removedComponentTypes.forEach(rc => {
         const renderer = this.componentRenderer.get(rc);
         if (renderer) {
           renderer.removeGameData(e);
         }
-      }
-      e.removedComponentTypes.length = 0;
+      });
+      e.removedComponentTypes.clear();
       for (const c of e.getComponentIterator()) {
         const renderer = this.componentRenderer.get(c.type);
         if (renderer) {

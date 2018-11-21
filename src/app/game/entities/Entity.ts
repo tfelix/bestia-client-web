@@ -10,9 +10,10 @@ export class Entity {
   public readonly data = new EntityData();
   public actions: Action[] = [];
 
+  // TODO Put this into a component
   public latency = 0;
 
-  public readonly removedComponentTypes: ComponentType[] = [];
+  public readonly removedComponentTypes = new Set<ComponentType>();
 
   constructor(
     public readonly id: number,
@@ -42,7 +43,10 @@ export class Entity {
 
   public removeComponentByType(type: ComponentType) {
     LOG.debug(`Remove component ${type} from entity ${this.id}`);
+    if (!this.hasComponent(type)) {
+      return;
+    }
     this.components.delete(type);
-    this.removedComponentTypes.push(type);
+    this.removedComponentTypes.add(type);
   }
 }

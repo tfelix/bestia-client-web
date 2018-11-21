@@ -8,9 +8,9 @@ import { ServerEntityStore } from './ServerEntityStore';
 
 export class MoveComponentHandler extends ClientMessageHandler<UpdateComponentMessage<MoveComponent>> {
   constructor(
-    private readonly serverEntities: ServerEntityStore
+    serverEntities: ServerEntityStore
   ) {
-    super();
+    super(serverEntities);
   }
 
   public isHandlingMessage(msg: any): boolean {
