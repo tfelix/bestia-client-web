@@ -40,7 +40,7 @@ export class ServerEmulator {
     this.messageHandler.push(new AbortPerformHandler(this.serverEntities, PLAYER_ENTITY_ID));
     this.messageHandler.push(new InteractionHandler(this.serverEntities));
     this.messageHandler.push(new MoveComponentHandler(this.serverEntities));
-    this.messageHandler.push(new FishingComponentHandler(this.serverEntities));
+    this.messageHandler.push(new FishingComponentHandler(this.serverEntities, PLAYER_ENTITY_ID));
   }
 
   private sendClient(msg: any) {
