@@ -22,14 +22,11 @@ export class DebugInfoRenderer extends BaseCommonRenderer {
   private text: Phaser.GameObjects.Text | null = null;
   private lastRenderTime = null;
   private renderFrameTimesMs = [];
-  private displayHelper: DisplayHelper;
 
   constructor(
     private readonly ctx: EngineContext
   ) {
     super();
-
-    this.displayHelper = new DisplayHelper(ctx.game);
   }
 
   public needsUpdate(): boolean {
@@ -78,14 +75,16 @@ export class DebugInfoRenderer extends BaseCommonRenderer {
 
     const pointerScreenX = Math.floor(this.ctx.game.input.activePointer.position.x);
     const pointerScreenY = Math.floor(this.ctx.game.input.activePointer.position.y);
-    const scrollOffset = this.displayHelper.getScrollOffset();
+    const scrollOffset = this.ctx.helper.display.getScrollOffset();
     const pointerMapPos = MapHelper.pixelToPoint(pointerScreenX, pointerScreenY).plus(scrollOffset);
 
     const fps = Math.round(1000 / (this.renderFrameTimesMs.reduce((sum, v) => sum + v) / this.renderFrameTimesMs.length));
+    const activePointerClass = this.ctx.pointerManager.activePointer.constructor.name;
 
     let debugTxt = `FPS: ${fps}`;
     debugTxt += `\nCamera (scrollX: ${camScrollX} scrollY: ${camScrollY})`;
     debugTxt += `\nPointer (wx: ${pointerScreenX} wy: ${pointerScreenY} mx: ${pointerMapPos.x} my: ${pointerMapPos.y})`;
+    debugTxt += `\nActive Pointer: ${activePointerClass}`;
 
     this.text.setText(debugTxt);
     this.text.setPosition(
