@@ -1,11 +1,10 @@
 import { Point, Px } from 'app/game/model';
-import { ComponentType, FishingComponent, Entity } from 'app/game/entities';
+import { Entity } from 'app/game/entities';
 
 import { Pointer } from './Pointer';
 import { PointerManager } from './PointerManager';
 import { EngineContext } from '../EngineContext';
 import { PointerPriority } from './PointerPriority';
-import { UIAtlas, UIConstants } from 'app/game/ui';
 
 export class WoodChopPointer extends Pointer {
 
@@ -22,6 +21,6 @@ export class WoodChopPointer extends Pointer {
   }
 
   public reportPriority(px: Px, pos: Point, overEntity?: Entity): number {
-    return PointerPriority.CHOP_WOOD;
+    return PointerPriority.NONE;
   }
 }
