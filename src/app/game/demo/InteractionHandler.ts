@@ -17,9 +17,9 @@ export class InteractionHandler extends ClientMessageHandler<RequestInteractionM
   private interactions = new Map<number, InteractionCallback>();
 
   constructor(
-    private readonly entityStore: ServerEntityStore
+    entityStore: ServerEntityStore
   ) {
-    super();
+    super(entityStore);
   }
 
   public registerInteraction(entityId: number, type: InteractionType, handlerFn: () => void) {
@@ -34,7 +34,7 @@ export class InteractionHandler extends ClientMessageHandler<RequestInteractionM
   }
 
   public handle(msg: RequestInteractionMessage) {
-    const entity = this.entityStore.getEntity(msg.interactEntityId);
+    const entity = this.serverEntities.getEntity(msg.interactEntityId);
     if (!entity) {
       return;
     }
@@ -57,7 +57,7 @@ export class InteractionHandler extends ClientMessageHandler<RequestInteractionM
       default:
     }
 
-    const signEntity = this.entityStore.getEntityByIdentifier('sign_post');
+    const signEntity = this.serverEntities.getEntityByIdentifier('sign_post');
     if (signEntity && signEntity.id === entity.id) {
       return [InteractionType.READ];
     }
