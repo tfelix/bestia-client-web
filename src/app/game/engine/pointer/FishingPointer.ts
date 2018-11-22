@@ -13,8 +13,6 @@ import { UIAtlas, UIConstants } from 'app/game/ui';
  */
 export class FishingPointer extends Pointer {
 
-  private marker: Phaser.GameObjects.Image;
-
   constructor(
     manager: PointerManager,
     ctx: EngineContext
@@ -31,10 +29,6 @@ export class FishingPointer extends Pointer {
     fishingComponent.hasClickedFishingAction = true;
   }
 
-  public updatePointerPosition(px: Px, pos: Point, overEntity?: Entity) {
-    this.marker.setPosition(px.x, px.y);
-  }
-
   public reportPriority(px: Px, pos: Point, overEntity?: Entity): number {
     const playerEntity = this.ctx.playerHolder.activeEntity;
     return (playerEntity.hasComponent(ComponentType.FISHING)) ? PointerPriority.FISHING : PointerPriority.NONE;
@@ -42,12 +36,9 @@ export class FishingPointer extends Pointer {
 
   public activate() {
     this.ctx.cursorManager.hide();
-    this.marker = this.ctx.game.add.image(0, 0, UIAtlas, UIConstants.ICON_FISHING);
   }
 
   public deactivate() {
     this.ctx.cursorManager.show();
-    this.marker.destroy();
-    this.marker = null;
   }
 }

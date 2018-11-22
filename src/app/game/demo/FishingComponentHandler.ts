@@ -21,6 +21,7 @@ export class FishingComponentHandler extends ClientMessageHandler<UpdateComponen
       return false;
     }
   }
+
   public handle(msg: UpdateComponentMessage<FishingComponent>) {
     if (this.hasSuccessfullFished(msg.component)) {
       const playerEntity = this.serverEntities.getEntity(this.playerEntityId);

@@ -21,6 +21,7 @@ export class FishingComponentRenderer extends ComponentRenderer<FishingComponent
   private fishingMeter: Phaser.GameObjects.Image;
   private fishingIcon: Phaser.GameObjects.Image;
   private fishingZone: Phaser.GameObjects.Zone;
+  private fishingActionIcon: Phaser.GameObjects.Image;
   private hasSetup = false;
 
   constructor(
@@ -49,9 +50,18 @@ export class FishingComponentRenderer extends ComponentRenderer<FishingComponent
     ));
     this.fishingTarget = new Phaser.Math.Vector2(centered.x, centered.y);
 
+    this.fishingActionIcon = this.ctx.game.add.image(
+      this.fishingTarget.x + this.indicatorOffset.x + 80,
+      this.fishingTarget.y + this.indicatorOffset.y,
+      UIAtlas,
+      UIConstants.ICON_FISHING_BUTTON
+    );
+    this.fishingActionIcon.setScale(2);
+    this.fishingActionIcon.depth = VisualDepth.UI_LOWER;
+
     this.graphicsFishline = this.ctx.game.add.graphics();
     this.graphicsArea = this.ctx.game.add.graphics();
-    this.graphicsArea.z = VisualDepth.UI_LOWER;
+    this.graphicsArea.depth = VisualDepth.UI_LOWER;
 
     this.fishingMeter = this.ctx.game.add.image(
       this.fishingTarget.x + this.indicatorOffset.x,
@@ -67,10 +77,10 @@ export class FishingComponentRenderer extends ComponentRenderer<FishingComponent
       UIConstants.ICON_FISHING
     );
     this.fishingIcon.setOrigin(0.5);
+    this.fishingIcon.depth = VisualDepth.UI_LOWER;
     const arcadeBody = this.fishingIcon.body as Phaser.Physics.Arcade.Body;
     arcadeBody.collideWorldBounds = false;
     arcadeBody.allowGravity = false;
-    // arcadeBody.width = 32;
     arcadeBody.height = 32;
     arcadeBody.offset.x = 16;
     arcadeBody.setVelocityY(10);
@@ -119,6 +129,9 @@ export class FishingComponentRenderer extends ComponentRenderer<FishingComponent
 
     this.fishingZone.destroy();
     this.fishingZone = null;
+
+    this.fishingActionIcon.destroy();
+    this.fishingActionIcon = null;
   }
 
   protected updateGameData(entity: Entity, component: FishingComponent) {
