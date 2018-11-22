@@ -54,7 +54,7 @@ export class PointerManager {
     this.pointers.push(new BasicAttackPointer(this, engineContext));
     this.pointers.push(new ItemPickupPointer(this, engineContext));
     this.pointers.push(new WoodChopPointer(this, engineContext));
-    // this.pointers.push(new InteractionPointer(this, engineContext));
+    this.pointers.push(new InteractionPointer(this, engineContext));
     this.pointers.push(new FishingPointer(this, engineContext));
 
     this.engineContext.game.input.on('pointerdown', this.onPointerClicked, this);

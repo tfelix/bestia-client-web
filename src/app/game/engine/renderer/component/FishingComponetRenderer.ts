@@ -4,7 +4,7 @@ import { EngineContext } from '../../EngineContext';
 import { MapHelper } from '../../MapHelper';
 import { Point, Px } from 'app/game/model';
 import { UIAtlas, UIConstants } from 'app/game/ui';
-import { sendToServer, UpdateComponentMessage } from 'app/game/message';
+import { sendToServer, UpdateComponentMessage, ComponentDeleteMessage } from 'app/game/message';
 import { VisualDepth } from '../VisualDepths';
 
 export class FishingComponentRenderer extends ComponentRenderer<FishingComponent> {
@@ -21,7 +21,8 @@ export class FishingComponentRenderer extends ComponentRenderer<FishingComponent
   private fishingMeter: Phaser.GameObjects.Image;
   private fishingIcon: Phaser.GameObjects.Image;
   private fishingZone: Phaser.GameObjects.Zone;
-  private fishingActionIcon: Phaser.GameObjects.Image;
+  private fishingActionButton: Phaser.GameObjects.Image;
+  private fishingCancelButton: Phaser.GameObjects.Image;
   private hasSetup = false;
 
   constructor(
@@ -50,14 +51,24 @@ export class FishingComponentRenderer extends ComponentRenderer<FishingComponent
     ));
     this.fishingTarget = new Phaser.Math.Vector2(centered.x, centered.y);
 
-    this.fishingActionIcon = this.ctx.game.add.image(
+    this.fishingActionButton = this.ctx.game.add.image(
       this.fishingTarget.x + this.indicatorOffset.x + 80,
       this.fishingTarget.y + this.indicatorOffset.y,
       UIAtlas,
       UIConstants.ICON_FISHING_BUTTON
     );
-    this.fishingActionIcon.setScale(2);
-    this.fishingActionIcon.depth = VisualDepth.UI_LOWER;
+    this.fishingActionButton.setScale(2);
+    this.fishingActionButton.depth = VisualDepth.UI_LOWER;
+
+    this.fishingCancelButton = this.ctx.game.add.image(
+      this.fishingTarget.x + this.indicatorOffset.x - 80,
+      this.fishingTarget.y + this.indicatorOffset.y,
+      UIAtlas,
+      UIConstants.CANCEL
+    );
+    this.fishingCancelButton.depth = VisualDepth.UI_LOWER;
+    this.fishingCancelButton.setInteractive();
+    this.fishingCancelButton.on('pointerdown', () => this.endFishing());
 
     this.graphicsFishline = this.ctx.game.add.graphics();
     this.graphicsArea = this.ctx.game.add.graphics();
@@ -130,8 +141,11 @@ export class FishingComponentRenderer extends ComponentRenderer<FishingComponent
     this.fishingZone.destroy();
     this.fishingZone = null;
 
-    this.fishingActionIcon.destroy();
-    this.fishingActionIcon = null;
+    this.fishingActionButton.destroy();
+    this.fishingActionButton = null;
+
+    this.fishingCancelButton.destroy();
+    this.fishingCancelButton = null;
   }
 
   protected updateGameData(entity: Entity, component: FishingComponent) {
@@ -147,7 +161,7 @@ export class FishingComponentRenderer extends ComponentRenderer<FishingComponent
   private checkEndConditions(entity: Entity, component: FishingComponent) {
     const relPosition = this.getPositionPercentageToIndicator(this.fishingIcon.y);
     if (relPosition <= 0) {
-      entity.removeComponentByType(ComponentType.FISHING);
+      this.endFishing();
     }
     if (relPosition >= 1) {
       const updateMsg = new UpdateComponentMessage(component);
@@ -157,6 +171,13 @@ export class FishingComponentRenderer extends ComponentRenderer<FishingComponent
 
   private updateFishVelocity() {
 
+  }
+
+  private endFishing() {
+    const fishingComp = this.ctx.playerHolder.activeEntity.getComponent(ComponentType.FISHING);
+    this.ctx.playerHolder.activeEntity.removeComponentByType(ComponentType.FISHING);
+    const msg = new ComponentDeleteMessage(fishingComp.entityId, fishingComp.type);
+    sendToServer(msg);
   }
 
   private onFishInZone() {

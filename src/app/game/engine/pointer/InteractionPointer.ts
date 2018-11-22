@@ -1,6 +1,8 @@
+import * as LOG from 'loglevel';
+
 import {
   ComponentType, EntityTypeComponent, InteractionLocalComponent,
-  SelectLocalComponent, Entity, InteractionCache
+  SelectLocalComponent, Entity, InteractionCache, HighlightComponent
 } from 'app/game/entities';
 import { RequestInteractionMessage, EngineEvents } from 'app/game/message';
 import { Px, Point } from 'app/game/model';
@@ -28,6 +30,10 @@ export class InteractionPointer extends Pointer {
   }
 
   public reportPriority(px: Px, pos: Point, overEntity?: Entity): number {
+    if (this.canInteractWithTile(pos)) {
+      return PointerPriority.INTERACTION;
+    }
+
     if (!overEntity) {
       return PointerPriority.NONE;
     }
@@ -49,8 +55,12 @@ export class InteractionPointer extends Pointer {
     return PointerPriority.NONE;
   }
 
-  private canInteractWithTile(position: Px) {
-    const tile = this.ctx.data.tilemap.map.getTileAtWorldXY(position.x, position.y);
+  private canInteractWithTile(position: Px): boolean {
+    // @method Phaser.Tilemaps.Tilemap#getLayerIndex accepts types which are not allowed for getTileAt(). This must be corrected.
+    const tile = this.ctx.data.tilemap.map.getTileAt(position.x, position.y, false, 0);
+    if (tile == null) {
+      return false;
+    }
     if ((tile.properties as any).fishing) {
       return true;
     }
@@ -58,6 +68,7 @@ export class InteractionPointer extends Pointer {
   }
 
   private requestInteractionFromServer(entity: Entity) {
+    LOG.debug(`Requesting interaction for entity ${entity.id} from server`);
     const requestMsg = new RequestInteractionMessage(entity.id);
     PubSub.publish(EngineEvents.IO_SEND_MSG, requestMsg);
   }
@@ -103,14 +114,16 @@ export class InteractionPointer extends Pointer {
 
     const interactionComp = clickedEntity.getComponent(ComponentType.LOCAL_INTERACTION) as InteractionLocalComponent;
     if (interactionComp && interactionComp.possibleInteractions.size > 0) {
-      clickedEntity.addComponent(new SelectLocalComponent(clickedEntity.id));
+      const localComponent = new HighlightComponent(clickedEntity.id);
+      localComponent.color = 0x008900;
+      clickedEntity.addComponent(localComponent);
       this.activeEntity = clickedEntity;
     }
   }
 
   private removeSelection() {
     if (this.activeEntity) {
-      this.activeEntity.removeComponentByType(ComponentType.LOCAL_SELECT);
+      this.activeEntity.removeComponentByType(ComponentType.LOCAL_HIGHLIGHT);
       this.activeEntity = null;
     }
   }
