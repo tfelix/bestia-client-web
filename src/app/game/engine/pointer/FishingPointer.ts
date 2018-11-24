@@ -5,7 +5,7 @@ import { Pointer } from './Pointer';
 import { PointerManager } from './PointerManager';
 import { EngineContext } from '../EngineContext';
 import { PointerPriority } from './PointerPriority';
-import { UIAtlas, UIConstants } from 'app/game/ui';
+import { UIAtlasBase, UIConstants } from 'app/game/ui';
 
 /**
  * Fishing Pointer gets active if there is a FishingComponent attached to
@@ -31,7 +31,7 @@ export class FishingPointer extends Pointer {
 
   public reportPriority(px: Px, pos: Point, overEntity?: Entity): number {
     const playerEntity = this.ctx.playerHolder.activeEntity;
-    return (playerEntity.hasComponent(ComponentType.FISHING)) ? PointerPriority.FISHING : PointerPriority.NONE;
+    return (playerEntity && playerEntity.hasComponent(ComponentType.FISHING)) ? PointerPriority.FISHING : PointerPriority.NONE;
   }
 
   public activate() {
