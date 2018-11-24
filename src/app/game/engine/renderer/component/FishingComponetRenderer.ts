@@ -3,7 +3,7 @@ import { FishingComponent, ComponentType, Entity, PositionComponent } from 'app/
 import { EngineContext } from '../../EngineContext';
 import { MapHelper } from '../../MapHelper';
 import { Point, Px } from 'app/game/model';
-import { UIAtlas, UIConstants } from 'app/game/ui';
+import { UIAtlasBase, UIConstants } from 'app/game/ui';
 import { sendToServer, UpdateComponentMessage, ComponentDeleteMessage } from 'app/game/message';
 import { VisualDepth } from '../VisualDepths';
 
@@ -54,7 +54,7 @@ export class FishingComponentRenderer extends ComponentRenderer<FishingComponent
     this.fishingActionButton = this.ctx.game.add.image(
       this.fishingTarget.x + this.indicatorOffset.x + 80,
       this.fishingTarget.y + this.indicatorOffset.y,
-      UIAtlas,
+      UIAtlasBase,
       UIConstants.ICON_FISHING_BUTTON
     );
     this.fishingActionButton.setScale(2);
@@ -63,7 +63,7 @@ export class FishingComponentRenderer extends ComponentRenderer<FishingComponent
     this.fishingCancelButton = this.ctx.game.add.image(
       this.fishingTarget.x + this.indicatorOffset.x - 80,
       this.fishingTarget.y + this.indicatorOffset.y,
-      UIAtlas,
+      UIAtlasBase,
       UIConstants.CANCEL
     );
     this.fishingCancelButton.depth = VisualDepth.UI_LOWER;
@@ -77,14 +77,14 @@ export class FishingComponentRenderer extends ComponentRenderer<FishingComponent
     this.fishingMeter = this.ctx.game.add.image(
       this.fishingTarget.x + this.indicatorOffset.x,
       this.fishingTarget.y + this.indicatorOffset.y,
-      UIAtlas,
+      UIAtlasBase,
       UIConstants.ICON_FISHING_METER
     );
 
     this.fishingIcon = this.ctx.game.physics.add.image(
       this.fishingTarget.x + this.indicatorOffset.x,
       this.fishingTarget.y + this.indicatorOffset.y,
-      UIAtlas,
+      UIAtlasBase,
       UIConstants.ICON_FISHING
     );
     this.fishingIcon.setOrigin(0.5);

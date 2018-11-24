@@ -1,7 +1,7 @@
 import { Entity, ComponentType, PerformComponent } from 'app/game/entities';
 import { Px } from 'app/game/model';
 import { AbortPerformMessage, EngineEvents } from 'app/game/message';
-import { UIConstants, UIAtlas } from 'app/game/ui';
+import { UIConstants, UIAtlasBase } from 'app/game/ui';
 
 import { ComponentRenderer } from './ComponentRenderer';
 import { EngineContext } from '../../EngineContext';
@@ -32,7 +32,7 @@ export class PerformComponentRenderer extends ComponentRenderer<PerformComponent
       PerformComponentRenderer.graphicsLayer.fillStyle(0x000000, 1);
       PerformComponentRenderer.graphicsLayer.depth = VisualDepth.UI;
 
-      PerformComponentRenderer.cancelButton = this.game.add.image(0, 0, UIAtlas, UIConstants.CANCEL);
+      PerformComponentRenderer.cancelButton = this.game.add.image(0, 0, UIAtlasBase, UIConstants.CANCEL);
 
       PerformComponentRenderer.cancelButton.visible = false;
       PerformComponentRenderer.cancelButton.depth = VisualDepth.UI;

@@ -13,6 +13,7 @@ import { SelectLocalComponentRenderer } from './local/SelectLocalComponentRender
 import { SubFxComponentRenderer } from './SubFxComponentRenderer';
 import { HighlightLocalComponentRenderer } from './local/HighlightLocalComponentRenderer';
 import { FishingComponentRenderer } from './FishingComponetRenderer';
+import { ProjectileComponentRenderer } from './ProjectileComponentRenderer';
 
 export class EntityRenderManager {
 
@@ -29,6 +30,7 @@ export class EntityRenderManager {
     this.addComponentRenderer(new InventoryComponentRenderer(context));
     this.addComponentRenderer(new SubFxComponentRenderer(context));
     this.addComponentRenderer(new FishingComponentRenderer(context));
+    this.addComponentRenderer(new ProjectileComponentRenderer(context));
 
     // Local Component Renderer.
     this.addComponentRenderer(new MasterLocalComponentRenderer(context));

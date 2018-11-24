@@ -2,7 +2,7 @@ import * as LOG from 'loglevel';
 
 import {
   ComponentType, EntityTypeComponent, InteractionLocalComponent,
-  SelectLocalComponent, Entity, InteractionCache, HighlightComponent
+  Entity, InteractionCache, HighlightComponent
 } from 'app/game/entities';
 import { RequestInteractionMessage, EngineEvents } from 'app/game/message';
 import { Px, Point } from 'app/game/model';

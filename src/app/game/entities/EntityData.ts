@@ -1,6 +1,6 @@
 import {
   SpriteData, DebugData, MoveData, ChatData, PerformData, ConditionData,
-  FxData, HighlightData
+  FxData, HighlightData, ProjectileData
 } from 'app/game/engine';
 
 export class EntityData {
@@ -12,4 +12,5 @@ export class EntityData {
   public perform?: PerformData;
   public fx?: FxData;
   public highlight?: HighlightData;
+  public projectile?: ProjectileData;
 }

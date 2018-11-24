@@ -1,6 +1,7 @@
-const UIAtlas = 'base';
+export const UIAtlasBase = 'base';
+export const UIAtlasFx = 'fx';
 
-const UIConstants = {
+export const UIConstants = {
   PLACEHOLDER: 'placeholder.png',
   CANCEL: 'cancel.png',
 
@@ -18,7 +19,7 @@ const UIConstants = {
 
   UI_ITEM_OBTAINED_BG: 'item-obtained.png',
 
-  FX_RAIN: 'rain_01.png'
-};
+  FX_RAIN: 'rain_01.png',
 
-export { UIConstants, UIAtlas };
+  PROJ_ARROW_01: 'projectiles/Arrow_01.png'
+};

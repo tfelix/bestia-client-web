@@ -1,6 +1,6 @@
 import * as LOG from 'loglevel';
 
-import { UIConstants, UIAtlas } from 'app/game/ui';
+import { UIConstants, UIAtlasBase } from 'app/game/ui';
 import { EngineEvents } from 'app/game/message';
 
 import { EngineContext } from '../EngineContext';
@@ -52,7 +52,7 @@ export class CursorManager {
   public create() {
     const uiScene = this.ctx.game.scene.get('UiScene');
     cursorSprites.forEach((spriteName, type) => {
-      const cursor = uiScene.add.image(0, 0, UIAtlas, spriteName);
+      const cursor = uiScene.add.image(0, 0, UIAtlasBase, spriteName);
       cursor.visible = false;
       cursor.setOrigin(0, 0);
       cursor.depth = VisualDepth.UI_CURSOR;

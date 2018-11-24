@@ -1,4 +1,4 @@
-import { UIConstants, UIAtlas } from 'app/game/ui';
+import { UIConstants, UIAtlasBase } from 'app/game/ui';
 
 export class IntroScene extends Phaser.Scene {
   constructor() {

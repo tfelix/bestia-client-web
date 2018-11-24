@@ -136,27 +136,6 @@
 					}
 				},
 				{
-					"filename": "rain_01.png",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 8,
-						"h": 9
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 8,
-						"h": 9
-					},
-					"frame": {
-						"x": 57,
-						"y": 48,
-						"w": 8,
-						"h": 9
-					}
-				},
-				{
 					"filename": "cancel.png",
 					"rotated": false,
 					"trimmed": false,
@@ -330,6 +309,6 @@
 	"meta": {
 		"app": "https://www.codeandweb.com/texturepacker",
 		"version": "3.0",
-		"smartupdate": "$TexturePacker:SmartUpdate:1fddad9747f3f2ca076a76b7ec2d95be:a68ee74780d7886226959d14db9a50a7:7232e5c4564c48ce7821741e80f218b0$"
+		"smartupdate": "$TexturePacker:SmartUpdate:66a764399827df4869d6c858050039c1:d5b52180e37f1069cf2346ce5d082f5d:7232e5c4564c48ce7821741e80f218b0$"
 	}
 }

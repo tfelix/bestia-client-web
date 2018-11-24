@@ -1,6 +1,6 @@
 import * as LOG from 'loglevel';
 
-import { UIConstants, UIAtlas } from 'app/game/ui';
+import { UIConstants, UIAtlasBase } from 'app/game/ui';
 import {
   Entity, ComponentType, SelectLocalComponent, InteractionLocalComponent, InteractionType
 } from 'app/game/entities';
@@ -109,7 +109,7 @@ export class SelectLocalComponentRenderer extends ComponentRenderer<SelectLocalC
         interactionIconName: this.typeToIcon(interaction)
       });
     }
-    this.icons = interactionNames.map(v => this.guiScene.add.image(0, 0, UIAtlas, v.interactionIconName));
+    this.icons = interactionNames.map(v => this.guiScene.add.image(0, 0, UIAtlasBase, v.interactionIconName));
     this.icons.forEach((s, i) => {
 
       const interactionType = interactionNames[i].interaction;

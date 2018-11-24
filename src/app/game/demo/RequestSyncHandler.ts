@@ -1,5 +1,5 @@
 import { SyncRequestMessage, AccountInfoMessage, ComponentMessage } from 'app/game/message';
-import { MoveComponent, FxComponent } from 'app/game/entities';
+import { MoveComponent, FxComponent, ProjectileComponent } from 'app/game/entities';
 import { Point } from 'app/game/model';
 
 import { EntityLocalFactory } from './EntityLocalFactory';
@@ -80,5 +80,16 @@ export class RequestSyncHandler extends ClientMessageHandler<SyncRequestMessage>
 
     this.sendAllComponents(this.entityFactory.addItem('knife', 1, new Point(17, 93)));
     this.sendAllComponents(this.entityFactory.addItem('knife', 1, new Point(26, 90)));
+
+    this.testProjectile();
+  }
+
+  private testProjectile() {
+    const e = this.entityFactory.createEntity();
+    const start = new Point(20, 95);
+    const projectileComp = this.entityFactory.addProjectileComponent(e, start);
+    const proj = projectileComp[0] as ProjectileComponent;
+    proj.targetPoint = { x: 42, y: 73 };
+    this.sendAllComponents(projectileComp);
   }
 }

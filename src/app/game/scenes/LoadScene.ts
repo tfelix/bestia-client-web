@@ -1,3 +1,5 @@
+import { UIAtlasFx, UIAtlasBase } from '../ui';
+
 export class LoadScene extends Phaser.Scene {
   constructor() {
     super({
@@ -70,9 +72,14 @@ export class LoadScene extends Phaser.Scene {
     // Misc
     this.load.glsl('shaderTest', '../assets/shader/test.frag');
     this.load.atlas(
-      'base',
+      UIAtlasBase,
       '../assets/base.png',
       '../assets/base.json'
+    );
+    this.load.atlas(
+      UIAtlasFx,
+      '../assets/fx/fx.png',
+      '../assets/fx/fx.json'
     );
 
     // Testing

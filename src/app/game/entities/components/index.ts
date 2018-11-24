@@ -12,5 +12,6 @@ export * from './PerformComponent';
 export * from './InventoryComponent';
 export * from './FxComponent';
 export * from './FishingComponent';
+export * from './ProjectileComponent';
 
 export * from './local';

@@ -1,0 +1,62 @@
+{
+	"textures": [
+		{
+			"image": "fx.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 61,
+				"h": 14
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "Arrow_01.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 49,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 10,
+						"w": 49,
+						"h": 12
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 49,
+						"h": 12
+					}
+				},
+				{
+					"filename": "rain_01.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 8,
+						"h": 9
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 8,
+						"h": 9
+					},
+					"frame": {
+						"x": 52,
+						"y": 1,
+						"w": 8,
+						"h": 9
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:7e6f38491323e3bc3f87a0099056ed5b:2466e1c3e39abacc2ff56e2dc67552be:5954783b06cac67a67fd6f5e2954bf38$"
+	}
+}

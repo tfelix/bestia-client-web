@@ -1,4 +1,4 @@
-import { UIAtlas, UIConstants } from 'app/game/ui';
+import { UIAtlasBase, UIConstants } from 'app/game/ui';
 
 import { BaseCommonRenderer } from './BaseCommonRenderer';
 import { EngineContext } from '../../EngineContext';
@@ -24,7 +24,7 @@ export class WeatherRenderer extends BaseCommonRenderer {
     this.weatherGfx.depth = VisualDepth.WEATHER_FX;
     this.weatherGfx.blendMode = Phaser.BlendModes.MULTIPLY;
 
-    this.rainParticles = this.ctx.game.add.particles(UIAtlas, UIConstants.FX_RAIN);
+    this.rainParticles = this.ctx.game.add.particles(UIAtlasBase, UIConstants.FX_RAIN);
 
     // const deathZone = new Phaser.GameObjects.Particles.DeathZone(this.screenRect, false);
 

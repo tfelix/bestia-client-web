@@ -15,5 +15,6 @@ export * from './SpriteOffsets';
 export * from './ConditionComponentRenderer';
 export * from './SubFxComponentRenderer';
 export * from './FishingComponetRenderer';
+export * from './ProjectileComponentRenderer';
 
 export * from './local';

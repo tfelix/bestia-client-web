@@ -1,5 +1,5 @@
 import { Entity, InventoryComponent, ComponentType } from 'app/game/entities';
-import { UIConstants, UIAtlas } from 'app/game/ui';
+import { UIConstants, UIAtlasBase } from 'app/game/ui';
 
 import { ComponentRenderer } from './ComponentRenderer';
 import { EngineContext } from '../../EngineContext';
@@ -73,7 +73,7 @@ export class InventoryComponentRenderer extends ComponentRenderer<InventoryCompo
   protected updateGameData(entity: Entity, component: InventoryComponent) { }
 
   public create() {
-    this.obtainedBg = this.ui.add.image(0, 0, UIAtlas, UIConstants.UI_ITEM_OBTAINED_BG);
+    this.obtainedBg = this.ui.add.image(0, 0, UIAtlasBase, UIConstants.UI_ITEM_OBTAINED_BG);
     this.obtainedBg.setOrigin(0, 0);
 
     const xOffset = (this.ctx.helper.display.sceneWidth - this.obtainedBg.width) / 2;

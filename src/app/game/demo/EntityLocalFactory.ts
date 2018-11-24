@@ -2,7 +2,7 @@ import { Point, Item } from 'app/game/model';
 import {
   PlayerComponent, Component, ComponentType, ConditionComponent, VisualComponent,
   DebugComponent, PositionComponent, EntityTypeComponent, EntityType,
-  AttacksComponent, Entity, InventoryComponent, FxComponent, FishingComponent
+  AttacksComponent, Entity, InventoryComponent, FxComponent, FishingComponent, ProjectileComponent
 } from 'app/game/entities';
 import { SpriteType } from 'app/game/engine';
 
@@ -207,6 +207,23 @@ export class EntityLocalFactory {
     condComponent.currentHealth = currentHealth;
     entity.addComponent(condComponent);
     return [condComponent];
+  }
+
+  addProjectileComponent(entity: Entity, pos: Point): Component[] {
+    const projectileComp = new ProjectileComponent(
+      this.componentCounter++,
+      entity.id
+    );
+    projectileComp.projectileName = 'Arrow_01';
+    projectileComp.speed = 5;
+    entity.addComponent(projectileComp);
+
+    const posComp = new PositionComponent(
+      this.componentCounter++,
+      entity.id
+    );
+    posComp.position = pos;
+    return [projectileComp, posComp];
   }
 
   public addDebugComponent(entity: Entity): Component[] {
