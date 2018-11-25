@@ -1,4 +1,9 @@
-export class Point {
+export interface Vec2 {
+  x: number;
+  y: number;
+}
+
+export class Point implements Vec2 {
   constructor(
     public readonly x: number,
     public readonly y: number

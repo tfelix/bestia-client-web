@@ -1,11 +1,9 @@
 import { ComponentRenderer } from './ComponentRenderer';
-import { FishingComponent, ComponentType, Entity, PositionComponent } from 'app/game/entities';
+import { ComponentType, Entity, PositionComponent } from 'app/game/entities';
 import { EngineContext } from '../../EngineContext';
 import { MapHelper } from '../../MapHelper';
 import { Point, Px } from 'app/game/model';
-import { UIAtlasBase, UIConstants, UIAtlasFx } from 'app/game/ui';
-import { sendToServer, UpdateComponentMessage, ComponentDeleteMessage } from 'app/game/message';
-import { VisualDepth } from '../VisualDepths';
+import { UIConstants, UIAtlasFx } from 'app/game/ui';
 import { ProjectileComponent } from 'app/game/entities/components/ProjectileComponent';
 
 export interface ProjectileData {
@@ -57,14 +55,13 @@ export class ProjectileComponentRenderer extends ComponentRenderer<ProjectileCom
     // Phaser.Math.RadToDeg(normalAngle)
     // this.ctx.game.physics.moveToObject()
     const projectile = entity.data.projectile.projectileImage;
+    const test = MapHelper.pointToPixel(component.targetPoint);
     const rotation = Phaser.Math.Angle.Between(
       projectile.x,
       projectile.y,
-      component.targetPoint.x,
-      component.targetPoint.y
-    );
-    // TODO Correct this in the sprite sheet.
-    const offset =  Math.PI / 2;
+      test.x,
+      test.y
+    )  + Math.PI / 2;
     entity.data.projectile.projectileImage.rotation = rotation;
     // entity.data.projectile.projectileImage.rotation = rotation - offset;
   }

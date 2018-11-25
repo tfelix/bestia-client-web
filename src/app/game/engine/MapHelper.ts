@@ -1,17 +1,17 @@
-import { Point, Px } from 'app/game/model';
+import { Point, Px, Vec2 } from 'app/game/model';
 
 export class MapHelper {
 
   public static readonly TILE_SIZE_PX = 32;
 
-  public static pointToPixelCentered(p: Point): Px {
+  public static pointToPixelCentered(p: Vec2): Px {
     return new Px(
       p.x * this.TILE_SIZE_PX + this.TILE_SIZE_PX / 2,
       p.y * this.TILE_SIZE_PX + this.TILE_SIZE_PX / 2
     );
   }
 
-  public static pointToPixel(p: Point): Px {
+  public static pointToPixel(p: Vec2): Px {
     return new Px(
       p.x * this.TILE_SIZE_PX,
       p.y * this.TILE_SIZE_PX

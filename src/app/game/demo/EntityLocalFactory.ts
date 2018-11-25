@@ -215,7 +215,7 @@ export class EntityLocalFactory {
       entity.id
     );
     projectileComp.projectileName = 'Arrow_01';
-    projectileComp.speed = 5;
+    projectileComp.speed = 20;
     entity.addComponent(projectileComp);
 
     const posComp = new PositionComponent(
