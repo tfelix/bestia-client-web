@@ -1,15 +1,15 @@
 import { Point, Px } from 'app/game/model';
-import { ComponentType, FishingComponent, Entity } from 'app/game/entities';
+import { ComponentType, Entity } from 'app/game/entities';
 
 import { Pointer } from './Pointer';
 import { PointerManager } from './PointerManager';
 import { EngineContext } from '../EngineContext';
 import { PointerPriority } from './PointerPriority';
-import { UIAtlasBase, UIConstants } from 'app/game/ui';
 
 /**
  * Fishing Pointer gets active if there is a FishingComponent attached to
- * the player entity.
+ * the player entity. It will prevent movement. Maybe the pointer should be renamed
+ * in order to faciliate mutliple uses.
  */
 export class FishingPointer extends Pointer {
 
@@ -18,15 +18,6 @@ export class FishingPointer extends Pointer {
     ctx: EngineContext
   ) {
     super(manager, ctx);
-  }
-
-  public onClick(pointer: Px, pos: Point, entity?: Entity) {
-    const fishingComponent = this.ctx.playerHolder.activeEntity.getComponent(ComponentType.FISHING) as FishingComponent;
-    if (!fishingComponent) {
-      return;
-    }
-
-    fishingComponent.hasClickedFishingAction = true;
   }
 
   public reportPriority(px: Px, pos: Point, overEntity?: Entity): number {
