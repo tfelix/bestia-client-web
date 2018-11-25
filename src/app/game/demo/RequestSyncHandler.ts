@@ -71,6 +71,7 @@ export class RequestSyncHandler extends ClientMessageHandler<SyncRequestMessage>
     this.sendAllComponents(this.entityFactory.addObject('water', new Point(5, 8)));
 
     this.sendAllComponents(this.entityFactory.addObject('sign', new Point(23, 85)));
+
     const signEntityId = this.entityFactory.getLastInsertedEntityId();
     const signEntity = this.serverEntities.getEntity(signEntityId);
     this.serverEntities.addIdentifier('sign_post', signEntity);

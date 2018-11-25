@@ -1,8 +1,8 @@
 import * as LOG from 'loglevel';
 
 import {
-  ComponentType, EntityTypeComponent, InteractionLocalComponent,
-  Entity, InteractionCache, HighlightComponent
+  ComponentType, EntityTraitsComponent, InteractionLocalComponent,
+  Entity, InteractionService, HighlightComponent
 } from 'app/game/entities';
 import { RequestInteractionMessage, EngineEvents } from 'app/game/message';
 import { Px, Point } from 'app/game/model';
@@ -20,7 +20,7 @@ import { PointerPriority } from './PointerPriority';
 export class InteractionPointer extends Pointer {
   private activeEntity?: Entity = null;
 
-  private interactionCache = new InteractionCache();
+  private interactionCache = new InteractionService();
 
   constructor(
     protected readonly manager: PointerManager,
@@ -81,12 +81,14 @@ export class InteractionPointer extends Pointer {
       return;
     }
 
-    const entityTypeComp = entity.getComponent(ComponentType.ENTITY_TYPE) as EntityTypeComponent;
+    const entityTypeComp = entity.getComponent(ComponentType.ENTITY_TYPE) as EntityTraitsComponent;
 
-    const defaultInteraction = entityTypeComp && this.interactionCache.get(entityTypeComp.entityType);
+    /*
+    const defaultInteraction = entityTypeComp && this.interactionCache.getDefaultInteraction(entityTypeComp.);
     if (interactionComp && defaultInteraction) {
       interactionComp.activeInteraction = defaultInteraction;
     }
+    */
   }
 
   public update(entity?: Entity) {

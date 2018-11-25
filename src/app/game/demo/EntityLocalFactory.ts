@@ -1,7 +1,7 @@
 import { Point, Item } from 'app/game/model';
 import {
   PlayerComponent, Component, ComponentType, ConditionComponent, VisualComponent,
-  DebugComponent, PositionComponent, EntityTypeComponent, EntityType,
+  DebugComponent, PositionComponent, EntityTraitsComponent, EntityTraits,
   AttacksComponent, Entity, InventoryComponent, FxComponent, FishingComponent, ProjectileComponent
 } from 'app/game/entities';
 import { SpriteType } from 'app/game/engine';
@@ -52,11 +52,11 @@ export class EntityLocalFactory {
     const entity = this.createEntity();
     const spriteComp = this.addSprite(entity, name, pos);
 
-    const entityTypeComp = new EntityTypeComponent(
+    const entityTypeComp = new EntityTraitsComponent(
       this.componentCounter++,
       entity.id
     );
-    entityTypeComp.entityType = EntityType.PLAYER_BESTIA;
+    entityTypeComp.traits.push(EntityTraits.ATTACKABLE);
     entity.addComponent(entityTypeComp);
 
     const attackComp = new AttacksComponent(
@@ -111,11 +111,11 @@ export class EntityLocalFactory {
 
   public addBestia(name: string, pos: Point): Component[] {
     const entity = this.createEntity();
-    const entityTypeComp = new EntityTypeComponent(
+    const entityTypeComp = new EntityTraitsComponent(
       this.componentCounter++,
       entity.id
     );
-    entityTypeComp.entityType = EntityType.BESTIA;
+    entityTypeComp.traits.push(EntityTraits.ATTACKABLE);
     entity.addComponent(entityTypeComp);
 
     return [
@@ -147,11 +147,11 @@ export class EntityLocalFactory {
     position.position = pos;
     entity.addComponent(position);
 
-    const entityTypeComp = new EntityTypeComponent(
+    const entityTypeComp = new EntityTraitsComponent(
       this.componentCounter++,
       entity.id
     );
-    entityTypeComp.entityType = EntityType.ITEM;
+    entityTypeComp.traits.push(EntityTraits.LOOTABLE);
     entity.addComponent(entityTypeComp);
 
     const inventoryComp = new InventoryComponent(
@@ -184,14 +184,9 @@ export class EntityLocalFactory {
     position.position = pos;
     entity.addComponent(position);
 
-    const type = new EntityTypeComponent(
-      this.componentCounter++,
-      entity.id
-    );
-    type.entityType = EntityType.OBJECT;
-    entity.addComponent(type);
+    const debug = this.addDebugComponent(entity);
 
-    return [visual, position, type];
+    return [visual, position, ...debug];
   }
 
   public addConditionComponent(

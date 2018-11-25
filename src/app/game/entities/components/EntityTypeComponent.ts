@@ -1,18 +1,16 @@
 import { Component } from './Component';
 import { ComponentType } from './ComponentType';
 
-export enum EntityType {
-  BESTIA,
-  PLAYER_BESTIA,
-  NPC,
-  ITEM,
-  RESOURCE,
-  OBJECT
+export enum EntityTraits {
+  ATTACKABLE,
+  USABLE,
+  LOOTABLE,
+  READABLE
 }
 
-export class EntityTypeComponent extends Component {
+export class EntityTraitsComponent extends Component {
 
-  public entityType?: EntityType = EntityType.OBJECT;
+  public traits: EntityTraits[] = [];
 
   constructor(
     id: number,

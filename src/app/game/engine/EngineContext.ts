@@ -1,7 +1,7 @@
 import * as EasyStar from 'easystarjs';
 
 import { TranslationService } from 'app/game/connection';
-import { InteractionCache, PlayerEntityHolder, EntityStore } from 'app/game/entities';
+import { InteractionService, PlayerEntityHolder, EntityStore } from 'app/game/entities';
 
 import { CollisionUpdater } from './CollisionUpdater';
 import { DisplayHelper } from './DisplayHelper';
@@ -34,7 +34,7 @@ export class EngineContext {
 
   public readonly config = new EngineConfig();
   public readonly data = new GameData();
-  public readonly interactionCache = new InteractionCache();
+  public readonly interactionCache = new InteractionService();
   public readonly i18n = new TranslationService();
 
   public readonly sound: StaticSoundHolder;

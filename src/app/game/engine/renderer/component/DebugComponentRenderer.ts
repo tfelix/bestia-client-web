@@ -9,6 +9,11 @@ export interface DebugData {
   debugText?: Phaser.GameObjects.Text;
 }
 
+const debugTextStyle = {
+  fontFamily: 'Verdana',
+  fontSize: 8
+};
+
 export class DebugComponentRenderer extends ComponentRenderer<DebugComponent> {
 
   constructor(
@@ -64,14 +69,16 @@ export class DebugComponentRenderer extends ComponentRenderer<DebugComponent> {
     const entityId = sprite.getData('entity_id') || '?';
     const pos = MapHelper.pixelToPoint(sprite.x, sprite.y);
     let text = `eid: ${entityId}  z: ${Math.floor(sprite.depth)}\nx: ${pos.x} y: ${pos.y}\n`;
+
     const interactionComp = entity.getComponent(ComponentType.LOCAL_INTERACTION) as InteractionLocalComponent;
     if (interactionComp) {
-      text += `Inter: ${interactionComp.activeInteraction}, pos: ${JSON.stringify(interactionComp.possibleInteractions)}\n`;
+      text += `a.Inter:: ${interactionComp.activeInteraction}, pos.Inter.: ${JSON.stringify(interactionComp.possibleInteractions)}\n`;
     }
     graphics.debugText = this.game.add.text(
       sprite.x + 10,
       sprite.y - 32,
-      text
+      text,
+      debugTextStyle
     );
     graphics.debugText.depth = VisualDepth.UI;
     graphics.origin.setPosition(sprite.x, sprite.y);

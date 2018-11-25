@@ -2,7 +2,7 @@ import * as PubSub from 'pubsub-js';
 
 import { Px, Point } from 'app/game/model';
 import {
-  ComponentType, PositionComponent, VisualComponent, InteractionType, EntityTypeComponent,
+  ComponentType, PositionComponent, VisualComponent, InteractionType, EntityTraitsComponent,
   AttacksComponent, ConditionComponent, ConditionHelper, Entity, PlayerEntityHolder
 } from 'app/game/entities';
 import { BasicAttackMessage, EngineEvents } from 'app/game/message';
@@ -59,7 +59,7 @@ export class BasicAttackPointer extends Pointer {
       return false;
     }
 
-    const entityTypeComp = entity.getComponent(ComponentType.ENTITY_TYPE) as EntityTypeComponent;
+    const entityTypeComp = entity.getComponent(ComponentType.ENTITY_TYPE) as EntityTraitsComponent;
     const conditionComp = entity.getComponent(ComponentType.CONDITION) as ConditionComponent;
 
     if (!entityTypeComp || !conditionComp) {
@@ -71,7 +71,7 @@ export class BasicAttackPointer extends Pointer {
     }
 
     const entityType = entityTypeComp.entityType;
-    const chachedInteraction = this.ctx.interactionCache.get(entityType);
+    const chachedInteraction = this.ctx.interactionCache.getDefaultInteraction(entityType);
 
     return chachedInteraction === InteractionType.ATTACK;
   }

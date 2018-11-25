@@ -1,6 +1,6 @@
 import { Px, Point } from 'app/game/model';
 import {
-  Entity, ComponentType, EntityTypeComponent, EntityType,
+  Entity, ComponentType, EntityTraitsComponent, EntityTraits,
   VisualComponent, PositionComponent, HighlightComponent
 } from 'app/game/entities';
 import { RequestItemLootMessage, EngineEvents } from 'app/game/message';
@@ -35,8 +35,8 @@ export class ItemPickupPointer extends Pointer {
     if (!entity) {
       return false;
     }
-    const entityTypeComp = entity.getComponent(ComponentType.ENTITY_TYPE) as EntityTypeComponent;
-    return entityTypeComp && entityTypeComp.entityType === EntityType.ITEM;
+    const entityTypeComp = entity.getComponent(ComponentType.ENTITY_TYPE) as EntityTraitsComponent;
+    return entityTypeComp && entityTypeComp.entityType === EntityTraits.ITEM;
   }
 
   public onClick(position: Px, pos: Point, clickedEntity?: Entity) {

@@ -6,7 +6,8 @@ export enum InteractionType {
   ATTACK,
   SPEAK,
   LOOT,
-  FISH
+  FISH,
+  USE
 }
 
 export class InteractionLocalComponent extends LocalComponent {

@@ -1,6 +1,6 @@
 import { RequestInteractionMessage } from 'app/game/message';
 import {
-  InteractionType, InteractionLocalComponent, EntityTypeComponent, ComponentType, EntityType,
+  InteractionType, InteractionLocalComponent, EntityTraitsComponent, ComponentType, EntityTraits,
   Entity
 } from 'app/game/entities';
 
@@ -45,17 +45,20 @@ export class InteractionHandler extends ClientMessageHandler<RequestInteractionM
   }
 
   private getPossibleInteraction(entity: Entity): InteractionType[] {
-    const typeComponent = entity.getComponent(ComponentType.ENTITY_TYPE) as EntityTypeComponent;
+    const typeComponent = entity.getComponent(ComponentType.ENTITY_TYPE) as EntityTraitsComponent;
 
+    /*
     switch (typeComponent.entityType) {
-      case EntityType.BESTIA:
+      case EntityTraits.BESTIA:
         return [InteractionType.ATTACK];
-      case EntityType.ITEM:
+      case EntityTraits.ITEM:
         return [InteractionType.LOOT, InteractionType.ATTACK];
-      case EntityType.NPC:
+      case EntityTraits.NPC:
         return [InteractionType.SPEAK, InteractionType.ATTACK];
+        case EntityTraits.OBJECT:
+        return [InteractionType.USE];
       default:
-    }
+    }*/
 
     const signEntity = this.serverEntities.getEntityByIdentifier('sign_post');
     if (signEntity && signEntity.id === entity.id) {
