@@ -1,8 +1,8 @@
 import { Point, Item } from 'app/game/model';
 import {
   PlayerComponent, Component, ComponentType, ConditionComponent, VisualComponent,
-  DebugComponent, PositionComponent, EntityTraitsComponent, EntityTraits,
-  AttacksComponent, Entity, InventoryComponent, FxComponent, FishingComponent, ProjectileComponent
+  DebugComponent, PositionComponent, AttacksComponent, Entity, InventoryComponent,
+  FxComponent, FishingComponent, ProjectileComponent, EntityTypeComponent, EntityType
 } from 'app/game/entities';
 import { SpriteType } from 'app/game/engine';
 
@@ -52,11 +52,11 @@ export class EntityLocalFactory {
     const entity = this.createEntity();
     const spriteComp = this.addSprite(entity, name, pos);
 
-    const entityTypeComp = new EntityTraitsComponent(
+    const entityTypeComp = new EntityTypeComponent(
       this.componentCounter++,
       entity.id
     );
-    entityTypeComp.traits.push(EntityTraits.ATTACKABLE);
+    entityTypeComp.entityType = EntityType.PLAYER;
     entity.addComponent(entityTypeComp);
 
     const attackComp = new AttacksComponent(
@@ -111,11 +111,11 @@ export class EntityLocalFactory {
 
   public addBestia(name: string, pos: Point): Component[] {
     const entity = this.createEntity();
-    const entityTypeComp = new EntityTraitsComponent(
+    const entityTypeComp = new EntityTypeComponent(
       this.componentCounter++,
       entity.id
     );
-    entityTypeComp.traits.push(EntityTraits.ATTACKABLE);
+    entityTypeComp.entityType = EntityType.MOB;
     entity.addComponent(entityTypeComp);
 
     return [
@@ -147,11 +147,11 @@ export class EntityLocalFactory {
     position.position = pos;
     entity.addComponent(position);
 
-    const entityTypeComp = new EntityTraitsComponent(
+    const entityTypeComp = new EntityTypeComponent(
       this.componentCounter++,
       entity.id
     );
-    entityTypeComp.traits.push(EntityTraits.LOOTABLE);
+    entityTypeComp.entityType = EntityType.ITEM;
     entity.addComponent(entityTypeComp);
 
     const inventoryComp = new InventoryComponent(

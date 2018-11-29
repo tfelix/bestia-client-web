@@ -13,5 +13,7 @@ export * from './InventoryComponent';
 export * from './FxComponent';
 export * from './FishingComponent';
 export * from './ProjectileComponent';
+export * from './InteractionComponent';
+export * from './EntityTypeComponent';
 
 export * from './local';

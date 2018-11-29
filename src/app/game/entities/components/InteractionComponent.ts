@@ -1,18 +1,16 @@
 import { Component } from './Component';
 import { ComponentType } from './ComponentType';
 
-export enum EntityType {
-  MOB,
-  NPC,
-  PLAYER,
-  OBJECT,
-  RESOURCE,
-  ITEM
+export enum Interaction {
+  ATTACKABLE,
+  USABLE,
+  LOOTABLE,
+  READABLE
 }
 
-export class EntityTypeComponent extends Component {
+export class InteractionComponent extends Component {
 
-  public entityType: EntityType;
+  public interactions: Interaction[] = [];
 
   constructor(
     id: number,

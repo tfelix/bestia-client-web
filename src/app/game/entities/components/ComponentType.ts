@@ -12,6 +12,7 @@ export enum ComponentType {
   FX = 11,
   FISHING = 12,
   PROJECTILE = 13,
+  INTERACTION = 14,
 
   // This are local only components which will never get send from the server
   // to the client. They exist for local housekeeping.

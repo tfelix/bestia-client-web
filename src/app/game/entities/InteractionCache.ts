@@ -1,33 +1,33 @@
-import { EntityTraits, ComponentType, VisualComponent } from './components';
+import { ComponentType, EntityType, EntityTypeComponent } from './components';
 import { InteractionType } from './components/local/InteractionLocalComponent';
 import { Entity } from './Entity';
 
 export class InteractionService {
 
-  private readonly interactionCache: Map<string, InteractionType> = new Map();
+  private interactionCache: Map<EntityType, InteractionType> = new Map();
 
   constructor() {
-    this.interactionCache.set(EntityTraits.ATTACKABLE, InteractionType.ATTACK);
-    this.interactionCache.set(EntityTraits.LOOTABLE, InteractionType.LOOT);
+    // Setup the default interactions
+    this.interactionCache.set(EntityType.MOB, InteractionType.ATTACK);
+    this.interactionCache.set(EntityType.ITEM, InteractionType.LOOT);
+  }
+
+  public storeSettings() {
+    const interactionJson = JSON.stringify(Array.from(this.interactionCache.entries()));
+    localStorage.setItem('interactionCache', interactionJson);
+  }
+
+  public loadSettings() {
+    this.interactionCache = new Map(JSON.parse(localStorage.getItem('interactionCache')));
   }
 
   public getDefaultInteraction(entity: Entity): InteractionType | null {
+    const typeComp = entity.getComponent(ComponentType.ENTITY_TYPE) as EntityTypeComponent;
 
+    if (!typeComp) {
+      return null;
+    }
 
-    return this.interactionCache.get(type);
-  }
-
-  private getUserPrimaryInteraction(entity: Entity): InteractionType | null {
-    const hash = this.getInteractionHash(entity);
-  }
-
-  private getDefaultInteraction(entity: Entity): InteractionType {
-
-  }
-
-  private getInteractionHash(entity: Entity): string {
-    const visualComponent = entity.getComponent(ComponentType.VISUAL) as VisualComponent;
-
-    return visualComponent && visualComponent.sprite || entity.id.toString();
+    return this.interactionCache.get(typeComp.entityType);
   }
 }

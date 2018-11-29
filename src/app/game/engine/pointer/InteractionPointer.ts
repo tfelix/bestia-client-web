@@ -1,8 +1,8 @@
 import * as LOG from 'loglevel';
 
 import {
-  ComponentType, EntityTraitsComponent, InteractionLocalComponent,
-  Entity, InteractionService, HighlightComponent
+  ComponentType, InteractionLocalComponent,
+  Entity, InteractionService, HighlightComponent, EntityTypeComponent
 } from 'app/game/entities';
 import { RequestInteractionMessage, EngineEvents } from 'app/game/message';
 import { Px, Point } from 'app/game/model';
@@ -81,7 +81,7 @@ export class InteractionPointer extends Pointer {
       return;
     }
 
-    const entityTypeComp = entity.getComponent(ComponentType.ENTITY_TYPE) as EntityTraitsComponent;
+    const entityTypeComp = entity.getComponent(ComponentType.ENTITY_TYPE) as EntityTypeComponent;
 
     /*
     const defaultInteraction = entityTypeComp && this.interactionCache.getDefaultInteraction(entityTypeComp.);

@@ -1,7 +1,6 @@
 import { RequestInteractionMessage } from 'app/game/message';
 import {
-  InteractionType, InteractionLocalComponent, EntityTraitsComponent, ComponentType, EntityTraits,
-  Entity
+  InteractionType, InteractionLocalComponent, ComponentType, Entity, EntityTypeComponent
 } from 'app/game/entities';
 
 import { ClientMessageHandler } from './ClientMessageHandler';
@@ -45,7 +44,7 @@ export class InteractionHandler extends ClientMessageHandler<RequestInteractionM
   }
 
   private getPossibleInteraction(entity: Entity): InteractionType[] {
-    const typeComponent = entity.getComponent(ComponentType.ENTITY_TYPE) as EntityTraitsComponent;
+    const typeComponent = entity.getComponent(ComponentType.ENTITY_TYPE) as EntityTypeComponent;
 
     /*
     switch (typeComponent.entityType) {
