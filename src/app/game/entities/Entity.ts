@@ -12,9 +12,6 @@ export class Entity {
   public readonly data = new EntityData();
   public actions: Action[] = [];
 
-  // TODO Put this into a component
-  public latency = 0;
-
   public readonly removedComponentTypes = new Set<ComponentType>();
 
   constructor(

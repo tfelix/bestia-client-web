@@ -15,5 +15,6 @@ export * from './FishingComponent';
 export * from './ProjectileComponent';
 export * from './InteractionComponent';
 export * from './EntityTypeComponent';
+export * from './LatencyComponent';
 
 export * from './local';

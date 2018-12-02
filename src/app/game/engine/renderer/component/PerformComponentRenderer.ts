@@ -1,4 +1,4 @@
-import { Entity, ComponentType, PerformComponent } from 'app/game/entities';
+import { Entity, ComponentType, PerformComponent, LatencyComponent } from 'app/game/entities';
 import { Px } from 'app/game/model';
 import { AbortPerformMessage, EngineEvents } from 'app/game/message';
 import { UIConstants, UIAtlasBase } from 'app/game/ui';
@@ -62,8 +62,11 @@ export class PerformComponentRenderer extends ComponentRenderer<PerformComponent
   }
 
   protected createGameData(entity: Entity, component: PerformComponent) {
+    const latencyComp = entity.getComponent(ComponentType.LATENCY) as LatencyComponent;
+    const entityLatencyMs = latencyComp && latencyComp.latencyMs || 0;
+
     entity.data.perform = {
-      endTime: this.game.time.now + component.duration - entity.latency,
+      endTime: this.game.time.now + component.duration - entityLatencyMs,
       startTime: this.game.time.now
     };
     if (component.canAbort) {
