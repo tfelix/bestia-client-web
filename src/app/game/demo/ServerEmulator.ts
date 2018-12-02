@@ -87,7 +87,8 @@ export class ServerEmulator {
       }
     });
     if (!wasHandled) {
-      LOG.warn(`Unknown client message received: ${JSON.stringify(message)}`);
+      const msgCtorName = message.constructor.name;
+      LOG.warn(`Unknown client message received: ${msgCtorName}:${JSON.stringify(message)}`);
     }
   }
 }

@@ -11,5 +11,7 @@ export class AppComponent {
 
   constructor() {
     LOG.setDefaultLevel('DEBUG');
+
+    LOG.getLogger('Entity').setDefaultLevel('INFO');
   }
 }

@@ -21,5 +21,5 @@ export const UIConstants = {
 
   FX_RAIN: 'rain_01.png',
 
-  PROJ_ARROW_01: 'projectiles/Arrow_01.png'
+  PROJ_ARROW_01: 'Arrow_01.png'
 };

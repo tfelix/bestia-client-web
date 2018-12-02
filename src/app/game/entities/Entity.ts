@@ -1,8 +1,10 @@
-import * as LOG from 'loglevel';
+import * as LogFactory from 'loglevel';
 import { Action } from './actions/Action';
 import { Component } from './components/Component';
 import { ComponentType } from './components/ComponentType';
 import { EntityData } from './EntityData';
+
+const LOG = LogFactory.getLogger('Entity');
 
 export class Entity {
   private readonly components = new Map<ComponentType, Component>();

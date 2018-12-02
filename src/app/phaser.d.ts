@@ -67316,7 +67316,7 @@ declare namespace Phaser {
              * @param nonNull If true getTile won't return null for empty tiles, but a Tile object with an index of -1. Default false.
              * @param layer The tile layer to use. If not given the current layer is used.
              */
-            getTileAt(tileX: integer, tileY: integer, nonNull?: boolean, layer?: number): Phaser.Tilemaps.Tile;
+            getTileAt(tileX: integer, tileY: integer, nonNull?: boolean, layer?: Phaser.Tilemaps.LayerData): Phaser.Tilemaps.Tile;
 
             /**
              * Gets a tile at the given world coordinates from the given layer.
@@ -70837,10 +70837,22 @@ declare type ArcadeWorldTreeMinMax = {
     maxY: number;
 };
 
-/**
- * An Arcade Physics Collider Type.
- */
-declare type ArcadeColliderType = ()=>void;
+declare type ArcadeColliderType =
+  Phaser.GameObjects.GameObject |
+  Phaser.GameObjects.Group |
+  Phaser.Physics.Arcade.Sprite |
+  Phaser.Physics.Arcade.Image |
+  Phaser.Physics.Arcade.StaticGroup |
+  Phaser.Physics.Arcade.Group |
+  Phaser.Tilemaps.DynamicTilemapLayer |
+  Phaser.Tilemaps.StaticTilemapLayer |
+  Phaser.GameObjects.GameObject[] |
+  Phaser.Physics.Arcade.Sprite[] |
+  Phaser.Physics.Arcade.Image[] |
+  Phaser.Physics.Arcade.StaticGroup[] |
+  Phaser.Physics.Arcade.Group[] |
+  Phaser.Tilemaps.DynamicTilemapLayer[] |
+  Phaser.Tilemaps.StaticTilemapLayer[];
 
 declare type BodyUpdateCallback = (body: Phaser.Physics.Impact.Body)=>void;
 

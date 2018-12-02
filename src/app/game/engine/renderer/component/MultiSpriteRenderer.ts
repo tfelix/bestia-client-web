@@ -233,8 +233,14 @@ export class MultiSpriteRenderer extends SpriteRenderer {
       };
       const animationFrames = this.ctx.game.anims.generateFrameNames(description.name, config);
 
+      const animationKey = `${description.name}_${anim.name}`;
+      if (this.ctx.game.anims.get(animationKey)) {
+        // Dont add an existing animation again.
+        return;
+      }
+
       const animConfig: AnimationConfig = {
-        key: `${description.name}_${anim.name}`,
+        key: animationKey,
         frames: animationFrames,
         frameRate: anim.fps,
         repeat: -1

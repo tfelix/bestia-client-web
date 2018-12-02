@@ -57,7 +57,8 @@ export class InteractionPointer extends Pointer {
 
   private canInteractWithTile(position: Px): boolean {
     // @method Phaser.Tilemaps.Tilemap#getLayerIndex accepts types which are not allowed for getTileAt(). This must be corrected.
-    const tile = this.ctx.data.tilemap.map.getTileAt(position.x, position.y, false, 0);
+    // TODO wait until PR https://github.com/photonstorm/phaser/pull/4207 is approved.
+    const tile = this.ctx.data.tilemap.map.getTileAt(position.x, position.y, false, 0 as any);
     if (tile == null) {
       return false;
     }

@@ -6,6 +6,7 @@ import { VisualDepth } from '../VisualDepths';
 
 export class WeatherRenderer extends BaseCommonRenderer {
 
+  private cloudShadowImage: Phaser.GameObjects.Image;
   private weatherGfx: Phaser.GameObjects.Graphics;
   private rainParticles: Phaser.GameObjects.Particles.ParticleEmitterManager;
   private rainEmitter: Phaser.GameObjects.Particles.ParticleEmitter;
@@ -20,13 +21,16 @@ export class WeatherRenderer extends BaseCommonRenderer {
   }
 
   public create() {
+    // FIXME Somehow this shadow layer is not drawn.
+    this.cloudShadowImage = this.ctx.game.add.image(0, 0, 'cloud_shadows');
+    this.cloudShadowImage.setScale(1);
+    this.cloudShadowImage.setDepth(VisualDepth.WEATHER_FX);
+
     this.weatherGfx = this.ctx.game.add.graphics();
     this.weatherGfx.depth = VisualDepth.WEATHER_FX;
     this.weatherGfx.blendMode = Phaser.BlendModes.MULTIPLY;
 
     this.rainParticles = this.ctx.game.add.particles(UIAtlasBase, UIConstants.FX_RAIN);
-
-    // const deathZone = new Phaser.GameObjects.Particles.DeathZone(this.screenRect, false);
 
     this.rainEmitter = this.rainParticles.createEmitter({
       x: 0,
