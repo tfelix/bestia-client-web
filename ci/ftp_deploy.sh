@@ -4,8 +4,7 @@ set -e
 LOCALPATH='./dist/bestia-angular'
 REMOTEPATH='/demo.bestia-game.net'
 
-echo "ls ./dist"
-ls ./dist
+echo "set ssl:verify-certificate no" >> ~/.lftp/rc
 
 lftp -f "
 open ftp://${FTP_HOST}
