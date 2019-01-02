@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-LOCALPATH='./dist/bestia-angular'
+LOCALPATH='../dist/bestia-angular'
 REMOTEPATH='/demo.bestia-game.net'
 
 lftp -f "
