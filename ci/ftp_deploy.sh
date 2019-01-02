@@ -4,6 +4,13 @@ set -e
 LOCALPATH='../dist/bestia-angular'
 REMOTEPATH='/demo.bestia-game.net'
 
+echo "ls .."
+ls ..
+echo "ls"
+ls
+echo "ls localpath"
+ls ${LOCALPATH}
+
 lftp -f "
 open ftp://${FTP_HOST}
 user ${FTP_USER} ${FTP_PASSWORD}
