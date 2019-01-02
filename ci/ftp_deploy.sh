@@ -1,15 +1,11 @@
 #!/usr/bin/env bash
 set -e
 
-LOCALPATH='../dist/bestia-angular'
+LOCALPATH='./dist/bestia-angular'
 REMOTEPATH='/demo.bestia-game.net'
 
-echo "ls .."
-ls ..
-echo "ls"
-ls
-echo "ls localpath"
-ls ${LOCALPATH}
+echo "ls ./dist"
+ls ./dist
 
 lftp -f "
 open ftp://${FTP_HOST}
