@@ -1,4 +1,8 @@
 language: node_js
+addons:
+  apt:
+    packages:
+      - lftp
 node_js:
   - node
 script: npm run build
