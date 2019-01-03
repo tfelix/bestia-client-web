@@ -41,6 +41,9 @@ export class HighlightLocalComponentRenderer extends ComponentRenderer<Highlight
   }
 
   removeGameData(entity: Entity) {
+    if (!entity.data.highlight) {
+      return;
+    }
     entity.data.highlight.highlightSprite.destroy();
     entity.data.highlight = null;
   }

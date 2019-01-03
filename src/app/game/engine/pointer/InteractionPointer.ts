@@ -41,7 +41,7 @@ export class InteractionPointer extends Pointer {
     const interactionComp = overEntity.getComponent(ComponentType.LOCAL_INTERACTION) as InteractionLocalComponent;
     if (!interactionComp) {
       this.requestInteractionFromServer(overEntity);
-      return PointerPriority.INTERACTION;
+      return PointerPriority.NONE;
     }
 
     if (this.canInteractWithTile(pos)) {
@@ -62,7 +62,7 @@ export class InteractionPointer extends Pointer {
     if (tile == null) {
       return false;
     }
-    if ((tile.properties as any).fishing) {
+    if ((tile.properties as any).fishable) {
       return true;
     }
     return false;
@@ -74,30 +74,8 @@ export class InteractionPointer extends Pointer {
     PubSub.publish(EngineEvents.IO_SEND_MSG, requestMsg);
   }
 
-  private trySetupDefaultInteraction(entity: Entity) {
-    const interactionComp = entity.getComponent(ComponentType.LOCAL_INTERACTION) as InteractionLocalComponent;
-    const hasDefaultInteraction = interactionComp && !!interactionComp.activeInteraction;
-
-    if (hasDefaultInteraction) {
-      return;
-    }
-
-    const entityTypeComp = entity.getComponent(ComponentType.ENTITY_TYPE) as EntityTypeComponent;
-
-    /*
-    const defaultInteraction = entityTypeComp && this.interactionCache.getDefaultInteraction(entityTypeComp.);
-    if (interactionComp && defaultInteraction) {
-      interactionComp.activeInteraction = defaultInteraction;
-    }
-    */
-  }
-
   public update(entity?: Entity) {
-    if (!entity) {
-      return;
-    }
 
-    this.trySetupDefaultInteraction(entity);
   }
 
   public onClick(position: Px, pos: Point, clickedEntity?: Entity) {
