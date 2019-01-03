@@ -3,6 +3,7 @@ import { Entity, DebugComponent, Component, ComponentType, InteractionLocalCompo
 import { ComponentRenderer } from './ComponentRenderer';
 import { VisualDepth } from '../VisualDepths';
 import { MapHelper } from '../../MapHelper';
+import { t } from '@angular/core/src/render3';
 
 export interface DebugData {
   origin: Phaser.GameObjects.Graphics;
@@ -45,25 +46,30 @@ export class DebugComponentRenderer extends ComponentRenderer<DebugComponent> {
     };
 
     const sprite = entity.data.visual.sprite;
+    entity.data.debug.debugText = this.game.add.text(
+      sprite.x + 10,
+      sprite.y - 32,
+      '',
+      debugTextStyle
+    );
+    entity.data.debug.debugText.depth = VisualDepth.UI;
+
     this.alignGraphics(entity.data.debug, sprite, entity);
   }
 
   protected updateGameData(entity: Entity, component: DebugComponent) {
     const sprite = entity.data.visual.sprite;
     const graphics = entity.data.debug;
+
     this.alignGraphics(graphics, sprite, entity);
   }
 
   protected removeComponent(entity: Entity, component: Component) {
   }
 
-  private alignGraphics(graphics: DebugData, sprite: Phaser.GameObjects.Sprite, entity: Entity) {
-    if (!sprite || !graphics) {
+  private alignGraphics(debugData: DebugData, sprite: Phaser.GameObjects.Sprite, entity: Entity) {
+    if (!sprite || !debugData) {
       return;
-    }
-
-    if (graphics.debugText) {
-      graphics.debugText.destroy();
     }
 
     const entityId = sprite.getData('entity_id') || '?';
@@ -74,13 +80,8 @@ export class DebugComponentRenderer extends ComponentRenderer<DebugComponent> {
     if (interactionComp) {
       text += `a.Inter:: ${interactionComp.activeInteraction}, pos.Inter.: ${JSON.stringify(interactionComp.possibleInteractions)}\n`;
     }
-    graphics.debugText = this.game.add.text(
-      sprite.x + 10,
-      sprite.y - 32,
-      text,
-      debugTextStyle
-    );
-    graphics.debugText.depth = VisualDepth.UI;
-    graphics.origin.setPosition(sprite.x, sprite.y);
+    debugData.debugText.setPosition(sprite.x + 10, sprite.y - 32);
+    debugData.debugText.text = text;
+    debugData.origin.setPosition(sprite.x, sprite.y);
   }
 }
