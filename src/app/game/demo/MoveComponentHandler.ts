@@ -5,10 +5,12 @@ import { UpdateComponentMessage } from 'app/game/message';
 import { Entity } from 'app/game/entities';
 import { MoveComponent, ComponentType, PositionComponent } from 'app/game/entities/components';
 import { ServerEntityStore } from './ServerEntityStore';
-import { Px } from '../model';
 import { MapHelper } from '../engine';
 
 export class MoveComponentHandler extends ClientMessageHandler<UpdateComponentMessage<MoveComponent>> {
+
+  private entitiesMovementCallbacks = new Map<number, number>();
+
   constructor(
     serverEntities: ServerEntityStore
   ) {
@@ -29,6 +31,9 @@ export class MoveComponentHandler extends ClientMessageHandler<UpdateComponentMe
       return;
     }
 
+    const existingMovementCallback = this.entitiesMovementCallbacks.get(entity.id);
+    window.clearTimeout(existingMovementCallback);
+
     const moveCopy = new MoveComponent(
       msg.component.id,
       msg.component.entityId
@@ -45,9 +50,10 @@ export class MoveComponentHandler extends ClientMessageHandler<UpdateComponentMe
     const targetPosPx = MapHelper.pointToPixel(moveCopy.path[0]);
     const moveDuration = MapHelper.getWalkDuration(currentPosPx, targetPosPx, moveCopy.walkspeed);
 
-    window.setTimeout(() => {
+    const callbackId = window.setTimeout(() => {
       this.moveTick(entity, moveCopy);
     }, moveDuration);
+    this.entitiesMovementCallbacks.set(entity.id, callbackId);
   }
 
   private moveTick(entity: Entity, move: MoveComponent) {
@@ -68,9 +74,10 @@ export class MoveComponentHandler extends ClientMessageHandler<UpdateComponentMe
       const targetPosPx = MapHelper.pointToPixel(move.path[0]);
       const moveDuration = MapHelper.getWalkDuration(currentPosPx, targetPosPx, move.walkspeed);
 
-      window.setTimeout(() => {
+      const callbackId = window.setTimeout(() => {
         this.moveTick(entity, move);
       }, moveDuration);
+      this.entitiesMovementCallbacks.set(entity.id, callbackId);
     } else {
       entity.removeComponentByType(ComponentType.MOVE);
     }

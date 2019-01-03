@@ -124,32 +124,28 @@ export class MoveComponentRenderer extends ComponentRenderer<MoveComponent> {
       const currentPosPx = MapHelper.pointToPixelCentered(currentPos);
       const targetPosPx = MapHelper.pointToPixelCentered(nextPosition);
       const stepDuration = MapHelper.getWalkDuration(currentPosPx, targetPosPx, component.walkspeed);
+      const standAnimation = getStandAnimationName(currentPos, nextPosition);
+      const walkAnimation = getWalkAnimationName(currentPos, nextPosition);
+
+      const tween = {
+        duration: stepDuration,
+        x: targetPosPx.x,
+        y: targetPosPx.y,
+        onStart: () => {
+          entity.data.move.currentValidStandAnimation = standAnimation;
+          visual.animation = walkAnimation;
+        },
+        onComplete: () => { }
+      };
 
       if (isLastStep) {
-        const standAnimation = getStandAnimationName(currentPos, nextPosition);
-        moveTweens.push({
-          duration: stepDuration,
-          x: targetPosPx.x,
-          y: targetPosPx.y,
-          onComplete: () => {
-            visual.animation = standAnimation;
-            entity.removeComponentByType(component.type);
-            component.onMoveFinished.forEach(fn => fn());
-          }
-        });
-      } else {
-        const standAnimation = getStandAnimationName(currentPos, nextPosition);
-        const walkAnimation = getWalkAnimationName(currentPos, nextPosition);
-        moveTweens.push({
-          duration: stepDuration,
-          x: targetPosPx.x,
-          y: targetPosPx.y,
-          onStart: () => {
-            entity.data.move.currentValidStandAnimation = standAnimation;
-            visual.animation = walkAnimation;
-          }
-        });
+        tween.onComplete = () => {
+          entity.removeComponentByType(component.type);
+          component.onMoveFinished.forEach(fn => fn());
+        };
       }
+
+      moveTweens.push(tween);
     }
 
     moveData.timeline = this.game.tweens.timeline({
