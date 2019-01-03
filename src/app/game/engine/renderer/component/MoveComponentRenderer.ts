@@ -121,7 +121,16 @@ export class MoveComponentRenderer extends ComponentRenderer<MoveComponent> {
       const currentPos = component.path[x];
       const nextPosition = component.path[x + 1];
       const isLastStep = x + 2 === component.path.length;
-      const currentPosPx = MapHelper.pointToPixelCentered(currentPos);
+
+      // If the are currently in the transition between tiles in order to calculate the correct
+      // movement speed we need to use the pixel position for the first step.
+      let currentPosPx: Px;
+      if (x === 0) {
+        currentPosPx = new Px(spriteData.sprite.x, spriteData.sprite.y);
+      } else {
+        currentPosPx = MapHelper.pointToPixelCentered(currentPos);
+      }
+
       const targetPosPx = MapHelper.pointToPixelCentered(nextPosition);
       const stepDuration = MapHelper.getWalkDuration(currentPosPx, targetPosPx, component.walkspeed);
       const standAnimation = getStandAnimationName(currentPos, nextPosition);
@@ -153,7 +162,6 @@ export class MoveComponentRenderer extends ComponentRenderer<MoveComponent> {
       ease: 'Linear',
       tweens: moveTweens
     });
-    LOG.debug('Starting timeline: ' + JSON.stringify(component.path));
   }
 
   protected createGameData(entity: Entity, component: MoveComponent) {
@@ -176,7 +184,6 @@ export class MoveComponentRenderer extends ComponentRenderer<MoveComponent> {
     }
 
     if (entity.data.move.timeline) {
-      LOG.debug('Timeline stopped');
       entity.data.move.timeline.stop();
     }
 
