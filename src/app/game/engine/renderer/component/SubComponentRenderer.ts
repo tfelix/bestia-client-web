@@ -3,8 +3,10 @@ import { ComponentRenderer } from './ComponentRenderer';
 import { RenderDelegate } from './RenderDelegate';
 
 /**
- * Sub-Renderer can be attached to this class and the component gets filtered and each sub-component
- * renderer gets the delegate to render its component on its own.
+ * Some components might be rather complex to render. In order to add one more layer of delegation
+ * this SubComponentRenderer exists. For example the FxComponent is rather complex and needs various
+ * different renderer for its specific effects. For each kind of effect another sub component renderer
+ * might get attached and rendering its special effect.
  */
 export abstract class SubComponentRenderer<C extends Component> extends ComponentRenderer<C> {
 
@@ -30,10 +32,10 @@ export abstract class SubComponentRenderer<C extends Component> extends Componen
   }
 
   protected createGameData(entity: Entity, component: C) {
-    // this is not called as this class has a own render method.
+    // this is not needed as this class has a own render method.
   }
 
   protected updateGameData(entity: Entity, component: C) {
-    // this is not called as this calss has a own render method.
+    // this is not needed as this calss has a own render method.
   }
 }

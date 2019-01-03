@@ -61,7 +61,7 @@ export class MoveHelper {
     const shiftedStart = start.minus(scrollOffset);
     const shiftedGoal = goal.minus(scrollOffset);
 
-    LOG.debug(`Find path from: ${JSON.stringify(shiftedStart)} to ${JSON.stringify(shiftedGoal)}`);
+    LOG.debug(`Find path from: ${JSON.stringify(start)} to ${JSON.stringify(goal)}`);
     this.ctx.pathfinder.findPath(
       shiftedStart.x,
       shiftedStart.y,

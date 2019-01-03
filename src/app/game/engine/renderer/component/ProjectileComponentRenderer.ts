@@ -2,7 +2,7 @@ import { ComponentRenderer } from './ComponentRenderer';
 import { ComponentType, Entity, PositionComponent } from 'app/game/entities';
 import { EngineContext } from '../../EngineContext';
 import { MapHelper } from '../../MapHelper';
-import { Point, Px } from 'app/game/model';
+import { Point } from 'app/game/model';
 import { UIConstants, UIAtlasFx } from 'app/game/ui';
 import { ProjectileComponent } from 'app/game/entities/components/ProjectileComponent';
 
@@ -37,11 +37,9 @@ export class ProjectileComponentRenderer extends ComponentRenderer<ProjectileCom
       posPx.y,
       vPxPerS
     );
-    // this.updateVelocity(entity, component);
   }
 
   protected updateGameData(entity: Entity, component: ProjectileComponent) {
-    // throw new Error("Method not implemented.");
   }
 
   private updateVelocity(entity: Entity, component: ProjectileComponent) {
@@ -52,8 +50,6 @@ export class ProjectileComponentRenderer extends ComponentRenderer<ProjectileCom
   }
 
   private updateProjectileRotation(entity: Entity, component: ProjectileComponent) {
-    // Phaser.Math.RadToDeg(normalAngle)
-    // this.ctx.game.physics.moveToObject()
     const projectile = entity.data.projectile.projectileImage;
     const test = MapHelper.pointToPixel(component.targetPoint);
     const rotation = Phaser.Math.Angle.Between(
@@ -63,7 +59,6 @@ export class ProjectileComponentRenderer extends ComponentRenderer<ProjectileCom
       test.y
     )  + Math.PI / 2;
     entity.data.projectile.projectileImage.rotation = rotation;
-    // entity.data.projectile.projectileImage.rotation = rotation - offset;
   }
 
   private updateProjectilePosition(entity: Entity, component: ProjectileComponent) {

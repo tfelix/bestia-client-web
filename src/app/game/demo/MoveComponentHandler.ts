@@ -5,6 +5,8 @@ import { UpdateComponentMessage } from 'app/game/message';
 import { Entity } from 'app/game/entities';
 import { MoveComponent, ComponentType, PositionComponent } from 'app/game/entities/components';
 import { ServerEntityStore } from './ServerEntityStore';
+import { Px } from '../model';
+import { MapHelper } from '../engine';
 
 export class MoveComponentHandler extends ClientMessageHandler<UpdateComponentMessage<MoveComponent>> {
   constructor(
@@ -35,9 +37,17 @@ export class MoveComponentHandler extends ClientMessageHandler<UpdateComponentMe
     moveCopy.walkspeed = msg.component.walkspeed;
     entity.addComponent(moveCopy);
 
+    const posComp = entity.getComponent(ComponentType.POSITION) as PositionComponent;
+    if (!posComp) {
+      return;
+    }
+    const currentPosPx = MapHelper.pointToPixel(posComp.position);
+    const targetPosPx = MapHelper.pointToPixel(moveCopy.path[0]);
+    const moveDuration = MapHelper.getWalkDuration(currentPosPx, targetPosPx, moveCopy.walkspeed);
+
     window.setTimeout(() => {
       this.moveTick(entity, moveCopy);
-    }, 300);
+    }, moveDuration);
   }
 
   private moveTick(entity: Entity, move: MoveComponent) {
@@ -54,9 +64,13 @@ export class MoveComponentHandler extends ClientMessageHandler<UpdateComponentMe
     this.sendComponent(move);
 
     if (move.path.length > 0) {
+      const currentPosPx = MapHelper.pointToPixel(posComp.position);
+      const targetPosPx = MapHelper.pointToPixel(move.path[0]);
+      const moveDuration = MapHelper.getWalkDuration(currentPosPx, targetPosPx, move.walkspeed);
+
       window.setTimeout(() => {
         this.moveTick(entity, move);
-      }, 300);
+      }, moveDuration);
     } else {
       entity.removeComponentByType(ComponentType.MOVE);
     }

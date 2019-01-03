@@ -31,4 +31,10 @@ export class MapHelper {
       Math.floor(yPx / this.TILE_SIZE_PX) * this.TILE_SIZE_PX
     );
   }
+
+  public static getWalkDuration(currentPos: Px, targetPosition: Px, walkspeed: number) {
+    // Usual walkspeed is 1.4 tiles / s -> 0,74 s/tile.
+    const length = currentPos.getDistance(targetPosition) / MapHelper.TILE_SIZE_PX;
+    return Math.round((1 / 1.4) * length / walkspeed * 1000);
+  }
 }

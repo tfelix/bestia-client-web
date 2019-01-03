@@ -254,9 +254,11 @@ export class MultiSpriteRenderer extends SpriteRenderer {
 
   private validateSpriteServerPosition(entityPxPos: Px, spriteData: SpriteData) {
     const d = entityPxPos.getDistanceXY(spriteData.sprite.x, spriteData.sprite.y);
-    if (d >= 32) {
+    const maxToleratedDeltaPx = 64;
+    if (d >= maxToleratedDeltaPx) {
       // Currently only hard-correct these errors. There might be a better algorithm be used
       // in the future.
+      LOG.debug('Correcting sprite position by server authority.');
       spriteData.sprite.setPosition(entityPxPos.x, entityPxPos.y);
     }
   }

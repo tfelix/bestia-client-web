@@ -131,6 +131,10 @@ export class FishingComponentRenderer extends ComponentRenderer<FishingComponent
   }
 
   public removeGameData(entity: Entity) {
+    if (!this.hasSetup) {
+      return;
+    }
+
     this.hasSetup = false;
 
     this.fishIcon.destroy();
