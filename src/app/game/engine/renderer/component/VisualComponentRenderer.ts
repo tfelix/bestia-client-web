@@ -3,7 +3,7 @@ import * as LOG from 'loglevel';
 import {
   Entity, VisualComponent, PositionComponent, ComponentType
 } from 'app/game/entities';
-import { Point, Px } from 'app/game/model';
+import { Point } from 'app/game/model';
 
 import { MapHelper } from '../../MapHelper';
 import { ComponentRenderer } from './ComponentRenderer';
@@ -80,6 +80,9 @@ export class VisualComponentRenderer extends ComponentRenderer<VisualComponent> 
   }
 
   public removeGameData(entity: Entity) {
+    if (!entity.data.visual) {
+      return;
+    }
     entity.data.visual.sprite.destroy();
     entity.data.visual.childSprites.forEach(s => s.sprite.destroy());
     entity.data.visual = null;

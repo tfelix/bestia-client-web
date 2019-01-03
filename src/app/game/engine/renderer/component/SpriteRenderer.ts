@@ -38,7 +38,7 @@ export abstract class SpriteRenderer {
 
   public abstract supportedType(): SpriteType;
 
-  public abstract updateGameData(entity: Entity, component: VisualComponent, pxPos: Px, spriteData: SpriteData);
+  public abstract updateGameData(entity: Entity, component: VisualComponent, entityPxPos: Px, spriteData: SpriteData);
 
-  public abstract createGameData(entity: Entity, component: VisualComponent, pxPos: Px);
+  public abstract createGameData(entity: Entity, component: VisualComponent, entityPxPos: Px);
 }

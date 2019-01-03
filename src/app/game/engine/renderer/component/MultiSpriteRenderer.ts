@@ -135,7 +135,7 @@ export class MultiSpriteRenderer extends SpriteRenderer {
     const animationName = translateSightPositionToAnimationName(component.sightDirection);
     const fullAnimationName = `${component.sprite}_${animationName}`;
     LOG.debug(`Play sight animation: ${fullAnimationName} for entity: ${entity.id}`);
-    this.setSpriteAnimationName(spriteData.sprite, fullAnimationName);
+    this.updateSpriteAnimation(spriteData.sprite, fullAnimationName);
     this.updateChildSpritesAnimation(spriteData, animationName);
   }
 
@@ -143,7 +143,7 @@ export class MultiSpriteRenderer extends SpriteRenderer {
     const spriteData = entity.data.visual;
     const fullAnimationName = `${component.sprite}_${component.oneshotAnimation}`;
     LOG.debug(`Play oneshot animation: ${fullAnimationName} for entity: ${entity.id}`);
-    this.setSpriteAnimationName(spriteData.sprite, fullAnimationName);
+    this.updateSpriteAnimation(spriteData.sprite, fullAnimationName);
     this.updateChildSpritesAnimation(spriteData, component.oneshotAnimation);
 
     const animationDuration = spriteData.sprite.anims.getTotalFrames() * spriteData.sprite.anims.msPerFrame;
@@ -160,12 +160,14 @@ export class MultiSpriteRenderer extends SpriteRenderer {
       const subspriteAnimationName = translateMovementToSubspriteAnimationName(animationName);
       const fullAnimationName = `${childSprite.spriteName}_${subspriteAnimationName}`;
       LOG.debug(`Play animation: ${fullAnimationName} for subsprite: ${childSprite.spriteName}`);
-      this.setSpriteAnimationName(childSprite.sprite, fullAnimationName);
+      this.updateSpriteAnimation(childSprite.sprite, fullAnimationName);
     });
   }
 
-  private setSpriteAnimationName(sprite: Phaser.GameObjects.Sprite, animation: string) {
-    if (this.needsMirror(animation)) {
+  private updateSpriteAnimation(sprite: Phaser.GameObjects.Sprite, animation: string) {
+    const isSpriteMirrored = animation.endsWith('right');
+
+    if (isSpriteMirrored) {
       sprite.flipX = true;
       const correctedAnimationName = animation.replace('_right', '_left');
       sprite.anims.play(correctedAnimationName, true);
@@ -173,10 +175,6 @@ export class MultiSpriteRenderer extends SpriteRenderer {
       sprite.flipX = false;
       sprite.anims.play(animation, true);
     }
-  }
-
-  private needsMirror(animationName: string): boolean {
-    return animationName.endsWith('right');
   }
 
   private updateChildSpriteOffset(
@@ -254,9 +252,18 @@ export class MultiSpriteRenderer extends SpriteRenderer {
     });
   }
 
-  public createGameData(entity: Entity, component: VisualComponent, pxPos: Px) {
+  private validateSpriteServerPosition(entityPxPos: Px, spriteData: SpriteData) {
+    const d = entityPxPos.getDistanceXY(spriteData.sprite.x, spriteData.sprite.y);
+    if (d >= 32) {
+      // Currently only hard-correct these errors. There might be a better algorithm be used
+      // in the future.
+      spriteData.sprite.setPosition(entityPxPos.x, entityPxPos.y);
+    }
+  }
+
+  public createGameData(entity: Entity, component: VisualComponent, entityPxPos: Px) {
     const desc = this.getSpriteDescription(component);
-    const sprite = this.ctx.game.add.sprite(pxPos.x, pxPos.y, desc.name);
+    const sprite = this.ctx.game.add.sprite(entityPxPos.x, entityPxPos.y, desc.name);
     this.setupSpriteData(sprite, entity, component.sprite);
 
     this.setupScaleAndOrigin(sprite, desc);
@@ -266,15 +273,13 @@ export class MultiSpriteRenderer extends SpriteRenderer {
     this.updateChildSpriteOffset(entity.data.visual);
   }
 
-  public updateGameData(entity: Entity, component: VisualComponent, pxPos: Px, spriteData: SpriteData) {
-
-    if (component.animation) {
+  public updateGameData(entity: Entity, component: VisualComponent, entityPxPos: Px, spriteData: SpriteData) {
+    if (component.animation !== spriteData.lastPlayedAnimation) {
       spriteData.lastPlayedAnimation = component.animation;
       const fullAnimationName = `${component.sprite}_${component.animation}`;
       LOG.debug(`Play animation: ${fullAnimationName} for entity: ${entity.id}`);
-      this.setSpriteAnimationName(spriteData.sprite, fullAnimationName);
+      this.updateSpriteAnimation(spriteData.sprite, fullAnimationName);
       this.updateChildSpritesAnimation(spriteData, component.animation);
-      component.animation = null;
     }
 
     if (component.oneshotAnimation) {
@@ -287,6 +292,7 @@ export class MultiSpriteRenderer extends SpriteRenderer {
       component.sightDirection = null;
     }
 
+    this.validateSpriteServerPosition(entityPxPos, spriteData);
     this.updateChildSpriteOffset(spriteData);
     this.updateSpriteDepth(spriteData);
   }

@@ -11,8 +11,11 @@ export abstract class ComponentRenderer<C extends Component> {
 
   public render(entity: Entity, component: Component) {
     this.update();
+
     if (this.hasNotSetup(entity, component as C)) {
+      this.removeGameData(entity);
       this.createGameData(entity, component as C);
+      this.updateGameData(entity, component as C);
     } else {
       this.updateGameData(entity, component as C);
     }

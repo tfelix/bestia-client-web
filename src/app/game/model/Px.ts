@@ -10,4 +10,10 @@ export class Px {
     const dy = p.y - this.y;
     return Math.sqrt(dx * dx + dy * dy);
   }
+
+  public getDistanceXY(x: number, y: number): number {
+    const dx = x - this.x;
+    const dy = y - this.y;
+    return Math.sqrt(dx * dx + dy * dy);
+  }
 }
