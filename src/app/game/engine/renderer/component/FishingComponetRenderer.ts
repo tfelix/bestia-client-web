@@ -60,7 +60,7 @@ export class FishingComponentRenderer extends ComponentRenderer<FishingComponent
     this.fishingActionButton.setInteractive();
     this.fishingActionButton.on('pointerdown', () => this.onFishButtonClicked());
     this.fishingActionButton.setScale(2);
-    this.fishingActionButton.depth = VisualDepth.UI_LOWER;
+    this.fishingActionButton.depth = VisualDepth.UI_UNDER_CURSOR;
 
     this.fishingCancelButton = this.ctx.game.add.image(
       this.fishingTarget.x + this.indicatorOffset.x - 80,
@@ -68,13 +68,13 @@ export class FishingComponentRenderer extends ComponentRenderer<FishingComponent
       UIAtlasBase,
       UIConstants.CANCEL
     );
-    this.fishingCancelButton.depth = VisualDepth.UI_LOWER;
+    this.fishingCancelButton.depth = VisualDepth.UI_UNDER_CURSOR;
     this.fishingCancelButton.setInteractive();
     this.fishingCancelButton.on('pointerdown', () => this.endFishing());
 
     this.graphicsFishline = this.ctx.game.add.graphics();
     this.graphicsArea = this.ctx.game.add.graphics();
-    this.graphicsArea.depth = VisualDepth.UI_LOWER;
+    this.graphicsArea.depth = VisualDepth.UI_UNDER_CURSOR;
 
     this.fishingMeter = this.ctx.game.add.image(
       this.fishingTarget.x + this.indicatorOffset.x,
@@ -90,7 +90,7 @@ export class FishingComponentRenderer extends ComponentRenderer<FishingComponent
       UIConstants.ICON_FISHING
     );
     this.fishIcon.setOrigin(0.5);
-    this.fishIcon.depth = VisualDepth.UI_LOWER;
+    this.fishIcon.depth = VisualDepth.UI_UNDER_CURSOR;
     const fishBody = this.fishIcon.body as Phaser.Physics.Arcade.Body;
     fishBody.collideWorldBounds = false;
     fishBody.allowGravity = false;

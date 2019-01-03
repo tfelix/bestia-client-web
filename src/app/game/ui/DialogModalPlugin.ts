@@ -125,6 +125,7 @@ export class DialogModalPlugin extends Phaser.Plugins.ScenePlugin {
     const y = height - this.windowHeight - this.padding;
     const rectWidth = width - (this.padding * 2);
     const rectHeight = this.windowHeight;
+
     return {
       x,
       y,
@@ -159,17 +160,16 @@ export class DialogModalPlugin extends Phaser.Plugins.ScenePlugin {
       UIAtlasBase,
       UIConstants.CANCEL
     );
-    this.closeBtn.setScale(0.7);
     this.closeBtn.setScaleMode(Phaser.ScaleModes.NEAREST);
-    this.closeBtn.depth = VisualDepth.UI;
+    this.closeBtn.depth = VisualDepth.UI_UNDER_CURSOR;
     this.closeBtn.setInteractive();
 
     this.closeBtn.on('pointerover', () => {
-      this.closeBtn.setScale(0.8);
+      this.closeBtn.setScale(1.1);
       this.closeBtn.setTint(0xFFFFFF);
     });
     this.closeBtn.on('pointerout', () => {
-      this.closeBtn.setScale(0.7);
+      this.closeBtn.setScale(1);
       this.closeBtn.clearTint();
     });
     this.closeBtn.on('pointerdown', () => {
@@ -195,7 +195,7 @@ export class DialogModalPlugin extends Phaser.Plugins.ScenePlugin {
     const gameWidth = this.getGameWidth();
     const dimensions = this.calculateWindowDimensions(gameWidth, gameHeight);
     this.graphics = this.scene.add.graphics();
-    this.graphics.depth = VisualDepth.UI;
+    this.graphics.depth = VisualDepth.UI_UNDER_CURSOR;
 
     this.createOuterWindow(dimensions.x, dimensions.y, dimensions.rectWidth, dimensions.rectHeight);
     this.createInnerWindow(dimensions.x, dimensions.y, dimensions.rectWidth, dimensions.rectHeight);

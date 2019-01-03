@@ -1,8 +1,8 @@
 import * as PubSub from 'pubsub-js';
 import * as LOG from 'loglevel';
 
-import { EngineEvents, UiModalMessage } from 'app/game/message';
-import { EntityStore, Entity } from 'app/game/entities';
+import { EngineEvents } from 'app/game/message';
+import { Entity } from 'app/game/entities';
 import { EngineContext } from 'app/game/engine';
 import { EventTrigger } from './EventTrigger';
 import { HelloWorldTrigger } from './HelloWorldTrigger';
