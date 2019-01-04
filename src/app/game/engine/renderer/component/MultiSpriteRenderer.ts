@@ -276,7 +276,7 @@ export class MultiSpriteRenderer extends SpriteRenderer {
   }
 
   public updateGameData(entity: Entity, component: VisualComponent, entityPxPos: Px, spriteData: SpriteData) {
-    if (component.animation !== spriteData.lastPlayedAnimation) {
+    if (component.animation && component.animation !== spriteData.lastPlayedAnimation) {
       spriteData.lastPlayedAnimation = component.animation;
       const fullAnimationName = `${component.sprite}_${component.animation}`;
       LOG.debug(`Play animation: ${fullAnimationName} for entity: ${entity.id}`);
