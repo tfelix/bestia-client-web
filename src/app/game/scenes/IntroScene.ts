@@ -1,9 +1,10 @@
 import { UIConstants, UIAtlasBase } from 'app/game/ui';
+import { SceneNames } from './SceneNames';
 
 export class IntroScene extends Phaser.Scene {
   constructor() {
     super({
-      key: 'IntroScene'
+      key: SceneNames.INTRO
     });
   }
 

@@ -1,28 +1,48 @@
 import { UIAtlasFx, UIAtlasBase, UIConstants } from '../ui';
+import { SceneNames } from './SceneNames';
+import { TextStyles } from '../engine/TextStyles';
 
 export class LoadScene extends Phaser.Scene {
   constructor() {
     super({
-      key: 'LoadScene'
+      key: SceneNames.LOAD
     });
   }
 
-  private width: number;
-  private height: number;
+  private loadBar: Phaser.GameObjects.Graphics;
+  private loaderText: Phaser.GameObjects.Text;
+
+  private halfWidth: number;
+  private halfHeight: number;
 
   private setupProgressBar() {
-    const progress = this.add.graphics();
-    this.load.on('progress', (value) => {
-      progress.clear();
-      progress.fillStyle(0xFFFFFF, 1);
-      progress.fillRect(this.width / 2 - 300, this.height / 2, 600 * value, 30);
+    this.loaderText = this.add.text(this.halfWidth, this.halfHeight, '0 %', TextStyles.LOADER);
+    this.loaderText.setOrigin(0.5);
+
+    this.loadBar = this.add.graphics();
+    this.loadBar.x = this.halfWidth;
+    this.loadBar.y = this.halfHeight;
+
+    this.loadBar.lineStyle(20, 0xf2f2f2, 1);
+    this.loadBar.beginPath();
+    this.loadBar.arc(0, 0, 130, 0, Phaser.Math.DegToRad(370), false, 0.03);
+    this.loadBar.strokePath();
+    this.loadBar.closePath();
+
+    this.load.on('progress', progressValue => {
+      this.loadBar.clear();
+      this.loaderText.text = `${Math.round(progressValue * 100)} %`;
+      this.loadBar.beginPath();
+      this.loadBar.lineStyle(20, 0xf2f2f2, 1);
+      this.loadBar.arc(0, 0, 130, 0, Phaser.Math.DegToRad(370 * progressValue), false, 0.03);
+      this.loadBar.strokePath();
+      this.loadBar.closePath();
     });
-    this.load.on('complete', () => progress.destroy());
   }
 
   public preload(): void {
-    this.width = this.game.config.width as number;
-    this.height = this.game.config.height as number;
+    this.halfWidth = this.game.config.width as number / 2;
+    this.halfHeight = this.game.config.height as number / 2;
 
     this.setupProgressBar();
 
@@ -96,11 +116,7 @@ export class LoadScene extends Phaser.Scene {
   }
 
   public create() {
-    const bg = this.add.image(0, 0, 'splash-bg')
-      .setOrigin(0)
-      .setDisplaySize(this.width, this.height);
-
-      this.createBaseAnimations();
+    this.createBaseAnimations();
   }
 
   /**
@@ -130,6 +146,6 @@ export class LoadScene extends Phaser.Scene {
 
 
   public update(): void {
-    this.scene.start('GameScene');
+    this.scene.start(SceneNames.GAME);
   }
 }

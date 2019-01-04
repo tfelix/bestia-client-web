@@ -3,18 +3,11 @@ import { Px } from 'app/game/model';
 
 import { ActionsRenderer } from './ActionsRenderer';
 import { EngineContext } from '../../EngineContext';
+import { TextStyles } from '../../TextStyles';
 
 const CHAT_DISPLAY_DURATION_MS = 3500;
 const SPRITE_Y_OFFSET = -10;
 const CHAT_BORDER_PADDING = 4;
-
-const CHAT_STYLE = {
-  fontFamily: 'Arial',
-  fontSize: 12,
-  color: '#FFFFFF',
-  boundsAlignH: 'center',
-  boundsAlignV: 'middle'
-};
 
 export interface ChatData {
   background: Phaser.GameObjects.Graphics;
@@ -75,7 +68,7 @@ export class ChatActionsRenderer extends ActionsRenderer {
       chatPos.x,
       chatPos.y,
       chatMsg,
-      CHAT_STYLE
+      TextStyles.CHAT_STYLE
     );
     txt.depth = 10000;
     txt.setOrigin(0.5, 0.5);

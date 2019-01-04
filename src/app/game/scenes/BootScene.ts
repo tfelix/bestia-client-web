@@ -1,3 +1,5 @@
+import { SceneNames } from './SceneNames';
+
 /**
  * The BootScene loads the really important stuff so the loading screen can
  * be displayed.
@@ -5,13 +7,11 @@
 export class BootScene extends Phaser.Scene {
   constructor() {
     super({
-      key: 'BootScene'
+      key: SceneNames.BOOT
     });
   }
 
   public preload(): void {
-    this.load.image('splash-bg', '../assets/img/splash-bg.jpg');
-
     const widthHalf = (this.game.config.width as any) / 2;
     const heightHalf = (this.game.config.height as any) / 2;
 
@@ -43,6 +43,6 @@ export class BootScene extends Phaser.Scene {
   }
 
   public update(): void {
-    this.scene.start('LoadScene');
+    this.scene.start(SceneNames.LOAD);
   }
 }

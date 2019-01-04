@@ -54,12 +54,11 @@ export class GameComponent implements OnInit {
         key: 'UiScenePlugin',
         plugin: DialogModalPlugin,
         systemKey: 'uiScenePlugin',
-        sceneKey: 'dialogModal',
+        sceneKey: 'uiScene',
         mapping: 'dialogModal'
       }]
     },
     scene: [BootScene, LoadScene, IntroScene, GameScene, UiScene],
-    // scene: [IntroScene],
     input: {
       keyboard: true,
       mouse: true,

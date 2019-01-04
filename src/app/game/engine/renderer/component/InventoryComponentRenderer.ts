@@ -1,11 +1,10 @@
 import { Entity, InventoryComponent, ComponentType } from 'app/game/entities';
 import { UIConstants, UIAtlasBase } from 'app/game/ui';
+import { SceneNames } from 'app/game/scenes';
 
 import { ComponentRenderer } from './ComponentRenderer';
 import { EngineContext } from '../../EngineContext';
-
-// TODO Replace this with bitmap text
-const uiTextStyle = { fontFamily: 'Arial', fontSize: 12, color: '#000000' };
+import { TextStyles } from '../../TextStyles';
 
 let lastItemCount: number | undefined;
 const itemPickupQueue: ItemViewModel[] = [];
@@ -30,7 +29,7 @@ export class InventoryComponentRenderer extends ComponentRenderer<InventoryCompo
   ) {
     super(ctx.game);
 
-    this.ui = ctx.game.scene.get('UiScene');
+    this.ui = ctx.game.scene.get(SceneNames.UI);
   }
 
   get supportedComponent(): ComponentType {
@@ -89,7 +88,7 @@ export class InventoryComponentRenderer extends ComponentRenderer<InventoryCompo
 
     const itemImg = this.ui.add.image(12, 12, viewItem.spriteName);
     itemImg.setOrigin(0, 0);
-    const obtainedText = this.ui.add.text(50, 16, `${viewItem.name} x${viewItem.amount}`, uiTextStyle);
+    const obtainedText = this.ui.add.text(50, 16, `${viewItem.name} x${viewItem.amount}`, TextStyles.UI);
 
     this.obtainedContainer.add([itemImg, obtainedText]);
 

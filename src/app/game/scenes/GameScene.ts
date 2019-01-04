@@ -1,4 +1,4 @@
-import { environment as env } from 'app/../environments/environment';
+import { environment as env } from 'environments/environment';
 import { EntityStore, PlayerEntityHolder } from 'app/game/entities';
 import {
   EngineContext, EntityRenderManager, CommonRenderManager, ActionsRendererManager,
@@ -35,11 +35,11 @@ export class GameScene extends Phaser.Scene {
   private ecUpdater: EntityComponentUpdater;
   private uiDataUpdater: UIDataUpdater;
   private weatherDataUpdater: WeatherDataUpdater;
-
   // /BOOTSTRAP
+
   constructor() {
     super({
-      key: 'GameScene'
+      key: SceneNames.GAME
     });
     this.entityStore = new EntityStore();
   }
