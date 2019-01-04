@@ -1,4 +1,4 @@
-import { UIAtlasFx, UIAtlasBase } from '../ui';
+import { UIAtlasFx, UIAtlasBase, UIConstants } from '../ui';
 
 export class LoadScene extends Phaser.Scene {
   constructor() {
@@ -99,7 +99,35 @@ export class LoadScene extends Phaser.Scene {
     const bg = this.add.image(0, 0, 'splash-bg')
       .setOrigin(0)
       .setDisplaySize(this.width, this.height);
+
+      this.createBaseAnimations();
   }
+
+  /**
+   * Creates the animations setup in the base ui file.
+   */
+  private createBaseAnimations() {
+    this.anims.create({
+      key: UIConstants.FISHING_ANIM_SWIMMER,
+      frames: this.anims.generateFrameNames(
+        UIAtlasBase,
+        { prefix: 'swimmer_', end: 2, zeroPad: 3, suffix: '.png' }
+      ),
+      repeat: -1,
+      frameRate: 1
+    });
+
+    this.anims.create({
+      key: UIConstants.FISHING_ANIM_SWIMMER_BITTEN,
+      frames: this.anims.generateFrameNames(
+        UIAtlasBase,
+        { prefix: 'swimmer-bitten_', end: 2, zeroPad: 3, suffix: '.png' }
+      ),
+      repeat: -1,
+      frameRate: 1
+    });
+  }
+
 
   public update(): void {
     this.scene.start('GameScene');

@@ -17,6 +17,10 @@ export const UIConstants = {
   ICON_FISHING_BUTTON: 'button-fishing.png',
   ICON_FISHING: 'fish.png',
 
+  FISHING_HOOK_AREA: 'hook.png',
+  FISHING_ANIM_SWIMMER: 'fishing-swimmer',
+  FISHING_ANIM_SWIMMER_BITTEN: 'fishing-swimmer-bitten',
+
   UI_ITEM_OBTAINED_BG: 'item-obtained.png',
 
   FX_RAIN: 'rain_01.png',

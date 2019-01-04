@@ -12,3 +12,4 @@ Some assets used in this game require attribution which we gladly give. In this 
 | UI SFX Set | [Kenney Vleugels (Kenney.nl)](http://kenney.nl/assets/ui-audio) | CC0 |
 | UI pack: RPG extension | [Kenney Vleugels (Kenney.nl)](http://kenney.nl/assets/ui-audio) | CC0 |
 | UI pack: RPG extension | [Kenney Vleugels (Kenney.nl)](http://kenney.nl/assets/ui-audio) | CC0 |
+| Fishing Bob | [Nelson Yiap](https://opengameart.org/content/fishing-bobbles-spritesheet-24x24) | CC-BY 4.0 |

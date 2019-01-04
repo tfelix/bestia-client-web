@@ -9,18 +9,18 @@ import { VisualDepth } from '../VisualDepths';
 
 export class FishingComponentRenderer extends ComponentRenderer<FishingComponent> {
 
-  private readonly indicatorOffset = new Px(20, -120);
+  private readonly indicatorOffset = new Px(80, -180);
   private readonly fishlineMoveTickMs = 300;
 
   private lastFishlineMoveTick = 0;
   private fishingTarget: Phaser.Math.Vector2;
-  private fishingArea: Phaser.Geom.Rectangle;
 
   private graphicsFishline: Phaser.GameObjects.Graphics;
-  private graphicsArea: Phaser.GameObjects.Graphics;
+  private hookArea: Phaser.GameObjects.Image;
+  private hookZone: Phaser.GameObjects.Zone;
   private fishingMeter: Phaser.GameObjects.Image;
+  private fishingSwimmer: Phaser.GameObjects.Sprite;
   private fishIcon: Phaser.GameObjects.Image;
-  private fishingZone: Phaser.GameObjects.Zone;
   private fishingActionButton: Phaser.GameObjects.Image;
   private fishingCancelButton: Phaser.GameObjects.Image;
   private hasSetup = false;
@@ -73,8 +73,15 @@ export class FishingComponentRenderer extends ComponentRenderer<FishingComponent
     this.fishingCancelButton.on('pointerdown', () => this.endFishing());
 
     this.graphicsFishline = this.ctx.game.add.graphics();
-    this.graphicsArea = this.ctx.game.add.graphics();
-    this.graphicsArea.depth = VisualDepth.UI_UNDER_CURSOR;
+    this.fishingSwimmer = this.ctx.game.add.sprite(
+      this.fishingTarget.x,
+      this.fishingTarget.y,
+      UIConstants.FISHING_ANIM_SWIMMER
+    );
+    this.fishingSwimmer.anims.play(UIConstants.FISHING_ANIM_SWIMMER);
+
+    this.hookArea = this.ctx.game.add.image(this.fishingTarget.x, this.fishingTarget.y, UIAtlasBase, UIConstants.FISHING_HOOK_AREA);
+    this.hookArea.depth = VisualDepth.UI_UNDER_CURSOR + 1;
 
     this.fishingMeter = this.ctx.game.add.image(
       this.fishingTarget.x + this.indicatorOffset.x,
@@ -82,6 +89,7 @@ export class FishingComponentRenderer extends ComponentRenderer<FishingComponent
       UIAtlasBase,
       UIConstants.ICON_FISHING_METER
     );
+    this.fishingMeter.depth = VisualDepth.UI_UNDER_CURSOR;
 
     this.fishIcon = this.ctx.game.physics.add.image(
       this.fishingTarget.x + this.indicatorOffset.x,
@@ -96,35 +104,27 @@ export class FishingComponentRenderer extends ComponentRenderer<FishingComponent
     fishBody.allowGravity = false;
     fishBody.height = 32;
     fishBody.offset.x = 16;
-    fishBody.setVelocityY(10);
-    fishBody.setAccelerationY(35);
+    // fishBody.setVelocityY(10);
+    // fishBody.setAccelerationY(35);
     fishBody.setMaxVelocity(0, 60);
     fishBody.setDragY(30);
 
-    this.fishingArea = new Phaser.Geom.Rectangle(
-      this.fishingTarget.x,
-      this.fishingTarget.y,
-      80,
-      80
-    );
-
-    this.fishingZone = this.ctx.game.add.zone(
+    this.hookZone = this.ctx.game.add.zone(
       this.fishingTarget.x,
       this.fishingTarget.y - 100,
       50,
       50
     );
-    this.fishingZone.setOrigin(0, 0);
-    this.game.physics.add.existing(this.fishingZone);
-    const fishingZoneBody = this.fishingZone.body as Phaser.Physics.Arcade.Body;
-    fishingZoneBody.setMaxVelocity(0, 80);
-    fishingZoneBody.setAccelerationY(50);
-    fishingZoneBody.setDragY(20);
-    fishingZoneBody.collideWorldBounds = false;
-    fishingZoneBody.allowGravity = false;
+    this.hookZone.setOrigin(0, 0);
+    this.game.physics.add.existing(this.hookZone);
+    const hookZoneBody = this.hookZone.body as Phaser.Physics.Arcade.Body;
+    hookZoneBody.setMaxVelocity(0, 80);
+    hookZoneBody.setAccelerationY(50);
+    hookZoneBody.setDragY(20);
+    hookZoneBody.collideWorldBounds = false;
+    hookZoneBody.allowGravity = false;
 
     // this.game.physics.add.overlap(this.fishingZone, this.fishIcon, this.onFishInZone, null, this);
-
     this.lastFishlineMoveTick = this.ctx.game.time.now;
 
     this.hasSetup = true;
@@ -146,17 +146,20 @@ export class FishingComponentRenderer extends ComponentRenderer<FishingComponent
     this.graphicsFishline.destroy();
     this.graphicsFishline = null;
 
-    this.graphicsArea.destroy();
-    this.graphicsArea = null;
+    this.hookArea.destroy();
+    this.hookArea = null;
 
-    this.fishingZone.destroy();
-    this.fishingZone = null;
+    this.hookZone.destroy();
+    this.hookZone = null;
 
     this.fishingActionButton.destroy();
     this.fishingActionButton = null;
 
     this.fishingCancelButton.destroy();
     this.fishingCancelButton = null;
+
+    this.fishingSwimmer.destroy();
+    this.fishingSwimmer = null;
   }
 
   private onFishButtonClicked() {
@@ -166,20 +169,16 @@ export class FishingComponentRenderer extends ComponentRenderer<FishingComponent
     }
 
     fishingComponent.hasClickedFishingAction = true;
-    const fishingZoneBody = this.fishingZone.body as Phaser.Physics.Arcade.Body;
+    const fishingZoneBody = this.hookZone.body as Phaser.Physics.Arcade.Body;
     fishingZoneBody.setVelocityY(-50);
   }
 
   protected updateGameData(entity: Entity, component: FishingComponent) {
-    // This is no error and does indeed work.
-    const hasFishingZoneOverlap = this.game.physics.overlap(this.fishingZone, this.fishIcon);
+    const hasFishingZoneOverlap = this.game.physics.overlap(this.hookZone, this.fishIcon);
 
-    this.updateFishingRectPosition(component, hasFishingZoneOverlap);
-
+    this.updateFishingHookPosition(component, hasFishingZoneOverlap);
     this.updateFishlineTargetPosition(entity, component);
-
     this.updateFishVelocity(hasFishingZoneOverlap);
-
     this.checkEndConditions(entity, component);
   }
 
@@ -219,15 +218,10 @@ export class FishingComponentRenderer extends ComponentRenderer<FishingComponent
     return relPosY;
   }
 
-  private updateFishingRectPosition(component: FishingComponent, hasFishingZoneOverlap: boolean) {
-    this.graphicsArea.clear();
-    this.fishingArea.setPosition(this.fishingZone.x, this.fishingZone.y);
-    this.fishingArea.width = this.fishingZone.width;
-    this.fishingArea.height = this.fishingZone.height;
-
-    (hasFishingZoneOverlap) ? this.graphicsArea.fillStyle(0xff0000) : this.graphicsArea.fillStyle(0x00ff00);
-
-    this.graphicsArea.fillRectShape(this.fishingArea);
+  private updateFishingHookPosition(component: FishingComponent, hasFishingZoneOverlap: boolean) {
+    this.hookArea.setPosition(this.hookZone.x, this.hookZone.y);
+    this.hookArea.width = this.hookZone.width;
+    this.hookArea.height = this.hookZone.height;
   }
 
   private updateFishlineTargetPosition(entity: Entity, component: FishingComponent) {
@@ -245,7 +239,7 @@ export class FishingComponentRenderer extends ComponentRenderer<FishingComponent
     this.fishingTarget = offset.add(this.fishingTarget);
 
     const entityPx = MapHelper.pointToPixelCentered(posComp.position);
-    this.graphicsFishline.strokeCircle(this.fishingTarget.x, this.fishingTarget.y, 5);
+    this.fishingSwimmer.setPosition(this.fishingTarget.x, this.fishingTarget.y);
     this.graphicsFishline.lineStyle(1, 0xffffff, 1);
     this.graphicsFishline.lineBetween(entityPx.x + 10, entityPx.y - 30, this.fishingTarget.x, this.fishingTarget.y);
 
