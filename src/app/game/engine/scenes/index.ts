@@ -4,3 +4,4 @@ export * from './IntroScene';
 export * from './SceneNames';
 export * from './LoadScene';
 export * from './UiScene';
+export * from './WeatherScene';

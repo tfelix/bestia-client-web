@@ -7,7 +7,7 @@ import { WebSocketService } from './connection/websocket.service';
 import { EngineEvents } from './message';
 import { ChatComponent } from './chat/chat.component';
 import { InventoryComponent } from './inventory/inventory.component';
-import { BootScene, LoadScene, IntroScene, GameScene, UiScene } from './engine';
+import { BootScene, LoadScene, IntroScene, GameScene, UiScene, WeatherScene } from './engine';
 import { ServerEmulator } from './demo';
 
 @Component({
@@ -57,7 +57,7 @@ export class GameComponent implements OnInit {
         mapping: 'dialogModal'
       }]
     },
-    scene: [BootScene, LoadScene, IntroScene, GameScene, UiScene],
+    scene: [BootScene, LoadScene, IntroScene, GameScene, WeatherScene, UiScene],
     input: {
       keyboard: true,
       mouse: true,

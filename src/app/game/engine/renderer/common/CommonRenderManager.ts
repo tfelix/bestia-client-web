@@ -13,7 +13,6 @@ export class CommonRenderManager implements RenderStatistics {
   constructor(
     private readonly ctx: EngineContext
   ) {
-
     this.renderer.push(new CollisionCommonRenderer(this.ctx));
     this.renderer.push(new DebugInfoRenderer(this.ctx));
     this.renderer.push(new GridCommonRenderer(this.ctx));

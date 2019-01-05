@@ -1,4 +1,3 @@
-import { EntityStore, Entity } from 'entities';
 import { ActionsRenderer } from './ActionsRenderer';
 import { DamageActionsRenderer } from './DamageActionsRenderer';
 import { ChatActionsRenderer } from './ChatActionsRenderer';

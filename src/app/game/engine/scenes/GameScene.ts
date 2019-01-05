@@ -137,6 +137,8 @@ export class GameScene extends Phaser.Scene {
     this.engineContext.pointerManager.create();
     this.engineContext.cursorManager.create();
 
+    this.scene.launch(SceneNames.WEATHER, this.engineContext);
+
     // Needs to be in sync because certain events depending in this signal are
     // time dependend and need to be executed before the SyncRequestMessage is send.
     PubSub.publishSync(EngineEvents.GAME_READY, true);
