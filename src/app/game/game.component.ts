@@ -2,16 +2,13 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 
 import * as PubSub from 'pubsub-js';
 
-import { BootScene } from './scenes/BootScene';
-import { LoadScene } from './scenes/LoadScene';
-import { GameScene } from './scenes/GameScene';
-import { IntroScene } from './scenes/IntroScene';
-import { UiScene } from './scenes/UiScene';
 import { DialogModalPlugin } from './ui/DialogModalPlugin';
 import { WebSocketService } from './connection/websocket.service';
 import { EngineEvents } from './message';
 import { ChatComponent } from './chat/chat.component';
 import { InventoryComponent } from './inventory/inventory.component';
+import { BootScene, LoadScene, IntroScene, GameScene, UiScene } from './engine';
+import { ServerEmulator } from './demo';
 
 @Component({
   selector: 'app-game',
@@ -33,6 +30,8 @@ export class GameComponent implements OnInit {
 
   public hasActiveGame = false;
   public hideDefaultCursorOverGame = true;
+
+  private serverEmulator: ServerEmulator;
 
   // GameConfig type mapping key is broken
   public readonly config = {
@@ -73,7 +72,12 @@ export class GameComponent implements OnInit {
   constructor(
     private readonly websocketService: WebSocketService
   ) {
-    PubSub.subscribe(EngineEvents.GAME_READY, (_, isReady) => this.hasActiveGame = isReady);
+    PubSub.subscribe(EngineEvents.GAME_READY, (_, isReady) => {
+      this.hasActiveGame = isReady;
+
+      this.serverEmulator = new ServerEmulator(this.game);
+      this.serverEmulator.start();
+    });
   }
 
   ngOnInit() {

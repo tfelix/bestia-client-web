@@ -4,6 +4,10 @@ export const EngineEvents = {
   GAME_MOUSE_OUT: 'onMouseOut',
 
   GAME_NEW_PLAYER_ENTITY: 'NEW_PLAYER_ENTITY',
+  /**
+   * Frist event which is emitted when the game engine has initialized.
+   */
+  GAME_INIT: 'GAME_INIT',
   GAME_READY: 'GAME_READY',
 
   IO_SEND_MSG: 'SEND_MESSAGE',

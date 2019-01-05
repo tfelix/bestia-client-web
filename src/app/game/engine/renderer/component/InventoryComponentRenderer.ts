@@ -1,10 +1,10 @@
 import { Entity, InventoryComponent, ComponentType } from 'app/game/entities';
 import { UIConstants, UIAtlasBase } from 'app/game/ui';
-import { SceneNames } from 'app/game/scenes';
 
 import { ComponentRenderer } from './ComponentRenderer';
 import { EngineContext } from '../../EngineContext';
 import { TextStyles } from '../../TextStyles';
+import { SceneNames } from '../../scenes/SceneNames';
 
 let lastItemCount: number | undefined;
 const itemPickupQueue: ItemViewModel[] = [];

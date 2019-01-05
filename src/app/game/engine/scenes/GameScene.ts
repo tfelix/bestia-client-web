@@ -1,9 +1,6 @@
+import * as LOG from 'loglevel';
 import { environment as env } from 'environments/environment';
 import { EntityStore, PlayerEntityHolder } from 'app/game/entities';
-import {
-  EngineContext, EntityRenderManager, CommonRenderManager, ActionsRendererManager,
-  ActionMessageHandler
-} from 'app/game/engine';
 import {
   ConnectionLogger, MessageRouter, UIDataUpdater, WeatherDataUpdater,
   EntityComponentUpdater
@@ -12,21 +9,25 @@ import {
   SyncRequestMessage, ActionMessage, ComponentMessage, ComponentDeleteMessage,
   AccountInfoMessage, UiModalMessage, WeatherMessage, sendToServer, EngineEvents
 } from 'app/game/message';
-import { ServerEmulator } from 'app/game/demo';
 import { AccountInfo } from 'app/game/model';
 
 import { SceneNames } from './SceneNames';
+import { EngineContext } from '../EngineContext';
+import { EntityRenderManager } from '../renderer/component/EntityRenderManager';
+import { CommonRenderManager } from '../renderer/common/CommonRenderManager';
+import { ActionsRendererManager } from '../renderer/actions/ActionsRenderManager';
+import { ActionMessageHandler } from '../renderer/actions/ActionMessageHandler';
+import { LoginComponent } from 'app/login/login.component';
 
 export class GameScene extends Phaser.Scene {
 
   private entityStore: EntityStore;
-  private engineContext: EngineContext;
+  public engineContext: EngineContext;
 
   private entityRenderManager: EntityRenderManager;
   private commonRenderManager: CommonRenderManager;
   private actionRenderManager: ActionsRendererManager;
 
-  private serverEmulator: ServerEmulator;
   private connectionLogger: ConnectionLogger;
 
   // BOOTSTRAP
@@ -63,13 +64,11 @@ export class GameScene extends Phaser.Scene {
     // BOOTSTRAP CODE
     // THIS CODE MUST BE CREATED EVEN EARLIER BEFORE LOADING
     // GAME SCENE IS STARTED IF I KNOW HOW
-    this.setupMessaging();
+    this.setupMessageRouting();
     this.setupDataUpdater();
-
-    sendToServer(new SyncRequestMessage());
   }
 
-  private setupMessaging() {
+  private setupMessageRouting() {
     this.messageRouter = new MessageRouter([
       { handles: (msg) => msg instanceof ActionMessage, routeTopic: EngineEvents.IO_RECV_ACTION },
       { handles: (msg) => msg instanceof AccountInfoMessage, routeTopic: EngineEvents.IO_RECV_ACC_INFO_MSG },
@@ -79,11 +78,11 @@ export class GameScene extends Phaser.Scene {
       { handles: (msg) => msg instanceof WeatherMessage, routeTopic: EngineEvents.IO_RECV_WEATHER_MSG }
     ]);
     this.actionMessageHandler = new ActionMessageHandler(this.entityStore);
-    this.serverEmulator = new ServerEmulator(this.entityStore, this.engineContext);
   }
 
   /**
-   * Must be done after messaging was setup and after the engine context was created.
+   * Must be done after messaging was setup and after the engine context was created. These
+   * updater will update non entity based data.
    */
   private setupDataUpdater() {
     this.ecUpdater = new EntityComponentUpdater(this.entityStore);
@@ -138,14 +137,15 @@ export class GameScene extends Phaser.Scene {
     this.engineContext.pointerManager.create();
     this.engineContext.cursorManager.create();
 
-    this.serverEmulator.create();
+    // Needs to be in sync because certain events depending in this signal are
+    // time dependend and need to be executed before the SyncRequestMessage is send.
+    PubSub.publishSync(EngineEvents.GAME_READY, true);
 
-    PubSub.publish(EngineEvents.GAME_READY, true);
+    LOG.info('Engine loaded. Requesting sync with server');
+    sendToServer(new SyncRequestMessage());
   }
 
   public update() {
-    this.serverEmulator.update();
-
     this.engineContext.pointerManager.update();
     this.engineContext.cursorManager.update();
 

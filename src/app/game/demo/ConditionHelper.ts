@@ -1,9 +1,10 @@
-import { ComponentType, ConditionComponent, EntityStore } from 'app/game/entities';
+import { ComponentType, ConditionComponent } from 'app/game/entities';
+import { ServerEntityStore } from './ServerEntityStore';
 
 export class ConditionHelper {
 
   constructor(
-    private readonly entityStore: EntityStore
+    private readonly entityStore: ServerEntityStore
   ) {
   }
 

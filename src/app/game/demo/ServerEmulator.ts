@@ -1,9 +1,8 @@
 import * as PubSub from 'pubsub-js';
 import * as LOG from 'loglevel';
 
-import { WeatherData, EngineContext } from 'app/game/engine';
+import { WeatherData } from 'app/game/engine';
 import { WeatherMessage, EngineEvents } from 'app/game/message';
-import { EntityStore } from 'app/game/entities';
 
 import { ClientMessageHandler } from './ClientMessageHandler';
 import { ItemPickupHandler } from './ItemPickupHandler';
@@ -21,21 +20,22 @@ const PLAYER_ACC_ID = 1337;
 const PLAYER_ENTITY_ID = 1;
 
 export class ServerEmulator {
+
+  private tickrateHz = 60;
   private serverEntities = new ServerEntityStore();
   private entityFactory = new EntityLocalFactory(this.serverEntities);
   private messageHandler: Array<ClientMessageHandler<any>> = [];
   private eventManager: EventTriggerManager;
 
   constructor(
-    private readonly clientEntities: EntityStore,
-    private readonly ctx: EngineContext
+    private readonly game: Phaser.Game
   ) {
     PubSub.subscribe(EngineEvents.IO_SEND_MSG, (_, msg: any) => this.receivedFromClient(msg));
 
-    this.eventManager = new EventTriggerManager(this.ctx);
+    this.eventManager = new EventTriggerManager(this.game);
 
     this.messageHandler.push(new ItemPickupHandler(this.serverEntities, PLAYER_ENTITY_ID));
-    this.messageHandler.push(new BasicAttackHandler(this.clientEntities, this.serverEntities, this.entityFactory));
+    this.messageHandler.push(new BasicAttackHandler(this.serverEntities, this.entityFactory));
     this.messageHandler.push(new RequestSyncHandler(this.serverEntities, PLAYER_ACC_ID, this.entityFactory));
     this.messageHandler.push(new AbortPerformHandler(this.serverEntities, PLAYER_ENTITY_ID));
     this.messageHandler.push(new InteractionHandler(this.serverEntities));
@@ -47,7 +47,8 @@ export class ServerEmulator {
     PubSub.publish(EngineEvents.IO_RECV_MSG, msg);
   }
 
-  public create() {
+  public start() {
+    LOG.debug('Server emulator started');
     const date = new Date();
     const isRaining = false; // date.getDay() % 2 === 0;
     let dayBrightness = Math.abs(Math.abs(date.getHours() / 24 - 0.5) * 2 - 1);
@@ -72,9 +73,11 @@ export class ServerEmulator {
 
     const weatherMessage = new WeatherMessage(weatherData);
     this.sendClient(weatherMessage);
+
+    window.setInterval(this.update.bind(this), 1000 / this.tickrateHz);
   }
 
-  public update() {
+  private update() {
     this.eventManager.update();
   }
 

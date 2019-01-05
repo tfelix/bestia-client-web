@@ -3,7 +3,7 @@ import * as LOG from 'loglevel';
 
 import { EngineEvents } from 'app/game/message';
 import { Entity } from 'app/game/entities';
-import { EngineContext } from 'app/game/engine';
+import { SceneNames, GameScene } from 'app/game/engine';
 import { EventTrigger } from './EventTrigger';
 import { HelloWorldTrigger } from './HelloWorldTrigger';
 
@@ -29,10 +29,12 @@ export class EventTriggerManager {
 
   private triggers = new Map<string, EventTrigger>();
   private activeTriggers: ZoneTriggered[] = [];
+  private gameScene: GameScene;
 
   constructor(
-    private readonly ctx: EngineContext
+    private readonly game: Phaser.Game
   ) {
+    this.gameScene = this.game.scene.getScene(SceneNames.GAME) as GameScene;
 
     this.addTrigger(new HelloWorldTrigger());
 
@@ -51,9 +53,9 @@ export class EventTriggerManager {
     // Enabling collision on the player sprite should not be done here. Maybe its better
     // to do this on the renderer but I am unsure where. The best would be to add this on
     // the player component renderer which needs to be created.
-    this.ctx.game.physics.world.enable(playerSprite, Phaser.Physics.Arcade.DYNAMIC_BODY);
+    this.gameScene.physics.world.enable(playerSprite, Phaser.Physics.Arcade.DYNAMIC_BODY);
 
-    const triggerLayer = this.ctx.data.tilemap.map.getObjectLayer('Trigger');
+    const triggerLayer = this.gameScene.engineContext.data.tilemap.map.getObjectLayer('Trigger');
     triggerLayer.objects.forEach(o => {
       // Workaround as the phaser type is wrong here
       const obj = o as any as TiledObject;
@@ -64,9 +66,9 @@ export class EventTriggerManager {
         return;
       }
 
-      const zone = this.ctx.game.add.zone(obj.x, obj.y, obj.width, obj.height);
+      const zone = this.gameScene.add.zone(obj.x, obj.y, obj.width, obj.height);
       zone.setOrigin(0, 0);
-      this.ctx.game.physics.world.enable(zone, Phaser.Physics.Arcade.STATIC_BODY);
+      this.gameScene.physics.world.enable(zone, Phaser.Physics.Arcade.STATIC_BODY);
 
       const eventHandler = () => {
         const triggerKey = this.getTriggerKey(obj.name);
@@ -85,7 +87,7 @@ export class EventTriggerManager {
         trigger.triggers();
       };
 
-      this.ctx.game.physics.add.overlap(zone, playerSprite, eventHandler, null, this);
+      this.gameScene.physics.add.overlap(zone, playerSprite, eventHandler, null, this);
     });
   }
 

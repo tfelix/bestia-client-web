@@ -1,6 +1,6 @@
 import { ClientMessageHandler } from './ClientMessageHandler';
 import { BasicAttackMessage, ActionMessage, ComponentMessage, ComponentDeleteMessage } from 'app/game/message';
-import { EntityStore, DamageAction, KillAction } from 'app/game/entities';
+import { DamageAction, KillAction } from 'app/game/entities';
 import { ConditionHelper } from './ConditionHelper';
 import { ComponentCopyHelper } from './ComponentCopyHelper';
 import { ConditionComponent, ComponentType, VisualComponent, PositionComponent } from 'app/game/entities/components';
@@ -9,18 +9,14 @@ import { EntityLocalFactory } from './EntityLocalFactory';
 
 export class BasicAttackHandler extends ClientMessageHandler<BasicAttackMessage> {
 
-  // TODO Do we really keep track of the client entities?
-  // All entities should reside on the server anyways.
-  private condHelper = new ConditionHelper(this.clientEntities);
-  private copyHelper = new ComponentCopyHelper(this.clientEntities);
+  private condHelper = new ConditionHelper(this.serverEntities);
+  private copyHelper = new ComponentCopyHelper(this.serverEntities);
 
   constructor(
-    private readonly clientEntities: EntityStore,
     serverEntities: ServerEntityStore,
     private readonly entityFactory: EntityLocalFactory
   ) {
     super(serverEntities);
-
   }
 
   public isHandlingMessage(msg: any): boolean {

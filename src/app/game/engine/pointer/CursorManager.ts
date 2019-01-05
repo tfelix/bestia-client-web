@@ -2,10 +2,11 @@ import * as LOG from 'loglevel';
 
 import { UIConstants, UIAtlasBase } from 'app/game/ui';
 import { EngineEvents } from 'app/game/message';
+import { Px } from 'app/game/model';
 
 import { EngineContext } from '../EngineContext';
 import { VisualDepth } from '../renderer/VisualDepths';
-import { Px } from 'app/game/model';
+import { SceneNames } from '../scenes/SceneNames';
 
 export enum CursorType {
   DEFAULT,
@@ -50,7 +51,7 @@ export class CursorManager {
   }
 
   public create() {
-    const uiScene = this.ctx.game.scene.get('UiScene');
+    const uiScene = this.ctx.game.scene.get(SceneNames.UI);
     cursorSprites.forEach((spriteName, type) => {
       const cursor = uiScene.add.image(0, 0, UIAtlasBase, spriteName);
       cursor.visible = false;

@@ -1,6 +1,6 @@
-import { UIAtlasFx, UIAtlasBase, UIConstants } from '../ui';
 import { SceneNames } from './SceneNames';
-import { TextStyles } from '../engine/TextStyles';
+import { UIAtlasBase, UIAtlasFx, UIConstants } from 'app/game/ui';
+import { TextStyles } from '../TextStyles';
 
 export class LoadScene extends Phaser.Scene {
   constructor() {

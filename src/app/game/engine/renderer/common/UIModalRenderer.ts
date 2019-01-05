@@ -1,7 +1,6 @@
-import { UiScene } from 'app/game/scenes/UiScene';
-
 import { BaseCommonRenderer } from './BaseCommonRenderer';
-import { EngineContext } from '../..';
+import { EngineContext } from '../../EngineContext';
+import { UiScene } from '../../scenes/UiScene';
 
 export class UIModalRenderer extends BaseCommonRenderer {
 
