@@ -53,7 +53,7 @@ export class GameComponent implements OnInit {
         key: 'UiScenePlugin',
         plugin: DialogModalPlugin,
         systemKey: 'uiScenePlugin',
-        sceneKey: 'uiScene',
+        sceneKey: 'dialogModal',
         mapping: 'dialogModal'
       }]
     },

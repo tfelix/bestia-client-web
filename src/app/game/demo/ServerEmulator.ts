@@ -2,7 +2,7 @@ import * as PubSub from 'pubsub-js';
 import * as LOG from 'loglevel';
 
 import { WeatherData } from 'app/game/engine';
-import { WeatherMessage, EngineEvents } from 'app/game/message';
+import { WeatherMessage, EngineEvents, ComponentMessage } from 'app/game/message';
 
 import { ClientMessageHandler } from './ClientMessageHandler';
 import { ItemPickupHandler } from './ItemPickupHandler';
@@ -15,6 +15,9 @@ import { EntityLocalFactory } from './EntityLocalFactory';
 import { MoveComponentHandler } from './MoveComponentHandler';
 import { EventTriggerManager } from './events/EventTriggerManager';
 import { FishingComponentHandler } from './FishingComponentHandler';
+import { Simulator } from './simulator/Simulator';
+import { WeatherSimulator } from './simulator/WeatherSimulator';
+import { MoveComponent } from '../entities';
 
 const PLAYER_ACC_ID = 1337;
 const PLAYER_ENTITY_ID = 1;
@@ -25,12 +28,15 @@ export class ServerEmulator {
   private serverEntities = new ServerEntityStore();
   private entityFactory = new EntityLocalFactory(this.serverEntities);
   private messageHandler: Array<ClientMessageHandler<any>> = [];
+  private simulators: Array<Simulator> = [];
   private eventManager: EventTriggerManager;
 
   constructor(
     private readonly game: Phaser.Game
   ) {
     PubSub.subscribe(EngineEvents.IO_SEND_MSG, (_, msg: any) => this.receivedFromClient(msg));
+    PubSub.subscribe(EngineEvents.IO_RECV_MSG, (_, msg: any) => this.interceptToClient(msg));
+
 
     this.eventManager = new EventTriggerManager(this.game);
 
@@ -41,47 +47,37 @@ export class ServerEmulator {
     this.messageHandler.push(new InteractionHandler(this.serverEntities));
     this.messageHandler.push(new MoveComponentHandler(this.serverEntities));
     this.messageHandler.push(new FishingComponentHandler(this.serverEntities, PLAYER_ENTITY_ID));
-  }
 
-  private sendClient(msg: any) {
-    PubSub.publish(EngineEvents.IO_RECV_MSG, msg);
+    this.simulators.push(new WeatherSimulator());
   }
 
   public start() {
     LOG.debug('Server emulator started');
-    const date = new Date();
-    const isRaining = false; // date.getDay() % 2 === 0;
-    let dayBrightness = Math.abs(Math.abs(date.getHours() / 24 - 0.5) * 2 - 1);
-    if (dayBrightness < 0.6) {
-      dayBrightness = 0.6;
-    }
 
-    const weatherData: WeatherData = {
-      rainIntensity: 0,
-      sunBrigthness: dayBrightness,
-      lightningIntensity: 0,
-      thunderIntensity: 0,
-      thunderDistanceM: 0,
-    };
-
-    if (isRaining) {
-      weatherData.rainIntensity = Math.random() * 2;
-      weatherData.lightningIntensity = Math.random() * 1;
-      weatherData.thunderIntensity = 0.5;
-      weatherData.thunderDistanceM = Math.random() * 1200;
-    }
-
-    const weatherMessage = new WeatherMessage(weatherData);
-    this.sendClient(weatherMessage);
+    this.simulators.forEach(s => s.start());
 
     window.setInterval(this.update.bind(this), 1000 / this.tickrateHz);
   }
 
   private update() {
     this.eventManager.update();
+
+    this.simulators.forEach(s => s.update());
   }
 
-  private receivedFromClient(message: any) {
+  /**
+   * Certain messages need special handling if send to the client. This filtering
+   * and handling is done here.
+   */
+  private interceptToClient(message: any) {
+    if (message instanceof ComponentMessage) {
+      if (message.component instanceof MoveComponent) {
+        this.tryHandleMessage(message);
+      }
+    }
+  }
+
+  private tryHandleMessage(message: any): boolean {
     let wasHandled = false;
     this.messageHandler.forEach(h => {
       if (h.isHandlingMessage(message)) {
@@ -89,7 +85,12 @@ export class ServerEmulator {
         wasHandled = true;
       }
     });
-    if (!wasHandled) {
+
+    return wasHandled;
+  }
+
+  private receivedFromClient(message: any) {
+    if (!this.tryHandleMessage(message)) {
       const msgCtorName = message.constructor.name;
       LOG.warn(`Unknown client message received: ${msgCtorName}:${JSON.stringify(message)}`);
     }

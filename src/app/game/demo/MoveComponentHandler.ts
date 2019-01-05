@@ -1,7 +1,7 @@
 import * as LOG from 'loglevel';
 
 import { ClientMessageHandler } from './ClientMessageHandler';
-import { UpdateComponentMessage } from 'app/game/message';
+import { UpdateComponentMessage, ComponentMessage } from 'app/game/message';
 import { Entity } from 'app/game/entities';
 import { MoveComponent, ComponentType, PositionComponent } from 'app/game/entities/components';
 import { ServerEntityStore } from './ServerEntityStore';
@@ -20,14 +20,24 @@ export class MoveComponentHandler extends ClientMessageHandler<UpdateComponentMe
   public isHandlingMessage(msg: any): boolean {
     if (msg instanceof UpdateComponentMessage) {
       return msg.component instanceof MoveComponent;
-    } else {
-      return false;
     }
+
+    // We must also handle messages send from the server to the client.
+    if (msg instanceof ComponentMessage) {
+      return msg.component instanceof MoveComponent;
+    }
+
+    return false;
   }
-  public handle(msg: UpdateComponentMessage<MoveComponent>) {
+
+  public handle(msg: UpdateComponentMessage<MoveComponent> | ComponentMessage<MoveComponent>) {
     const entity = this.serverEntities.getEntity(msg.component.entityId);
 
     if (entity == null) {
+      return;
+    }
+
+    if (this.isComponentAlreadyTracked(msg.component)) {
       return;
     }
 
@@ -54,6 +64,15 @@ export class MoveComponentHandler extends ClientMessageHandler<UpdateComponentMe
       this.moveTick(entity, moveCopy);
     }, moveDuration);
     this.entitiesMovementCallbacks.set(entity.id, callbackId);
+  }
+
+  /**
+   * Check if this handler already tracks this component and avoid recursive calls because
+   * the updated MoveComponent is also send to the client after each tick which we dont want to
+   * track anymore.
+   */
+  private isComponentAlreadyTracked(move: MoveComponent): boolean {
+    return this.entitiesMovementCallbacks.has(move.entityId);
   }
 
   private moveTick(entity: Entity, move: MoveComponent) {

@@ -4,10 +4,6 @@ export const EngineEvents = {
   GAME_MOUSE_OUT: 'onMouseOut',
 
   GAME_NEW_PLAYER_ENTITY: 'NEW_PLAYER_ENTITY',
-  /**
-   * Frist event which is emitted when the game engine has initialized.
-   */
-  GAME_INIT: 'GAME_INIT',
   GAME_READY: 'GAME_READY',
 
   IO_SEND_MSG: 'SEND_MESSAGE',
@@ -18,8 +14,5 @@ export const EngineEvents = {
   IO_RECV_DEL_COMP_MSG: 'RECV_DEL_COMP_MESSAGE',
   IO_RECV_ACC_INFO_MSG: 'RECV_MSG_ACCINFO',
   IO_RECV_UI_MSG: 'RECV_MSG_UI',
-  IO_RECV_WEATHER_MSG: 'RECV_MSG_WEATHER',
-
-  CL_ACTIVE_PLAYER_CHANGED: 'CL_ACTIVE_PL_CHANGE',
-  CL_INVENTORY_CHANGED: 'CL_INVENTORY_CHANGED'
+  IO_RECV_WEATHER_MSG: 'RECV_MSG_WEATHER'
 };

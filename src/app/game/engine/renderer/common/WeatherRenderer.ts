@@ -31,11 +31,11 @@ export class WeatherRenderer extends BaseCommonRenderer {
     this.ctx.data.dayProgress = 0.5;
     this.ctx.data.weather.rainIntensity = 0;
 
-    this.cloudShadowImage = this.scene.add.image(0, 0, 'cloud_shadows');
-    this.cloudShadowImage.blendMode = Phaser.BlendModes.MULTIPLY;
-    this.cloudShadowImage.setScale(4);
-    this.cloudShadowImage.alpha = 0.3;
-    this.cloudShadowImage.depth = VisualDepth.WEATHER_FX;
+    // this.cloudShadowImage = this.scene.add.image(0, 0, 'cloud_shadows');
+    // this.cloudShadowImage.blendMode = Phaser.BlendModes.MULTIPLY;
+    // this.cloudShadowImage.setScale(4);
+    // this.cloudShadowImage.alpha = 0.3;
+    // this.cloudShadowImage.depth = VisualDepth.WEATHER_FX;
 
     this.weatherGfx = this.scene.add.graphics();
     this.weatherGfx.depth = VisualDepth.WEATHER_FX;

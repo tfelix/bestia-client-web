@@ -14,7 +14,7 @@ export abstract class ClientMessageHandler<T> {
 
   public abstract isHandlingMessage(msg: any): boolean;
 
-  public abstract handle(msg: T);
+  public abstract handle(msg: T): void;
 
   protected deleteComponent(component: Component) {
     const entity = this.serverEntities.getEntity(component.entityId);
