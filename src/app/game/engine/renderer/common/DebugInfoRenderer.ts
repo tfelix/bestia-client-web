@@ -80,11 +80,13 @@ export class DebugInfoRenderer extends BaseCommonRenderer {
 
     const fps = Math.round(1000 / (this.renderFrameTimesMs.reduce((sum, v) => sum + v) / this.renderFrameTimesMs.length));
     const activePointerClass = this.ctx.pointerManager.activePointer.constructor.name;
+    const trackedEntityCound = this.ctx.entityStore.entities.size;
 
     let debugTxt = `FPS: ${fps}`;
     debugTxt += `\nCamera (scrollX: ${camScrollX} scrollY: ${camScrollY})`;
     debugTxt += `\nPointer (wx: ${pointerScreenX} wy: ${pointerScreenY} mx: ${pointerMapPos.x} my: ${pointerMapPos.y})`;
     debugTxt += `\nActive Pointer: ${activePointerClass}`;
+    debugTxt += `\nTracked Entities: ${trackedEntityCound}`;
 
     this.text.setText(debugTxt);
     this.text.setPosition(

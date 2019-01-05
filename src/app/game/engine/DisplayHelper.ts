@@ -20,6 +20,7 @@ export class DisplayHelper {
   public getDisplaySizeInTiles(): Size {
     const widthTiles = Math.ceil(this.sceneWidth / MapHelper.TILE_SIZE_PX);
     const heightTiles = Math.ceil(this.sceneHeight / MapHelper.TILE_SIZE_PX);
+
     return new Size(widthTiles, heightTiles);
   }
 
@@ -30,6 +31,7 @@ export class DisplayHelper {
     const camScrollY = Math.floor(
       this.scene.cameras.main.scrollY / MapHelper.TILE_SIZE_PX
     );
+
     return new Point(camScrollX, camScrollY);
   }
 
@@ -38,6 +40,7 @@ export class DisplayHelper {
     const camScrollY = Math.floor(this.scene.cameras.main.scrollY);
     const pointerScreenX = this.scene.input.activePointer.position.x;
     const pointerScreenY = this.scene.input.activePointer.position.y;
+
     return MapHelper.pixelToPoint(camScrollX + pointerScreenX, pointerScreenY + camScrollY);
   }
 }

@@ -3,23 +3,27 @@ import { BaseCommonRenderer } from './BaseCommonRenderer';
 import { CollisionCommonRenderer } from './CollisionCommonRenderer';
 import { DebugInfoRenderer } from './DebugInfoRenderer';
 import { UIModalRenderer } from './UIModalRenderer';
-import { WeatherRenderer } from './WeatherRenderer';
 import { GridCommonRenderer } from './GridCommonRenderer';
 
 export class CommonRenderManager implements RenderStatistics {
 
   private renderer: BaseCommonRenderer[] = [];
 
-  constructor(
-    private readonly ctx: EngineContext
-  ) {
-    this.renderer.push(new CollisionCommonRenderer(this.ctx));
-    this.renderer.push(new DebugInfoRenderer(this.ctx));
-    this.renderer.push(new GridCommonRenderer(this.ctx));
+  public static standardInstance(ctx: EngineContext): CommonRenderManager {
+    const manager = new CommonRenderManager();
 
-    this.renderer.push(new UIModalRenderer(this.ctx));
-    this.renderer.push(new WeatherRenderer(this.ctx));
+    manager.addRenderer(new CollisionCommonRenderer(ctx));
+    manager.addRenderer(new DebugInfoRenderer(ctx));
+    manager.addRenderer(new GridCommonRenderer(ctx));
+    manager.addRenderer(new UIModalRenderer(ctx));
+
+    return manager;
   }
+
+  public addRenderer(renderer: BaseCommonRenderer) {
+    this.renderer.push(renderer);
+  }
+
 
   public create() {
     this.renderer.forEach(r => r.create());

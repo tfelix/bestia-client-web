@@ -1,12 +1,12 @@
 import * as LOG from 'loglevel';
 import { SceneNames } from './SceneNames';
-import { VisualDepth } from '../renderer/VisualDepths';
 import { EngineContext } from '../EngineContext';
+import { CommonRenderManager, WeatherRenderer } from '../renderer';
 
 export class WeatherScene extends Phaser.Scene {
 
-  private cloudShadowImage: Phaser.GameObjects.Image;
   private ctx: EngineContext;
+  private weatherRenderManager: CommonRenderManager;
 
   constructor() {
     super({
@@ -16,6 +16,9 @@ export class WeatherScene extends Phaser.Scene {
 
   public init(engineCtx: EngineContext) {
     this.ctx = engineCtx;
+
+    this.weatherRenderManager = new CommonRenderManager();
+    this.weatherRenderManager.addRenderer(new WeatherRenderer(this.ctx, this));
   }
 
   public preload(): void {
@@ -24,11 +27,10 @@ export class WeatherScene extends Phaser.Scene {
   }
 
   public create() {
-    this.cloudShadowImage = this.add.image(0, 0, 'cloud_shadows');
-    this.cloudShadowImage.setScale(1);
-    this.cloudShadowImage.setDepth(VisualDepth.WEATHER_FX);
+    this.weatherRenderManager.create();
   }
 
   public update(): void {
+    this.weatherRenderManager.update();
   }
 }

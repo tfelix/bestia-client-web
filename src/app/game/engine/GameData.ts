@@ -13,7 +13,7 @@ export interface TileMapData {
 
 export class GameData {
   public uiModal: string[] = [];
-  public dayProgress: 0.1;
+  public dayProgress = 0.1;
   public tilemap: TileMapData;
   public weather: WeatherData = {
     rainIntensity: 0,

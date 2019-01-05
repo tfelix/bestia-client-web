@@ -51,7 +51,7 @@ export class GameScene extends Phaser.Scene {
     this.engineContext = new EngineContext(this, this.entityStore, playerEntityHolder);
 
     this.entityRenderManager = new EntityRenderManager(this.engineContext);
-    this.commonRenderManager = new CommonRenderManager(this.engineContext);
+    this.commonRenderManager = CommonRenderManager.standardInstance(this.engineContext);
     this.actionRenderManager = new ActionsRendererManager(this.engineContext);
 
     if (env.production) {
