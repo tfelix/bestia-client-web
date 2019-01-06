@@ -20,6 +20,7 @@ export const UIConstants = {
   FISHING_HOOK_AREA: 'hook.png',
   FISHING_ANIM_SWIMMER: 'fishing-swimmer',
   FISHING_ANIM_SWIMMER_BITTEN: 'fishing-swimmer-bitten',
+  FISHING_BUBBLE: 'bubble.png',
 
   UI_ITEM_OBTAINED_BG: 'item-obtained.png',
 

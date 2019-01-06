@@ -1,7 +1,7 @@
 import { EngineContext } from '../../EngineContext';
 import { BaseCommonRenderer } from './BaseCommonRenderer';
-import { DisplayHelper } from '../../DisplayHelper';
 import { MapHelper } from '../../MapHelper';
+import { SceneNames } from '../../scenes/SceneNames';
 
 const DEBUG_STYLE = {
   fontFamily: 'Courier New',
@@ -18,6 +18,7 @@ export class DebugInfoRenderer extends BaseCommonRenderer {
 
   private readonly textOffsetX = 200;
   private readonly textOffsetY = 20;
+  private readonly uiScene: Phaser.Scene;
 
   private text: Phaser.GameObjects.Text | null = null;
   private lastRenderTime = null;
@@ -27,6 +28,8 @@ export class DebugInfoRenderer extends BaseCommonRenderer {
     private readonly ctx: EngineContext
   ) {
     super();
+
+    this.uiScene = this.ctx.game.scene.get(SceneNames.UI);
   }
 
   public needsUpdate(): boolean {
@@ -50,7 +53,7 @@ export class DebugInfoRenderer extends BaseCommonRenderer {
   }
 
   private createData() {
-    this.text = this.ctx.game.add.text(
+    this.text = this.uiScene.add.text(
       this.textOffsetX,
       this.textOffsetY,
       '',
@@ -69,7 +72,6 @@ export class DebugInfoRenderer extends BaseCommonRenderer {
   }
 
   private updateData() {
-
     const camScrollX = Math.floor(this.ctx.game.cameras.main.scrollX);
     const camScrollY = Math.floor(this.ctx.game.cameras.main.scrollY);
 
@@ -89,10 +91,6 @@ export class DebugInfoRenderer extends BaseCommonRenderer {
     debugTxt += `\nTracked Entities: ${trackedEntityCound}`;
 
     this.text.setText(debugTxt);
-    this.text.setPosition(
-      this.ctx.game.cameras.main.scrollX + this.textOffsetX,
-      this.ctx.game.cameras.main.scrollY + this.textOffsetY
-    );
   }
 
   private clearAllData() {
