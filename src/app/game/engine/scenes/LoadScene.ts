@@ -90,7 +90,6 @@ export class LoadScene extends Phaser.Scene {
     // Tree Sprite
 
     // Misc
-    this.load.glsl('shaderTest', '../assets/shader/test.frag');
     this.load.atlas(
       UIAtlasBase,
       '../assets/base.png',
