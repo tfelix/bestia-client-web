@@ -25,7 +25,7 @@ export const TextStyles = {
   },
   INTRO: {
     fontFamily: 'Verdana',
-    fontSize: 12,
+    fontSize: 36,
     color: '#ffffff'
   }
 };

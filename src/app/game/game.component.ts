@@ -29,7 +29,7 @@ export class GameComponent implements OnInit {
   public inventoryComponent: InventoryComponent;
 
   public hasActiveGame = false;
-  public hideDefaultCursorOverGame = true;
+  public hideDefaultCursorOverGame = false;
 
   private serverEmulator: ServerEmulator;
 
@@ -77,6 +77,7 @@ export class GameComponent implements OnInit {
   ) {
     PubSub.subscribe(EngineEvents.GAME_READY, (_, isReady) => {
       this.hasActiveGame = isReady;
+      this.hideDefaultCursorOverGame = true;
 
       this.serverEmulator = new ServerEmulator(this.game);
       this.serverEmulator.start();

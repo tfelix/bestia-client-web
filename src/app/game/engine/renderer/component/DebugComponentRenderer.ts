@@ -4,7 +4,7 @@ import { ComponentRenderer } from './ComponentRenderer';
 import { VisualDepth } from '../VisualDepths';
 import { MapHelper } from '../../MapHelper';
 import { TextStyles } from '../../TextStyles';
-import { SceneNames } from '../../scenes';
+import { SceneNames } from '../../scenes/SceneNames';
 
 export interface DebugData {
   origin: Phaser.GameObjects.Graphics;
