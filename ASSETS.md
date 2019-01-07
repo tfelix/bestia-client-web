@@ -13,3 +13,7 @@ Some assets used in this game require attribution which we gladly give. In this 
 | UI pack: RPG extension | [Kenney Vleugels (Kenney.nl)](http://kenney.nl/assets/ui-audio) | CC0 |
 | UI pack: RPG extension | [Kenney Vleugels (Kenney.nl)](http://kenney.nl/assets/ui-audio) | CC0 |
 | Fishing Bob | [Nelson Yiap](https://opengameart.org/content/fishing-bobbles-spritesheet-24x24) | CC-BY 4.0 |
+| Intro Sand And Rock | [Joakim Olofsson](https://www.deviantart.com/joakimolofsson) | Public Domain w. giving Credits |
+| Intro Summoning | [Joakim Olofsson](https://www.deviantart.com/joakimolofsson) | Public Domain w. giving Credits |
+| Intro Landscape | [Joakim Olofsson](https://www.deviantart.com/joakimolofsson) | Public Domain w. giving Credits |
+| Intro Creation Shader | [Danilo Guanabara](http://www.pouet.net/prod.php?which=57245) | Public Domain w. giving Credits |
