@@ -1,50 +1,21 @@
 import { SceneNames } from './SceneNames';
 import { UIAtlasBase, UIAtlasFx, UIConstants } from 'app/game/ui';
-import { TextStyles } from '../TextStyles';
+import { Loadbar } from './Loadbar';
 
 export class LoadScene extends Phaser.Scene {
+
+  private readonly loadbar: Loadbar;
+
   constructor() {
     super({
       key: SceneNames.LOAD
     });
-  }
 
-  private loadBar: Phaser.GameObjects.Graphics;
-  private loaderText: Phaser.GameObjects.Text;
-
-  private halfWidth: number;
-  private halfHeight: number;
-
-  private setupProgressBar() {
-    this.loaderText = this.add.text(this.halfWidth, this.halfHeight, '0 %', TextStyles.LOADER);
-    this.loaderText.setOrigin(0.5);
-
-    this.loadBar = this.add.graphics();
-    this.loadBar.x = this.halfWidth;
-    this.loadBar.y = this.halfHeight;
-
-    this.loadBar.lineStyle(20, 0xf2f2f2, 1);
-    this.loadBar.beginPath();
-    this.loadBar.arc(0, 0, 130, 0, Phaser.Math.DegToRad(370), false, 0.03);
-    this.loadBar.strokePath();
-    this.loadBar.closePath();
-
-    this.load.on('progress', progressValue => {
-      this.loadBar.clear();
-      this.loaderText.text = `${Math.round(progressValue * 100)} %`;
-      this.loadBar.beginPath();
-      this.loadBar.lineStyle(20, 0xf2f2f2, 1);
-      this.loadBar.arc(0, 0, 130, 0, Phaser.Math.DegToRad(370 * progressValue), false, 0.03);
-      this.loadBar.strokePath();
-      this.loadBar.closePath();
-    });
+    this.loadbar = new Loadbar(this);
   }
 
   public preload(): void {
-    this.halfWidth = this.game.config.width as number / 2;
-    this.halfHeight = this.game.config.height as number / 2;
-
-    this.setupProgressBar();
+    this.loadbar.setup();
 
     // Load Player Sprite
     this.load.json('player_1_desc', '../assets/sprites/mob/player_1/player_1_desc.json');

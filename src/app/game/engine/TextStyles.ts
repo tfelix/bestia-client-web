@@ -22,5 +22,10 @@ export const TextStyles = {
   DEBUG: {
     fontFamily: 'Verdana',
     fontSize: 9
+  },
+  INTRO: {
+    fontFamily: 'Verdana',
+    fontSize: 12,
+    color: '#ffffff'
   }
 };
