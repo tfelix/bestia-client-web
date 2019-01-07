@@ -2,6 +2,8 @@ import { Entity, ComponentType, ConditionComponent } from 'app/game/entities';
 
 import { ComponentRenderer } from './ComponentRenderer';
 import { EngineContext } from '../../EngineContext';
+import { SceneNames } from '../../scenes/SceneNames';
+import { MapHelper } from '../../MapHelper';
 
 export interface ConditionData {
   conditionGraphic: Phaser.GameObjects.Graphics;
@@ -13,10 +15,14 @@ const rect = new Phaser.Geom.Rectangle();
 
 export class ConditionComponentRenderer extends ComponentRenderer<ConditionComponent> {
 
+  private readonly uiScene: Phaser.Scene;
+
   constructor(
     private readonly ctx: EngineContext
   ) {
     super(ctx.game);
+
+    this.uiScene = ctx.game.scene.get(SceneNames.UI);
   }
 
   get supportedComponent(): ComponentType {
@@ -28,7 +34,7 @@ export class ConditionComponentRenderer extends ComponentRenderer<ConditionCompo
   }
 
   protected createGameData(entity: Entity, component: ConditionComponent) {
-    const condGfx = this.game.add.graphics();
+    const condGfx = this.uiScene.add.graphics();
     condGfx.fillStyle(0x00AA00, 1);
     entity.data.condition = {
       conditionGraphic: condGfx
@@ -68,8 +74,9 @@ export class ConditionComponentRenderer extends ComponentRenderer<ConditionCompo
 
     rect.height = conditionBarHeight;
 
-    rect.x = sprite.x - maxWidth / 2;
-    rect.y = sprite.y + bottomHealtbarOffset;
+    const localPos = MapHelper.worldToSceneLocal(this.ctx.game.cameras.main, sprite.x, sprite.y);
+    rect.x = localPos.x - maxWidth / 2;
+    rect.y = localPos.y + bottomHealtbarOffset;
     rect.width = maxWidth;
 
     // Draw background
