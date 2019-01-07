@@ -6,7 +6,7 @@ const VisualDepth = {
 
   UI_UNDER_CURSOR: 10000,
   UI: 10100,
-  UI_CURSOR: 10100
+  UI_CURSOR: 20000
 };
 
 export { VisualDepth };

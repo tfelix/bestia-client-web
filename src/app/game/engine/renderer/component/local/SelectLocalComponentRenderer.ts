@@ -35,7 +35,7 @@ export class SelectLocalComponentRenderer extends ComponentRenderer<SelectLocalC
   }
 
   private setupSpriteAsButton(visual: Phaser.GameObjects.Image) {
-    visual.depth = VisualDepth.UI;
+    visual.depth = VisualDepth.UI_UNDER_CURSOR;
     visual.setInteractive();
     visual.setScaleMode(Phaser.ScaleModes.LINEAR);
     visual.on('pointerover', () => {

@@ -30,7 +30,8 @@ export class HighlightLocalComponentRenderer extends ComponentRenderer<Highlight
 
     const entitySprite = entitySpriteData.sprite;
     const highlightSprite = this.ctx.game.add.sprite(entitySprite.x, entitySprite.y, entitySpriteData.spriteName);
-    highlightSprite.setScale(1.3);
+    highlightSprite.setOrigin(entitySprite.originX, entitySprite.originY);
+    highlightSprite.setScale(entitySprite.scaleX * 1.3, entitySprite.scaleY * 1.3);
     highlightSprite.z = entitySprite.z - 1;
     highlightSprite.rotation = entitySprite.rotation;
     highlightSprite.setTintFill(component.color);
