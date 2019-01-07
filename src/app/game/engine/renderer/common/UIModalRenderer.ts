@@ -1,6 +1,7 @@
 import { BaseCommonRenderer } from './BaseCommonRenderer';
 import { EngineContext } from '../../EngineContext';
-import { UiScene } from '../../scenes/UiScene';
+import { UiDialogScene } from '../../scenes/UiDialogScene';
+import { SceneNames } from '../../scenes/SceneNames';
 
 export class UIModalRenderer extends BaseCommonRenderer {
 
@@ -11,7 +12,7 @@ export class UIModalRenderer extends BaseCommonRenderer {
   }
 
   public update() {
-    const uiScene = this.ctx.game.scene.get('UiScene') as UiScene;
+    const uiScene = this.ctx.game.scene.get(SceneNames.UI_DIALOG) as UiDialogScene;
     const modalText = this.ctx.data.uiModal.shift();
     uiScene.dialogModal.setText(modalText);
   }

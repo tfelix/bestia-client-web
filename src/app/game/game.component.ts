@@ -7,7 +7,7 @@ import { WebSocketService } from './connection/websocket.service';
 import { EngineEvents } from './message';
 import { ChatComponent } from './chat/chat.component';
 import { InventoryComponent } from './inventory/inventory.component';
-import { BootScene, LoadScene, IntroScene, GameScene, UiScene, WeatherScene } from './engine';
+import { BootScene, LoadScene, IntroScene, GameScene, UiScene, WeatherScene, UiDialogScene } from './engine';
 import { ServerEmulator } from './demo';
 
 @Component({
@@ -45,7 +45,7 @@ export class GameComponent implements OnInit {
     render: { pixelArt: true },
     physics: {
       default: 'arcade',
-      arcade: { debug: true }
+      arcade: { debug: false }
     },
     parent: 'game',
     plugins: {
@@ -57,7 +57,10 @@ export class GameComponent implements OnInit {
         mapping: 'dialogModal'
       }]
     },
-    scene: [BootScene, LoadScene, IntroScene, GameScene, WeatherScene, UiScene],
+    scene: [
+      BootScene, LoadScene, IntroScene, GameScene, WeatherScene,
+      UiDialogScene, UiScene
+    ],
     input: {
       keyboard: true,
       mouse: true,

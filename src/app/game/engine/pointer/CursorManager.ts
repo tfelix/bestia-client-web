@@ -51,7 +51,7 @@ export class CursorManager {
   }
 
   public create() {
-    const uiScene = this.ctx.game.scene.get(SceneNames.UI);
+    const uiScene = this.ctx.game.scene.get(SceneNames.UI_DIALOG);
     cursorSprites.forEach((spriteName, type) => {
       const cursor = uiScene.add.image(0, 0, UIAtlasBase, spriteName);
       cursor.visible = false;

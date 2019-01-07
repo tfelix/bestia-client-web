@@ -1,6 +1,6 @@
 import { RequestInteractionMessage } from 'app/game/message';
 import {
-  InteractionType, InteractionLocalComponent, ComponentType, Entity, EntityTypeComponent
+  InteractionType, InteractionLocalComponent, ComponentType, Entity, EntityTypeComponent, EntityType
 } from 'app/game/entities';
 
 import { ClientMessageHandler } from './ClientMessageHandler';
@@ -44,26 +44,27 @@ export class InteractionHandler extends ClientMessageHandler<RequestInteractionM
   }
 
   private getPossibleInteraction(entity: Entity): InteractionType[] {
-    const typeComponent = entity.getComponent(ComponentType.ENTITY_TYPE) as EntityTypeComponent;
-
+    return [InteractionType.LOOT, InteractionType.ATTACK];
     /*
-    switch (typeComponent.entityType) {
-      case EntityTraits.BESTIA:
-        return [InteractionType.ATTACK];
-      case EntityTraits.ITEM:
-        return [InteractionType.LOOT, InteractionType.ATTACK];
-      case EntityTraits.NPC:
-        return [InteractionType.SPEAK, InteractionType.ATTACK];
-        case EntityTraits.OBJECT:
-        return [InteractionType.USE];
-      default:
-    }*/
+    const typeComponent = entity.getComponent(ComponentType.ENTITY_TYPE) as EntityTypeComponent;
 
     const signEntity = this.serverEntities.getEntityByIdentifier('sign_post');
     if (signEntity && signEntity.id === entity.id) {
       return [InteractionType.READ];
     }
 
-    return [];
+    switch (typeComponent.entityType) {
+      case EntityType.MOB:
+        return [InteractionType.ATTACK];
+      case EntityType.ITEM:
+        return [InteractionType.LOOT, InteractionType.ATTACK];
+      case EntityType.NPC:
+        return [InteractionType.SPEAK, InteractionType.ATTACK];
+        case EntityType.OBJECT:
+        return [InteractionType.USE];
+      default:
+    }
+
+    return [];*/
   }
 }

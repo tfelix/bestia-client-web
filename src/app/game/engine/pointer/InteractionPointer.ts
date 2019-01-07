@@ -2,7 +2,7 @@ import * as LOG from 'loglevel';
 
 import {
   ComponentType, InteractionLocalComponent,
-  Entity, InteractionService, HighlightComponent, EntityTypeComponent
+  Entity, InteractionService, HighlightComponent, SelectLocalComponent
 } from 'app/game/entities';
 import { RequestInteractionMessage, EngineEvents } from 'app/game/message';
 import { Px, Point } from 'app/game/model';
@@ -90,7 +90,6 @@ export class InteractionPointer extends Pointer {
 
     if (this.activeEntity) {
       this.removeSelection();
-      return;
     }
 
     const interactionComp = clickedEntity.getComponent(ComponentType.LOCAL_INTERACTION) as InteractionLocalComponent;
@@ -98,6 +97,10 @@ export class InteractionPointer extends Pointer {
       const localComponent = new HighlightComponent(clickedEntity.id);
       localComponent.color = 0x008900;
       clickedEntity.addComponent(localComponent);
+
+      const selectComp = new SelectLocalComponent(clickedEntity.id);
+      clickedEntity.addComponent(selectComp);
+
       this.activeEntity = clickedEntity;
     }
   }
@@ -105,6 +108,7 @@ export class InteractionPointer extends Pointer {
   private removeSelection() {
     if (this.activeEntity) {
       this.activeEntity.removeComponentByType(ComponentType.LOCAL_HIGHLIGHT);
+      this.activeEntity.removeComponentByType(ComponentType.LOCAL_SELECT);
       this.activeEntity = null;
     }
   }

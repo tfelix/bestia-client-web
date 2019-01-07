@@ -19,6 +19,8 @@ export class WeatherScene extends Phaser.Scene {
   private ctx: EngineContext;
   private weatherRenderManager: CommonRenderManager;
 
+  private customPipeline: Phaser.Renderer.WebGL.WebGLPipeline;
+
   constructor() {
     super({
       key: SceneNames.WEATHER
@@ -39,8 +41,8 @@ export class WeatherScene extends Phaser.Scene {
   }
 
   public create() {
-    const customPipeline = (this.game.renderer as Phaser.Renderer.WebGL.WebGLRenderer).addPipeline('Custom', new TestPipeline(this.game));
-    customPipeline.setFloat2('u_resolution', this.game.config.width as number, this.game.config.height as number);
+    // this.customPipeline = (this.game.renderer as Phaser.Renderer.WebGL.WebGLRenderer).addPipeline('Custom', new TestPipeline2(this.game));
+    // this.customPipeline.setFloat2('resolution', this.game.config.width as number, this.game.config.height as number);
     // customPipeline.setFloat1('radius', 3.0);
     // customPipeline.setFloat2('dir', 1.0, 1.0);
 
@@ -50,7 +52,7 @@ export class WeatherScene extends Phaser.Scene {
     // clouds.setScale(2);
     // clouds.setPipeline('Custom');
     // this.cameras.main.setPipeline(customPipeline);
-    // this.cameras.main.setRenderToTexture('Custom');
+    // this.cameras.main.setRenderToTexture(this.customPipeline);
 
     this.weatherRenderManager.create();
   }

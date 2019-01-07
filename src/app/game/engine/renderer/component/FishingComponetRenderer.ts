@@ -27,6 +27,7 @@ export class FishingComponentRenderer extends ComponentRenderer<FishingComponent
   private fishIcon: Phaser.GameObjects.Image;
   private fishingActionButton: Phaser.GameObjects.Image;
   private fishingCancelButton: Phaser.GameObjects.Image;
+  private container: Phaser.GameObjects.Container;
   private hasSetup = false;
 
   constructor(
@@ -65,9 +66,14 @@ export class FishingComponentRenderer extends ComponentRenderer<FishingComponent
     );
     this.fishingSwimmer.anims.play(UIConstants.FISHING_ANIM_SWIMMER);
 
-    const container = this.uiScene.add.container(
-      500,
-      500
+    const localPos = MapHelper.worldToSceneLocal(
+      this.game.cameras.main,
+      this.fishingTarget.x,
+      this.fishingTarget.y
+    );
+    this.container = this.uiScene.add.container(
+      localPos.x,
+      localPos.y
     );
 
     this.fishingMeter = this.uiScene.add.image(
@@ -77,7 +83,7 @@ export class FishingComponentRenderer extends ComponentRenderer<FishingComponent
       UIConstants.ICON_FISHING_METER
     );
     this.fishingMeter.depth = VisualDepth.UI_UNDER_CURSOR;
-    container.add(this.fishingMeter);
+    this.container.add(this.fishingMeter);
 
     this.hookArea = this.uiScene.add.image(
       0,
@@ -85,7 +91,7 @@ export class FishingComponentRenderer extends ComponentRenderer<FishingComponent
       UIAtlasBase,
       UIConstants.FISHING_HOOK_AREA
     );
-    container.add(this.hookArea);
+    this.container.add(this.hookArea);
 
     this.fishIcon = this.uiScene.physics.add.image(
       0,
@@ -94,7 +100,7 @@ export class FishingComponentRenderer extends ComponentRenderer<FishingComponent
       UIConstants.ICON_FISHING
     );
     this.fishIcon.depth = VisualDepth.UI_UNDER_CURSOR;
-    container.add(this.fishIcon);
+    this.container.add(this.fishIcon);
     const fishBody = this.fishIcon.body as Phaser.Physics.Arcade.Body;
     fishBody.collideWorldBounds = false;
     fishBody.allowGravity = false;
@@ -109,7 +115,7 @@ export class FishingComponentRenderer extends ComponentRenderer<FishingComponent
       100,
       82
     );
-    container.add(this.hookZone);
+    this.container.add(this.hookZone);
     this.uiScene.physics.add.existing(this.hookZone);
     const hookZoneBody = this.hookZone.body as Phaser.Physics.Arcade.Body;
     hookZoneBody.setMaxVelocity(0, 80);
@@ -120,11 +126,11 @@ export class FishingComponentRenderer extends ComponentRenderer<FishingComponent
 
     // Setup the mask to hide any sprite leaving the fishing zone.
     const shape = this.uiScene.make.graphics({});
-    shape.setPosition(450, 350);
+    shape.setPosition(localPos.x - 50, localPos.y - 150);
     shape.fillStyle(0xffffff);
     shape.beginPath();
     shape.fillRect(0, 0, 100, 300);
-    container.mask = new Phaser.Display.Masks.GeometryMask(this.uiScene, shape);
+    this.container.mask = new Phaser.Display.Masks.GeometryMask(this.uiScene, shape);
 
     const bubblesLine = new Phaser.Geom.Line(-50, 150, 50, 150);
     this.bubbles = this.uiScene.add.particles(UIAtlasBase);
@@ -138,11 +144,11 @@ export class FishingComponentRenderer extends ComponentRenderer<FishingComponent
       frequency: 1000,
       emitZone: { type: 'random', source: bubblesLine, quantity: 50 }
     } as any);
-    container.add(this.bubbles);
+    this.container.add(this.bubbles);
 
     this.fishingActionButton = this.uiScene.add.image(
-      container.x + 90,
-      container.y,
+      this.container.x + 90,
+      this.container.y,
       UIAtlasBase,
       UIConstants.ICON_FISHING_BUTTON
     );
@@ -152,8 +158,8 @@ export class FishingComponentRenderer extends ComponentRenderer<FishingComponent
     this.fishingActionButton.depth = VisualDepth.UI_UNDER_CURSOR;
 
     this.fishingCancelButton = this.uiScene.add.image(
-      container.x - 85,
-      container.y,
+      this.container.x - 85,
+      this.container.y,
       UIAtlasBase,
       UIConstants.CANCEL
     );

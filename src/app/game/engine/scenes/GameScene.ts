@@ -17,7 +17,6 @@ import { EntityRenderManager } from '../renderer/component/EntityRenderManager';
 import { CommonRenderManager } from '../renderer/common/CommonRenderManager';
 import { ActionsRendererManager } from '../renderer/actions/ActionsRenderManager';
 import { ActionMessageHandler } from '../renderer/actions/ActionMessageHandler';
-import { LoginComponent } from 'app/login/login.component';
 
 export class GameScene extends Phaser.Scene {
 
@@ -92,10 +91,15 @@ export class GameScene extends Phaser.Scene {
 
   public preload(): void {
     this.engineContext.pointerManager.load();
+
+    this.load.glsl('test', '../assets/shader/test.glsl');
   }
 
   public create() {
+    // Launch the scenes needed for layering effects
+    this.scene.launch(SceneNames.UI_DIALOG);
     this.scene.launch(SceneNames.UI);
+    this.scene.launch(SceneNames.WEATHER, this.engineContext);
 
     const map = this.make.tilemap({ key: 'map' });
 
@@ -136,8 +140,6 @@ export class GameScene extends Phaser.Scene {
 
     this.engineContext.pointerManager.create();
     this.engineContext.cursorManager.create();
-
-    this.scene.launch(SceneNames.WEATHER, this.engineContext);
 
     // Needs to be in sync because certain events depending in this signal are
     // time dependend and need to be executed before the SyncRequestMessage is send.

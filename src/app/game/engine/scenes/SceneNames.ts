@@ -4,5 +4,6 @@ export const SceneNames = {
   INTRO: 'introScene',
   GAME: 'gameScene',
   UI: 'uiScene',
+  UI_DIALOG: 'uiDialogScene',
   WEATHER: 'weatherScene'
 };

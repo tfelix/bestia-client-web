@@ -8,6 +8,7 @@ import {
 import { ComponentRenderer } from '../ComponentRenderer';
 import { EngineContext } from '../../..';
 import { VisualDepth } from '../../VisualDepths';
+import { SceneNames } from '../../../scenes/SceneNames';
 
 export class SelectLocalComponentRenderer extends ComponentRenderer<SelectLocalComponent> {
 
@@ -26,7 +27,7 @@ export class SelectLocalComponentRenderer extends ComponentRenderer<SelectLocalC
   ) {
     super(ctx.game);
 
-    this.guiScene = ctx.game.scene.get('UiScene');
+    this.guiScene = ctx.game.scene.get(SceneNames.UI_DIALOG);
 
     this.gfx = this.game.add.graphics();
     this.gfx.lineStyle(20, 0xFF0000);
@@ -111,7 +112,6 @@ export class SelectLocalComponentRenderer extends ComponentRenderer<SelectLocalC
     }
     this.icons = interactionNames.map(v => this.guiScene.add.image(0, 0, UIAtlasBase, v.interactionIconName));
     this.icons.forEach((s, i) => {
-
       const interactionType = interactionNames[i].interaction;
       if (this.isDefaultInteraction(entity, interactionType)) {
         s.setTint(0xDCFB12);

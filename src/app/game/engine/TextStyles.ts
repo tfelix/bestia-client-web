@@ -18,5 +18,9 @@ export const TextStyles = {
     fontFamily: 'Arial',
     fontSize: 12,
     color: '#000000'
+  },
+  DEBUG: {
+    fontFamily: 'Verdana',
+    fontSize: 9
   }
 };

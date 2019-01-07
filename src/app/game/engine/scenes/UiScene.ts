@@ -1,9 +1,10 @@
-import { DialogModalPlugin } from 'app/game/ui';
 import { SceneNames } from './SceneNames';
 
+/**
+ * Scene to display damage, chats e.g. everything which should not be affected
+ * by the day and nights effects.
+ */
 export class UiScene extends Phaser.Scene {
-
-  public dialogModal: DialogModalPlugin;
 
   constructor() {
     super({
@@ -12,6 +13,5 @@ export class UiScene extends Phaser.Scene {
   }
 
   public create() {
-    this.dialogModal.setup();
   }
 }

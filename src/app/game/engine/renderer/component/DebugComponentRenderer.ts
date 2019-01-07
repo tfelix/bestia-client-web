@@ -3,24 +3,27 @@ import { Entity, DebugComponent, Component, ComponentType, InteractionLocalCompo
 import { ComponentRenderer } from './ComponentRenderer';
 import { VisualDepth } from '../VisualDepths';
 import { MapHelper } from '../../MapHelper';
-import { t } from '@angular/core/src/render3';
+import { TextStyles } from '../../TextStyles';
+import { SceneNames } from '../../scenes';
 
 export interface DebugData {
   origin: Phaser.GameObjects.Graphics;
   debugText?: Phaser.GameObjects.Text;
 }
 
-const debugTextStyle = {
-  fontFamily: 'Verdana',
-  fontSize: 8
-};
-
 export class DebugComponentRenderer extends ComponentRenderer<DebugComponent> {
+
+  private readonly uiScene: Phaser.Scene;
+  private readonly mainCamera: Phaser.Cameras.Scene2D.Camera;
+
 
   constructor(
     game: Phaser.Scene
   ) {
     super(game);
+
+    this.mainCamera = game.cameras.main;
+    this.uiScene = game.scene.get(SceneNames.UI);
   }
 
   get supportedComponent(): ComponentType {
@@ -46,11 +49,11 @@ export class DebugComponentRenderer extends ComponentRenderer<DebugComponent> {
     };
 
     const sprite = entity.data.visual.sprite;
-    entity.data.debug.debugText = this.game.add.text(
+    entity.data.debug.debugText = this.uiScene.add.text(
       sprite.x + 10,
       sprite.y - 32,
       '',
-      debugTextStyle
+      TextStyles.DEBUG
     );
     entity.data.debug.debugText.depth = VisualDepth.UI;
 
@@ -80,8 +83,10 @@ export class DebugComponentRenderer extends ComponentRenderer<DebugComponent> {
     if (interactionComp) {
       text += `a.Inter:: ${interactionComp.activeInteraction}, pos.Inter.: ${JSON.stringify(interactionComp.possibleInteractions)}\n`;
     }
-    debugData.debugText.setPosition(sprite.x + 10, sprite.y - 32);
     debugData.debugText.text = text;
+
+    const localPos = MapHelper.worldToSceneLocal(this.mainCamera, sprite.x, sprite.y);
+    debugData.debugText.setPosition(localPos.x + 10, localPos.y - 32);
     debugData.origin.setPosition(sprite.x, sprite.y);
   }
 }

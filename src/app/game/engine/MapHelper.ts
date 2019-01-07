@@ -4,6 +4,13 @@ export class MapHelper {
 
   public static readonly TILE_SIZE_PX = 32;
 
+  public static worldToSceneLocal(camera: any, x: number, y: number): Px {
+    const localX = (x - camera.worldView.x) * camera.zoom;
+    const localY = (y - camera.worldView.y) * camera.zoom;
+
+    return new Px(localX, localY);
+  }
+
   public static pointToPixelCentered(p: Vec2): Px {
     return new Px(
       p.x * this.TILE_SIZE_PX + this.TILE_SIZE_PX / 2,
