@@ -59,7 +59,7 @@ export class LoadScene extends Phaser.Scene {
     itemNames.forEach(x => this.load.image(x, `../assets/sprites/items/${x}.png`));
 
     // Shader
-    this.load.glsl('noise', '../assets/shader/noise.glsl');
+    this.load.glsl('weather', '../assets/shader/weather.glsl');
 
     // Misc
     this.load.atlas(

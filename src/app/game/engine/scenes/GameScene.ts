@@ -24,7 +24,7 @@ class WeatherPipeline extends Phaser.Renderer.WebGL.Pipelines.TextureTintPipelin
     super({
       game: game,
       renderer: game.renderer,
-      fragShader: game.cache.shader.get('noise')
+      fragShader: game.cache.shader.get('weather')
     });
   }
 }
