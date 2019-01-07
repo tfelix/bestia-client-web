@@ -4,6 +4,8 @@ varying vec2 outTexCoord;
 
 uniform sampler2D u_texture;
 uniform vec2 u_resolution;
+uniform float u_dayProgress;
+uniform float u_brightness;
 
 float random(in vec2 st) {
     return fract(sin(dot(st.xy,
@@ -36,23 +38,22 @@ float noise(in vec2 st) {
 }
 
 void main() {
-  vec2 st = gl_FragCoord.xy/u_resolution.xy;
+  vec2 st = gl_FragCoord.xy / u_resolution.xy;
   vec2 pos = vec2(st * 5.0);
 
   float n = noise(pos);
-  float steppedNoise = step(0.5, n);
+  // float steppedNoise = step(0.5, n);
 
-/*
-  if(steppedNoise < 1.0) {
-    gl_FragColor = texture2D(u_texture, outTexCoord) * steppedNoise;
-  } else {
-    gl_FragColor = vec4(vec3(steppedNoise), 1.0);
-  }
-  */
+  vec3 color = texture2D(u_texture, outTexCoord).rgb;
 
-  // gl_FragColor = vec4(texture2D(u_texture, outTexCoord).rgb * steppedNoise, 1.0);
+// Apply contrast.
+  color = ((color - 0.5) * max(1.0, 0.0)) + 0.5;
+  // Apply brightness.
+  color.rgb += 0.1;
 
-  // vec4 color = outColor * steppedNoise;
-  gl_FragColor = vec4(vec3(steppedNoise), 0.9);
-  // gl_FragColor = texture2D(u_texture, outTexCoord) * steppedNoise;
+  color.r += color.r * u_dayProgress;
+  color.g += color.g * u_dayProgress * 0.2;
+  color.b += color.b * u_dayProgress * 0.2;
+
+  gl_FragColor = vec4(color * n, 1.0);
 }

@@ -58,7 +58,8 @@ export class LoadScene extends Phaser.Scene {
     const itemNames = ['empty_bottle', 'knife', 'fish'];
     itemNames.forEach(x => this.load.image(x, `../assets/sprites/items/${x}.png`));
 
-    // Tree Sprite
+    // Shader
+    this.load.glsl('noise', '../assets/shader/noise.glsl');
 
     // Misc
     this.load.atlas(

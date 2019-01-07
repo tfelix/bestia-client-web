@@ -18,6 +18,17 @@ import { CommonRenderManager } from '../renderer/common/CommonRenderManager';
 import { ActionsRendererManager } from '../renderer/actions/ActionsRenderManager';
 import { ActionMessageHandler } from '../renderer/actions/ActionMessageHandler';
 
+class WeatherPipeline extends Phaser.Renderer.WebGL.Pipelines.TextureTintPipeline {
+
+  constructor(game: Phaser.Game) {
+    super({
+      game: game,
+      renderer: game.renderer,
+      fragShader: game.cache.shader.get('noise')
+    });
+  }
+}
+
 export class GameScene extends Phaser.Scene {
 
   private entityStore: EntityStore;
@@ -100,6 +111,13 @@ export class GameScene extends Phaser.Scene {
     this.scene.launch(SceneNames.UI_DIALOG);
     this.scene.launch(SceneNames.UI);
     this.scene.launch(SceneNames.WEATHER, this.engineContext);
+
+    const customPipeline = (this.game.renderer as Phaser.Renderer.WebGL.WebGLRenderer)
+      .addPipeline('Custom', new WeatherPipeline(this.game));
+    customPipeline.setFloat2('u_resolution', this.game.config.width as number, this.game.config.height as number);
+    customPipeline.setFloat1('u_brightness', 1);
+    customPipeline.setFloat1('u_dayProgress', 0.5);
+    this.cameras.main.setRenderToTexture(customPipeline);
 
     const map = this.make.tilemap({ key: 'map' });
 
