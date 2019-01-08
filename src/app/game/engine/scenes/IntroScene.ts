@@ -5,8 +5,6 @@ import { TextStyles } from '../TextStyles';
 import { ShaderPipeline } from '../pipelines/ShaderPipeline';
 import { TextAnimator } from '../TextAnimator';
 
-// Use this font: https://fonts.google.com/specimen/Rubik
-
 export class IntroScene extends Phaser.Scene {
 
   private readonly loadbar: Loadbar;
@@ -23,6 +21,9 @@ export class IntroScene extends Phaser.Scene {
   private creationFadeTween: Phaser.Tweens.Tween;
 
   // Step 3
+
+  // Step 6
+  private plasmaPipeline: Phaser.Renderer.WebGL.WebGLPipeline;
 
   // Step 7
   private textAnimator: TextAnimator;
@@ -42,6 +43,7 @@ export class IntroScene extends Phaser.Scene {
     this.loadbar.setup();
 
     this.load.atlas('flares', '../assets/fx/flares.png', '../assets/fx/flares.json');
+    this.load.atlas('intro-chars', '../assets/sprites/mob/intro/intro-chars.png', '../assets/sprites/mob/intro/intro-chars.json');
 
     this.load.image('living-world', '../assets/img/landscape_by_joakimolofsson.jpg');
     this.load.image('dead-world', '../assets/img/sand_and_rock_by_joakimolofsson.jpg');
@@ -49,6 +51,7 @@ export class IntroScene extends Phaser.Scene {
     this.load.image('logo', '../assets/img/logo-full-white.png');
 
     this.load.glsl('creation', '../assets/shader/creation.glsl');
+    this.load.glsl('plasma', '../assets/shader/plasma.glsl');
   }
 
   public create() {
@@ -69,6 +72,9 @@ export class IntroScene extends Phaser.Scene {
         break;
       case 2:
         this.updateStep2(time, delta);
+        break;
+      case 5:
+        this.updateStep5(time, delta);
         break;
     }
   }
@@ -171,18 +177,72 @@ export class IntroScene extends Phaser.Scene {
 
   private createStep5() {
     this.step = 5;
+    this.sceneTime = 0;
 
-    // Show Player Sprite with Rainbow Animation
-    const text = this.add.text(this.widthH, this.heightH, 'PLAYER', TextStyles.INTRO);
+    this.plasmaPipeline = (this.game.renderer as Phaser.Renderer.WebGL.WebGLRenderer)
+      .addPipeline('plasma', new ShaderPipeline(this.game, 'plasma'));
+    this.plasmaPipeline.setFloat2('u_resolution', this.width, this.height);
+
+    const male = this.add.sprite(this.widthH - 150, this.heightH, 'intro-chars', 'male-001.png');
+    male.setScale(2);
+    male.alpha = 0;
+    male.on('animationcomplete', () => {
+      male.setFrame('male-001.png');
+    });
+
+    const frameNamesMale = this.anims.generateFrameNames('intro-chars', {
+      start: 1,
+      end: 8,
+      zeroPad: 3,
+      prefix: 'male-',
+      suffix: '.png'
+    });
+    this.anims.create({ key: 'attack-male', frames: frameNamesMale, frameRate: 6, repeat: 1 });
+
+    const female = this.add.sprite(this.widthH + 150, this.heightH, 'intro-chars', 'female-001.png');
+    female.setScale(2);
+    female.alpha = 0;
+    female.on('animationcomplete', () => {
+      female.setFrame('female-001.png');
+    });
+
+    const frameNamesFemale = this.anims.generateFrameNames('intro-chars', {
+      start: 1,
+      end: 7,
+      zeroPad: 3,
+      prefix: 'female-',
+      suffix: '.png'
+    });
+    this.anims.create({ key: 'attack-female', frames: frameNamesFemale, frameRate: 6, repeat: 1 });
+
+    [female, male].forEach(s => {
+      this.tweens.add({
+        targets: s,
+        alpha: 1,
+        ease: 'Power1',
+        duration: 2000
+      });
+    });
 
     this.time.delayedCall(3000, () => {
-      text.destroy();
+      female.anims.play('attack-female');
+      male.anims.play('attack-male');
+    }, [], this);
+
+    this.time.delayedCall(4500, () => {
+      female.setPipeline('plasma');
+      male.setPipeline('plasma');
+    }, [], this);
+
+    this.time.delayedCall(9000, () => {
+      this.cameras.main.flash();
+      female.destroy();
+      male.destroy();
       this.createStep6();
     }, [], this);
   }
 
   private createStep6() {
-    // TODO Fade out the logo again
     const logo = this.add.image(this.widthH, this.heightH, 'logo');
     logo.setOrigin(0.5);
     logo.alpha = 0;
@@ -261,7 +321,11 @@ export class IntroScene extends Phaser.Scene {
   private updateStep2(time: number, delta: number) {
     this.creationPipeline.setFloat1('u_time', this.sceneTime / 1000);
     this.creationPipeline.setFloat1('u_fade', this.creationFadeTween.getValue());
-    console.log(this.creationFadeTween.getValue());
+    this.sceneTime += delta;
+  }
+
+  private updateStep5(time: number, delta: number) {
+    this.plasmaPipeline.setFloat1('u_time', this.sceneTime / 1000);
     this.sceneTime += delta;
   }
 
