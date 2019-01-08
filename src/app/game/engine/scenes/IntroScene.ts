@@ -62,7 +62,7 @@ export class IntroScene extends Phaser.Scene {
     this.heightH = this.height / 2;
     this.widthH = this.width / 2;
 
-    this.createStep1();
+    this.createStep5();
   }
 
   public update(time: number, delta: number) {
@@ -234,8 +234,22 @@ export class IntroScene extends Phaser.Scene {
       male.setPipeline('plasma');
     }, [], this);
 
+    this.tweens.add({
+      targets: male,
+      alpha: 0,
+      ease: 'Power1',
+      duration: 2000,
+      delay: 7000
+    });
+    this.tweens.add({
+      targets: female,
+      alpha: 0,
+      ease: 'Power1',
+      duration: 2000,
+      delay: 7000
+    });
+
     this.time.delayedCall(9000, () => {
-      this.cameras.main.flash();
       female.destroy();
       male.destroy();
       this.createStep6();
@@ -243,6 +257,7 @@ export class IntroScene extends Phaser.Scene {
   }
 
   private createStep6() {
+    this.cameras.main.flash();
     const logo = this.add.image(this.widthH, this.heightH, 'logo');
     logo.setOrigin(0.5);
     logo.alpha = 0;
