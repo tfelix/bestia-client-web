@@ -3,49 +3,9 @@ import { SceneNames } from './SceneNames';
 import { Loadbar } from './Loadbar';
 import { TextStyles } from '../TextStyles';
 import { ShaderPipeline } from '../pipelines/ShaderPipeline';
+import { TextAnimator } from '../TextAnimator';
 
-class TextAnimator {
-
-  private eventCounter = 0;
-  private dialog: string[];
-  private timedEvent: Phaser.Time.TimerEvent;
-  public letterPerSecond = 6;
-
-  constructor(
-    private readonly scene: Phaser.Scene,
-    private readonly text: Phaser.GameObjects.Text
-  ) {
-
-  }
-
-  public animateText(text: string, animate = true) {
-    this.eventCounter = 0;
-    this.dialog = text.split('');
-    if (this.timedEvent) {
-      this.timedEvent.destroy();
-    }
-
-    const tempText = animate ? '' : text;
-
-    if (animate) {
-
-      this.timedEvent = this.scene.time.addEvent({
-        delay: 1000 / this.letterPerSecond,
-        callback: this.showNextLetter,
-        callbackScope: this,
-        loop: true
-      });
-    }
-  }
-
-  private showNextLetter() {
-    this.eventCounter++;
-    this.text.setText(this.text.text + this.dialog[this.eventCounter - 1]);
-    if (this.eventCounter === this.dialog.length) {
-      this.timedEvent.destroy();
-    }
-  }
-}
+// Use this font: https://fonts.google.com/specimen/Rubik
 
 export class IntroScene extends Phaser.Scene {
 
@@ -86,7 +46,7 @@ export class IntroScene extends Phaser.Scene {
     this.load.image('living-world', '../assets/img/landscape_by_joakimolofsson.jpg');
     this.load.image('dead-world', '../assets/img/sand_and_rock_by_joakimolofsson.jpg');
     this.load.image('magic-world', '../assets/img/summoning_by_joakimolofsson.jpg');
-    this.load.image('logo', '../assets/img/logo-white-100.png');
+    this.load.image('logo', '../assets/img/logo-full-white.png');
 
     this.load.glsl('creation', '../assets/shader/creation.glsl');
   }
@@ -167,9 +127,10 @@ export class IntroScene extends Phaser.Scene {
     this.step = 3;
 
     const livingWorld = this.add.image(this.widthH, this.heightH, 'living-world');
-    livingWorld.displayWidth = this.width;
+    livingWorld.displayHeight = this.height;
     const deadWorld = this.add.image(this.widthH, this.heightH, 'dead-world');
-    deadWorld.displayWidth = this.width;
+    deadWorld.setScale(2);
+    deadWorld.displayHeight = this.height;
     deadWorld.alpha = 0;
 
     const timeline = this.tweens.createTimeline({});
@@ -225,15 +186,15 @@ export class IntroScene extends Phaser.Scene {
     const logo = this.add.image(this.widthH, this.heightH, 'logo');
     logo.setOrigin(0.5);
     logo.alpha = 0;
-    logo.setScale(0.8);
+    logo.setScale(0.5);
 
     const timeline = this.tweens.createTimeline({});
 
     timeline.add({
       targets: logo,
       alpha: 1,
-      scaleX: 2,
-      scaleY: 2,
+      scaleX: 1,
+      scaleY: 1,
       ease: 'Power1',
       duration: 8000
     });

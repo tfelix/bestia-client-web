@@ -1,21 +1,21 @@
 
 export const TextStyles = {
   CHAT_STYLE: {
-    fontFamily: 'Arial',
+    fontFamily: 'Viga',
     fontSize: 12,
     color: '#FFFFFF',
     boundsAlignH: 'center',
     boundsAlignV: 'middle'
   },
   LOADER: {
-    fontFamily: 'Arial',
+    fontFamily: 'Viga',
     fontSize: 26,
     color: '#FFFFFF',
     boundsAlignH: 'center',
     boundsAlignV: 'middle'
   },
   UI: {
-    fontFamily: 'Arial',
+    fontFamily: 'Viga',
     fontSize: 12,
     color: '#000000'
   },
@@ -24,7 +24,7 @@ export const TextStyles = {
     fontSize: 9
   },
   INTRO: {
-    fontFamily: 'Verdana',
+    fontFamily: 'Viga',
     fontSize: 36,
     color: '#ffffff'
   }
