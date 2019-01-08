@@ -39,21 +39,20 @@ float noise(in vec2 st) {
 
 void main() {
   vec2 st = gl_FragCoord.xy / u_resolution.xy;
-  vec2 pos = vec2(st * 5.0);
+  vec2 pos = vec2(st * 2.0);
 
   float n = noise(pos);
-  // float steppedNoise = step(0.5, n);
+  float steppedNoise = max(smoothstep(0.5, 1.0, n), 0.35);
 
   vec3 color = texture2D(u_texture, outTexCoord).rgb;
 
-// Apply contrast.
+  // Apply contrast and brigthness.
   color = ((color - 0.5) * max(1.0, 0.0)) + 0.5;
-  // Apply brightness.
   color.rgb += 0.1;
 
   color.r += color.r * u_dayProgress;
   color.g += color.g * u_dayProgress * 0.2;
   color.b += color.b * u_dayProgress * 0.2;
 
-  gl_FragColor = vec4(color * n, 1.0);
+  gl_FragColor = vec4(color * steppedNoise, 1.0);
 }

@@ -1,7 +1,7 @@
 # Bestia Browsergame Client
 
 <p align="center">
-  <img src="src/assets/img/logo-full-black.png">
+  <img src="src/assets/img/logo-full-black.png" style="width: 60%; height: 60%;">
 </p>
 
 [![Build Status](https://travis-ci.org/tfelix/bestia-client.svg?branch=master)](https://travis-ci.org/tfelix/bestia-client)
