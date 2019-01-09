@@ -50,6 +50,22 @@ export class HighlightLocalComponentRenderer extends ComponentRenderer<Highlight
   }
 
   protected updateGameData(entity: Entity, component: HighlightComponent) {
-    entity.data.highlight.highlightSprite.setTintFill(component.color);
+    const entitySprite = entity.data.visual && entity.data.visual.sprite;
+    if (!entitySprite) {
+      return;
+    }
+
+    const highlightSprite = entity.data.highlight.highlightSprite;
+
+    highlightSprite.setOrigin(entitySprite.originX, entitySprite.originY);
+    highlightSprite.setScale(entitySprite.scaleX * 1.3, entitySprite.scaleY * 1.3);
+    highlightSprite.z = entitySprite.z - 1;
+    highlightSprite.rotation = entitySprite.rotation;
+    highlightSprite.setTintFill(component.color);
+    highlightSprite.setPosition(entitySprite.x, entitySprite.y);
+    highlightSprite.setFrame(entitySprite.frame.name);
+    highlightSprite.flipX = entitySprite.flipX;
+
+    // entity.data.highlight.highlightSprite.setTintFill(component.color);
   }
 }
