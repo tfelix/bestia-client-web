@@ -1,7 +1,7 @@
 import { UiModalMessage, EngineEvents } from 'app/game/message';
 import { EngineContext } from 'app/game/engine';
 
-export class UIDataUpdater {
+export class UiDataUpdater {
   constructor(
     private readonly ctx: EngineContext
   ) {

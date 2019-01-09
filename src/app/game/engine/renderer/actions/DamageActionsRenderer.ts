@@ -1,11 +1,17 @@
 import { Entity, DamageAction, ComponentType, VisualComponent } from 'app/game/entities';
 
 import { ActionsRenderer } from './ActionsRenderer';
+import { SceneNames } from '../../scenes/SceneNames';
+import { TextStyles } from '../../TextStyles';
 
 export class DamageActionsRenderer extends ActionsRenderer {
 
+  private readonly uiScene: Phaser.Scene;
+
   constructor(game: Phaser.Scene) {
     super(game);
+
+    this.uiScene = game.scene.get(SceneNames.UI);
   }
 
   public needsUpdate(entity: Entity): boolean {
@@ -27,11 +33,11 @@ export class DamageActionsRenderer extends ActionsRenderer {
 
     actions.forEach(a => {
       const dmgTxt = String(a.totalAmount);
-      const txt = this.game.add.text(
+      const txt = this.uiScene.add.text(
         visual.sprite.x,
         (visual.sprite.y - visual.sprite.height / 2),
         dmgTxt,
-        { fontFamily: 'Arial', fontSize: 18, color: '#FFFFFF' }
+        TextStyles.DAMAGE
       );
       txt.setOrigin(0.5, 0.5);
       txt.depth = 10000;

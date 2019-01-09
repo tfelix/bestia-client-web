@@ -14,6 +14,11 @@ export const TextStyles = {
     boundsAlignH: 'center',
     boundsAlignV: 'middle'
   },
+  DAMAGE: {
+    fontFamily: 'Viga',
+    fontSize: 18,
+    color: '#FFFFFF'
+  },
   UI: {
     fontFamily: 'Viga',
     fontSize: 12,

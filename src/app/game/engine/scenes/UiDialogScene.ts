@@ -13,5 +13,6 @@ export class UiDialogScene extends Phaser.Scene {
 
   public create() {
     this.dialogModal.setup();
+    this.scene.bringToTop(SceneNames.UI_DIALOG);
   }
 }

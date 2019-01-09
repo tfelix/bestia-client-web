@@ -62,7 +62,7 @@ export class IntroScene extends Phaser.Scene {
     this.heightH = this.height / 2;
     this.widthH = this.width / 2;
 
-    this.createStep5();
+    this.createStep1();
   }
 
   public update(time: number, delta: number) {

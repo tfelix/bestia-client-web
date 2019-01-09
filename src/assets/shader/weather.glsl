@@ -3,6 +3,7 @@ precision mediump float;
 varying vec2 outTexCoord;
 
 uniform sampler2D u_texture;
+uniform vec2 u_cloud_offset;
 uniform vec2 u_resolution;
 uniform float u_dayProgress;
 uniform float u_brightness;
@@ -29,7 +30,6 @@ float noise(in vec2 st) {
 
     // Cubic Hermine Curve.  Same as SmoothStep()
     vec2 u = f * f * (3.0 - 2.0 * f);
-    // u = smoothstep(0.,1.,f);
 
     // Mix 4 coorners percentages
     return mix(a, b, u.x) +
@@ -41,7 +41,7 @@ void main() {
   vec2 st = gl_FragCoord.xy / u_resolution.xy;
   vec2 pos = vec2(st * 2.0);
 
-  float n = noise(pos);
+  float n = noise(pos + u_cloud_offset);
   float steppedNoise = max(smoothstep(0.5, 1.0, n), 0.35);
 
   vec3 color = texture2D(u_texture, outTexCoord).rgb;

@@ -2,7 +2,7 @@ import * as LOG from 'loglevel';
 import { environment as env } from 'environments/environment';
 import { EntityStore, PlayerEntityHolder } from 'app/game/entities';
 import {
-  ConnectionLogger, MessageRouter, UIDataUpdater, WeatherDataUpdater,
+  ConnectionLogger, MessageRouter, UiDataUpdater, WeatherDataUpdater,
   EntityComponentUpdater
 } from 'app/game/connection';
 import {
@@ -34,9 +34,13 @@ export class GameScene extends Phaser.Scene {
   private messageRouter: MessageRouter;
   private actionMessageHandler: ActionMessageHandler;
   private ecUpdater: EntityComponentUpdater;
-  private uiDataUpdater: UIDataUpdater;
+  private uiDataUpdater: UiDataUpdater;
   private weatherDataUpdater: WeatherDataUpdater;
   // /BOOTSTRAP
+
+  // This is a test must be placed inside a renderer.
+  private cloudOffset = { x: 0, y: 0 };
+  private customPipeline: Phaser.Renderer.WebGL.WebGLPipeline;
 
   constructor() {
     super({
@@ -86,14 +90,12 @@ export class GameScene extends Phaser.Scene {
    */
   private setupDataUpdater() {
     this.ecUpdater = new EntityComponentUpdater(this.entityStore);
-    this.uiDataUpdater = new UIDataUpdater(this.engineContext);
+    this.uiDataUpdater = new UiDataUpdater(this.engineContext);
     this.weatherDataUpdater = new WeatherDataUpdater(this.engineContext);
   }
 
   public preload(): void {
     this.engineContext.pointerManager.load();
-
-    this.load.glsl('test', '../assets/shader/test.glsl');
   }
 
   public create() {
@@ -102,12 +104,14 @@ export class GameScene extends Phaser.Scene {
     this.scene.launch(SceneNames.UI);
     this.scene.launch(SceneNames.WEATHER, this.engineContext);
 
-    const customPipeline = (this.game.renderer as Phaser.Renderer.WebGL.WebGLRenderer)
+    // The weather renderer is placed in a different scene. This here should be managed in a better way inside some
+    // of the renderer. however I want to prevent the split of the renderer into two.
+    this.customPipeline = (this.game.renderer as Phaser.Renderer.WebGL.WebGLRenderer)
       .addPipeline('Custom', new ShaderPipeline(this.game, 'weather'));
-    customPipeline.setFloat2('u_resolution', this.game.config.width as number, this.game.config.height as number);
-    customPipeline.setFloat1('u_brightness', 1);
-    customPipeline.setFloat1('u_dayProgress', 0.5);
-    this.cameras.main.setRenderToTexture(customPipeline);
+    this.customPipeline.setFloat2('u_resolution', this.game.config.width as number, this.game.config.height as number);
+    this.customPipeline.setFloat1('u_brightness', 1);
+    this.customPipeline.setFloat2('u_cloud_offset', this.cloudOffset.x, this.cloudOffset.y);
+    this.cameras.main.setRenderToTexture(this.customPipeline);
 
     const map = this.make.tilemap({ key: 'map' });
 
@@ -166,5 +170,9 @@ export class GameScene extends Phaser.Scene {
     this.commonRenderManager.update();
 
     this.engineContext.collisionUpdater.update();
+
+    this.cloudOffset.x += 0.0001;
+    this.cloudOffset.y += 0.0001;
+    this.customPipeline.setFloat2('u_cloud_offset', this.cloudOffset.x, this.cloudOffset.y);
   }
 }

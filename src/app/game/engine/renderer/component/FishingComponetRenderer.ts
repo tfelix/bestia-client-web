@@ -71,10 +71,16 @@ export class FishingComponentRenderer extends ComponentRenderer<FishingComponent
       this.fishingTarget.x,
       this.fishingTarget.y
     );
+    /*
     this.container = this.uiScene.add.container(
       localPos.x,
       localPos.y
     );
+    */
+   this.container = this.uiScene.add.container(
+    500,
+    500
+  );
 
     this.fishingMeter = this.uiScene.add.image(
       0,
@@ -130,7 +136,7 @@ export class FishingComponentRenderer extends ComponentRenderer<FishingComponent
     shape.fillStyle(0xffffff);
     shape.beginPath();
     shape.fillRect(0, 0, 100, 300);
-    this.container.mask = new Phaser.Display.Masks.GeometryMask(this.uiScene, shape);
+    // this.container.mask = new Phaser.Display.Masks.GeometryMask(this.uiScene, shape);
 
     const bubblesLine = new Phaser.Geom.Line(-50, 150, 50, 150);
     this.bubbles = this.uiScene.add.particles(UIAtlasBase);
@@ -155,7 +161,7 @@ export class FishingComponentRenderer extends ComponentRenderer<FishingComponent
     this.fishingActionButton.setInteractive();
     this.fishingActionButton.on('pointerdown', () => this.onFishButtonClicked());
     this.fishingActionButton.setScale(2);
-    this.fishingActionButton.depth = VisualDepth.UI_UNDER_CURSOR;
+    this.fishingActionButton.depth = 0; // VisualDepth.UI_UNDER_CURSOR;
 
     this.fishingCancelButton = this.uiScene.add.image(
       this.container.x - 85,
@@ -223,7 +229,7 @@ export class FishingComponentRenderer extends ComponentRenderer<FishingComponent
     this.updateFishingHookPosition(component, hasFishingZoneOverlap);
     this.updateFishlineTargetPosition(entity, component);
     this.updateFishVelocity(hasFishingZoneOverlap);
-    this.checkEndConditions(entity, component);
+    // this.checkEndConditions(entity, component);
   }
 
   private checkEndConditions(entity: Entity, component: FishingComponent) {

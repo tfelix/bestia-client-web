@@ -1,4 +1,4 @@
-import { UIAtlasBase, UIConstants, UIAtlasFx } from 'app/game/ui';
+import { UIConstants, UIAtlasFx } from 'app/game/ui';
 
 import { BaseCommonRenderer } from './BaseCommonRenderer';
 import { EngineContext } from '../../EngineContext';
@@ -12,7 +12,6 @@ import { VisualDepth } from '../VisualDepths';
  */
 export class WeatherRenderer extends BaseCommonRenderer {
 
-  private cloudShadowImage: Phaser.GameObjects.Image;
   private weatherGfx: Phaser.GameObjects.Graphics;
   private rainParticles: Phaser.GameObjects.Particles.ParticleEmitterManager;
   private rainEmitter: Phaser.GameObjects.Particles.ParticleEmitter;
@@ -30,12 +29,6 @@ export class WeatherRenderer extends BaseCommonRenderer {
   public create() {
     this.ctx.data.dayProgress = 0.5;
     this.ctx.data.weather.rainIntensity = 0;
-
-    // this.cloudShadowImage = this.scene.add.image(0, 0, 'cloud_shadows');
-    // this.cloudShadowImage.blendMode = Phaser.BlendModes.MULTIPLY;
-    // this.cloudShadowImage.setScale(4);
-    // this.cloudShadowImage.alpha = 0.3;
-    // this.cloudShadowImage.depth = VisualDepth.WEATHER_FX;
 
     this.weatherGfx = this.scene.add.graphics();
     this.weatherGfx.depth = VisualDepth.WEATHER_FX;
