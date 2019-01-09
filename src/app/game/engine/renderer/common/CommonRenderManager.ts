@@ -5,7 +5,7 @@ import { DebugInfoRenderer } from './DebugInfoRenderer';
 import { UiModalRenderer } from './UiModalRenderer';
 import { GridCommonRenderer } from './GridCommonRenderer';
 import { WeatherRenderer } from './WeatherRenderer';
-import { SceneNames } from '../../scenes';
+import { SceneNames } from '../../scenes/SceneNames';
 
 /**
  * The Actions, Common and EntityRenderManager are fairly identically and could be unified.

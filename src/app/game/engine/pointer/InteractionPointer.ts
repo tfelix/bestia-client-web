@@ -95,7 +95,7 @@ export class InteractionPointer extends Pointer {
     const interactionComp = clickedEntity.getComponent(ComponentType.LOCAL_INTERACTION) as InteractionLocalComponent;
     if (interactionComp && interactionComp.possibleInteractions.size > 0) {
       const localComponent = new HighlightComponent(clickedEntity.id);
-      localComponent.color = 0x008900;
+      localComponent.color = 0xDFDF00;
       clickedEntity.addComponent(localComponent);
 
       const selectComp = new SelectLocalComponent(clickedEntity.id);

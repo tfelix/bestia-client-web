@@ -58,14 +58,16 @@ export class HighlightLocalComponentRenderer extends ComponentRenderer<Highlight
     const highlightSprite = entity.data.highlight.highlightSprite;
 
     highlightSprite.setOrigin(entitySprite.originX, entitySprite.originY);
-    highlightSprite.setScale(entitySprite.scaleX * 1.3, entitySprite.scaleY * 1.3);
-    highlightSprite.z = entitySprite.z - 1;
+    highlightSprite.depth = entitySprite.depth - 1;
     highlightSprite.rotation = entitySprite.rotation;
     highlightSprite.setTintFill(component.color);
-    highlightSprite.setPosition(entitySprite.x, entitySprite.y);
+    // The simple scaling does ofc not work. We need a better way of highlighting the sprite.
+    // Maybe a shader must be utilized.
+    highlightSprite.setScale(entitySprite.scaleX * 1.3, entitySprite.scaleY * 1.1);
+    const yScaleOffset = (highlightSprite.displayHeight - entitySprite.displayHeight) / 2;
+    highlightSprite.setPosition(entitySprite.x, entitySprite.y + yScaleOffset);
     highlightSprite.setFrame(entitySprite.frame.name);
     highlightSprite.flipX = entitySprite.flipX;
-
-    // entity.data.highlight.highlightSprite.setTintFill(component.color);
+    highlightSprite.setTintFill(component.color);
   }
 }
