@@ -89,24 +89,28 @@ export class EntityLocalFactory {
     );
     entity.addComponent(inventoryComp);
 
-    // TODO For testing
-    const fishingComp = new FishingComponent(
-      this.componentCounter++,
-      entity.id
-    );
-    fishingComp.seed = 123;
-    fishingComp.targetPoint = { x: 23, y: 98 };
-    entity.addComponent(fishingComp);
-
     return [
       ...spriteComp,
       entityTypeComp,
       attackComp,
       conditionComp,
       playerComp,
-      fishingComp,
       inventoryComp
     ];
+  }
+
+  public addFishingComponent(playerEntityId: number): FishingComponent {
+    const fishingComp = new FishingComponent(
+      this.componentCounter++,
+      playerEntityId
+    );
+    fishingComp.seed = 123;
+
+    this.entityStore
+      .getEntity(playerEntityId)
+      .addComponent(fishingComp);
+
+    return fishingComp;
   }
 
   public addBestia(name: string, pos: Point): Component[] {

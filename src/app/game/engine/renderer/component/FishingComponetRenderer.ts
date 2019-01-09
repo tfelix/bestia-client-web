@@ -71,16 +71,10 @@ export class FishingComponentRenderer extends ComponentRenderer<FishingComponent
       this.fishingTarget.x,
       this.fishingTarget.y
     );
-    /*
     this.container = this.uiScene.add.container(
-      localPos.x,
-      localPos.y
+      localPos.x + this.indicatorOffset.x,
+      localPos.y + this.indicatorOffset.y
     );
-    */
-   this.container = this.uiScene.add.container(
-    500,
-    500
-  );
 
     this.fishingMeter = this.uiScene.add.image(
       0,
@@ -132,11 +126,19 @@ export class FishingComponentRenderer extends ComponentRenderer<FishingComponent
 
     // Setup the mask to hide any sprite leaving the fishing zone.
     const shape = this.uiScene.make.graphics({});
-    shape.setPosition(localPos.x - 50, localPos.y - 150);
+    shape.setPosition(0, 0);
     shape.fillStyle(0xffffff);
     shape.beginPath();
-    shape.fillRect(0, 0, 100, 300);
-    // this.container.mask = new Phaser.Display.Masks.GeometryMask(this.uiScene, shape);
+    // width and height of containers wont work properly yet. So we need the getBounds function
+    // in order to get the proper size.
+    const containerBounds = this.container.getBounds();
+    shape.fillRect(
+      containerBounds.x,
+      containerBounds.y,
+      containerBounds.width,
+      containerBounds.height
+    );
+    this.container.mask = new Phaser.Display.Masks.GeometryMask(this.uiScene, shape);
 
     const bubblesLine = new Phaser.Geom.Line(-50, 150, 50, 150);
     this.bubbles = this.uiScene.add.particles(UIAtlasBase);
@@ -229,7 +231,7 @@ export class FishingComponentRenderer extends ComponentRenderer<FishingComponent
     this.updateFishingHookPosition(component, hasFishingZoneOverlap);
     this.updateFishlineTargetPosition(entity, component);
     this.updateFishVelocity(hasFishingZoneOverlap);
-    // this.checkEndConditions(entity, component);
+    this.checkEndConditions(entity, component);
   }
 
   private checkEndConditions(entity: Entity, component: FishingComponent) {
