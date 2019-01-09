@@ -3,6 +3,7 @@ import { UIConstants, UIAtlasFx } from 'app/game/ui';
 import { BaseCommonRenderer } from './BaseCommonRenderer';
 import { EngineContext } from '../../EngineContext';
 import { VisualDepth } from '../VisualDepths';
+import { ShaderPipeline } from '../../pipelines/ShaderPipeline';
 
 /**
  * Its probably better to exchange data between the scenes via the
@@ -18,6 +19,8 @@ export class WeatherRenderer extends BaseCommonRenderer {
   private lightningEvent: Phaser.Time.TimerEvent;
 
   private screenRect = new Phaser.Geom.Rectangle(0, 0, this.ctx.helper.display.sceneWidth, this.ctx.helper.display.sceneHeight);
+  private cloudOffset = { x: 0, y: 0 };
+  private customPipeline: Phaser.Renderer.WebGL.WebGLPipeline;
 
   constructor(
     private readonly ctx: EngineContext,
@@ -26,7 +29,21 @@ export class WeatherRenderer extends BaseCommonRenderer {
     super();
   }
 
+  public preload() {
+    this.ctx.game.load.image('cloud_shadows', '../assets/fx/clouds.png');
+    this.ctx.game.load.glsl('blur', '../assets/shader/blur.glsl');
+    this.ctx.game.load.glsl('noise', '../assets/shader/noise.glsl');
+  }
+
   public create() {
+    const game = this.ctx.game.game;
+    this.customPipeline = (game.renderer as Phaser.Renderer.WebGL.WebGLRenderer)
+      .addPipeline('weather', new ShaderPipeline(game, 'weather'));
+    this.customPipeline.setFloat2('u_resolution', game.config.width as number, game.config.height as number);
+    this.customPipeline.setFloat1('u_brightness', 1);
+    this.customPipeline.setFloat2('u_cloud_offset', this.cloudOffset.x, this.cloudOffset.y);
+    this.ctx.game.cameras.main.setRenderToTexture(this.customPipeline);
+
     this.ctx.data.dayProgress = 0.5;
     this.ctx.data.weather.rainIntensity = 0;
 
@@ -59,6 +76,10 @@ export class WeatherRenderer extends BaseCommonRenderer {
 
     this.makeRain();
     this.makeLightning();
+
+    this.cloudOffset.x += 0.0001;
+    this.cloudOffset.y += 0.0001;
+    this.customPipeline.setFloat2('u_cloud_offset', this.cloudOffset.x, this.cloudOffset.y);
   }
 
   private makeRain() {

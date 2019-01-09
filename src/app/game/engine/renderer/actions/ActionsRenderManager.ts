@@ -3,6 +3,9 @@ import { DamageActionsRenderer } from './DamageActionsRenderer';
 import { ChatActionsRenderer } from './ChatActionsRenderer';
 import { EngineContext } from '../../EngineContext';
 
+/**
+ * The Actions, Common and EntityRenderManager are fairly identically and could be unified.
+ */
 export class ActionsRendererManager implements RenderStatistics {
 
   private renderer: ActionsRenderer[] = [];

@@ -15,6 +15,9 @@ import { HighlightLocalComponentRenderer } from './local/HighlightLocalComponent
 import { FishingComponentRenderer } from './FishingComponetRenderer';
 import { ProjectileComponentRenderer } from './ProjectileComponentRenderer';
 
+/**
+ * The Actions, Common and EntityRenderManager are fairly identically and could be unified.
+ */
 export class EntityRenderManager {
 
   private componentRenderer = new Map<ComponentType, ComponentRenderer<Component>>();

@@ -3,7 +3,7 @@ import { EngineContext } from '../../EngineContext';
 import { UiDialogScene } from '../../scenes/UiDialogScene';
 import { SceneNames } from '../../scenes/SceneNames';
 
-export class UIModalRenderer extends BaseCommonRenderer {
+export class UiModalRenderer extends BaseCommonRenderer {
 
   constructor(
     private readonly ctx: EngineContext

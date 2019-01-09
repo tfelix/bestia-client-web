@@ -2,35 +2,39 @@ import { EngineContext } from '../../EngineContext';
 import { BaseCommonRenderer } from './BaseCommonRenderer';
 import { CollisionCommonRenderer } from './CollisionCommonRenderer';
 import { DebugInfoRenderer } from './DebugInfoRenderer';
-import { UIModalRenderer } from './UIModalRenderer';
+import { UiModalRenderer } from './UiModalRenderer';
 import { GridCommonRenderer } from './GridCommonRenderer';
+import { WeatherRenderer } from './WeatherRenderer';
+import { SceneNames } from '../../scenes';
 
+/**
+ * The Actions, Common and EntityRenderManager are fairly identically and could be unified.
+ */
 export class CommonRenderManager implements RenderStatistics {
 
   private renderer: BaseCommonRenderer[] = [];
 
-  public static standardInstance(ctx: EngineContext): CommonRenderManager {
-    const manager = new CommonRenderManager();
-
-    manager.addRenderer(new CollisionCommonRenderer(ctx));
-    manager.addRenderer(new DebugInfoRenderer(ctx));
-    manager.addRenderer(new GridCommonRenderer(ctx));
-    manager.addRenderer(new UIModalRenderer(ctx));
-
-    return manager;
+  constructor(ctx: EngineContext) {
+    this.addRenderer(new CollisionCommonRenderer(ctx));
+    this.addRenderer(new DebugInfoRenderer(ctx));
+    this.addRenderer(new GridCommonRenderer(ctx));
+    this.addRenderer(new UiModalRenderer(ctx));
+    this.addRenderer(new WeatherRenderer(ctx, ctx.game.scene.get(SceneNames.WEATHER)));
   }
 
   public addRenderer(renderer: BaseCommonRenderer) {
     this.renderer.push(renderer);
   }
 
+  public preload() {
+    this.renderer.forEach(r => r.preload());
+  }
 
   public create() {
     this.renderer.forEach(r => r.create());
   }
 
   public update() {
-
     this.renderer.forEach(r => {
       if (r.needsUpdate()) {
         r.update();

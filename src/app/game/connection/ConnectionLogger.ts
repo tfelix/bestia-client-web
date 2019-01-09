@@ -5,7 +5,6 @@ import { EngineEvents } from '../message';
 export class ConnectionLogger {
 
   constructor() {
-
     PubSub.subscribe(EngineEvents.IO_SEND_MSG, this.printSendMsg);
     PubSub.subscribe(EngineEvents.IO_RECV_MSG, this.printReceiveMsg);
   }
