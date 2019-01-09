@@ -21,16 +21,16 @@ export class ConditionHelper {
     return condComp.currentHealth;
   }
 
-  public setCurrentHp(entityId: number, hp: number): number {
+  public setCurrentHp(entityId: number, hp: number): void {
     const entity = this.entityStore.getEntity(entityId);
     if (!entity) {
-      return 0;
+      return;
     }
     const condComp = entity.getComponent(ComponentType.CONDITION) as ConditionComponent;
     if (!condComp) {
-      return 0;
+      return;
     }
 
-    return condComp.currentHealth;
+    condComp.currentHealth = hp;
   }
 }

@@ -24,10 +24,12 @@ export class BasicAttackHandler extends ClientMessageHandler<BasicAttackMessage>
   }
 
   public handle(msg: any) {
+    // TODO Improve damage calculation here
     const dmg = Math.round(Math.random() * 15 + 5);
 
     const currentHp = this.condHelper.getCurrentHp(msg.targetEntityId);
     const newHp = currentHp - dmg;
+    this.condHelper.setCurrentHp(msg.targetEntityId, newHp);
 
     const dmgAction = new DamageAction(dmg);
     const actionMsg = new ActionMessage<DamageAction>(msg.targetEntityId, dmgAction);
