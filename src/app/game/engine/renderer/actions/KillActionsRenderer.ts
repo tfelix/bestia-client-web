@@ -5,9 +5,9 @@ import { ActionsRenderer } from './ActionsRenderer';
 export class KillActionsRenderer extends ActionsRenderer {
 
   constructor(
-    readonly game: Phaser.Scene
+    readonly gameScene: Phaser.Scene
   ) {
-    super(game);
+    super(gameScene);
   }
 
   public needsUpdate(entity: Entity): boolean {

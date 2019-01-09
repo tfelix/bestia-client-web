@@ -61,10 +61,10 @@ export class ChatActionsRenderer extends ActionsRenderer {
     // We only render the last one
     const action = actions.pop();
 
-    const box = this.game.add.graphics();
+    const box = this.gameScene.add.graphics();
 
     const chatMsg = (action.nickname) ? `${action.nickname}: ${action.text}` : action.text;
-    const txt = this.game.add.text(
+    const txt = this.gameScene.add.text(
       chatPos.x,
       chatPos.y,
       chatMsg,
@@ -73,7 +73,7 @@ export class ChatActionsRenderer extends ActionsRenderer {
     txt.depth = 10000;
     txt.setOrigin(0.5, 0.5);
 
-    const gfx = this.game.add.graphics();
+    const gfx = this.gameScene.add.graphics();
     gfx.fillStyle(0x00AA00, 1);
     this.drawChatBackground(gfx, txt);
 
@@ -82,7 +82,7 @@ export class ChatActionsRenderer extends ActionsRenderer {
     entity.data.chat = {
       background: gfx,
       text: txt,
-      deleteTimer: this.game.time.addEvent({
+      deleteTimer: this.gameScene.time.addEvent({
         delay: CHAT_DISPLAY_DURATION_MS,
         callback: () => this.clearChatData(entity)
       })

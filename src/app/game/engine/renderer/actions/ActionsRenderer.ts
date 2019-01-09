@@ -3,7 +3,7 @@ import { Entity, Action } from 'entities';
 export abstract class ActionsRenderer implements RenderStatistics {
   private lastUpdateTime = 0;
   constructor(
-    protected readonly game: Phaser.Scene
+    protected readonly gameScene: Phaser.Scene
   ) {
   }
 

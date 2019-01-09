@@ -7,9 +7,13 @@ import { MoveComponent, ComponentType, PositionComponent } from 'app/game/entiti
 import { ServerEntityStore } from './ServerEntityStore';
 import { MapHelper } from '../engine';
 
+/**
+ * The move handler must handle bi-directional messages coming into the server and getting out of the
+ * server as we must keep track over ongoing movements.
+ */
 export class MoveComponentHandler extends ClientMessageHandler<UpdateComponentMessage<MoveComponent>> {
 
-  private entitiesMovementCallbacks = new Map<number, number>();
+  private entitiesMovementCallbacks = new Map<number, { callback: number, componentId: number }>();
 
   constructor(
     serverEntities: ServerEntityStore
@@ -42,7 +46,9 @@ export class MoveComponentHandler extends ClientMessageHandler<UpdateComponentMe
     }
 
     const existingMovementCallback = this.entitiesMovementCallbacks.get(entity.id);
-    window.clearTimeout(existingMovementCallback);
+    if (existingMovementCallback) {
+      window.clearTimeout(existingMovementCallback.callback);
+    }
 
     const moveCopy = new MoveComponent(
       msg.component.id,
@@ -63,7 +69,7 @@ export class MoveComponentHandler extends ClientMessageHandler<UpdateComponentMe
     const callbackId = window.setTimeout(() => {
       this.moveTick(entity, moveCopy);
     }, moveDuration);
-    this.entitiesMovementCallbacks.set(entity.id, callbackId);
+    this.entitiesMovementCallbacks.set(entity.id, { callback: callbackId, componentId: moveCopy.id });
   }
 
   /**
@@ -72,7 +78,9 @@ export class MoveComponentHandler extends ClientMessageHandler<UpdateComponentMe
    * track anymore.
    */
   private isComponentAlreadyTracked(move: MoveComponent): boolean {
-    return this.entitiesMovementCallbacks.has(move.entityId);
+    const callback = this.entitiesMovementCallbacks.get(move.entityId);
+
+    return callback && callback.componentId === move.id;
   }
 
   private moveTick(entity: Entity, move: MoveComponent) {
@@ -96,7 +104,7 @@ export class MoveComponentHandler extends ClientMessageHandler<UpdateComponentMe
       const callbackId = window.setTimeout(() => {
         this.moveTick(entity, move);
       }, moveDuration);
-      this.entitiesMovementCallbacks.set(entity.id, callbackId);
+      this.entitiesMovementCallbacks.set(entity.id, { callback: callbackId, componentId: move.id });
     } else {
       entity.removeComponentByType(ComponentType.MOVE);
     }

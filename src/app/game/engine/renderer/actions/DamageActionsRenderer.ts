@@ -3,15 +3,16 @@ import { Entity, DamageAction, ComponentType, VisualComponent } from 'app/game/e
 import { ActionsRenderer } from './ActionsRenderer';
 import { SceneNames } from '../../scenes/SceneNames';
 import { TextStyles } from '../../TextStyles';
+import { MapHelper } from '../../MapHelper';
 
 export class DamageActionsRenderer extends ActionsRenderer {
 
   private readonly uiScene: Phaser.Scene;
 
-  constructor(game: Phaser.Scene) {
-    super(game);
+  constructor(gameScene: Phaser.Scene) {
+    super(gameScene);
 
-    this.uiScene = game.scene.get(SceneNames.UI);
+    this.uiScene = gameScene.scene.get(SceneNames.UI);
   }
 
   public needsUpdate(entity: Entity): boolean {
@@ -33,18 +34,21 @@ export class DamageActionsRenderer extends ActionsRenderer {
 
     actions.forEach(a => {
       const dmgTxt = String(a.totalAmount);
+
+      const spriteLocalPos = MapHelper.worldToSceneLocal(this.gameScene.cameras.main, visual.sprite.x, visual.sprite.y);
+
       const txt = this.uiScene.add.text(
-        visual.sprite.x,
-        (visual.sprite.y - visual.sprite.height / 2),
+        spriteLocalPos.x,
+        spriteLocalPos.y - visual.sprite.height / 2,
         dmgTxt,
         TextStyles.DAMAGE
       );
       txt.setOrigin(0.5, 0.5);
       txt.depth = 10000;
-      this.game.tweens.add({
+      this.uiScene.tweens.add({
         targets: txt,
-        y: { value: visual.sprite.y - 200, duration: 1600, ease: 'Linear' },
-        alpha: { value: 0, duration: 1600, ease: 'Linear' },
+        y: { value: spriteLocalPos.y - 130, duration: 1000, ease: 'Linear' },
+        alpha: { value: 0, duration: 200, delay: 800, ease: 'Linear' },
         onComplete: () => txt.destroy()
       });
     });

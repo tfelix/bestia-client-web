@@ -15,7 +15,7 @@ export const TextStyles = {
     boundsAlignV: 'middle'
   },
   DAMAGE: {
-    fontFamily: 'Viga',
+    fontFamily: 'Roboto Condensed',
     fontSize: 18,
     color: '#FFFFFF'
   },

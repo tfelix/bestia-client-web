@@ -26,7 +26,7 @@ export class MoveHelper {
       return;
     }
 
-    const componentId = Math.floor(Math.random() * -10000);
+    const componentId = Math.floor(Math.random() * -100000);
     const playerEntity = this.ctx.playerHolder.activeEntity;
     // We must remove the possibly currently present component so we can start new.
     playerEntity.removeComponentByType(ComponentType.MOVE);
