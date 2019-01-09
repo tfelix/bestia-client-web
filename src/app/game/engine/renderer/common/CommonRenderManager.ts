@@ -19,7 +19,7 @@ export class CommonRenderManager implements RenderStatistics {
     this.addRenderer(new DebugInfoRenderer(ctx));
     this.addRenderer(new GridCommonRenderer(ctx));
     this.addRenderer(new UiModalRenderer(ctx));
-    this.addRenderer(new WeatherRenderer(ctx, ctx.game.scene.get(SceneNames.WEATHER)));
+    this.addRenderer(new WeatherRenderer(ctx, ctx.gameScene.scene.get(SceneNames.WEATHER)));
   }
 
   public addRenderer(renderer: BaseCommonRenderer) {

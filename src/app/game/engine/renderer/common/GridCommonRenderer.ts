@@ -66,7 +66,7 @@ export class GridCommonRenderer extends BaseCommonRenderer {
     if (this.graphicsGrid) {
       return;
     }
-    this.graphicsGrid = this.context.game.add.graphics({ lineStyle: { width: 2, color: 0xFFFFFF } });
+    this.graphicsGrid = this.context.gameScene.add.graphics({ lineStyle: { width: 2, color: 0xFFFFFF } });
     this.graphicsGrid.strokeLineShape(this.line);
     this.graphicsGrid.depth = VisualDepth.UI;
     this.graphicsGrid.alpha = 0.5;

@@ -94,7 +94,7 @@ export class MoveComponentRenderer extends ComponentRenderer<MoveComponent> {
   constructor(
     private readonly ctx: EngineContext,
   ) {
-    super(ctx.game);
+    super(ctx.gameScene);
   }
 
   get supportedComponent(): ComponentType {

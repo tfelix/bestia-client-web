@@ -11,7 +11,7 @@ export class MasterLocalComponentRenderer extends ComponentRenderer<MasterLocalC
   constructor(
     private readonly ctx: EngineContext
   ) {
-    super(ctx.game);
+    super(ctx.gameScene);
   }
 
   get supportedComponent(): ComponentType {
@@ -29,11 +29,11 @@ export class MasterLocalComponentRenderer extends ComponentRenderer<MasterLocalC
     }
 
     LOG.debug(`Setting camera follow to entity ${entity.id}.`);
-    this.ctx.game.cameras.main.startFollow(masterSprite);
+    this.ctx.gameScene.cameras.main.startFollow(masterSprite);
     entityIdCameraFollows = entity.id;
 
     // Enabling collision on the player sprite for event triggering of the engine.
-    this.ctx.game.physics.world.enable(masterSprite, Phaser.Physics.Arcade.DYNAMIC_BODY);
+    this.ctx.gameScene.physics.world.enable(masterSprite, Phaser.Physics.Arcade.DYNAMIC_BODY);
   }
 
   protected updateGameData(entity: Entity, component: MasterLocalComponent) {

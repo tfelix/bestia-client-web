@@ -27,9 +27,9 @@ export class InventoryComponentRenderer extends ComponentRenderer<InventoryCompo
   constructor(
     private readonly ctx: EngineContext
   ) {
-    super(ctx.game);
+    super(ctx.gameScene);
 
-    this.ui = ctx.game.scene.get(SceneNames.UI_DIALOG);
+    this.ui = ctx.gameScene.scene.get(SceneNames.UI_DIALOG);
   }
 
   get supportedComponent(): ComponentType {

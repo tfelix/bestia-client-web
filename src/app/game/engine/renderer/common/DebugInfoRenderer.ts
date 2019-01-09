@@ -29,7 +29,7 @@ export class DebugInfoRenderer extends BaseCommonRenderer {
   ) {
     super();
 
-    this.uiScene = this.ctx.game.scene.get(SceneNames.UI);
+    this.uiScene = this.ctx.gameScene.scene.get(SceneNames.UI);
   }
 
   public needsUpdate(): boolean {
@@ -63,20 +63,20 @@ export class DebugInfoRenderer extends BaseCommonRenderer {
   }
 
   private takeFpsMeasurement() {
-    const d = this.ctx.game.time.now - this.lastRenderTime;
+    const d = this.ctx.gameScene.time.now - this.lastRenderTime;
     this.renderFrameTimesMs.push(d);
     while (this.renderFrameTimesMs.length > 5) {
       this.renderFrameTimesMs.shift();
     }
-    this.lastRenderTime = this.ctx.game.time.now;
+    this.lastRenderTime = this.ctx.gameScene.time.now;
   }
 
   private updateData() {
-    const camScrollX = Math.floor(this.ctx.game.cameras.main.scrollX);
-    const camScrollY = Math.floor(this.ctx.game.cameras.main.scrollY);
+    const camScrollX = Math.floor(this.ctx.gameScene.cameras.main.scrollX);
+    const camScrollY = Math.floor(this.ctx.gameScene.cameras.main.scrollY);
 
-    const pointerScreenX = Math.floor(this.ctx.game.input.activePointer.position.x);
-    const pointerScreenY = Math.floor(this.ctx.game.input.activePointer.position.y);
+    const pointerScreenX = Math.floor(this.ctx.gameScene.input.activePointer.position.x);
+    const pointerScreenY = Math.floor(this.ctx.gameScene.input.activePointer.position.y);
     const scrollOffset = this.ctx.helper.display.getScrollOffset();
     const pointerMapPos = MapHelper.pixelToPoint(pointerScreenX, pointerScreenY).plus(scrollOffset);
 

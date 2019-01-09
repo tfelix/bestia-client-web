@@ -23,9 +23,9 @@ export class SelectLocalComponentRenderer extends ComponentRenderer<SelectLocalC
   constructor(
     private readonly ctx: EngineContext
   ) {
-    super(ctx.game);
+    super(ctx.gameScene);
 
-    this.guiScene = ctx.game.scene.get(SceneNames.UI_DIALOG);
+    this.guiScene = ctx.gameScene.scene.get(SceneNames.UI_DIALOG);
   }
 
   private setupSpriteAsButton(visual: Phaser.GameObjects.Image) {

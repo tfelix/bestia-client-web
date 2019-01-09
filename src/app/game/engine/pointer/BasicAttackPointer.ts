@@ -106,7 +106,7 @@ export class BasicAttackPointer extends Pointer {
     } else {
       // The entity is probably not walkable so we need the closes walkable tile coordinate.
       const point = MapHelper.pixelToPoint(position.x, position.y);
-      const spriteDesc = getSpriteDescriptionFromCache(clickedEntity.data.visual.spriteName, this.ctx.game);
+      const spriteDesc = getSpriteDescriptionFromCache(clickedEntity.data.visual.spriteName, this.ctx.gameScene);
       const spriteCollision = new SpriteCollision(point, spriteDesc);
       const playerPos = (this.ctx.playerHolder.activeEntity.getComponent(ComponentType.POSITION) as PositionComponent).position;
       const walkTarget = spriteCollision.nextNonCollision(playerPos, point);
@@ -139,7 +139,7 @@ export class BasicAttackPointer extends Pointer {
 
     const attackerAtkComp = attackerEntity.getComponent(ComponentType.ATTACKS) as AttacksComponent;
     const aspd = attackerAtkComp && attackerAtkComp.basicAttacksPerSecond || 0;
-    this.nextPossibleAttack = this.ctx.game.time.now + 1000 / aspd;
+    this.nextPossibleAttack = this.ctx.gameScene.time.now + 1000 / aspd;
 
     this.setupContiniousAttack(attackedEntity);
   }
@@ -148,7 +148,7 @@ export class BasicAttackPointer extends Pointer {
     const playerEntity = this.ctx.playerHolder.activeEntity;
     const attackerAtkComp = playerEntity.getComponent(ComponentType.ATTACKS) as AttacksComponent;
     const atkDelay = 1000 / attackerAtkComp.basicAttacksPerSecond;
-    this.ctx.game.time.addEvent({ delay: atkDelay, callback: () => this.performContinuingAttack(attackedEntity) });
+    this.ctx.gameScene.time.addEvent({ delay: atkDelay, callback: () => this.performContinuingAttack(attackedEntity) });
   }
 
   private performQueuedAttack(entity: Entity) {
@@ -170,7 +170,7 @@ export class BasicAttackPointer extends Pointer {
   }
 
   private isCooldownOver(): boolean {
-    return this.nextPossibleAttack <= this.ctx.game.time.now;
+    return this.nextPossibleAttack <= this.ctx.gameScene.time.now;
   }
 
   private inRangeForBasicAttack(entity: Entity): boolean {

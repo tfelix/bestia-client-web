@@ -11,7 +11,7 @@ export class HighlightLocalComponentRenderer extends ComponentRenderer<Highlight
   constructor(
     private readonly ctx: EngineContext
   ) {
-    super(ctx.game);
+    super(ctx.gameScene);
   }
 
   protected hasNotSetup(entity: Entity, component: HighlightComponent): boolean {
@@ -29,7 +29,7 @@ export class HighlightLocalComponentRenderer extends ComponentRenderer<Highlight
     }
 
     const entitySprite = entitySpriteData.sprite;
-    const highlightSprite = this.ctx.game.add.sprite(entitySprite.x, entitySprite.y, entitySpriteData.spriteName);
+    const highlightSprite = this.ctx.gameScene.add.sprite(entitySprite.x, entitySprite.y, entitySpriteData.spriteName);
     highlightSprite.setOrigin(entitySprite.originX, entitySprite.originY);
     highlightSprite.setScale(entitySprite.scaleX * 1.3, entitySprite.scaleY * 1.3);
     highlightSprite.z = entitySprite.z - 1;

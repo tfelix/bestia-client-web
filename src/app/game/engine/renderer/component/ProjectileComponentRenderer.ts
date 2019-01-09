@@ -15,11 +15,11 @@ export class ProjectileComponentRenderer extends ComponentRenderer<ProjectileCom
   constructor(
     private readonly ctx: EngineContext
   ) {
-    super(ctx.game);
+    super(ctx.gameScene);
   }
 
   protected createGameData(entity: Entity, component: ProjectileComponent) {
-    const img = this.ctx.game.physics.add.image(0, 0, UIAtlasFx, UIConstants.PROJ_ARROW_01);
+    const img = this.ctx.gameScene.physics.add.image(0, 0, UIAtlasFx, UIConstants.PROJ_ARROW_01);
 
     entity.data.projectile = {
       projectileImage: img

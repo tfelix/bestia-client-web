@@ -25,7 +25,7 @@ export class PerformComponentRenderer extends ComponentRenderer<PerformComponent
   constructor(
     private readonly ctx: EngineContext
   ) {
-    super(ctx.game);
+    super(ctx.gameScene);
 
     if (!PerformComponentRenderer.graphicsLayer) {
       PerformComponentRenderer.graphicsLayer = this.game.add.graphics();

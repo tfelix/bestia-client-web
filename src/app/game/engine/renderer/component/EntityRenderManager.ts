@@ -26,7 +26,7 @@ export class EntityRenderManager {
     private readonly context: EngineContext
   ) {
     this.addComponentRenderer(new VisualComponentRenderer(context));
-    this.addComponentRenderer(new DebugComponentRenderer(context.game));
+    this.addComponentRenderer(new DebugComponentRenderer(context.gameScene));
     this.addComponentRenderer(new MoveComponentRenderer(context));
     this.addComponentRenderer(new ConditionComponentRenderer(context));
     this.addComponentRenderer(new PerformComponentRenderer(context));

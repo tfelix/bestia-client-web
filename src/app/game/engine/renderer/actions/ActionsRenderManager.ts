@@ -14,7 +14,7 @@ export class ActionsRendererManager implements RenderStatistics {
     private readonly ctx: EngineContext
   ) {
 
-    this.renderer.push(new DamageActionsRenderer(ctx.game));
+    this.renderer.push(new DamageActionsRenderer(ctx.gameScene));
     this.renderer.push(new ChatActionsRenderer(ctx));
   }
 

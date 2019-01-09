@@ -12,7 +12,7 @@ export class UiModalRenderer extends BaseCommonRenderer {
   }
 
   public update() {
-    const uiScene = this.ctx.game.scene.get(SceneNames.UI_DIALOG) as UiDialogScene;
+    const uiScene = this.ctx.gameScene.scene.get(SceneNames.UI_DIALOG) as UiDialogScene;
     const modalText = this.ctx.data.uiModal.shift();
     uiScene.dialogModal.setText(modalText);
   }

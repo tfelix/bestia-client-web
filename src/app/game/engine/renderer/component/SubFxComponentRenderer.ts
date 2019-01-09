@@ -13,7 +13,7 @@ export class SubFxComponentRenderer extends SubComponentRenderer<FxComponent>  {
   constructor(
     ctx: EngineContext,
   ) {
-    super(ctx.game);
+    super(ctx.gameScene);
 
     this.addSubRenderer(new BurnFxComponentDelegate(ctx));
   }

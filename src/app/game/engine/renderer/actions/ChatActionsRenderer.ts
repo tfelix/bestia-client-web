@@ -22,7 +22,7 @@ export class ChatActionsRenderer extends ActionsRenderer {
   constructor(
     private readonly ctx: EngineContext
   ) {
-    super(ctx.game);
+    super(ctx.gameScene);
   }
 
   private updateChatPosition(entity: Entity) {

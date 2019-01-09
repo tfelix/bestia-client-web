@@ -57,7 +57,7 @@ export class MovePointer extends Pointer {
   }
 
   public load() {
-    this.ctx.game.load.spritesheet(
+    this.ctx.gameScene.load.spritesheet(
       'indicator_move',
       '../assets/sprites/indicators/cursor.png',
       { frameWidth: 32, frameHeight: 32, startFrame: 0, endFrame: 1 }
@@ -65,15 +65,15 @@ export class MovePointer extends Pointer {
   }
 
   public create() {
-    this.marker = this.ctx.game.add.sprite(100, 100, 'indicator_move');
+    this.marker = this.ctx.gameScene.add.sprite(100, 100, 'indicator_move');
     this.marker.setOrigin(0, 0);
     const config = {
       key: 'cursor_anim',
-      frames: this.ctx.game.anims.generateFrameNumbers('indicator_move', { start: 0, end: 1 }),
+      frames: this.ctx.gameScene.anims.generateFrameNumbers('indicator_move', { start: 0, end: 1 }),
       frameRate: 1,
       repeat: -1
     };
-    this.ctx.game.anims.create(config);
+    this.ctx.gameScene.anims.create(config);
     this.marker.anims.play('cursor_anim');
     this.marker.visible = false;
   }

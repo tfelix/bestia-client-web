@@ -35,7 +35,7 @@ export class BurnFxComponentDelegate extends RenderDelegate<FxComponent> {
 
     const fxData = entity.data.fx || { burningEmitter: [] };
 
-    const spriteDesc = getSpriteDescriptionFromCache(visualData.spriteName, this.ctx.game);
+    const spriteDesc = getSpriteDescriptionFromCache(visualData.spriteName, this.ctx.gameScene);
     const burningAnchors = spriteDesc.fxData && spriteDesc.fxData.burning || [];
 
     if (!burningAnchors) {
@@ -76,7 +76,7 @@ export class BurnFxComponentDelegate extends RenderDelegate<FxComponent> {
   private createFireParticle(pos: Point): Phaser.GameObjects.Particles.ParticleEmitter[] {
 
 
-    const fire = this.ctx.game.add.particles('fx_smoke_temp').createEmitter({
+    const fire = this.ctx.gameScene.add.particles('fx_smoke_temp').createEmitter({
       x: pos.x,
       y: pos.y,
       speed: { min: 80, max: 160 },
@@ -88,7 +88,7 @@ export class BurnFxComponentDelegate extends RenderDelegate<FxComponent> {
     });
     fire.manager.depth = 10000;
 
-    const whiteSmoke = this.ctx.game.add.particles('fx_smoke').createEmitter({
+    const whiteSmoke = this.ctx.gameScene.add.particles('fx_smoke').createEmitter({
       frames: ['flame_02.png'],
       x: pos.x,
       y: pos.y,
@@ -100,7 +100,7 @@ export class BurnFxComponentDelegate extends RenderDelegate<FxComponent> {
     });
     whiteSmoke.manager.depth = 9000;
 
-    const darkSmoke = this.ctx.game.add.particles('fx_smoke').createEmitter({
+    const darkSmoke = this.ctx.gameScene.add.particles('fx_smoke').createEmitter({
       x: pos.x,
       y: pos.y,
       speed: { min: 20, max: 100 },

@@ -20,9 +20,9 @@ export class ConditionComponentRenderer extends ComponentRenderer<ConditionCompo
   constructor(
     private readonly ctx: EngineContext
   ) {
-    super(ctx.game);
+    super(ctx.gameScene);
 
-    this.uiScene = ctx.game.scene.get(SceneNames.UI);
+    this.uiScene = ctx.gameScene.scene.get(SceneNames.UI);
   }
 
   get supportedComponent(): ComponentType {
@@ -74,7 +74,7 @@ export class ConditionComponentRenderer extends ComponentRenderer<ConditionCompo
 
     rect.height = conditionBarHeight;
 
-    const localPos = MapHelper.worldToSceneLocal(this.ctx.game.cameras.main, sprite.x, sprite.y);
+    const localPos = MapHelper.worldToSceneLocal(this.ctx.gameScene.cameras.main, sprite.x, sprite.y);
     rect.x = localPos.x - maxWidth / 2;
     rect.y = localPos.y + bottomHealtbarOffset;
     rect.width = maxWidth;

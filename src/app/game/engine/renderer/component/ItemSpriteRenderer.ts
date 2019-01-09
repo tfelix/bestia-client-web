@@ -24,7 +24,7 @@ export class ItemSpriteRenderer extends SpriteRenderer {
   }
 
   public createGameData(entity: Entity, component: VisualComponent, pxPos: Px) {
-    const sprite = this.ctx.game.add.sprite(pxPos.x, pxPos.y, component.sprite);
+    const sprite = this.ctx.gameScene.add.sprite(pxPos.x, pxPos.y, component.sprite);
     this.setupRotation(sprite);
     this.setupSpriteData(sprite, entity, component.sprite);
   }

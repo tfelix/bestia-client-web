@@ -30,19 +30,19 @@ export class WeatherRenderer extends BaseCommonRenderer {
   }
 
   public preload() {
-    this.ctx.game.load.image('cloud_shadows', '../assets/fx/clouds.png');
-    this.ctx.game.load.glsl('blur', '../assets/shader/blur.glsl');
-    this.ctx.game.load.glsl('noise', '../assets/shader/noise.glsl');
+    this.ctx.gameScene.load.image('cloud_shadows', '../assets/fx/clouds.png');
+    this.ctx.gameScene.load.glsl('blur', '../assets/shader/blur.glsl');
+    this.ctx.gameScene.load.glsl('noise', '../assets/shader/noise.glsl');
   }
 
   public create() {
-    const game = this.ctx.game.game;
+    const game = this.ctx.gameScene.game;
     this.customPipeline = (game.renderer as Phaser.Renderer.WebGL.WebGLRenderer)
       .addPipeline('weather', new ShaderPipeline(game, 'weather'));
     this.customPipeline.setFloat2('u_resolution', game.config.width as number, game.config.height as number);
     this.customPipeline.setFloat1('u_brightness', 1);
     this.customPipeline.setFloat2('u_cloud_offset', this.cloudOffset.x, this.cloudOffset.y);
-    this.ctx.game.cameras.main.setRenderToTexture(this.customPipeline);
+    this.ctx.gameScene.cameras.main.setRenderToTexture(this.customPipeline);
 
     this.ctx.data.dayProgress = 0.5;
     this.ctx.data.weather.rainIntensity = 0;
@@ -127,7 +127,7 @@ export class WeatherRenderer extends BaseCommonRenderer {
 
     const lightningEventScale = 1 / (Math.log(weather.rainIntensity + 0.1) + 1);
     const nextLightningMs = 1000 * lightningEventScale * Phaser.Math.Between(12, 22);
-    this.lightningEvent = this.scene.time.delayedCall(nextLightningMs, () => this.ctx.game.cameras.main.flash(800), [], this);
+    this.lightningEvent = this.scene.time.delayedCall(nextLightningMs, () => this.ctx.gameScene.cameras.main.flash(800), [], this);
   }
 
   public needsUpdate(): boolean {

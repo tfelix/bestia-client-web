@@ -21,7 +21,7 @@ export class VisualComponentRenderer extends ComponentRenderer<VisualComponent> 
   constructor(
     private readonly ctx: EngineContext
   ) {
-    super(ctx.game);
+    super(ctx.gameScene);
 
     this.addSpriteRenderer(new ItemSpriteRenderer(ctx));
     this.addSpriteRenderer(new MultiSpriteRenderer(ctx));

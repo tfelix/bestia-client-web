@@ -61,7 +61,7 @@ export class CollisionCommonRenderer extends BaseCommonRenderer {
     if (this.graphicsCollision) {
       return;
     }
-    this.graphicsCollision = this.context.game.add.graphics();
+    this.graphicsCollision = this.context.gameScene.add.graphics();
     this.graphicsCollision.depth = VisualDepth.UI;
     this.graphicsCollision.alpha = 0.5;
   }

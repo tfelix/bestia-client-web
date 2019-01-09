@@ -83,7 +83,7 @@ export class CollisionUpdater {
       }
 
       const spriteName = visualComp.sprite;
-      const spriteDesc = getSpriteDescriptionFromCache(spriteName, this.ctx.game);
+      const spriteDesc = getSpriteDescriptionFromCache(spriteName, this.ctx.gameScene);
       const collision = spriteDesc && spriteDesc.collision || [[]];
 
       const sprite = entity.data.visual.sprite;

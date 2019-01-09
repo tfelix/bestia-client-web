@@ -33,9 +33,9 @@ export class FishingComponentRenderer extends ComponentRenderer<FishingComponent
   constructor(
     private readonly ctx: EngineContext
   ) {
-    super(ctx.game);
+    super(ctx.gameScene);
 
-    this.uiScene = ctx.game.scene.get(SceneNames.UI);
+    this.uiScene = ctx.gameScene.scene.get(SceneNames.UI);
   }
 
   protected hasNotSetup(entity: Entity, component: FishingComponent): boolean {
@@ -58,8 +58,8 @@ export class FishingComponentRenderer extends ComponentRenderer<FishingComponent
     ));
     this.fishingTarget = new Phaser.Math.Vector2(centered.x, centered.y);
 
-    this.graphicsFishline = this.ctx.game.add.graphics();
-    this.fishingSwimmer = this.ctx.game.add.sprite(
+    this.graphicsFishline = this.ctx.gameScene.add.graphics();
+    this.fishingSwimmer = this.ctx.gameScene.add.sprite(
       this.fishingTarget.x,
       this.fishingTarget.y,
       UIConstants.FISHING_ANIM_SWIMMER
@@ -175,7 +175,7 @@ export class FishingComponentRenderer extends ComponentRenderer<FishingComponent
     this.fishingCancelButton.setInteractive();
     this.fishingCancelButton.on('pointerdown', () => this.endFishing());
 
-    this.lastFishlineMoveTick = this.ctx.game.time.now;
+    this.lastFishlineMoveTick = this.ctx.gameScene.time.now;
 
     this.hasSetup = true;
   }
@@ -279,7 +279,7 @@ export class FishingComponentRenderer extends ComponentRenderer<FishingComponent
   }
 
   private updateFishlineTargetPosition(entity: Entity, component: FishingComponent) {
-    if (this.ctx.game.time.now - this.lastFishlineMoveTick < this.fishlineMoveTickMs) {
+    if (this.ctx.gameScene.time.now - this.lastFishlineMoveTick < this.fishlineMoveTickMs) {
       return;
     }
 
@@ -297,6 +297,6 @@ export class FishingComponentRenderer extends ComponentRenderer<FishingComponent
     this.graphicsFishline.lineStyle(1, 0xffffff, 1);
     this.graphicsFishline.lineBetween(entityPx.x + 10, entityPx.y - 30, this.fishingTarget.x, this.fishingTarget.y);
 
-    this.lastFishlineMoveTick = this.ctx.game.time.now;
+    this.lastFishlineMoveTick = this.ctx.gameScene.time.now;
   }
 }

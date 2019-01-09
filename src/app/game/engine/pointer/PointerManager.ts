@@ -57,9 +57,9 @@ export class PointerManager {
     this.pointers.push(new InteractionPointer(this, engineContext));
     this.pointers.push(new FishingPointer(this, engineContext));
 
-    this.engineContext.game.input.on('pointerdown', this.onPointerClicked, this);
-    this.engineContext.game.input.on('gameobjectover', this.onGameObjectOver, this);
-    this.engineContext.game.input.on('gameobjectout', this.onGameObjectOut, this);
+    this.engineContext.gameScene.input.on('pointerdown', this.onPointerClicked, this);
+    this.engineContext.gameScene.input.on('gameobjectover', this.onGameObjectOver, this);
+    this.engineContext.gameScene.input.on('gameobjectout', this.onGameObjectOut, this);
 
     PubSub.subscribe(EngineEvents.GAME_MOUSE_OUT, () => this.hide());
     PubSub.subscribe(EngineEvents.GAME_MOUSE_OVER, () => this.show());
@@ -79,8 +79,8 @@ export class PointerManager {
 
   // This method is here because it uses the phaser pointer to avoid object creation
   private pointerToPx(pointer: Phaser.Input.Pointer): Px {
-    const worldX = this.engineContext.game.cameras.main.scrollX + pointer.x;
-    const worldY = this.engineContext.game.cameras.main.scrollY + pointer.y;
+    const worldX = this.engineContext.gameScene.cameras.main.scrollX + pointer.x;
+    const worldY = this.engineContext.gameScene.cameras.main.scrollY + pointer.y;
     return new Px(worldX, worldY);
   }
 
@@ -123,9 +123,9 @@ export class PointerManager {
   }
 
   public update() {
-    const activePointer = this.engineContext.game.input.activePointer;
-    const worldX = this.engineContext.game.cameras.main.scrollX + activePointer.x;
-    const worldY = this.engineContext.game.cameras.main.scrollY + activePointer.y;
+    const activePointer = this.engineContext.gameScene.input.activePointer;
+    const worldX = this.engineContext.gameScene.cameras.main.scrollX + activePointer.x;
+    const worldY = this.engineContext.gameScene.cameras.main.scrollY + activePointer.y;
     const pxClamped = MapHelper.getClampedTilePixelXY(worldX, worldY);
     const pos = MapHelper.pixelToPoint(worldX, worldY);
 

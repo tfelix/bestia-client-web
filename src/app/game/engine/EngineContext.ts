@@ -46,17 +46,17 @@ export class EngineContext {
   };
 
   constructor(
-    public readonly game: Phaser.Scene,
+    public readonly gameScene: Phaser.Scene,
     public readonly entityStore: EntityStore,
     public readonly playerHolder: PlayerEntityHolder
   ) {
     this.helper = {
-      display: new DisplayHelper(this.game),
-      sprite: new SpriteHelper(this.game),
+      display: new DisplayHelper(this.gameScene),
+      sprite: new SpriteHelper(this.gameScene),
       move: new MoveHelper(this)
     };
 
-    this.mapGroup0 = this.game.make.group({});
+    this.mapGroup0 = this.gameScene.make.group({});
 
     this.pathfinder = new EasyStar.js();
     this.pathfinder.enableDiagonals();
@@ -65,6 +65,6 @@ export class EngineContext {
     this.pointerManager = new PointerManager(this);
     this.cursorManager = new CursorManager(this);
 
-    this.sound = new StaticSoundHolder(game);
+    this.sound = new StaticSoundHolder(gameScene);
   }
 }

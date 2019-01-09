@@ -35,8 +35,8 @@ export class CursorManager {
   ) {
     PubSub.subscribe(EngineEvents.GAME_MOUSE_OUT, () => this.hide());
     PubSub.subscribe(EngineEvents.GAME_MOUSE_OVER, () => this.show());
-    this.ctx.game.input.on('pointerdown', this.onPointerDown, this);
-    this.ctx.game.input.on('pointerup', this.onPointerUp, this);
+    this.ctx.gameScene.input.on('pointerdown', this.onPointerDown, this);
+    this.ctx.gameScene.input.on('pointerup', this.onPointerUp, this);
   }
 
   public setCursorSprite(cursorType: CursorType) {
@@ -51,7 +51,7 @@ export class CursorManager {
   }
 
   public create() {
-    const uiScene = this.ctx.game.scene.get(SceneNames.UI_DIALOG);
+    const uiScene = this.ctx.gameScene.scene.get(SceneNames.UI_DIALOG);
     cursorSprites.forEach((spriteName, type) => {
       const cursor = uiScene.add.image(0, 0, UIAtlasBase, spriteName);
       cursor.visible = false;
@@ -65,7 +65,7 @@ export class CursorManager {
   }
 
   public update() {
-    const pointerPos = this.ctx.game.input.activePointer.position;
+    const pointerPos = this.ctx.gameScene.input.activePointer.position;
 
     if (this.isClicked) {
       this.activeCursor.setPosition(

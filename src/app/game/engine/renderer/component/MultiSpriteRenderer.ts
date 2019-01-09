@@ -85,7 +85,7 @@ export class MultiSpriteRenderer extends SpriteRenderer {
   }
 
   private getSpriteDescription(component: VisualComponent): SpriteDescription {
-    return getSpriteDescriptionFromCache(component.sprite, this.ctx.game);
+    return getSpriteDescriptionFromCache(component.sprite, this.ctx.gameScene);
   }
 
   private setupMultiSprites(
@@ -99,9 +99,9 @@ export class MultiSpriteRenderer extends SpriteRenderer {
 
       // Get the desc file of the multisprite.
       const msDescName = `${multiSprite}_desc`;
-      const msDesc = this.ctx.game.cache.json.get(msDescName) as SpriteDescription;
+      const msDesc = this.ctx.gameScene.cache.json.get(msDescName) as SpriteDescription;
       const offsetFileName = this.getOffsetFilename(multiSprite, spriteData.spriteName);
-      const offsets = this.ctx.game.cache.json.get(offsetFileName) as SpriteOffsets;
+      const offsets = this.ctx.gameScene.cache.json.get(offsetFileName) as SpriteOffsets;
 
       // Was not loaded. Should not happen.
       if (!msDesc || !offsets) {
@@ -109,7 +109,7 @@ export class MultiSpriteRenderer extends SpriteRenderer {
         return;
       }
 
-      const msSprite = this.ctx.game.add.sprite(0, 0, multiSprite);
+      const msSprite = this.ctx.gameScene.add.sprite(0, 0, multiSprite);
       // this.setupScaleAndOrigin(msSprite, msDesc);
       this.setupSpriteAnimation(msSprite, msDesc);
 
@@ -149,7 +149,7 @@ export class MultiSpriteRenderer extends SpriteRenderer {
     const animationDuration = spriteData.sprite.anims.getTotalFrames() * spriteData.sprite.anims.msPerFrame;
 
     const previousAnimationName = spriteData.lastPlayedAnimation;
-    this.ctx.game.time.addEvent({
+    this.ctx.gameScene.time.addEvent({
       delay: animationDuration,
       callback: () => component.animation = previousAnimationName
     });
@@ -181,9 +181,9 @@ export class MultiSpriteRenderer extends SpriteRenderer {
     spriteData: SpriteData
   ) {
     spriteData.childSprites.forEach(childSprite => {
-      const mainSpriteDesc = this.ctx.game.cache.json.get(`${spriteData.spriteName}_desc`) as SpriteDescription;
+      const mainSpriteDesc = this.ctx.gameScene.cache.json.get(`${spriteData.spriteName}_desc`) as SpriteDescription;
       const offsetFileName = this.getOffsetFilename(childSprite.spriteName, spriteData.spriteName);
-      const offsets = this.ctx.game.cache.json.get(offsetFileName) as SpriteOffsets;
+      const offsets = this.ctx.gameScene.cache.json.get(offsetFileName) as SpriteOffsets;
       const defaultOffset = offsets.defaultCords || { x: 0, y: 0 };
       const defaultScale = offsets.scale || 1;
 
@@ -229,10 +229,10 @@ export class MultiSpriteRenderer extends SpriteRenderer {
         end: anim.to,
         suffix: '.png'
       };
-      const animationFrames = this.ctx.game.anims.generateFrameNames(description.name, config);
+      const animationFrames = this.ctx.gameScene.anims.generateFrameNames(description.name, config);
 
       const animationKey = `${description.name}_${anim.name}`;
-      if (this.ctx.game.anims.get(animationKey)) {
+      if (this.ctx.gameScene.anims.get(animationKey)) {
         // Dont add an existing animation again.
         return;
       }
@@ -248,7 +248,7 @@ export class MultiSpriteRenderer extends SpriteRenderer {
         animConfig.repeat = 0;
       }
 
-      this.ctx.game.anims.create(animConfig);
+      this.ctx.gameScene.anims.create(animConfig);
     });
   }
 
@@ -265,7 +265,7 @@ export class MultiSpriteRenderer extends SpriteRenderer {
 
   public createGameData(entity: Entity, component: VisualComponent, entityPxPos: Px) {
     const desc = this.getSpriteDescription(component);
-    const sprite = this.ctx.game.add.sprite(entityPxPos.x, entityPxPos.y, desc.name);
+    const sprite = this.ctx.gameScene.add.sprite(entityPxPos.x, entityPxPos.y, desc.name);
     this.setupSpriteData(sprite, entity, component.sprite);
 
     this.setupScaleAndOrigin(sprite, desc);
