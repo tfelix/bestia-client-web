@@ -15,8 +15,6 @@ export class SelectLocalComponentRenderer extends ComponentRenderer<SelectLocalC
   private selectedEntityId = 0;
 
   private guiScene: Phaser.Scene;
-  private gfx: Phaser.GameObjects.Graphics;
-  private circle = new Phaser.Geom.Circle(0, 0, 20);
   private iconCircle = new Phaser.Geom.Circle(0, 0, 40);
 
   private icons: Phaser.GameObjects.Image[] = [];
@@ -28,10 +26,6 @@ export class SelectLocalComponentRenderer extends ComponentRenderer<SelectLocalC
     super(ctx.game);
 
     this.guiScene = ctx.game.scene.get(SceneNames.UI_DIALOG);
-
-    this.gfx = this.game.add.graphics();
-    this.gfx.lineStyle(20, 0xFF0000);
-    this.gfx.depth = VisualDepth.MARKER;
   }
 
   private setupSpriteAsButton(visual: Phaser.GameObjects.Image) {
@@ -69,13 +63,6 @@ export class SelectLocalComponentRenderer extends ComponentRenderer<SelectLocalC
     this.createOptionsButtons(entity, sprite);
 
     this.selectedEntityId = entity.id;
-  }
-
-  private createMarker(sprite: Phaser.GameObjects.Sprite) {
-    this.circle.x = sprite.x;
-    this.circle.y = sprite.y;
-    this.gfx.lineStyle(5, 0xFFFF00);
-    this.gfx.strokeCircleShape(this.circle);
   }
 
   private setDefaultInteraction(entity: Entity, interaction: InteractionType) {
@@ -166,8 +153,6 @@ export class SelectLocalComponentRenderer extends ComponentRenderer<SelectLocalC
 
   protected updateGameData(entity: Entity, component: SelectLocalComponent) {
     const sprite = entity.data.visual && entity.data.visual.sprite;
-    this.gfx.clear();
-    this.createMarker(sprite);
     this.positionIcons(sprite);
   }
 
@@ -175,7 +160,6 @@ export class SelectLocalComponentRenderer extends ComponentRenderer<SelectLocalC
     this.icons.forEach(i => i.destroy());
     this.selectedEntityId = 0;
     this.icons = [];
-    this.gfx.clear();
   }
 
   public removeGameData(entity: Entity) {
