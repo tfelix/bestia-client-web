@@ -32,13 +32,21 @@ export class LoadScene extends Phaser.Scene {
       '../assets/sprites/mob/rabbit/rabbit.json'
     );
 
-    const additionalObjects = ['tree', 'tree_01', 'plant', 'water', 'sign'];
-    additionalObjects.forEach(x => {
-      const baseUrl = `../assets/sprites/object/${x}`;
+    const additionalObjectEntities = ['tree', 'tree_01', 'plant', 'water', 'sign'];
+    additionalObjectEntities.forEach(x => {
+      const baseUrl = `../assets/sprites/objects/${x}`;
       const pngUrl = `${baseUrl}/${x}.png`;
       const jsonUrl = `${baseUrl}/${x}.json`;
       this.load.atlas(x, pngUrl, jsonUrl);
       this.load.json(`${x}_desc`, `${baseUrl}/${x}_desc.json`);
+    });
+
+    const additionalBuildingEntities = ['simple_cabin_1'];
+    additionalBuildingEntities.forEach(x => {
+      const baseUrl = '../assets/sprites/buildings';
+      const pngUrl = `${baseUrl}/${x}.png`;
+      const jsonUrl = `${baseUrl}/${x}.json`;
+      this.load.atlas(x, pngUrl, jsonUrl);
     });
 
     // Load Music

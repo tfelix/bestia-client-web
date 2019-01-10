@@ -1,0 +1,6 @@
+{
+	"name": "simple_cabin_1",
+	"type" : "building",
+	"version": 1,
+	"collision": [[0],[1]]
+}

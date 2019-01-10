@@ -2,6 +2,7 @@ import {
   SpriteData, DebugData, MoveData, ChatData, PerformData, ConditionData,
   FxData, HighlightData, ProjectileData
 } from 'app/game/engine';
+import { BuildingData } from '../engine/renderer/component/BuildingComponentRenderer';
 
 export class EntityData {
   public visual?: SpriteData;
@@ -13,4 +14,5 @@ export class EntityData {
   public fx?: FxData;
   public highlight?: HighlightData;
   public projectile?: ProjectileData;
+  public building?: BuildingData;
 }

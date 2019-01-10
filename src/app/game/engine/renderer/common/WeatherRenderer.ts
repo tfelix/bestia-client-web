@@ -77,9 +77,22 @@ export class WeatherRenderer extends BaseCommonRenderer {
     this.makeRain();
     this.makeLightning();
 
+    this.updateCloudOffset();
+  }
+
+  /**
+   * Depending on the wind direction and speed the cloud offset is updated. Also the camera position
+   * is taken into account to create a sort of parallax effect while walking.
+   */
+  private updateCloudOffset() {
+    // Wind part.
     this.cloudOffset.x += 0.0001;
     this.cloudOffset.y += 0.0001;
-    this.customPipeline.setFloat2('u_cloud_offset', this.cloudOffset.x, this.cloudOffset.y);
+
+    const camOffsetX = this.ctx.gameScene.cameras.main.scrollX / 1000;
+    const camOffsetY = this.ctx.gameScene.cameras.main.scrollY / 1000;
+
+    this.customPipeline.setFloat2('u_cloud_offset', this.cloudOffset.x + camOffsetX, this.cloudOffset.y + camOffsetY);
   }
 
   private makeRain() {

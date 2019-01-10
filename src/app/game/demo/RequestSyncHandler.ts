@@ -2,7 +2,7 @@ import { SyncRequestMessage, AccountInfoMessage, ComponentMessage } from 'app/ga
 import { MoveComponent, FxComponent, ProjectileComponent } from 'app/game/entities';
 import { Point } from 'app/game/model';
 
-import { EntityLocalFactory } from './EntityLocalFactory';
+import { EntityLocalFactory, BuildingData } from './EntityLocalFactory';
 import { ServerEntityStore } from './ServerEntityStore';
 import { ClientMessageHandler } from './ClientMessageHandler';
 
@@ -24,15 +24,17 @@ export class RequestSyncHandler extends ClientMessageHandler<SyncRequestMessage>
     const accInfoMsg = new AccountInfoMessage('roggy', this.playerAccId, 'master');
     this.sendClient(accInfoMsg);
 
-    // const comps = this.entityFactory.addPlayer('player_1', new Point(86, 94), this.playerAccId);
-    const comps = this.entityFactory.addPlayer('player_1', new Point(20, 96), this.playerAccId);
+    const comps = this.entityFactory.addPlayer('player_1', new Point(83, 95), this.playerAccId);
     this.sendAllComponents(comps);
     const playerEntityId = this.entityFactory.getLastInsertedEntityId();
+
+    /*
+    Left as an example how to add the fishing component.
     window.setTimeout(() => {
       const fishingComp = this.entityFactory.addFishingComponent(playerEntityId);
       fishingComp.targetPoint = { x: 23, y: 98 };
       this.sendComponent(fishingComp);
-    });
+    });*/
 
     // TODO Handle AI differently
     const bestiaComps = this.entityFactory.addBestia('rabbit', new Point(16, 89));
@@ -52,7 +54,7 @@ export class RequestSyncHandler extends ClientMessageHandler<SyncRequestMessage>
     }, 2000);
     this.sendAllComponents(bestiaComps);
 
-    // The creation of the server side entities should be done in a seperate component
+    // The creation of the server side entities should be done in a seperate code part
     // fueld by the game demo scripts.
     this.sendAllComponents(this.entityFactory.addBestia('rabbit', new Point(23, 93)));
 
@@ -87,6 +89,13 @@ export class RequestSyncHandler extends ClientMessageHandler<SyncRequestMessage>
 
     this.sendAllComponents(this.entityFactory.addItem('knife', 1, new Point(17, 93)));
     this.sendAllComponents(this.entityFactory.addItem('knife', 1, new Point(26, 90)));
+
+    const startBuildingData: BuildingData = [
+      [{outer: 'outer_rtl', inner: 'floor_wtl'}, {outer: 'outer_rt', inner: 'floor_wt'}, {outer: 'outer_rtr', inner: 'floor_wtr'}],
+      [{outer: 'outer_rbl', inner: 'floor_wl'}, {outer: 'outer_rb', inner: 'floor'}, {outer: 'outer_rbr', inner: 'floor_wr'}],
+      [{outer: 'outer_wbl', inner: 'floor_wbl'}, {outer: 'outer_db', inner: 'floor_db'}, {outer: 'outer_wbr', inner: 'floor_wbr'}]
+    ];
+    this.sendAllComponents(this.entityFactory.addBuilding2(startBuildingData, new Point(82, 85)));
 
     this.testProjectile();
   }

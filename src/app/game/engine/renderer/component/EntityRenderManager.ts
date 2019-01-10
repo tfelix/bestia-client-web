@@ -14,6 +14,7 @@ import { SubFxComponentRenderer } from './SubFxComponentRenderer';
 import { HighlightLocalComponentRenderer } from './local/HighlightLocalComponentRenderer';
 import { FishingComponentRenderer } from './FishingComponetRenderer';
 import { ProjectileComponentRenderer } from './ProjectileComponentRenderer';
+import { BuildingComponentRenderer } from './BuildingComponentRenderer';
 
 /**
  * The Actions, Common and EntityRenderManager are fairly identically and could be unified.
@@ -34,6 +35,7 @@ export class EntityRenderManager {
     this.addComponentRenderer(new SubFxComponentRenderer(context));
     this.addComponentRenderer(new FishingComponentRenderer(context));
     this.addComponentRenderer(new ProjectileComponentRenderer(context));
+    this.addComponentRenderer(new BuildingComponentRenderer(context));
 
     // Local Component Renderer.
     this.addComponentRenderer(new MasterLocalComponentRenderer(context));

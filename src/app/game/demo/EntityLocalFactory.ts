@@ -2,11 +2,16 @@ import { Point, Item } from 'app/game/model';
 import {
   PlayerComponent, Component, ComponentType, ConditionComponent, VisualComponent,
   DebugComponent, PositionComponent, AttacksComponent, Entity, InventoryComponent,
-  FxComponent, FishingComponent, ProjectileComponent, EntityTypeComponent, EntityType
+  FxComponent, FishingComponent, ProjectileComponent, EntityTypeComponent, EntityType, BuildingComponent
 } from 'app/game/entities';
 import { SpriteType } from 'app/game/engine';
 
 import { ServerEntityStore } from './ServerEntityStore';
+
+export type BuildingData = Array<Array<{
+  outer: string,
+  inner: string
+}>>;
 
 export class EntityLocalFactory {
   private entityCounter = 1;
@@ -97,6 +102,71 @@ export class EntityLocalFactory {
       playerComp,
       inventoryComp
     ];
+  }
+
+  public addBuilding2(data: BuildingData, pos: Point): Component[] {
+    const components: Component[] = [];
+
+    for (let y = 0; y < data.length; y++) {
+      for (let x = 0; x < data[y].length; x++) {
+        const entity = this.createEntity();
+        const buildingComp = new BuildingComponent(
+          this.componentCounter++,
+          entity.id
+        );
+        buildingComp.spriteSheet = 'simple_cabin_1';
+        buildingComp.innerSprite = data[y][x].inner;
+        buildingComp.outerSprite = data[y][x].outer;
+
+        const posComp = new PositionComponent(
+          this.componentCounter++,
+          entity.id
+        );
+        posComp.isSightBlocked = true;
+        posComp.position = new Point(pos.x + 3 * x, pos.y + 3 * y);
+
+        components.push(buildingComp);
+        components.push(posComp);
+      }
+    }
+
+    return components;
+  }
+
+  public addBuilding(spriteSheetName: string, pos: Point): Component[] {
+    const entity = this.createEntity();
+    const buildingComp = new BuildingComponent(
+      this.componentCounter++,
+      entity.id
+    );
+    buildingComp.spriteSheet = 'simple_cabin_1';
+    buildingComp.innerSprite = 'floor_wbl';
+    buildingComp.outerSprite = 'outer_wbl';
+
+    const posComp = new PositionComponent(
+      this.componentCounter++,
+      entity.id
+    );
+    posComp.isSightBlocked = true;
+    posComp.position = pos;
+
+    const entity2 = this.createEntity();
+    const buildingComp2 = new BuildingComponent(
+      this.componentCounter++,
+      entity2.id
+    );
+    buildingComp2.spriteSheet = 'simple_cabin_1';
+    buildingComp2.innerSprite = 'floor_db';
+    buildingComp2.outerSprite = 'outer_db';
+
+    const posComp2 = new PositionComponent(
+      this.componentCounter++,
+      entity2.id
+    );
+    posComp2.isSightBlocked = true;
+    posComp2.position = new Point(pos.x + 3, pos.y);
+
+    return [buildingComp, posComp, buildingComp2, posComp2];
   }
 
   public addFishingComponent(playerEntityId: number): FishingComponent {

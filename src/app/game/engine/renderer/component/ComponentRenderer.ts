@@ -3,6 +3,7 @@ import { Px } from 'app/game/model';
 
 export abstract class ComponentRenderer<C extends Component> {
 
+  // TODO This protected game is not necessairy all renderer get the context anyways.
   constructor(
     protected readonly game: Phaser.Scene
   ) {
