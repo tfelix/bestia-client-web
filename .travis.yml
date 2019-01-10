@@ -5,9 +5,9 @@ node_js:
   - node
 script: npm run build
 deploy:
-  provider: script
-  skip_cleanup: true
-  script: bash ci/ftp_deploy.sh
+  provider: heroku
+  api_key: $HEROKU_API_KEY
+  app: bestia-game
   on:
     branch: master
 after_success:
