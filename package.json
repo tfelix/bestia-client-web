@@ -8,7 +8,8 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "heroku-postbuild": "ng build --prod"
   },
   "private": true,
   "dependencies": {
@@ -32,12 +33,12 @@
     "rxjs": "~6.2.0",
     "seedrandom": "^2.4.4",
     "store": "2.0.12",
-    "zone.js": "~0.8.26"
+    "zone.js": "~0.8.26",
+    "@angular/compiler-cli": "^6.1.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.8.0",
     "@angular/cli": "~6.2.3",
-    "@angular/compiler-cli": "^6.1.0",
     "@angular/language-service": "^6.1.0",
     "@types/jasmine": "~2.8.8",
     "@types/jasminewd2": "~2.0.3",
