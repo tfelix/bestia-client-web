@@ -48,4 +48,16 @@ check out their great work!
 
 ## Created By
 
-TODO
+Created with :heart: by [Thomas Felix](https://tfelix.de).
+
+The idea of this game is in my mind since 2006. It was meant as a little browsergame meant to be played by my highschool
+class. Sadly it never came to a state I was satisfied with.
+
+The first Alpha version screenshots looked like this and came from the release around 2009:
+
+![Bestia Overview Screen](https://bestia-game.net/user/data/images/github/bestia_overview.jpg "Bestia Overview Screen")
+![Inventory](https://bestia-game.net/user/data/images/github/inventory.jpg "Bestia Inventory")
+![Moving Bestia in the overworld](https://bestia-game.net/user/data/images/github/move.jpg "Moving Bestia in Overview World")
+
+Since then there was pause in development until I dreamed about new game mechanics and was complelty fed up with todays
+MMORPGs. The idea of Bestia was renewed and development began to speed up again in 2016.
