@@ -29,4 +29,8 @@ export class LoginComponent implements OnInit {
   closeModal(id: string) {
     this.modalService.close(id);
   }
+
+  onSubmit() {
+    // no op.
+  }
 }

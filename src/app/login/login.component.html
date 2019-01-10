@@ -1,10 +1,10 @@
 <app-modal id="login-dialog">
   <div class="modal-body">
-    <form name="loginForm" #loginForm="ngForm" (submit)="onSubmit($event)">
+    <form name="loginForm" #loginForm="ngForm" (submit)="onSubmit()">
       <img src="/assets/img/logo-black-100.png" alt="Bestia Browsergame">
       <fieldset>
         <label for="username">E-Mail</label>
-        <input [(ngModel)]="model.email" type="email" autocomplete="username" placeholder="Enter E-Mail" name="username">
+        <input [(ngModel)]="model.username" type="email" autocomplete="username" placeholder="Enter E-Mail" name="username">
         <label for="password">Password</label>
         <input [(ngModel)]="model.password" type="password" autocomplete="current-password" placeholder="Password" autocomplete="current-password" name="password">
         <input class="button-primary" type="submit" value="Login">
