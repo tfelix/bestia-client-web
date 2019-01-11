@@ -1,16 +1,19 @@
 import * as LOG from 'loglevel';
 
-import { Entity, ComponentType, VisualComponent, PositionComponent, PlayerComponent } from 'app/game/entities';
+import { Entity, ComponentType, VisualComponent, PositionComponent, PlayerComponent, BuildingComponent } from 'app/game/entities';
 import { Point, Size } from 'app/game/model';
 
 import { EngineContext } from './EngineContext';
 import { getSpriteDescriptionFromCache } from './renderer/component/SpriteDescription';
+import { BuildingDescription } from './renderer/component/BuildingComponentRenderer';
+import { MapHelper } from './MapHelper';
 
 export class CollisionUpdater {
 
   private collisionMap: number[][] = [[]];
   public isDirty = true;
   private displayTileSize: Size;
+  private checkedBuildingEntityIds = new Set<number>();
 
   constructor(
     private readonly ctx: EngineContext
@@ -34,7 +37,7 @@ export class CollisionUpdater {
     }
 
     this.ctx.pathfinder.setGrid(this.collisionMap);
-    this.updateCollisionMap();
+    this.update();
   }
 
   private clearCollisionMap() {
@@ -50,58 +53,116 @@ export class CollisionUpdater {
     // This is for now and inefficent.
     this.isDirty = true;
     this.clearCollisionMap();
-    this.updateCollisionMap();
-  }
 
-  public updateCollisionMap() {
     if (!this.isDirty) {
       return;
     }
 
     this.updateCollisionMapFromTilemap();
+    this.updateCollisionFromEntities();
+
+    // TODO Check if this call is needed or if the grid is hold by reference anyways
+    this.ctx.pathfinder.setGrid(this.collisionMap);
+    this.isDirty = false;
+  }
+
+  private updateCollisionFromEntities() {
+    this.checkedBuildingEntityIds.clear();
 
     this.ctx.entityStore.entities.forEach(entity => {
-      if (!this.hasEntityAllRequirements(entity)) {
+      const isPlayerEntity = this.ctx.playerHolder.isActivePlayerEntity(entity);
+      if (isPlayerEntity) {
         return;
       }
 
-      const visualComp = entity.getComponent(ComponentType.VISUAL) as VisualComponent;
-      const positionComp = entity.getComponent(ComponentType.POSITION) as PositionComponent;
-      if (!visualComp.visible) {
-        return;
+      if (this.isSprite(entity)) {
+        this.updateCollisionSpriteEntity(entity);
       }
 
-      const scrollOffset = this.ctx.helper.display.getScrollOffset();
-      const displaySize = this.ctx.helper.display.getDisplaySizeInTiles();
-
-      if (!this.isEntityInRange(
-        positionComp.position,
-        scrollOffset,
-        displaySize
-      )) {
-        return;
+      if (this.isBuilding(entity)) {
+        this.updateCollisionBuildingEntity(entity);
       }
+    });
+  }
 
-      const spriteName = visualComp.sprite;
-      const spriteDesc = getSpriteDescriptionFromCache(spriteName, this.ctx.gameScene);
-      const collision = spriteDesc && spriteDesc.collision || [[]];
+  private updateCollisionSpriteEntity(entity: Entity) {
+    const visualComp = entity.getComponent(ComponentType.VISUAL) as VisualComponent;
+    const positionComp = entity.getComponent(ComponentType.POSITION) as PositionComponent;
+    if (!visualComp.visible) {
+      return;
+    }
 
-      const sprite = entity.data.visual.sprite;
-      const spriteTopLeft = this.ctx.helper.sprite.getSpriteTopLeftPoint(sprite);
+    const scrollOffset = this.ctx.helper.display.getScrollOffset();
+    const displaySize = this.ctx.helper.display.getDisplaySizeInTiles();
 
-      for (let dy = 0; dy < collision.length; dy++) {
-        for (let dx = 0; dx < collision[dy].length; dx++) {
-          if (collision[dy][dx] === 1) {
-            const x = spriteTopLeft.x + dx - scrollOffset.x;
-            const y = spriteTopLeft.y + dy - scrollOffset.y;
-            this.collisionMap[y][x] = 1;
-          }
+    if (!this.isEntityInRange(
+      positionComp.position,
+      scrollOffset,
+      displaySize
+    )) {
+      return;
+    }
+
+    const spriteName = visualComp.sprite;
+    const spriteDesc = getSpriteDescriptionFromCache(spriteName, this.ctx.gameScene);
+    const collision = spriteDesc && spriteDesc.collision || [[]];
+
+    const sprite = entity.data.visual.sprite;
+    const spriteTopLeft = this.ctx.helper.sprite.getSpriteTopLeftPoint(sprite);
+
+    for (let dy = 0; dy < collision.length; dy++) {
+      for (let dx = 0; dx < collision[dy].length; dx++) {
+        if (collision[dy][dx] === 1) {
+          const x = spriteTopLeft.x + dx - scrollOffset.x;
+          const y = spriteTopLeft.y + dy - scrollOffset.y;
+          this.collisionMap[y][x] = 1;
+        }
+      }
+    }
+  }
+
+  private updateCollisionBuildingEntity(entity: Entity) {
+    // Break early if we already have checked this entity
+    if (this.checkedBuildingEntityIds.has(entity.id)) {
+      return;
+    }
+    const scrollOffset = this.ctx.helper.display.getScrollOffset();
+    const buildingComp = entity.getComponent(ComponentType.BUILDING) as BuildingComponent;
+    const desc = this.ctx.gameScene.cache.json.get(buildingComp.spriteSheet + '_desc') as BuildingDescription;
+    const allConnectedEntityIds = this.getAllConnectedEntities(entity.id, buildingComp.connectedEntityIds);
+
+    allConnectedEntityIds.forEach(eId => {
+      const currentEntity = this.ctx.entityStore.getEntity(eId);
+      // const posComp = currentEntity.getComponent(ComponentType.POSITION) as PositionComponent;
+
+      for (let dy = scrollOffset.y; dy < scrollOffset.y + desc.blockSize; dy++) {
+        for (let dx = scrollOffset.x; dx < scrollOffset.x + desc.blockSize; dx++) {
+          this.collisionMap[dy][dx] = 1;
         }
       }
     });
+  }
 
-    this.ctx.pathfinder.setGrid(this.collisionMap);
-    this.isDirty = false;
+  private getAllConnectedEntities(currentId: number, connected: { top: number, right: number, bottom: number, left: number }): number[] {
+    if (this.checkedBuildingEntityIds.has(currentId) || currentId === 0) {
+      return [];
+    }
+    this.checkedBuildingEntityIds.add(currentId);
+
+    const checked = [currentId];
+    const toCheck = [connected.top || 0, connected.bottom || 0, connected.left || 0, connected.right || 0];
+
+    toCheck.forEach(eid => {
+      // Safety check
+      if (eid === 0) {
+        return;
+      }
+      const entity = this.ctx.entityStore.getEntity(eid);
+      const buildingComp = entity.getComponent(ComponentType.BUILDING) as BuildingComponent;
+      checked.push(...this.getAllConnectedEntities(eid, buildingComp.connectedEntityIds));
+    });
+
+    return checked;
   }
 
   private updateCollisionMapFromTilemap() {
@@ -126,11 +187,13 @@ export class CollisionUpdater {
     }
   }
 
-  private hasEntityAllRequirements(entity: Entity) {
-    const isPlayerEntity = this.ctx.playerHolder.isActivePlayerEntity(entity);
+  private isSprite(entity: Entity) {
+    return entity.hasComponent(ComponentType.VISUAL)
+      && entity.hasComponent(ComponentType.POSITION);
+  }
 
-    return !isPlayerEntity
-      && entity.hasComponent(ComponentType.VISUAL)
+  private isBuilding(entity: Entity) {
+    return entity.hasComponent(ComponentType.BUILDING)
       && entity.hasComponent(ComponentType.POSITION);
   }
 

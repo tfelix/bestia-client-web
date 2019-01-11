@@ -4,6 +4,16 @@ import { Entity, BuildingComponent, ComponentType, PositionComponent } from 'app
 import { EngineContext } from '../../EngineContext';
 import { ComponentRenderer } from './ComponentRenderer';
 import { MapHelper } from '../../MapHelper';
+import { Vec2 } from 'app/game/model';
+
+export interface BuildingDescription {
+  name: string;
+  type: string;
+  version: number;
+  blockSize: number;
+  doors: Array<{name: string, position: Vec2}>;
+  windows: Array<{name: string, position: Vec2}>;
+}
 
 export interface BuildingData {
   innerSprite: Phaser.GameObjects.Image;

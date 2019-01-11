@@ -1,6 +1,13 @@
 {
 	"name": "simple_cabin_1",
 	"type" : "building",
-	"version": 1,
-	"collision": [[0],[1]]
+  "version": 1,
+  "blockSize:": 3,
+  "doors": [
+    {"name": "outer_db", "position": {"x": 1, "y": 0}},
+    {"name": "inner_db", "position": {"x": 1, "y": 0}}
+  ],
+  "windows": [
+    {"name": "floor_wl", "position": {"x": 1, "y": 0}}
+  ]
 }

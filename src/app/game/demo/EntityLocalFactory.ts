@@ -106,14 +106,17 @@ export class EntityLocalFactory {
 
   public addBuilding2(data: BuildingData, pos: Point): Component[] {
     const components: Component[] = [];
+    const componentMap: BuildingComponent[][] = [];
 
     for (let y = 0; y < data.length; y++) {
+      componentMap[y] = [];
       for (let x = 0; x < data[y].length; x++) {
         const entity = this.createEntity();
         const buildingComp = new BuildingComponent(
           this.componentCounter++,
           entity.id
         );
+        componentMap[y].push(buildingComp);
         buildingComp.spriteSheet = 'simple_cabin_1';
         buildingComp.innerSprite = data[y][x].inner;
         buildingComp.outerSprite = data[y][x].outer;
@@ -130,43 +133,32 @@ export class EntityLocalFactory {
       }
     }
 
+    // Add the references in the components
+    for (let y = 0; y < componentMap.length; y++) {
+      for (let x = 0; x < componentMap[y].length; x++) {
+        const currentComp = componentMap[y][x];
+
+        let top = null;
+        let left = null;
+        if (y > 0) {
+          top = componentMap[y - 1][x].entityId;
+          componentMap[y - 1][x].connectedEntityIds.bottom = currentComp.entityId;
+        }
+        if (x > 0) {
+          left = componentMap[y][x - 1].entityId;
+          componentMap[y][x - 1].connectedEntityIds.right = currentComp.entityId;
+        }
+
+        currentComp.connectedEntityIds = {
+          top: top,
+          left: left,
+          right: null,
+          bottom: null
+        };
+      }
+    }
+
     return components;
-  }
-
-  public addBuilding(spriteSheetName: string, pos: Point): Component[] {
-    const entity = this.createEntity();
-    const buildingComp = new BuildingComponent(
-      this.componentCounter++,
-      entity.id
-    );
-    buildingComp.spriteSheet = 'simple_cabin_1';
-    buildingComp.innerSprite = 'floor_wbl';
-    buildingComp.outerSprite = 'outer_wbl';
-
-    const posComp = new PositionComponent(
-      this.componentCounter++,
-      entity.id
-    );
-    posComp.isSightBlocked = true;
-    posComp.position = pos;
-
-    const entity2 = this.createEntity();
-    const buildingComp2 = new BuildingComponent(
-      this.componentCounter++,
-      entity2.id
-    );
-    buildingComp2.spriteSheet = 'simple_cabin_1';
-    buildingComp2.innerSprite = 'floor_db';
-    buildingComp2.outerSprite = 'outer_db';
-
-    const posComp2 = new PositionComponent(
-      this.componentCounter++,
-      entity2.id
-    );
-    posComp2.isSightBlocked = true;
-    posComp2.position = new Point(pos.x + 3, pos.y);
-
-    return [buildingComp, posComp, buildingComp2, posComp2];
   }
 
   public addFishingComponent(playerEntityId: number): FishingComponent {
@@ -258,9 +250,8 @@ export class EntityLocalFactory {
     position.position = pos;
     entity.addComponent(position);
 
-    const debug = this.addDebugComponent(entity);
-
-    return [visual, position, ...debug];
+    // const debug = this.addDebugComponent(entity);
+    return [visual, position];
   }
 
   public addConditionComponent(
