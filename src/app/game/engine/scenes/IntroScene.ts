@@ -4,6 +4,7 @@ import { Loadbar } from './Loadbar';
 import { TextStyles } from '../TextStyles';
 import { ShaderPipeline } from '../pipelines/ShaderPipeline';
 import { TextAnimator } from '../TextAnimator';
+import { BestiaButton } from '../BestiaButton';
 
 export class IntroScene extends Phaser.Scene {
 
@@ -51,6 +52,7 @@ export class IntroScene extends Phaser.Scene {
     this.load.image('dead-world', '../assets/img/sand_and_rock_by_joakimolofsson.jpg');
     this.load.image('magic-world', '../assets/img/summoning_by_joakimolofsson.jpg');
     this.load.image('logo', '../assets/img/logo-full-white.png');
+    this.load.image('bg', '../assets/img/login_1.jpg');
 
     this.load.glsl('creation', '../assets/shader/creation.glsl');
     this.load.glsl('plasma', '../assets/shader/plasma.glsl');
@@ -64,7 +66,7 @@ export class IntroScene extends Phaser.Scene {
     this.heightH = this.height / 2;
     this.widthH = this.width / 2;
 
-    this.createStep1();
+    this.createStep0();
   }
 
   public update(time: number, delta: number) {
@@ -79,6 +81,67 @@ export class IntroScene extends Phaser.Scene {
         this.updateStep5(time, delta);
         break;
     }
+  }
+
+  private createStep0() {
+    this.step = 0;
+
+    const bg = this.add.image(this.widthH, this.heightH, 'bg');
+    bg.alpha = 0;
+    this.tweens.add({
+      targets: bg,
+      alpha: 1,
+      duration: 1000,
+      ease: 'Power3'
+    });
+
+    const logo = this.add.image(this.widthH, this.heightH - 80, 'logo');
+    logo.setOrigin(0.5);
+    logo.alpha = 0;
+    logo.setScale(0.8);
+    logo.depth = 1;
+
+    this.tweens.add({
+      targets: logo,
+      alpha: 1,
+      y: '-= 20',
+      duration: 1000,
+      delay: 500,
+      ease: 'Power3'
+    });
+
+    const btn = new BestiaButton(this, this.widthH, this.heightH + 150, 'Start Game', TextStyles.INTRO, () => {
+      // Boom Effect
+      // Play Sound: BESTIA
+
+      /*
+      this.tweens.add({
+        targets: [logo, bg, btn],
+        alpha: 0,
+        duration: 1000,
+        ease: 'Power3',
+        onComplete: () => {
+          btn.destroy();
+          bg.destroy();
+          logo.destroy();
+          this.createStep1();
+        }
+      });
+      this.cameras.main.flash(1000);*/
+      btn.x += 100;
+    });
+    btn.alpha = 0;
+    btn.setOrigin(0.5);
+    btn.depth = 100;
+    this.add.existing(btn);
+
+    this.tweens.add({
+      targets: btn,
+      alpha: 1,
+      duration: 1000,
+      delay: 500,
+      ease: 'Power3'
+    });
   }
 
   private createStep1() {
