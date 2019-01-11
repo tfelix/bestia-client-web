@@ -42,6 +42,8 @@ export class IntroScene extends Phaser.Scene {
   public preload() {
     this.loadbar.setup();
 
+    this.load.audio('story', '../assets/audio/story.ogg');
+
     this.load.atlas('flares', '../assets/fx/flares.png', '../assets/fx/flares.json');
     this.load.atlas('intro-chars', '../assets/sprites/mob/intro/intro-chars.png', '../assets/sprites/mob/intro/intro-chars.json');
 
@@ -80,6 +82,9 @@ export class IntroScene extends Phaser.Scene {
   }
 
   private createStep1() {
+    const storyAudio = this.sound.add('story');
+    storyAudio.play();
+
     this.creation = this.add.graphics();
     this.creation.alpha = 0;
     this.creationPipeline = (this.game.renderer as Phaser.Renderer.WebGL.WebGLRenderer)

@@ -47,6 +47,7 @@ export class LoadScene extends Phaser.Scene {
       const pngUrl = `${baseUrl}/${x}.png`;
       const jsonUrl = `${baseUrl}/${x}.json`;
       this.load.atlas(x, pngUrl, jsonUrl);
+      this.load.json(`${x}_desc`, `${baseUrl}/${x}_desc.json`);
     });
 
     // Load Music
