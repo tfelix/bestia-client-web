@@ -21,8 +21,6 @@ export class IntroScene extends Phaser.Scene {
   private explosionCircle: Phaser.Geom.Circle;
   private creationFadeTween: Phaser.Tweens.Tween;
 
-  // Step 3
-
   // Step 6
   private plasmaPipeline: Phaser.Renderer.WebGL.WebGLPipeline;
 
@@ -44,6 +42,7 @@ export class IntroScene extends Phaser.Scene {
     this.loadbar.setup();
 
     this.load.audio('story', '../assets/audio/story.ogg');
+    this.load.audio('explosion', '../assets/audio/explosion_medium.ogg');
 
     this.load.atlas('flares', '../assets/fx/flares.png', '../assets/fx/flares.json');
     this.load.atlas('intro-chars', '../assets/sprites/mob/intro/intro-chars.png', '../assets/sprites/mob/intro/intro-chars.json');
@@ -110,11 +109,10 @@ export class IntroScene extends Phaser.Scene {
       ease: 'Power3'
     });
 
-    const btn = new BestiaButton(this, this.widthH, this.heightH + 150, 'Start Game', TextStyles.INTRO, () => {
-      // Boom Effect
-      // Play Sound: BESTIA
+    const explosionAudio = this.sound.add('explosion');
 
-      /*
+    const btn = new BestiaButton(this, this.widthH, this.heightH + 150, 'Start Game', TextStyles.INTRO, () => {
+      explosionAudio.play(undefined, { volume: 0.5 });
       this.tweens.add({
         targets: [logo, bg, btn],
         alpha: 0,
@@ -127,8 +125,7 @@ export class IntroScene extends Phaser.Scene {
           this.createStep1();
         }
       });
-      this.cameras.main.flash(1000);*/
-      btn.x += 100;
+      this.cameras.main.flash(1000);
     });
     btn.alpha = 0;
     btn.setOrigin(0.5);
@@ -200,16 +197,30 @@ export class IntroScene extends Phaser.Scene {
   private createStep3() {
     this.step = 3;
 
-    const livingWorld = this.add.image(this.widthH, this.heightH, 'living-world');
-    livingWorld.displayHeight = this.height;
-    const deadWorld = this.add.image(this.widthH, this.heightH, 'dead-world');
-    deadWorld.setScale(2);
-    deadWorld.displayHeight = this.height;
+    const livingWorld = this.add.image(0, 0, 'living-world');
+    livingWorld.setDisplaySize(this.width, this.height);
+    livingWorld.setOrigin(0, 0);
+    livingWorld.setScale(Math.max(livingWorld.scaleX, livingWorld.scaleY) + 0.1);
+    this.tweens.add({
+      targets: livingWorld,
+      duration: 6500,
+      x: '-= 100'
+    });
+
+    const deadWorld = this.add.image(0, 0, 'dead-world');
+    deadWorld.setOrigin(0, 0);
+    deadWorld.setDisplaySize(this.width, this.height);
+    deadWorld.setScale(Math.max(deadWorld.scaleX, deadWorld.scaleY) + 0.1);
     deadWorld.alpha = 0;
 
-    const timeline = this.tweens.createTimeline({});
+    this.tweens.add({
+      targets: deadWorld,
+      x: '-= 50',
+      delay: 6000,
+      duration: 7000,
+    });
 
-    timeline.add({
+    this.tweens.add({
       targets: deadWorld,
       alpha: 1,
       delay: 6000,
@@ -222,20 +233,27 @@ export class IntroScene extends Phaser.Scene {
         }, [], this);
       }
     });
-
-    timeline.play();
   }
 
   private createStep4() {
     this.step = 4;
 
     const magicWorld = this.add.image(this.widthH, this.heightH, 'magic-world');
+    magicWorld.setDisplaySize(this.width, this.height);
     magicWorld.alpha = 0;
+
     this.tweens.add({
       targets: magicWorld,
       alpha: 1,
       ease: 'Power1',
-      duration: 3000,
+      duration: 2000,
+    });
+
+    this.tweens.add({
+      targets: magicWorld,
+      scaleX: '+= 0.1',
+      scaleY: '+= 0.1',
+      duration: 5000,
       onComplete: () => {
         magicWorld.destroy();
         this.createStep5();

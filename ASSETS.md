@@ -17,3 +17,4 @@ Some assets used in this game require attribution which we gladly give. In this 
 | Intro Summoning | [Joakim Olofsson](https://www.deviantart.com/joakimolofsson) | Public Domain w. giving Credits |
 | Intro Landscape | [Joakim Olofsson](https://www.deviantart.com/joakimolofsson) | Public Domain w. giving Credits |
 | Intro Creation Shader | [Danilo Guanabara](http://www.pouet.net/prod.php?which=57245) | Public Domain w. giving Credits |
+| Audio FX GDC 2016, GDC 2017 Game Audio Bundle  | [sonniss.com](https://sonniss.com) | GDC Bundle Licence |

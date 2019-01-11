@@ -73,15 +73,15 @@ export class BestiaButton extends Phaser.GameObjects.Text {
   }
 
   public enterButtonHoverState() {
-    this.setStyle({ fill: '#ff0' });
+    this.setStyle({ fill: '#ff881e' });
   }
 
   public enterButtonRestState() {
-    this.setStyle({ fill: '#0f0' });
+    this.setStyle({ fill: '#ffffff' });
   }
 
   public enterButtonActiveState() {
-    this.setStyle({ fill: '#0ff' });
+    this.setStyle({ fill: '#fec898' });
   }
 
   public destroy() {
