@@ -103,7 +103,6 @@ export class PointerManager {
   }
 
   public hide() {
-    // this.setActive(this.nullIndicator, true);
   }
 
   public show() {

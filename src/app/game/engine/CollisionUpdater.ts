@@ -6,8 +6,11 @@ import { Point, Size } from 'app/game/model';
 import { EngineContext } from './EngineContext';
 import { getSpriteDescriptionFromCache } from './renderer/component/SpriteDescription';
 import { BuildingDescription } from './renderer/component/BuildingComponentRenderer';
-import { MapHelper } from './MapHelper';
 
+/**
+ * TODO This collision updater is doing too much work. Split it into collision updater for houses and
+ * tilemaps.
+ */
 export class CollisionUpdater {
 
   private collisionMap: number[][] = [[]];
@@ -126,6 +129,7 @@ export class CollisionUpdater {
     if (this.checkedBuildingEntityIds.has(entity.id)) {
       return;
     }
+
     const scrollOffset = this.ctx.helper.display.getScrollOffset();
     const buildingComp = entity.getComponent(ComponentType.BUILDING) as BuildingComponent;
     const desc = this.ctx.gameScene.cache.json.get(buildingComp.spriteSheet + '_desc') as BuildingDescription;
@@ -133,14 +137,32 @@ export class CollisionUpdater {
 
     allConnectedEntityIds.forEach(eId => {
       const currentEntity = this.ctx.entityStore.getEntity(eId);
-      // const posComp = currentEntity.getComponent(ComponentType.POSITION) as PositionComponent;
+      const buildingConnectedComp = currentEntity.getComponent(ComponentType.BUILDING) as BuildingComponent;
+      const posComp = currentEntity.getComponent(ComponentType.POSITION) as PositionComponent;
 
-      for (let dy = scrollOffset.y; dy < scrollOffset.y + desc.blockSize; dy++) {
-        for (let dx = scrollOffset.x; dx < scrollOffset.x + desc.blockSize; dx++) {
-          this.collisionMap[dy][dx] = 1;
+      for (let dy = 0; dy < desc.blockSize; dy++) {
+        for (let dx = 0; dx < desc.blockSize; dx++) {
+          if (!this.isDoor(dx, dy, desc, buildingConnectedComp)) {
+            const x = dx + (posComp.position.x - scrollOffset.x);
+            const y = dy + (posComp.position.y - scrollOffset.y);
+            this.collisionMap[y][x] = 1;
+          }
         }
       }
     });
+  }
+
+  private isDoor(x: number, y: number, desc: BuildingDescription, buildingComp: BuildingComponent): boolean {
+    for (let i = 0; i < desc.doors.length; i++) {
+      const d = desc.doors[i];
+      if (d.name === buildingComp.innerSprite || d.name === buildingComp.outerSprite) {
+        if (d.position.x === x && d.position.y === y) {
+          return true;
+        }
+      }
+    }
+
+    return false;
   }
 
   private getAllConnectedEntities(currentId: number, connected: { top: number, right: number, bottom: number, left: number }): number[] {
@@ -157,8 +179,21 @@ export class CollisionUpdater {
       if (eid === 0) {
         return;
       }
+
       const entity = this.ctx.entityStore.getEntity(eid);
+      // During initilizaion there might be race conditions that not all connected entities are already
+      // loaded. Simply skip them.
+      if (!this.isBuilding(entity)) {
+        return;
+      }
+
       const buildingComp = entity.getComponent(ComponentType.BUILDING) as BuildingComponent;
+
+      // There can be a reace condition so that the BuildingComponents are not yet fully loaded here.
+      if (!buildingComp) {
+        return;
+      }
+
       checked.push(...this.getAllConnectedEntities(eid, buildingComp.connectedEntityIds));
     });
 

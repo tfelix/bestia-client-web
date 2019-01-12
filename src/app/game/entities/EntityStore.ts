@@ -1,10 +1,7 @@
 import { Entity } from './Entity';
 
 export class EntityStore {
-  public entities: Map<number, Entity> = new Map();
-
-  constructor() {
-  }
+  public readonly entities: Map<number, Entity> = new Map();
 
   public getEntity(id: number): Entity {
     const e = this.entities.get(id);

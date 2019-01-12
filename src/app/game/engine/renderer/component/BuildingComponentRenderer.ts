@@ -4,15 +4,16 @@ import { Entity, BuildingComponent, ComponentType, PositionComponent } from 'app
 import { EngineContext } from '../../EngineContext';
 import { ComponentRenderer } from './ComponentRenderer';
 import { MapHelper } from '../../MapHelper';
-import { Vec2 } from 'app/game/model';
+import { Vec2, Point } from 'app/game/model';
+import { ifStmt } from '@angular/compiler/src/output/output_ast';
 
 export interface BuildingDescription {
   name: string;
   type: string;
   version: number;
   blockSize: number;
-  doors: Array<{name: string, position: Vec2}>;
-  windows: Array<{name: string, position: Vec2}>;
+  doors: Array<{ name: string, position: Vec2 }>;
+  windows: Array<{ name: string, position: Vec2 }>;
 }
 
 export interface BuildingData {
@@ -102,8 +103,24 @@ export class BuildingComponentRenderer extends ComponentRenderer<BuildingCompone
   }
 
   protected updateGameData(entity: Entity, component: BuildingComponent) {
+    const playerPosComp = this.ctx.playerHolder.activeEntity.getComponent(ComponentType.POSITION) as PositionComponent;
+    const enteredBuilding = this.getEnteredBuildingEntity(playerPosComp.position);
     // Check if we are inside a building and if so, make all the upper entities
     // transparent.
+  }
+
+  private getEnteredBuildingEntity(pos: Point): Entity | null {
+    for (const entity of this.ctx.entityStore.entities.values()) {
+      if (!entity.hasComponent(ComponentType.BUILDING)) {
+        continue;
+      }
+
+      if (!entity.hasComponent(ComponentType.POSITION)) {
+        continue;
+      }
+    }
+
+    return null;
   }
 
   public removeGameData(entity: Entity) {

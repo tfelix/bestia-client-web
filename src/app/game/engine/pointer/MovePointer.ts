@@ -7,6 +7,7 @@ import { PointerManager } from './PointerManager';
 import { EngineContext } from '../EngineContext';
 import { Entity } from 'entities';
 import { PointerPriority } from './PointerPriority';
+import { VisualDepth } from '../renderer/VisualDepths';
 
 export class MovePointer extends Pointer {
   private marker: Phaser.GameObjects.Sprite;
@@ -67,6 +68,7 @@ export class MovePointer extends Pointer {
   public create() {
     this.marker = this.ctx.gameScene.add.sprite(100, 100, 'indicator_move');
     this.marker.setOrigin(0, 0);
+    this.marker.depth = VisualDepth.UI_UNDER_CURSOR;
     const config = {
       key: 'cursor_anim',
       frames: this.ctx.gameScene.anims.generateFrameNumbers('indicator_move', { start: 0, end: 1 }),
