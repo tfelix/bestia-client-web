@@ -132,7 +132,7 @@ export class CollisionUpdater {
 
     const scrollOffset = this.ctx.helper.display.getScrollOffset();
     const buildingComp = entity.getComponent(ComponentType.BUILDING) as BuildingComponent;
-    const desc = this.ctx.gameScene.cache.json.get(buildingComp.spriteSheet + '_desc') as BuildingDescription;
+    const desc = this.ctx.gameScene.cache.json.get(buildingComp.jsonDescriptionName) as BuildingDescription;
     const allConnectedEntityIds = this.getAllConnectedEntities(entity.id, buildingComp.connectedEntityIds);
 
     allConnectedEntityIds.forEach(eId => {

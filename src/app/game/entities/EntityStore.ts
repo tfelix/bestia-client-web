@@ -1,4 +1,6 @@
 import { Entity } from './Entity';
+import { ComponentType } from './components/ComponentType';
+import { Component } from './components/Component';
 
 export class EntityStore {
   public readonly entities: Map<number, Entity> = new Map();
@@ -13,6 +15,23 @@ export class EntityStore {
     }
 
     return e;
+  }
+
+  public getComponentFromEntityId<T extends Component>(entityId: number, type: ComponentType): T {
+    const e = this.getEntity(entityId);
+
+    return e.getComponent(type) as T;
+  }
+
+  public getAllEntitiesWithComponents(...types: ComponentType[]): Entity[] {
+    const foundEntities = [];
+    for (const entity of this.entities.values()) {
+      if (types.every(t => entity.hasComponent(t))) {
+        foundEntities.push(entity);
+      }
+    }
+
+    return foundEntities;
   }
 
   public addEntity(entity: Entity) {

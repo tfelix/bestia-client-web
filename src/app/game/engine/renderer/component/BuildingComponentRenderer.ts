@@ -1,11 +1,10 @@
 import * as LOG from 'loglevel';
-import { Entity, BuildingComponent, ComponentType, PositionComponent } from 'app/game/entities';
+import { Entity, BuildingComponent, ComponentType, PositionComponent, ConnectedBuildingComponentFinder } from 'app/game/entities';
 
 import { EngineContext } from '../../EngineContext';
 import { ComponentRenderer } from './ComponentRenderer';
 import { MapHelper } from '../../MapHelper';
-import { Vec2, Point } from 'app/game/model';
-import { ifStmt } from '@angular/compiler/src/output/output_ast';
+import { Vec2 } from 'app/game/model';
 
 export interface BuildingDescription {
   name: string;
@@ -21,17 +20,22 @@ export interface BuildingData {
   outerSprite: Phaser.GameObjects.Image | null;
 }
 
-interface SpriteNameMeta {
+interface CorrectedSpriteName {
   flipX: boolean;
   correctedSpriteName: string;
 }
 
 export class BuildingComponentRenderer extends ComponentRenderer<BuildingComponent> {
 
+  private readonly connectedBuildingFinder: ConnectedBuildingComponentFinder;
+  private currentEnteredBuildingEntityIds = new Set<number>();
+
   constructor(
     private ctx: EngineContext
   ) {
     super(ctx.gameScene);
+
+    this.connectedBuildingFinder = new ConnectedBuildingComponentFinder(this.ctx.entityStore);
   }
 
   get supportedComponent(): ComponentType {
@@ -42,7 +46,7 @@ export class BuildingComponentRenderer extends ComponentRenderer<BuildingCompone
     return !entity.data.building;
   }
 
-  private getSpriteNameMeta(spriteName: string): SpriteNameMeta {
+  private getSpriteNameMeta(spriteName: string): CorrectedSpriteName {
     let correctedName = '';
     if (spriteName.endsWith('.png')) {
       correctedName = spriteName;
@@ -103,20 +107,67 @@ export class BuildingComponentRenderer extends ComponentRenderer<BuildingCompone
   }
 
   protected updateGameData(entity: Entity, component: BuildingComponent) {
-    const playerPosComp = this.ctx.playerHolder.activeEntity.getComponent(ComponentType.POSITION) as PositionComponent;
-    const enteredBuilding = this.getEnteredBuildingEntity(playerPosComp.position);
-    // Check if we are inside a building and if so, make all the upper entities
-    // transparent.
+    const enteredBuilding = this.getEnteredBuildingEntity();
+
+    const isAlreadyInThisBuilding = enteredBuilding && this.currentEnteredBuildingEntityIds.has(enteredBuilding.id);
+    const wasInBuilding = enteredBuilding === null && this.currentEnteredBuildingEntityIds.size !== 0;
+
+    if (wasInBuilding) {
+      this.showBuildingRoof();
+    }
+
+    if (!isAlreadyInThisBuilding) {
+      this.hideBuildingRoof(enteredBuilding);
+    }
   }
 
-  private getEnteredBuildingEntity(pos: Point): Entity | null {
-    for (const entity of this.ctx.entityStore.entities.values()) {
-      if (!entity.hasComponent(ComponentType.BUILDING)) {
-        continue;
-      }
+  private showBuildingRoof() {
+    const roofEntityIds = Array.from(this.currentEnteredBuildingEntityIds);
+    this.animateRoofAlpha(1, roofEntityIds);
+    this.currentEnteredBuildingEntityIds.clear();
+  }
 
-      if (!entity.hasComponent(ComponentType.POSITION)) {
-        continue;
+  private hideBuildingRoof(building: Entity | null) {
+    if (building == null) {
+      return;
+    }
+
+    // We are already inside this building. Nothing needs to be done.
+    if (this.currentEnteredBuildingEntityIds.has(building.id)) {
+      return;
+    }
+
+    const buildingComp = building.getComponent(ComponentType.BUILDING) as BuildingComponent;
+    const allBuilding = this.connectedBuildingFinder.findAllConnectedEntityIds(buildingComp);
+    this.animateRoofAlpha(0, allBuilding);
+  }
+
+  private animateRoofAlpha(targetAlpha: number, buildingEntityIds: number[]) {
+    const roofSprites = buildingEntityIds.map(eid => {
+      this.currentEnteredBuildingEntityIds.add(eid);
+      const e = this.ctx.entityStore.getEntity(eid);
+      const buildingData = e.data.building;
+      return buildingData && buildingData.outerSprite;
+    }).filter(x => !!x);
+
+    this.ctx.gameScene.tweens.add({
+      targets: roofSprites,
+      alpha: targetAlpha,
+      ease: 'Power3',
+      duration: 600
+    });
+  }
+
+  private getEnteredBuildingEntity(): Entity | null {
+    const player = this.ctx.playerHolder.activeEntity;
+    const allBuildingEntities = this.ctx.entityStore.getAllEntitiesWithComponents(
+      ComponentType.BUILDING,
+      ComponentType.POSITION
+    );
+
+    for (const buildingEntity of allBuildingEntities) {
+      if (this.ctx.collisionChecker.collides(player, buildingEntity)) {
+        return buildingEntity;
       }
     }
 

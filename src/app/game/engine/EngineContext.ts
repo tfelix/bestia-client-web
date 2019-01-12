@@ -10,6 +10,7 @@ import { PointerManager, CursorManager } from './pointer';
 import { MoveHelper } from './MoveHelper';
 import { GameData } from './GameData';
 import { StaticSoundHolder } from './StaticSoundHolder';
+import { EntityCollisionChecker } from '../entities/EntityCollisionChecker';
 
 export class EngineConfig {
 
@@ -29,6 +30,7 @@ export class EngineContext {
   public pointerGroup: Phaser.GameObjects.Group;
   public pathfinder: EasyStar.js;
   public collisionUpdater: CollisionUpdater;
+  public collisionChecker: EntityCollisionChecker;
   public pointerManager: PointerManager;
   public cursorManager: CursorManager;
 
@@ -64,6 +66,7 @@ export class EngineContext {
     this.collisionUpdater = new CollisionUpdater(this);
     this.pointerManager = new PointerManager(this);
     this.cursorManager = new CursorManager(this);
+    this.collisionChecker = new EntityCollisionChecker(gameScene.cache);
 
     this.sound = new StaticSoundHolder(gameScene);
   }
