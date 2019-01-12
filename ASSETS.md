@@ -1,6 +1,7 @@
 # Assets Licences
 
-Some assets used in this game require attribution which we gladly give. In this file we list every used asset for the game, name the auther and also its licence.
+Some assets used in this game require attribution which we gladly give. In this file we list every used asset for the
+game, name the auther and also its licence.
 
 | Asset Name/Description | Author | Licence |
 | --- |:---:| ---:|

@@ -43,6 +43,7 @@ export class IntroScene extends Phaser.Scene {
 
     this.load.audio('story', '../assets/audio/story.ogg');
     this.load.audio('explosion', '../assets/audio/explosion_medium.ogg');
+    this.load.audio('bestia', '../assets/audio/bestia.ogg');
 
     this.load.atlas('flares', '../assets/fx/flares.png', '../assets/fx/flares.json');
     this.load.atlas('intro-chars', '../assets/sprites/mob/intro/intro-chars.png', '../assets/sprites/mob/intro/intro-chars.json');
@@ -109,9 +110,14 @@ export class IntroScene extends Phaser.Scene {
       ease: 'Power3'
     });
 
+    const bestiaAudio = this.sound.add('bestia');
     const explosionAudio = this.sound.add('explosion');
 
     const btn = new BestiaButton(this, this.widthH, this.heightH + 150, 'Start Game', TextStyles.INTRO, () => {
+      this.time.delayedCall(150, () => {
+        bestiaAudio.play();
+      }, [], this);
+
       explosionAudio.play(undefined, { volume: 0.5 });
       this.tweens.add({
         targets: [logo, bg, btn],
