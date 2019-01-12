@@ -17,5 +17,6 @@ export * from './InteractionComponent';
 export * from './EntityTypeComponent';
 export * from './LatencyComponent';
 export * from './BuildingComponent';
+export * from './VegetationComponent';
 
 export * from './local';
