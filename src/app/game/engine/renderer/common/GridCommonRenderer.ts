@@ -1,9 +1,9 @@
 import { MapHelper } from '../../MapHelper';
 import { EngineContext } from '../../EngineContext';
-import { BaseCommonRenderer } from './BaseCommonRenderer';
+import { CommonRenderer } from './CommonRenderer';
 import { VisualDepth } from '../VisualDepths';
 
-export class GridCommonRenderer extends BaseCommonRenderer {
+export class GridCommonRenderer extends CommonRenderer {
 
   private graphicsGrid: Phaser.GameObjects.Graphics | null = null;
   private line = new Phaser.Geom.Line(0, 0, 0, MapHelper.TILE_SIZE_PX);

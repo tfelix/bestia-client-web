@@ -1,5 +1,5 @@
 import { EngineContext } from '../../EngineContext';
-import { BaseCommonRenderer } from './BaseCommonRenderer';
+import { CommonRenderer } from './CommonRenderer';
 import { MapHelper } from '../../MapHelper';
 import { SceneNames } from '../../scenes/SceneNames';
 
@@ -14,7 +14,7 @@ const DEBUG_STYLE = {
 /**
  * Renders Debug Information on screen.
  */
-export class DebugInfoRenderer extends BaseCommonRenderer {
+export class DebugInfoRenderer extends CommonRenderer {
 
   private readonly textOffsetX = 200;
   private readonly textOffsetY = 20;

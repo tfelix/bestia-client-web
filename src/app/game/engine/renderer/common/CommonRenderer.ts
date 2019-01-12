@@ -1,5 +1,5 @@
 
-export abstract class BaseCommonRenderer {
+export abstract class CommonRenderer {
   public preload() { }
   public create() { }
   public abstract update();

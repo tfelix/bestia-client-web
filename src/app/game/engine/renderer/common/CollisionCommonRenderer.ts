@@ -2,10 +2,10 @@ import { Point } from '../../../model';
 
 import { MapHelper } from '../../MapHelper';
 import { EngineContext } from '../../EngineContext';
-import { BaseCommonRenderer } from './BaseCommonRenderer';
+import { CommonRenderer } from './CommonRenderer';
 import { VisualDepth } from '../VisualDepths';
 
-export class CollisionCommonRenderer extends BaseCommonRenderer {
+export class CollisionCommonRenderer extends CommonRenderer {
 
   private graphicsCollision: Phaser.GameObjects.Graphics | null = null;
   private rect = new Phaser.Geom.Rectangle(0, 0, MapHelper.TILE_SIZE_PX, MapHelper.TILE_SIZE_PX);

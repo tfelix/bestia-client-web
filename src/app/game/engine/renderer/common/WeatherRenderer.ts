@@ -1,6 +1,6 @@
 import { UIConstants, UIAtlasFx } from 'app/game/ui';
 
-import { BaseCommonRenderer } from './BaseCommonRenderer';
+import { CommonRenderer } from './CommonRenderer';
 import { EngineContext } from '../../EngineContext';
 import { VisualDepth } from '../VisualDepths';
 import { ShaderPipeline } from '../../pipelines/ShaderPipeline';
@@ -11,7 +11,7 @@ import { ShaderPipeline } from '../../pipelines/ShaderPipeline';
  * instead of sharing it via the global object. Therefore we can listen to changes
  * and update the weather renderer accordingly.
  */
-export class WeatherRenderer extends BaseCommonRenderer {
+export class WeatherRenderer extends CommonRenderer {
 
   private weatherGfx: Phaser.GameObjects.Graphics;
   private rainParticles: Phaser.GameObjects.Particles.ParticleEmitterManager;

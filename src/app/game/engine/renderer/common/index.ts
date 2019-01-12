@@ -1,4 +1,4 @@
-export * from './BaseCommonRenderer';
+export * from './CommonRenderer';
 export * from './CollisionCommonRenderer';
 export * from './CommonRenderManager';
 export * from './DebugInfoRenderer';

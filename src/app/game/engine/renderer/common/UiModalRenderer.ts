@@ -1,9 +1,9 @@
-import { BaseCommonRenderer } from './BaseCommonRenderer';
+import { CommonRenderer } from './CommonRenderer';
 import { EngineContext } from '../../EngineContext';
 import { UiDialogScene } from '../../scenes/UiDialogScene';
 import { SceneNames } from '../../scenes/SceneNames';
 
-export class UiModalRenderer extends BaseCommonRenderer {
+export class UiModalRenderer extends CommonRenderer {
 
   constructor(
     private readonly ctx: EngineContext
