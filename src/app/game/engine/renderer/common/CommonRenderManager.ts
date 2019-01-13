@@ -6,6 +6,7 @@ import { UiModalRenderer } from './UiModalRenderer';
 import { GridCommonRenderer } from './GridCommonRenderer';
 import { WeatherRenderer } from './WeatherRenderer';
 import { SceneNames } from '../../scenes/SceneNames';
+import { BuildingInsideRenderer } from './BuildingInsideRenderer';
 
 /**
  * The Actions, Common and EntityRenderManager are fairly identically and could be unified.
@@ -20,6 +21,7 @@ export class CommonRenderManager implements RenderStatistics {
     this.addRenderer(new GridCommonRenderer(ctx));
     this.addRenderer(new UiModalRenderer(ctx));
     this.addRenderer(new WeatherRenderer(ctx, ctx.gameScene.scene.get(SceneNames.WEATHER)));
+    this.addRenderer(new BuildingInsideRenderer(ctx));
   }
 
   public addRenderer(renderer: CommonRenderer) {
