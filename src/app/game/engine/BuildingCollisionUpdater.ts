@@ -14,6 +14,10 @@ export class BuildingCollisionUpdater implements CollisionMapUpdater {
   }
 
   public updateMap(map: CollisionMap) {
+    if (this.ctx.collision.building.isInsideBuilding()) {
+      return;
+    }
+
     this.checkedBuildingEntityIds.clear();
     const allBuildingEntities = this.ctx.entityStore.getAllEntitiesWithComponents(
       ComponentType.BUILDING,
