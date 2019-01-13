@@ -6,6 +6,7 @@ export * from './SpriteHelper';
 export * from './GameData';
 export * from './TextStyles';
 export * from './BestiaButton';
+export * from './CollisionMap';
 
 export * from './renderer';
 export * from './pointer';

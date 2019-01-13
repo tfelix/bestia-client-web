@@ -3,7 +3,7 @@ import * as LOG from 'loglevel';
 import { Entity, VisualComponent } from 'app/game/entities';
 import { Px, Point } from 'app/game/model';
 
-import { SpriteDescription, getSpriteDescriptionFromCache } from './SpriteDescription';
+import { SpriteDescription } from './SpriteDescription';
 import { SpriteType } from './SpriteDescription';
 import { SpriteRenderer, SpriteData } from './SpriteRenderer';
 import { SpriteOffsets } from './SpriteOffsets';
@@ -85,7 +85,7 @@ export class MultiSpriteRenderer extends SpriteRenderer {
   }
 
   private getSpriteDescription(component: VisualComponent): SpriteDescription {
-    return getSpriteDescriptionFromCache(component.sprite, this.ctx.gameScene);
+    return this.ctx.gameScene.cache.json.get(component.jsonDescriptionName);
   }
 
   private setupMultiSprites(

@@ -54,7 +54,7 @@ export class MovePointer extends Pointer {
   private isNotWalkable(pointerPx: Px) {
     const offset = this.ctx.helper.display.getScrollOffset();
     const point = MapHelper.pixelToPoint(pointerPx.x, pointerPx.y).minus(offset);
-    return this.ctx.collisionUpdater.hasCollision(point.x, point.y);
+    return this.ctx.collision.map.hasCollision(point.x, point.y);
   }
 
   public load() {

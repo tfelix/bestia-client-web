@@ -1,5 +1,5 @@
 import * as LOG from 'loglevel';
-import { Entity, BuildingComponent, ComponentType, PositionComponent, ConnectedBuildingComponentFinder } from 'app/game/entities';
+import { Entity, BuildingComponent, ComponentType, PositionComponent } from 'app/game/entities';
 
 import { EngineContext } from '../../EngineContext';
 import { ComponentRenderer } from './ComponentRenderer';
@@ -27,15 +27,12 @@ interface CorrectedSpriteName {
 
 export class BuildingComponentRenderer extends ComponentRenderer<BuildingComponent> {
 
-  private readonly connectedBuildingFinder: ConnectedBuildingComponentFinder;
-  private currentEnteredBuildingEntityIds = new Set<number>();
+  private hiddenBuildingRoofEntityIds = new Set<number>();
 
   constructor(
     private ctx: EngineContext
   ) {
     super(ctx.gameScene);
-
-    this.connectedBuildingFinder = new ConnectedBuildingComponentFinder(this.ctx.entityStore);
   }
 
   get supportedComponent(): ComponentType {
@@ -107,44 +104,35 @@ export class BuildingComponentRenderer extends ComponentRenderer<BuildingCompone
   }
 
   protected updateGameData(entity: Entity, component: BuildingComponent) {
-    const enteredBuilding = this.getEnteredBuildingEntity();
+    const inBuilding = this.ctx.collision.building.isInsideBuilding();
 
-    const isAlreadyInThisBuilding = enteredBuilding && this.currentEnteredBuildingEntityIds.has(enteredBuilding.id);
-    const wasInBuilding = enteredBuilding === null && this.currentEnteredBuildingEntityIds.size !== 0;
-
-    if (wasInBuilding) {
+    if (inBuilding) {
+      this.hideBuildingRoof();
+    } else {
       this.showBuildingRoof();
-    }
-
-    if (!isAlreadyInThisBuilding) {
-      this.hideBuildingRoof(enteredBuilding);
     }
   }
 
   private showBuildingRoof() {
-    const roofEntityIds = Array.from(this.currentEnteredBuildingEntityIds);
+    const roofEntityIds = Array.from(this.hiddenBuildingRoofEntityIds);
     this.animateRoofAlpha(1, roofEntityIds);
-    this.currentEnteredBuildingEntityIds.clear();
+    this.hiddenBuildingRoofEntityIds.clear();
   }
 
-  private hideBuildingRoof(building: Entity | null) {
-    if (building == null) {
+  private hideBuildingRoof() {
+    // TODO Maybe this handling is too cumbersome. Think about introducing a Building class which
+    // contains multiple entitys and form a complex building structure to work with.
+    const buildingEntityIds = this.ctx.collision.building.getCurrentOccupiedBuildingEntityIds();
+    if (buildingEntityIds == null) {
       return;
     }
 
-    // We are already inside this building. Nothing needs to be done.
-    if (this.currentEnteredBuildingEntityIds.has(building.id)) {
-      return;
-    }
-
-    const buildingComp = building.getComponent(ComponentType.BUILDING) as BuildingComponent;
-    const allBuilding = this.connectedBuildingFinder.findAllConnectedEntityIds(buildingComp);
-    this.animateRoofAlpha(0, allBuilding);
+    this.animateRoofAlpha(0, buildingEntityIds);
+    buildingEntityIds.forEach(id => this.hiddenBuildingRoofEntityIds.add(id));
   }
 
   private animateRoofAlpha(targetAlpha: number, buildingEntityIds: number[]) {
     const roofSprites = buildingEntityIds.map(eid => {
-      this.currentEnteredBuildingEntityIds.add(eid);
       const e = this.ctx.entityStore.getEntity(eid);
       const buildingData = e.data.building;
       return buildingData && buildingData.outerSprite;
@@ -156,22 +144,6 @@ export class BuildingComponentRenderer extends ComponentRenderer<BuildingCompone
       ease: 'Power3',
       duration: 600
     });
-  }
-
-  private getEnteredBuildingEntity(): Entity | null {
-    const player = this.ctx.playerHolder.activeEntity;
-    const allBuildingEntities = this.ctx.entityStore.getAllEntitiesWithComponents(
-      ComponentType.BUILDING,
-      ComponentType.POSITION
-    );
-
-    for (const buildingEntity of allBuildingEntities) {
-      if (this.ctx.collisionChecker.collides(player, buildingEntity)) {
-        return buildingEntity;
-      }
-    }
-
-    return null;
   }
 
   public removeGameData(entity: Entity) {

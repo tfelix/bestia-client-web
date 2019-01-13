@@ -13,7 +13,6 @@ import { MapHelper } from '../MapHelper';
 import { PointerManager } from './PointerManager';
 import { EngineContext } from '../EngineContext';
 import { PointerPriority } from './PointerPriority';
-import { getSpriteDescriptionFromCache } from '../renderer/component/SpriteDescription';
 import { CursorType } from './CursorManager';
 
 function getSightDirection(source: Point, lookingTo: Point): Point {
@@ -106,7 +105,11 @@ export class BasicAttackPointer extends Pointer {
     } else {
       // The entity is probably not walkable so we need the closes walkable tile coordinate.
       const point = MapHelper.pixelToPoint(position.x, position.y);
-      const spriteDesc = getSpriteDescriptionFromCache(clickedEntity.data.visual.spriteName, this.ctx.gameScene);
+      const visualComp = clickedEntity.getComponent(ComponentType.VISUAL) as VisualComponent;
+      if (!visualComp) {
+        return;
+      }
+      const spriteDesc = this.ctx.gameScene.cache.json.get(visualComp.jsonDescriptionName);
       const spriteCollision = new SpriteCollision(point, spriteDesc);
       const playerPos = (this.ctx.playerHolder.activeEntity.getComponent(ComponentType.POSITION) as PositionComponent).position;
       const walkTarget = spriteCollision.nextNonCollision(playerPos, point);

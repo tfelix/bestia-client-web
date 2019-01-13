@@ -35,4 +35,8 @@ export class VisualComponent extends Component {
   ) {
     super(id, entityId, ComponentType.VISUAL);
   }
+
+  get jsonDescriptionName() {
+    return this.sprite + '_desc';
+  }
 }

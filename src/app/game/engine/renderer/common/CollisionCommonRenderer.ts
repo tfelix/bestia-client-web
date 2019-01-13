@@ -45,7 +45,7 @@ export class CollisionCommonRenderer extends CommonRenderer {
 
     for (let y = 0; y < gameTileSize.height; y++) {
       for (let x = 0; x < gameTileSize.width; x++) {
-        const hasCollision = this.context.collisionUpdater.hasCollision(x, y);
+        const hasCollision = this.context.collision.map.hasCollision(x, y);
         if (hasCollision) {
           const px = MapHelper.pointToPixel(new Point(x, y));
           this.rect.x = px.x + startX;

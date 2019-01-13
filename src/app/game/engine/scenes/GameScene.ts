@@ -109,7 +109,7 @@ export class GameScene extends Phaser.Scene {
       layers: [layer1, layer2, layer3, layer4, layer5]
     };
 
-    this.engineContext.collisionUpdater.resetCollisionMapSize();
+    this.engineContext.collision.map.updateCollisionMapSize();
 
     // TODO Investigate why there are 2 tiles missing in the height size of the map.
     this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels + 64);
@@ -147,6 +147,7 @@ export class GameScene extends Phaser.Scene {
     this.actionRenderManager.update();
     this.commonRenderManager.update();
 
-    this.engineContext.collisionUpdater.update();
+    this.engineContext.collision.map.update();
+    this.engineContext.collision.building.update();
   }
 }

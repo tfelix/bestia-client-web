@@ -1,6 +1,8 @@
 import { Point, Size } from 'app/game/model';
 import { SpriteDescription } from 'app/game/engine';
 
+// TODO Consider moving this functionality into the VisualComponent for better coherence. But
+// maybe its indeed better suited here. idk.
 export class SpriteCollision {
 
   private spriteSizePoints: Size;
@@ -9,7 +11,7 @@ export class SpriteCollision {
 
   constructor(
     private readonly position: Point,
-    private readonly spriteDescription: SpriteDescription
+    spriteDescription: SpriteDescription
   ) {
     const collision = spriteDescription.collision || [[0]];
     const height = collision.length;

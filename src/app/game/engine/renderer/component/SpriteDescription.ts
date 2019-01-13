@@ -31,10 +31,3 @@ export interface SpriteDescription {
   collision?: number[][];
   fxData?: FxDescriptionData;
 }
-
-export function getSpriteDescriptionFromCache(
-  spriteName: string,
-  scene: Phaser.Scene
-): SpriteDescription {
-  return scene.cache.json.get(`${spriteName}_desc`);
-}

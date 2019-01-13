@@ -1,6 +1,7 @@
 export * from './Entity';
 export * from './EntityStore';
 export * from './PlayerEntityHolder';
+export * from './BoundingBoxFactory';
 
 export * from './actions/Action';
 export * from './actions/ActionType';

@@ -1,4 +1,4 @@
-export class StaticSoundHolder {
+export class UiSounds {
 
   public buttonClick: Phaser.Sound.BaseSound;
   public rollover: Phaser.Sound.BaseSound;

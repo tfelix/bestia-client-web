@@ -1,11 +1,11 @@
 import * as LOG from 'loglevel';
 
-import { Entity, FxComponent } from 'app/game/entities';
+import { Entity, FxComponent, ComponentType, VisualComponent } from 'app/game/entities';
 import { Point } from 'app/game/model';
 
 import { RenderDelegate } from './RenderDelegate';
 import { EngineContext } from '../../EngineContext';
-import { getSpriteDescriptionFromCache, SpriteDescription, FxDescriptionData } from './SpriteDescription';
+import { SpriteDescription, FxDescriptionData } from './SpriteDescription';
 import { SpriteData } from './SpriteRenderer';
 
 export class BurnFxComponentDelegate extends RenderDelegate<FxComponent> {
@@ -25,9 +25,10 @@ export class BurnFxComponentDelegate extends RenderDelegate<FxComponent> {
   }
 
   createGameData(entity: Entity, component: FxComponent) {
+    const visualComp = entity.getComponent(ComponentType.VISUAL) as VisualComponent;
     const visualData = entity.data.visual;
 
-    if (!visualData) {
+    if (!visualData || !visualComp) {
       LOG.warn(`Entity ${entity} has no attached visual data (sprite). Can not attach BurnFx.`);
       entity.data.fx = { burningEmitter: [] };
       return;
@@ -35,7 +36,7 @@ export class BurnFxComponentDelegate extends RenderDelegate<FxComponent> {
 
     const fxData = entity.data.fx || { burningEmitter: [] };
 
-    const spriteDesc = getSpriteDescriptionFromCache(visualData.spriteName, this.ctx.gameScene);
+    const spriteDesc = this.ctx.gameScene.cache.json.get(visualComp.jsonDescriptionName);
     const burningAnchors = spriteDesc.fxData && spriteDesc.fxData.burning || [];
 
     if (!burningAnchors) {

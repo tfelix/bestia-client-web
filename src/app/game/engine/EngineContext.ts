@@ -3,14 +3,14 @@ import * as EasyStar from 'easystarjs';
 import { TranslationService } from 'app/game/connection';
 import { InteractionService, PlayerEntityHolder, EntityStore } from 'app/game/entities';
 
-import { CollisionUpdater } from './CollisionUpdater';
 import { DisplayHelper } from './DisplayHelper';
 import { SpriteHelper } from './SpriteHelper';
 import { PointerManager, CursorManager } from './pointer';
 import { MoveHelper } from './MoveHelper';
 import { GameData } from './GameData';
-import { StaticSoundHolder } from './StaticSoundHolder';
-import { EntityCollisionChecker } from '../entities/EntityCollisionChecker';
+import { UiSounds } from './audio/StaticSoundHolder';
+import { BuildingCollisions } from './BuildingCollisions';
+import { CollisionMap } from './CollisionMap';
 
 export class EngineConfig {
 
@@ -29,8 +29,6 @@ export class EngineContext {
   public mapGroup0: Phaser.GameObjects.Group;
   public pointerGroup: Phaser.GameObjects.Group;
   public pathfinder: EasyStar.js;
-  public collisionUpdater: CollisionUpdater;
-  public collisionChecker: EntityCollisionChecker;
   public pointerManager: PointerManager;
   public cursorManager: CursorManager;
 
@@ -39,12 +37,17 @@ export class EngineContext {
   public readonly interactionCache = new InteractionService();
   public readonly i18n = new TranslationService();
 
-  public readonly sound: StaticSoundHolder;
+  public readonly sound: UiSounds;
 
   public readonly helper: {
     display: DisplayHelper;
     sprite: SpriteHelper;
     move: MoveHelper;
+  };
+
+  public readonly collision: {
+    map: CollisionMap;
+    building: BuildingCollisions;
   };
 
   constructor(
@@ -63,11 +66,15 @@ export class EngineContext {
     this.pathfinder = new EasyStar.js();
     this.pathfinder.enableDiagonals();
 
-    this.collisionUpdater = new CollisionUpdater(this);
+    this.collision = {
+      map: new CollisionMap(this),
+      building: new BuildingCollisions(this)
+    };
+
+
     this.pointerManager = new PointerManager(this);
     this.cursorManager = new CursorManager(this);
-    this.collisionChecker = new EntityCollisionChecker(gameScene.cache);
 
-    this.sound = new StaticSoundHolder(gameScene);
+    this.sound = new UiSounds(gameScene);
   }
 }

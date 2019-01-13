@@ -2,22 +2,43 @@ import { Component } from './Component';
 import { ComponentType } from './ComponentType';
 import { EntityStore } from '../EntityStore';
 
-export class ConnectedBuildingComponentFinder {
+export class BuildingComponent extends Component {
+
+  public spriteSheet: string;
+  public innerSprite: string;
+  public outerSprite: string | null;
+
+  public connectedEntityIds: {
+    top: number | null,
+    right: number | null,
+    bottom: number | null,
+    left: number | null
+  };
 
   constructor(
-    private readonly entityStore: EntityStore
+    id: number,
+    entityId: number
   ) {
+    super(id, entityId, ComponentType.BUILDING);
   }
 
-  public findAllConnectedEntityIds(building: BuildingComponent): number[] {
+  get jsonDescriptionName() {
+    return this.spriteSheet + '_desc';
+  }
+
+  public findAllConnectedEntityIds(entityStore: EntityStore): number[] {
     const connectedEntityIds = new Set<number>();
-    this.traverseConnectedEntities(building, connectedEntityIds);
+    this.traverseConnectedEntities(entityStore, this, connectedEntityIds);
 
     return Array.from(connectedEntityIds);
   }
 
-  private traverseConnectedEntities(building: BuildingComponent, searchedEntities: Set<number>) {
-    const entity = this.entityStore.getEntity(building.entityId);
+  private traverseConnectedEntities(
+    entityStore: EntityStore,
+    building: BuildingComponent,
+    searchedEntities: Set<number>
+  ) {
+    const entity = entityStore.getEntity(building.entityId);
     if (searchedEntities.has(building.entityId)) {
       return;
     }
@@ -43,34 +64,14 @@ export class ConnectedBuildingComponentFinder {
     });
 
     toCheckEids.forEach(eid => {
-      const nextEntity = this.entityStore.getEntity(eid);
+      const nextEntity = entityStore.getEntity(eid);
       const nextBuilding = nextEntity.getComponent(ComponentType.BUILDING) as BuildingComponent;
-      this.traverseConnectedEntities(nextBuilding, searchedEntities);
+      // When traversing the graph sometimes during init of components
+      // some entities might not have the building componet yet.
+      if (!nextBuilding) {
+        return;
+      }
+      this.traverseConnectedEntities(entityStore, nextBuilding, searchedEntities);
     });
-  }
-}
-
-export class BuildingComponent extends Component {
-
-  public spriteSheet: string;
-  public innerSprite: string;
-  public outerSprite: string | null;
-
-  public connectedEntityIds: {
-    top: number | null,
-    right: number | null,
-    bottom: number | null,
-    left: number | null
-  };
-
-  constructor(
-    id: number,
-    entityId: number
-  ) {
-    super(id, entityId, ComponentType.BUILDING);
-  }
-
-  get jsonDescriptionName() {
-    return this.spriteSheet + '_desc';
   }
 }
