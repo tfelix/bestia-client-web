@@ -144,17 +144,17 @@ export class BuildingInsideRenderer extends CommonRenderer {
       i++;
 
       if (win.isVertical) {
-        this.outsideShadowOverlay.fillRect(win.x, win.y, MapHelper.TILE_SIZE_PX, 5);
+        this.outsideShadowOverlay.fillRect(win.x, win.y, 5, MapHelper.TILE_SIZE_PX);
 
         // Draw test line
         this.outsideShadowOverlay.lineBetween(playerLocalPx.x, playerLocalPx.y, win.x, win.y);
         this.outsideShadowOverlay.lineBetween(playerLocalPx.x, playerLocalPx.y, win.x, win.y + MapHelper.TILE_SIZE_PX);
 
       } else {
-        this.outsideShadowOverlay.fillRect(win.x, win.y, 5, MapHelper.TILE_SIZE_PX);
+        this.outsideShadowOverlay.fillRect(win.x, win.y, MapHelper.TILE_SIZE_PX, 5);
         // Draw test line
         this.outsideShadowOverlay.lineBetween(playerLocalPx.x, playerLocalPx.y, win.x, win.y);
-        this.outsideShadowOverlay.lineBetween(playerLocalPx.x, playerLocalPx.y, win.x, win.y + MapHelper.TILE_SIZE_PX);
+        this.outsideShadowOverlay.lineBetween(playerLocalPx.x, playerLocalPx.y, win.x + MapHelper.TILE_SIZE_PX, win.y);
       }
     });
   }
@@ -191,22 +191,21 @@ export class BuildingInsideRenderer extends CommonRenderer {
       let winX = window.position.x + posComp.position.x;
       let winY = window.position.y + posComp.position.y;
 
-      const isVertical = posComp.position.y === 0 || posComp.position.y === buildingDesc.blockSize - 1;
       const isRightWall = window.position.x === buildingDesc.blockSize - 1;
       const isBottomWall = window.position.y === buildingDesc.blockSize - 1;
 
       // Correct the wall position of the window in relation to the outside wall
       // If this correction for correct ligting needs to be calculated here already we must
       // put world position calculation in here.
-      if (!isVertical && isRightWall) {
+      if (window.isVertical && isRightWall) {
         winX += 1;
       }
 
-      if (isVertical && isBottomWall) {
+      if (window.isVertical && isBottomWall) {
         winY += 1;
       }
 
-      return { x: winX, y: winY, isVertical: isVertical };
+      return { x: winX, y: winY, isVertical: window.isVertical };
     });
   }
 

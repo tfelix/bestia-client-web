@@ -12,7 +12,7 @@ export interface BuildingDescription {
   version: number;
   blockSize: number;
   doors: Array<{ name: string, position: Vec2 }>;
-  windows: Array<{ name: string, position: Vec2 }>;
+  windows: Array<{ name: string, position: Vec2, isVertical: boolean }>;
 }
 
 export interface BuildingData {

@@ -8,9 +8,10 @@
     {"name": "inner_db", "position": {"x": 1, "y": 2}}
   ],
   "windows": [
-    {"name": "floor_wbl", "position": {"x": 0, "y": 1}},
-    {"name": "floor_wbr", "position": {"x": 2, "y": 1}},
-    {"name": "floor_wtl", "position": {"x": 0, "y": 1}},
-    {"name": "floor_wtr", "position": {"x": 2, "y": 1}}
+    {"name": "floor_wbl", "position": {"x": 0, "y": 1}, "isVertical": true},
+    {"name": "floor_wbr", "position": {"x": 2, "y": 1}, "isVertical": true},
+    {"name": "floor_wtl", "position": {"x": 0, "y": 1}, "isVertical": true},
+    {"name": "floor_wtr", "position": {"x": 2, "y": 1}, "isVertical": true},
+    {"name": "floor_wt", "position": {"x": 1, "y": 0}, "isVertical": false}
   ]
 }
