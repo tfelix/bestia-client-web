@@ -4,9 +4,9 @@ export class MapHelper {
 
   public static readonly TILE_SIZE_PX = 32;
 
-  public static worldToSceneLocal(camera: any, x: number, y: number): Px {
-    const localX = (x - camera.worldView.x) * camera.zoom;
-    const localY = (y - camera.worldView.y) * camera.zoom;
+  public static worldPxToSceneLocal(worldCamera: any, x: number, y: number): Px {
+    const localX = (x - worldCamera.worldView.x) * worldCamera.zoom;
+    const localY = (y - worldCamera.worldView.y) * worldCamera.zoom;
 
     return new Px(localX, localY);
   }

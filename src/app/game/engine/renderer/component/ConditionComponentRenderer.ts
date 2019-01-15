@@ -74,7 +74,7 @@ export class ConditionComponentRenderer extends ComponentRenderer<ConditionCompo
 
     rect.height = conditionBarHeight;
 
-    const localPos = MapHelper.worldToSceneLocal(this.ctx.gameScene.cameras.main, sprite.x, sprite.y);
+    const localPos = MapHelper.worldPxToSceneLocal(this.ctx.gameScene.cameras.main, sprite.x, sprite.y);
     rect.x = localPos.x - maxWidth / 2;
     rect.y = localPos.y + bottomHealtbarOffset;
     rect.width = maxWidth;

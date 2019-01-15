@@ -35,7 +35,7 @@ export class DamageActionsRenderer extends ActionsRenderer {
     actions.forEach(a => {
       const dmgTxt = String(a.totalAmount);
 
-      const spriteLocalPos = MapHelper.worldToSceneLocal(this.gameScene.cameras.main, visual.sprite.x, visual.sprite.y);
+      const spriteLocalPos = MapHelper.worldPxToSceneLocal(this.gameScene.cameras.main, visual.sprite.x, visual.sprite.y);
 
       const txt = this.uiScene.add.text(
         spriteLocalPos.x,

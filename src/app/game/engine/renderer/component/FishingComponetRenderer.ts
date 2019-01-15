@@ -66,7 +66,7 @@ export class FishingComponentRenderer extends ComponentRenderer<FishingComponent
     );
     this.fishingSwimmer.anims.play(UIConstants.FISHING_ANIM_SWIMMER);
 
-    const localPos = MapHelper.worldToSceneLocal(
+    const localPos = MapHelper.worldPxToSceneLocal(
       this.game.cameras.main,
       this.fishingTarget.x,
       this.fishingTarget.y

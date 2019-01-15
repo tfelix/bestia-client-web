@@ -85,7 +85,7 @@ export class DebugComponentRenderer extends ComponentRenderer<DebugComponent> {
     }
     debugData.debugText.text = text;
 
-    const localPos = MapHelper.worldToSceneLocal(this.mainCamera, sprite.x, sprite.y);
+    const localPos = MapHelper.worldPxToSceneLocal(this.mainCamera, sprite.x, sprite.y);
     debugData.debugText.setPosition(localPos.x + 10, localPos.y - 32);
     debugData.origin.setPosition(sprite.x, sprite.y);
   }
