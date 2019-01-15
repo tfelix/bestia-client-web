@@ -4,12 +4,18 @@ import { SceneNames } from '../../scenes/SceneNames';
 import { ComponentType, BuildingComponent, PositionComponent } from 'app/game/entities';
 import { BuildingDescription } from '../component/BuildingComponentRenderer';
 import { MapHelper } from '../../MapHelper';
-import { Px } from 'app/game/model';
+import { Px, Vec2 } from 'app/game/model';
 
 interface WindowPos {
   x: number;
   y: number;
   isVertical: boolean;
+}
+
+function dist(a: Vec2, b: Vec2): number {
+  const dx = a.x - b.x;
+  const dy = a.y - b.y;
+  return Math.sqrt(dx * dx + dy * dy);
 }
 
 export class BuildingInsideRenderer extends CommonRenderer {
@@ -61,8 +67,24 @@ export class BuildingInsideRenderer extends CommonRenderer {
     this.outsideShadowOverlay.clear();
     this.outsideShadowRoomMask.clear();
 
-    this.outsideShadowOverlay.fillStyle(0x000000, 1);
+    // Prepare to draw the window see lines
+    const playerSprite = this.ctx.playerHolder.activeEntity.data.visual.sprite;
+    const playerLocalPx = MapHelper.worldPxToSceneLocal(this.ctx.gameScene.cameras.main, playerSprite.x, playerSprite.y);
+    const playerLocal = new Phaser.Math.Vector2(playerLocalPx.x, playerLocalPx.y);
+    this.lastRenderedPlayerPos.x = playerLocalPx.x;
+    this.lastRenderedPlayerPos.y = playerLocalPx.y;
+
+    const playerDistTopLeft = dist(playerLocalPx, { x: 0, y: 0 });
+    const playerDistTopRight = dist(playerLocalPx, { x: this.ctx.helper.display.sceneWidth, y: 0 });
+    const playerDistBottomLeft = dist(playerLocalPx, { x: 0, y: this.ctx.helper.display.sceneHeight });
+    const playerDistBottomRight = dist(playerLocalPx, { x: this.ctx.helper.display.sceneWidth, y: this.ctx.helper.display.sceneHeight });
+    const maxCornerDist = Math.max(playerDistBottomLeft, playerDistBottomRight, playerDistTopLeft, playerDistTopRight);
+
+    this.outsideShadowOverlay.fillStyle(0x000000);
     // this.outsideShadowOverlay.fillRect(0, 0, 2000, 2000);
+    // this.outsideShadowRoomMask.fillStyle(0xFFFFFF, 1);
+    // this.outsideShadowRoomMask.fillRect(0, 0, 2000, 2000);
+    // this.outsideShadowRoomMask.fillStyle(0xFFFFFF, 0);
 
     // Gets position of the player
     // Draw depending from the player lines towards the windows
@@ -80,41 +102,82 @@ export class BuildingInsideRenderer extends CommonRenderer {
 
       const buildingWorldPos = MapHelper.pointToPixel(posComp.position);
       const buildingSceneLocalPos = MapHelper.worldPxToSceneLocal(this.ctx.gameScene.cameras.main, buildingWorldPos.x, buildingWorldPos.y);
-
-      // this.outsideShadowRoomMask.fillRect(buildingSceneLocalPos.x, buildingSceneLocalPos.y, buildingPxSize, buildingPxSize);
+      this.outsideShadowRoomMask.fillRect(buildingSceneLocalPos.x, buildingSceneLocalPos.y, buildingPxSize, buildingPxSize);
 
       this.extractWindowPosition(buildingDesc, posComp, buildingComp)
         .forEach(wpos => windowWorldPos.push(wpos));
     });
-    // this.outsideShadowOverlay.mask = this.outsideShadowRoomMask.createGeometryMask();
-
-    // draw the windows
-    const playerPosComp = this.ctx.playerHolder.activeEntity.getComponent(ComponentType.POSITION) as PositionComponent;
-    const playerPosWorld = MapHelper.pointToPixelCentered(playerPosComp.position);
-    const playerLocalPx = MapHelper.worldPxToSceneLocal(this.ctx.gameScene.cameras.main, playerPosWorld.x, playerPosWorld.y);
-    this.lastRenderedPlayerPos.x = playerPosComp.position.x;
-    this.lastRenderedPlayerPos.y = playerPosComp.position.y;
+    // this.outsideShadowOverlay.mask = this.outsideShadowRoomMask.createBitmapMask();
+    // this.outsideShadowOverlay.mask.invertAlpha = true;
 
     this.outsideShadowOverlay.fillStyle(0xFF0000);
     this.outsideShadowOverlay.lineStyle(1, 0x00FF00);
-    windowWorldPos.forEach(win => {
+
+    // Bring the windows into local space and then we need to sort them into a clockwise order (which is previously not guranteed)
+    //  in order to draw the sight effects.
+    const winLocalPos = windowWorldPos.map(win => {
       const posGlobal = MapHelper.pointToPixel(win);
       const posLocal = MapHelper.worldPxToSceneLocal(this.ctx.gameScene.cameras.main, posGlobal.x, posGlobal.y);
+      win.x = posLocal.x;
+      win.y = posLocal.y;
+
+      return win;
+    });
+
+    let i = 0;
+    this.sortClockwise(winLocalPos, playerLocal).forEach(win => {
+
+      switch (i) {
+        case 0:
+          this.outsideShadowOverlay.fillStyle(0xFF0000);
+          break;
+        case 1:
+          this.outsideShadowOverlay.fillStyle(0x00FF00);
+          break;
+        case 2:
+          this.outsideShadowOverlay.fillStyle(0x0000FF);
+          break;
+        case 3:
+          this.outsideShadowOverlay.fillStyle(0x000000);
+          break;
+      }
+      i++;
 
       if (win.isVertical) {
-        this.outsideShadowOverlay.fillRect(posLocal.x, posLocal.y, MapHelper.TILE_SIZE_PX, 5);
+        this.outsideShadowOverlay.fillRect(win.x, win.y, MapHelper.TILE_SIZE_PX, 5);
 
         // Draw test line
-        this.outsideShadowOverlay.lineBetween(playerLocalPx.x, playerLocalPx.y, posLocal.x, posLocal.y);
-        this.outsideShadowOverlay.lineBetween(playerLocalPx.x, playerLocalPx.y, posLocal.x, posLocal.y + MapHelper.TILE_SIZE_PX);
+        this.outsideShadowOverlay.lineBetween(playerLocalPx.x, playerLocalPx.y, win.x, win.y);
+        this.outsideShadowOverlay.lineBetween(playerLocalPx.x, playerLocalPx.y, win.x, win.y + MapHelper.TILE_SIZE_PX);
 
       } else {
-        this.outsideShadowOverlay.fillRect(posLocal.x, posLocal.y, 5, MapHelper.TILE_SIZE_PX);
+        this.outsideShadowOverlay.fillRect(win.x, win.y, 5, MapHelper.TILE_SIZE_PX);
         // Draw test line
-        this.outsideShadowOverlay.lineBetween(playerLocalPx.x, playerLocalPx.y, posLocal.x, posLocal.y);
-        this.outsideShadowOverlay.lineBetween(playerLocalPx.x, playerLocalPx.y, posLocal.x, posLocal.y + MapHelper.TILE_SIZE_PX);
+        this.outsideShadowOverlay.lineBetween(playerLocalPx.x, playerLocalPx.y, win.x, win.y);
+        this.outsideShadowOverlay.lineBetween(playerLocalPx.x, playerLocalPx.y, win.x, win.y + MapHelper.TILE_SIZE_PX);
       }
     });
+  }
+
+  private sortClockwise(wins: WindowPos[], playerLocalPos: Phaser.Math.Vector2): WindowPos[] {
+    // Maybe use Phaser.Vec2 throughout the entire calculation.
+    const sorted = wins.sort((a, b) => {
+      const vA = new Phaser.Math.Vector2(a.x - playerLocalPos.x, a.y - playerLocalPos.y);
+      const vB = new Phaser.Math.Vector2(b.x - playerLocalPos.x, b.y - playerLocalPos.y);
+      let angleA = vA.angle();
+      let angleB = vB.angle();
+
+      if (angleA < 0) {
+        angleA = 2 * Math.PI + angleA;
+      }
+      if (angleB < 0) {
+        angleB = 2 * Math.PI + angleB;
+      }
+
+      return angleA - angleB;
+    });
+
+    return sorted;
   }
 
   private extractWindowPosition(
