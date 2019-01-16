@@ -23,6 +23,7 @@ export class BuildingInsideRenderer extends CommonRenderer {
   private isInsideRenderActive = false;
   private outsideShadowOverlay: Phaser.GameObjects.Graphics;
   private outsideShadowRoomMask: Phaser.GameObjects.Graphics;
+  private tempHelperLines: Phaser.GameObjects.Graphics;
   private uiUnderScene: Phaser.Scene;
   private lastRenderedPlayerPos = { x: 0, y: 0 };
 
@@ -34,6 +35,7 @@ export class BuildingInsideRenderer extends CommonRenderer {
     this.uiUnderScene = ctx.gameScene.game.scene.getScene(SceneNames.UI);
     this.outsideShadowOverlay = this.uiUnderScene.add.graphics({});
     this.outsideShadowRoomMask = this.uiUnderScene.make.graphics({});
+    this.tempHelperLines = this.uiUnderScene.add.graphics({});
     this.outsideShadowRoomMask.fillStyle(0x000000);
   }
 
@@ -81,7 +83,7 @@ export class BuildingInsideRenderer extends CommonRenderer {
     const maxCornerDist = Math.max(playerDistBottomLeft, playerDistBottomRight, playerDistTopLeft, playerDistTopRight);
 
     this.outsideShadowOverlay.fillStyle(0x000000);
-    // this.outsideShadowOverlay.fillRect(0, 0, 2000, 2000);
+    this.outsideShadowOverlay.fillRect(0, 0, this.ctx.helper.display.sceneWidth, this.ctx.helper.display.sceneHeight);
     // this.outsideShadowRoomMask.fillStyle(0xFFFFFF, 1);
     // this.outsideShadowRoomMask.fillRect(0, 0, 2000, 2000);
     // this.outsideShadowRoomMask.fillStyle(0xFFFFFF, 0);
@@ -92,7 +94,6 @@ export class BuildingInsideRenderer extends CommonRenderer {
     const windowWorldPos: WindowPos[] = [];
 
     // Draw the mask and find the windows
-    this.outsideShadowRoomMask.beginPath();
     buildingEntityIds.forEach(eid => {
       const buildingEntity = this.ctx.entityStore.getEntity(eid);
       const buildingComp = buildingEntity.getComponent(ComponentType.BUILDING) as BuildingComponent;
@@ -107,14 +108,14 @@ export class BuildingInsideRenderer extends CommonRenderer {
       this.extractWindowPosition(buildingDesc, posComp, buildingComp)
         .forEach(wpos => windowWorldPos.push(wpos));
     });
-    // this.outsideShadowOverlay.mask = this.outsideShadowRoomMask.createBitmapMask();
-    // this.outsideShadowOverlay.mask.invertAlpha = true;
 
-    this.outsideShadowOverlay.fillStyle(0xFF0000);
-    this.outsideShadowOverlay.lineStyle(1, 0x00FF00);
+    this.outsideShadowOverlay.mask = this.outsideShadowRoomMask.createGeometryMask();
+    // Currently this is not in the type.d file included. It will get included as soon as
+    // https://github.com/photonstorm/phaser/pull/4301 will get merged.
+    (this.outsideShadowOverlay.mask as any).invertAlpha = true;
 
     // Bring the windows into local space and then we need to sort them into a clockwise order (which is previously not guranteed)
-    //  in order to draw the sight effects.
+    // in order to draw the sight effects.
     const winLocalPos = windowWorldPos.map(win => {
       const posGlobal = MapHelper.pointToPixel(win);
       const posLocal = MapHelper.worldPxToSceneLocal(this.ctx.gameScene.cameras.main, posGlobal.x, posGlobal.y);
@@ -125,36 +126,39 @@ export class BuildingInsideRenderer extends CommonRenderer {
     });
 
     let i = 0;
+    this.tempHelperLines.clear();
     this.sortClockwise(winLocalPos, playerLocal).forEach(win => {
-
       switch (i) {
         case 0:
-          this.outsideShadowOverlay.fillStyle(0xFF0000);
+          this.tempHelperLines.fillStyle(0xFF0000);
           break;
         case 1:
-          this.outsideShadowOverlay.fillStyle(0x00FF00);
+          this.tempHelperLines.fillStyle(0x00FF00);
           break;
         case 2:
-          this.outsideShadowOverlay.fillStyle(0x0000FF);
+          this.tempHelperLines.fillStyle(0x0000FF);
           break;
         case 3:
-          this.outsideShadowOverlay.fillStyle(0x000000);
+          this.tempHelperLines.fillStyle(0xFFFF00);
+          break;
+          case 4:
+          this.tempHelperLines.fillStyle(0x00FFFF);
           break;
       }
       i++;
 
       if (win.isVertical) {
-        this.outsideShadowOverlay.fillRect(win.x, win.y, 5, MapHelper.TILE_SIZE_PX);
+        this.tempHelperLines.fillRect(win.x, win.y, 5, MapHelper.TILE_SIZE_PX);
 
         // Draw test line
-        this.outsideShadowOverlay.lineBetween(playerLocalPx.x, playerLocalPx.y, win.x, win.y);
-        this.outsideShadowOverlay.lineBetween(playerLocalPx.x, playerLocalPx.y, win.x, win.y + MapHelper.TILE_SIZE_PX);
+        this.tempHelperLines.lineBetween(playerLocalPx.x, playerLocalPx.y, win.x, win.y);
+        this.tempHelperLines.lineBetween(playerLocalPx.x, playerLocalPx.y, win.x, win.y + MapHelper.TILE_SIZE_PX);
 
       } else {
-        this.outsideShadowOverlay.fillRect(win.x, win.y, MapHelper.TILE_SIZE_PX, 5);
+        this.tempHelperLines.fillRect(win.x, win.y, MapHelper.TILE_SIZE_PX, 5);
         // Draw test line
-        this.outsideShadowOverlay.lineBetween(playerLocalPx.x, playerLocalPx.y, win.x, win.y);
-        this.outsideShadowOverlay.lineBetween(playerLocalPx.x, playerLocalPx.y, win.x + MapHelper.TILE_SIZE_PX, win.y);
+        this.tempHelperLines.lineBetween(playerLocalPx.x, playerLocalPx.y, win.x, win.y);
+        this.tempHelperLines.lineBetween(playerLocalPx.x, playerLocalPx.y, win.x + MapHelper.TILE_SIZE_PX, win.y);
       }
     });
   }

@@ -30,7 +30,7 @@
     "loglevel": "1.6.1",
     "milligram": "^1.3.0",
     "path": "^0.12.7",
-    "phaser": "3.15.0",
+    "phaser": "github:tfelix/phaser#feat-invert-geo-mask",
     "phaser-component-library": "^2.0.0",
     "pubsub-js": "^1.6.0",
     "rxjs": "~6.2.0",
