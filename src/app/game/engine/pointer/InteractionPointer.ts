@@ -83,6 +83,11 @@ export class InteractionPointer extends Pointer {
       return;
     }
 
+    // Ignore when clicked on the player itself.
+    if (clickedEntity.id === this.ctx.playerHolder.activeEntity.id) {
+      return;
+    }
+
     if (clickedEntity === this.activeEntity) {
       this.removeSelection();
       return;
