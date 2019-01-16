@@ -217,5 +217,6 @@ export class BuildingInsideRenderer extends CommonRenderer {
     this.isInsideRenderActive = false;
     this.outsideShadowOverlay.alpha = 0;
     this.ctx.gameScene.cameras.main.renderToTexture = true;
+    this.tempHelperLines.clear();
   }
 }

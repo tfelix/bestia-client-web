@@ -4,6 +4,7 @@ import { MapHelper } from '../../MapHelper';
 import { EngineContext } from '../../EngineContext';
 import { CommonRenderer } from './CommonRenderer';
 import { VisualDepth } from '../VisualDepths';
+import { SceneNames } from '../../scenes';
 
 export class CollisionCommonRenderer extends CommonRenderer {
 
@@ -48,8 +49,9 @@ export class CollisionCommonRenderer extends CommonRenderer {
         const hasCollision = this.context.collision.map.hasCollision(x, y);
         if (hasCollision) {
           const px = MapHelper.pointToPixel(new Point(x, y));
-          this.rect.x = px.x + startX;
-          this.rect.y = px.y + startY;
+          const pxLocal = MapHelper.worldPxToSceneLocal(this.context.gameScene.cameras.main, px.x, px.y);
+          this.rect.x = pxLocal.x + startX;
+          this.rect.y = pxLocal.y + startY;
           this.graphicsCollision.fillStyle(0x0000FF, 1);
           this.graphicsCollision.fillRectShape(this.rect);
         }
@@ -61,7 +63,8 @@ export class CollisionCommonRenderer extends CommonRenderer {
     if (this.graphicsCollision) {
       return;
     }
-    this.graphicsCollision = this.context.gameScene.add.graphics();
+    const uiScene = this.context.gameScene.scene.get(SceneNames.UI);
+    this.graphicsCollision = uiScene.add.graphics();
     this.graphicsCollision.depth = VisualDepth.UI;
     this.graphicsCollision.alpha = 0.5;
   }
