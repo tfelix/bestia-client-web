@@ -41,10 +41,18 @@ export class BuildingInsideRenderer extends CommonRenderer {
 
   public needsUpdate(): boolean {
     const isPlayerInBuilding = this.ctx.collision.building.isInsideBuilding();
+    const player = this.ctx.playerHolder.activeEntity;
 
-    const playerPosComp = this.ctx.playerHolder.activeEntity.getComponent(ComponentType.POSITION) as PositionComponent;
-    const hasPlayerMoved = this.lastRenderedPlayerPos.x !== playerPosComp.position.x
-      || this.lastRenderedPlayerPos.y !== playerPosComp.position.y;
+    if (!player) {
+      return false;
+    }
+
+    const playerPosComp = player.getComponent(ComponentType.POSITION) as PositionComponent;
+    if (!playerPosComp) {
+      return false;
+    }
+    const hasPlayerMoved = this.lastRenderedPlayerPos.x !== playerPosComp.position.x ||
+      this.lastRenderedPlayerPos.y !== playerPosComp.position.y;
 
     return this.isInsideRenderActive !== isPlayerInBuilding || isPlayerInBuilding && hasPlayerMoved;
   }
@@ -141,7 +149,7 @@ export class BuildingInsideRenderer extends CommonRenderer {
         case 3:
           this.tempHelperLines.fillStyle(0xFFFF00);
           break;
-          case 4:
+        case 4:
           this.tempHelperLines.fillStyle(0x00FFFF);
           break;
       }
