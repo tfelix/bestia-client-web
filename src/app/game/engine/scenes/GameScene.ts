@@ -1,7 +1,7 @@
 import * as LOG from 'loglevel';
 import { EntityStore, PlayerEntityHolder } from 'app/game/entities';
 import {
-  MessageRouter, UiDataUpdater, WeatherDataUpdater, EntityComponentUpdater
+  MessageRouter, UiDataUpdater, ComponentUpdater, WeatherDataUpdater, InventoryUpdateHandler
 } from 'app/game/connection';
 import {
   SyncRequestMessage, ActionMessage, ComponentMessage, ComponentDeleteMessage,
@@ -28,7 +28,7 @@ export class GameScene extends Phaser.Scene {
   // BOOTSTRAP
   private messageRouter: MessageRouter;
   private actionMessageHandler: ActionMessageHandler;
-  private ecUpdater: EntityComponentUpdater;
+  private ecUpdater: ComponentUpdater;
   private uiDataUpdater: UiDataUpdater;
   private weatherDataUpdater: WeatherDataUpdater;
   // /BOOTSTRAP
@@ -76,7 +76,8 @@ export class GameScene extends Phaser.Scene {
    * updater will update non entity based data.
    */
   private setupDataUpdater() {
-    this.ecUpdater = new EntityComponentUpdater(this.entityStore);
+    this.ecUpdater = new ComponentUpdater(this.entityStore);
+    this.ecUpdater.addUpdater(new InventoryUpdateHandler(this.engineContext.playerHolder));
     this.uiDataUpdater = new UiDataUpdater(this.engineContext);
     this.weatherDataUpdater = new WeatherDataUpdater(this.engineContext);
   }

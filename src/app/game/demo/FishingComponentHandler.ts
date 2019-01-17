@@ -1,10 +1,7 @@
-import * as LOG from 'loglevel';
-
 import { ClientMessageHandler } from './ClientMessageHandler';
 import { UpdateComponentMessage } from 'app/game/message';
-import { FishingComponent, ComponentType, InventoryComponent } from 'app/game/entities/components';
+import { FishingComponent, ComponentType, InventoryComponent, Item } from 'app/game/entities/components';
 import { ServerEntityStore } from './ServerEntityStore';
-import { Item } from '../model';
 
 export class FishingComponentHandler extends ClientMessageHandler<UpdateComponentMessage<FishingComponent>> {
   constructor(
@@ -24,6 +21,7 @@ export class FishingComponentHandler extends ClientMessageHandler<UpdateComponen
 
   public handle(msg: UpdateComponentMessage<FishingComponent>) {
     if (this.hasSuccessfullFished(msg.component)) {
+      // TODO Handle this by sending a message to the server and then the server updates the component.
       const playerEntity = this.serverEntities.getEntity(this.playerEntityId);
       const playerInventoryComp = playerEntity.getComponent(ComponentType.INVENTORY) as InventoryComponent;
       const fishItem = new Item(10, 11, 'fish', 1);

@@ -46,7 +46,7 @@ export class InventoryComponent implements OnInit {
   }
 
   close() {
-    this.isOpen = false
+    this.isOpen = false;
   }
 
   open() {

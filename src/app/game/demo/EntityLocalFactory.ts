@@ -1,8 +1,8 @@
-import { Point, Item } from 'app/game/model';
+import { Point } from 'app/game/model';
 import {
   PlayerComponent, Component, ComponentType, ConditionComponent, VisualComponent,
   DebugComponent, PositionComponent, AttacksComponent, Entity, InventoryComponent,
-  FxComponent, FishingComponent, ProjectileComponent, EntityTypeComponent, EntityType, BuildingComponent
+  FxComponent, FishingComponent, ProjectileComponent, EntityTypeComponent, EntityType, BuildingComponent, Item
 } from 'app/game/entities';
 import { SpriteType } from 'app/game/engine';
 
