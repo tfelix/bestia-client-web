@@ -223,7 +223,7 @@ export class BuildingInsideRenderer extends CommonRenderer {
 
   private removeBuildingInside() {
     this.isInsideRenderActive = false;
-    this.outsideShadowOverlay.alpha = 0;
+    this.outsideShadowOverlay.clear();
     this.ctx.gameScene.cameras.main.renderToTexture = true;
     this.tempHelperLines.clear();
   }

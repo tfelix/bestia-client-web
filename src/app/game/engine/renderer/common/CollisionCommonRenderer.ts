@@ -4,7 +4,7 @@ import { MapHelper } from '../../MapHelper';
 import { EngineContext } from '../../EngineContext';
 import { CommonRenderer } from './CommonRenderer';
 import { VisualDepth } from '../VisualDepths';
-import { SceneNames } from '../../scenes';
+import { SceneNames } from '../../scenes/SceneNames';
 
 export class CollisionCommonRenderer extends CommonRenderer {
 
