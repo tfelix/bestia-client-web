@@ -1,6 +1,24 @@
 import { Component, OnInit } from '@angular/core';
 import { state, style, transition, animate, trigger } from '@angular/animations';
-import { ItemModel } from './item';
+
+export class ItemModel {
+  constructor(
+    readonly playerItemId: number,
+    readonly image: string,
+    readonly amount: number,
+    readonly name: string,
+    readonly weight: number
+  ) {
+  }
+
+  public get totalWeight(): number {
+    return this.weight * this.amount;
+  }
+
+  public get imageUrl(): string {
+    return `/assets/sprites/items/${this.image}`;
+  }
+}
 
 @Component({
   selector: 'app-inventory',
@@ -40,7 +58,6 @@ export class InventoryComponent implements OnInit {
         10,
         'Empty Bottle',
         0.1,
-        10
       )
     ];
   }

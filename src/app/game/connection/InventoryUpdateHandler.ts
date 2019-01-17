@@ -1,10 +1,14 @@
 import { ComponentUpdaterHandler } from './ComponentUpdateHandler';
-import { ComponentType } from '../entities/components/ComponentType';
 import { ComponentDeleteMessage } from '../message/ComponentDeleteMessage';
 import { ComponentMessage } from '../message/ComponentMessage';
-import { Component } from '../entities/components/Component';
-import { PlayerEntityHolder } from '../entities';
+import { PlayerEntityHolder, Component, InventoryComponent, ComponentType } from '../entities';
+import { EngineEvents } from '../message';
+import { ItemModel } from '../inventory/inventory.component';
 
+/**
+ * This handler will transform the messages into the Item model and then send them
+ * out.
+ */
 export class InventoryUpdateHandler implements ComponentUpdaterHandler {
 
   constructor(
@@ -17,6 +21,16 @@ export class InventoryUpdateHandler implements ComponentUpdaterHandler {
     if (this.playerHolder.activeEntity.id !== msg.component.entityId) {
       return;
     }
+
+    const inventoryComp = msg.component as InventoryComponent;
+    const itemModels = inventoryComp.items.map(i => new ItemModel(
+      i.playerItemId,
+      'img',
+      i.amount,
+      i.name,
+      0
+    ));
+    PubSub.publish(EngineEvents.INVENTORY_UPDATE, itemModels);
   }
 
   updatesOnComponentType(): ComponentType[] {
