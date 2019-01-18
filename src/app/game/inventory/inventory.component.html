@@ -1,20 +1,21 @@
-<div class="inventory" [@openClose]="isOpen ? 'open' : 'closed'">
-  <!--
+<div class="inventory" *ngIf="isOpen" [@openClose]="isOpen ? 'open' : 'closed'">
+  <div class="inventory-container">
+    <h1>Inventory</h1>
     <div class="inventory-header">
-    <button>Items</button>
-    <button>Crafting</button>
-  </div>
--->
-  <div class="inventory-content">
-    <div class="inventory-container">
-      <div>Items: 123 / 1000</div>
-      <div>Weight: 10 / 80</div>
-    </div>
-    <div class="inventory-container items" *ngFor="let item of items">
-      <div class="item">
-        <img [src]="item.imageUrl" [alt]="item.name">
-        <span>10</span>
+      <ul style="width: 100px; background: green;">
+        <li><button>Items</button></li>
+        <li><button>Crafting</button></li>
+      </ul>
+      <div class="item-container items" *ngFor="let item of items">
+        <div class="item">
+          <img [src]="item.imageUrl" [alt]="item.name">
+          <span>10</span>
+        </div>
       </div>
+    </div>
+
+    <div class="inventory-footer">
+      Items: 123 / 1000 - Weight 10 / 80
     </div>
   </div>
 </div>

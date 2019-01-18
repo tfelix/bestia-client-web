@@ -28,10 +28,8 @@ export class ItemModel {
     trigger('openClose', [
       state('open', style({
         opacity: 1,
-        bottom: 0
       })),
       state('closed', style({
-        opacity: 0,
         bottom: '-200px'
       })),
       transition('open => closed', [
@@ -45,7 +43,7 @@ export class ItemModel {
 })
 export class InventoryComponent implements OnInit {
 
-  public isOpen = false;
+  public isOpen = true;
   public items: ItemModel[] = [];
 
   constructor() { }
@@ -56,6 +54,13 @@ export class InventoryComponent implements OnInit {
         1,
         'empty_bottle.png',
         10,
+        'Empty Bottle',
+        0.1,
+      ),
+      new ItemModel(
+        1,
+        'empty_bottle.png',
+        14,
         'Empty Bottle',
         0.1,
       )

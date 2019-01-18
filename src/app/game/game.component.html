@@ -1,12 +1,13 @@
 <div class="wrapper">
   <div class="sidebar" *ngIf="hasActiveGame">
     <ul>
-      <li><button (click)="toggleChat()">Chat</button></li>
-      <li><button (click)="toggleInventory()">Inventory</button></li>
+      <li><img (click)="toggleInventory()" src="/assets/img/backpack.png" alt="Inventory"></li>
+      <li><img (click)="toggleChat()" src="/assets/img/discussion.png" alt="Chat"></li>
     </ul>
   </div>
   <div class="content">
-    <phaser-component (mouseout)="onMouseOut()" (mouseover)="onMouseOver()" [class.no-cursor]="hideDefaultCursorOverGame" (gameReady)="onGameReady($event)" [gameConfig]="config" [Phaser]="game"></phaser-component>
+    <phaser-component (mouseout)="onMouseOut()" (mouseover)="onMouseOver()" [class.no-cursor]="hideDefaultCursorOverGame"
+      (gameReady)="onGameReady($event)" [gameConfig]="config" [Phaser]="game"></phaser-component>
   </div>
 </div>
 
