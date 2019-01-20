@@ -7,6 +7,8 @@ export class Item {
     public readonly itemId: number,
     public readonly playerItemId: number,
     public readonly name: string,
+    public readonly image: string,
+    public readonly weight: number,
     public amount: number,
   ) {
   }
@@ -15,6 +17,8 @@ export class Item {
 export class InventoryComponent extends Component {
 
   public readonly items: Item[] = [];
+  public maxWeight: number;
+  public maxItems: number;
 
   constructor(id: number, entityId: number) {
     super(id, entityId, ComponentType.INVENTORY);

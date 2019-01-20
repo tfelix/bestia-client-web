@@ -92,6 +92,8 @@ export class EntityLocalFactory {
       this.componentCounter++,
       entity.id
     );
+    inventoryComp.maxItems = 100;
+    inventoryComp.maxWeight = 20;
     entity.addComponent(inventoryComp);
 
     return [

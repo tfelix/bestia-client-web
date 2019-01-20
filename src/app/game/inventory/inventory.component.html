@@ -1,21 +1,29 @@
 <div class="inventory" *ngIf="isOpen" [@openClose]="isOpen ? 'open' : 'closed'">
   <div class="inventory-container">
-    <h1>Inventory</h1>
     <div class="inventory-header">
-      <ul style="width: 100px; background: green;">
-        <li><button>Items</button></li>
-        <li><button>Crafting</button></li>
+      <h1>Inventory</h1>
+      <div class="weight">
+        Items: {{itemCount}} / {{itemMaxCount}} -
+        Weight {{weight | number: '1.0-1'}} / {{maxWeight}}
+      </div>
+      <button (click)="close()">Close</button>
+    </div>
+    <div style="display: flex;">
+      <ul class="inventory-options">
+        <li class="active">ITEM</li>
+        <li>CRAFT</li>
       </ul>
-      <div class="item-container items" *ngFor="let item of items">
-        <div class="item">
-          <img [src]="item.imageUrl" [alt]="item.name">
-          <span>10</span>
+      <div class="inventory-main">
+        <div>
+          <input type="search" class="search" placeholder="Search">
+        </div>
+        <div class="items" *ngFor="let item of items">
+          <div class="item">
+            <img [src]="item.imageUrl" [alt]="item.name">
+            <div>10</div>
+          </div>
         </div>
       </div>
-    </div>
-
-    <div class="inventory-footer">
-      Items: 123 / 1000 - Weight 10 / 80
     </div>
   </div>
 </div>

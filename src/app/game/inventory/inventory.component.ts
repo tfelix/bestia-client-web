@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { state, style, transition, animate, trigger } from '@angular/animations';
+import { EngineEvents } from '../message';
 
 export class ItemModel {
   constructor(
@@ -18,6 +19,14 @@ export class ItemModel {
   public get imageUrl(): string {
     return `/assets/sprites/items/${this.image}`;
   }
+}
+
+export class InventoryModel {
+  constructor(
+    readonly maxItemCount: number,
+    readonly maxWeight: number,
+    readonly items: ItemModel[]
+  ) { }
 }
 
 @Component({
@@ -46,10 +55,25 @@ export class InventoryComponent implements OnInit {
   public isOpen = true;
   public items: ItemModel[] = [];
 
+  public get itemCount(): number {
+    return this.items.length;
+  }
+
+  public itemMaxCount = 1000;
+
+  public get weight(): number {
+    return this.items
+      .map(x => x.totalWeight)
+      .reduce((a, b) => a + b, 0);
+  }
+
+  public maxWeight = 0;
+
   constructor() { }
 
   ngOnInit() {
-    this.items = [
+    PubSub.subscribe(EngineEvents.INVENTORY_UPDATE, this.updateModel.bind(this));
+    /*this.items = [
       new ItemModel(
         1,
         'empty_bottle.png',
@@ -64,7 +88,13 @@ export class InventoryComponent implements OnInit {
         'Empty Bottle',
         0.1,
       )
-    ];
+    ];*/
+  }
+
+  private updateModel(_, model: InventoryModel) {
+    this.maxWeight = model.maxWeight;
+    this.itemMaxCount = model.maxItemCount;
+    this.items = model.items;
   }
 
   close() {

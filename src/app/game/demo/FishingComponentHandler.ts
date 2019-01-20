@@ -21,15 +21,12 @@ export class FishingComponentHandler extends ClientMessageHandler<UpdateComponen
 
   public handle(msg: UpdateComponentMessage<FishingComponent>) {
     if (this.hasSuccessfullFished(msg.component)) {
-      // TODO Handle this by sending a message to the server and then the server updates the component.
       const playerEntity = this.serverEntities.getEntity(this.playerEntityId);
       const playerInventoryComp = playerEntity.getComponent(ComponentType.INVENTORY) as InventoryComponent;
       const fishItem = new Item(10, 11, 'fish', 1);
       playerInventoryComp.items.push(fishItem);
       playerEntity.addComponent(playerInventoryComp);
       this.sendComponent(playerInventoryComp);
-    } else {
-
     }
 
     this.deleteComponent(msg.component);

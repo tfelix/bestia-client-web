@@ -3,7 +3,7 @@ import { ComponentDeleteMessage } from '../message/ComponentDeleteMessage';
 import { ComponentMessage } from '../message/ComponentMessage';
 import { PlayerEntityHolder, Component, InventoryComponent, ComponentType } from '../entities';
 import { EngineEvents } from '../message';
-import { ItemModel } from '../inventory/inventory.component';
+import { ItemModel, InventoryModel } from '../inventory/inventory.component';
 
 /**
  * This handler will transform the messages into the Item model and then send them
@@ -23,14 +23,22 @@ export class InventoryUpdateHandler implements ComponentUpdaterHandler {
     }
 
     const inventoryComp = msg.component as InventoryComponent;
+
     const itemModels = inventoryComp.items.map(i => new ItemModel(
       i.playerItemId,
-      'img',
+      i.image,
       i.amount,
       i.name,
-      0
+      i.weight
     ));
-    PubSub.publish(EngineEvents.INVENTORY_UPDATE, itemModels);
+
+    const inventoryModel = new InventoryModel(
+      inventoryComp.maxItems,
+      inventoryComp.maxWeight,
+      itemModels
+    );
+
+    PubSub.publish(EngineEvents.INVENTORY_UPDATE, inventoryModel);
   }
 
   updatesOnComponentType(): ComponentType[] {
