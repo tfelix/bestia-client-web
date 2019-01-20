@@ -17,6 +17,7 @@ export class EntityLocalFactory {
   private entityCounter = 1;
   private componentCounter = 0;
   private lastInsertedEntityId = 0;
+  private lastInsertedItemId = 0;
 
   constructor(
     private readonly entityStore: ServerEntityStore
@@ -193,9 +194,7 @@ export class EntityLocalFactory {
     ];
   }
 
-  public addItem(
-    name: string,
-    amount: number,
+  public addItemEmptyBottle(
     pos: Point
   ): Component[] {
     const entity = this.createEntity();
@@ -204,7 +203,7 @@ export class EntityLocalFactory {
       this.componentCounter++,
       entity.id,
       true,
-      name,
+      'empty_bottle',
       SpriteType.ITEM
     );
     entity.addComponent(visual);
@@ -228,32 +227,58 @@ export class EntityLocalFactory {
       entity.id
     );
 
-    let itemImg = '';
-    switch (name) {
-      case 'empty_bottle':
-        itemImg = 'empty_bottle.png';
-        break;
-      case 'knife':
-        itemImg = 'knife.png';
-        break;
-    }
-
-    let itemWeight = 1;
-    switch (name) {
-      case 'empty_bottle':
-        itemWeight = 0.1;
-        break;
-      case 'knife':
-        itemWeight = 0.5;
-        break;
-    }
-
     inventoryComp.items.push(new Item(
       1,
+      this.lastInsertedItemId++,
+      'empty_bottle',
+      'empty_bottle.png',
+      0.1,
+      1
+    ));
+    entity.addComponent(inventoryComp);
+
+    return [visual, position, entityTypeComp, inventoryComp];
+  }
+
+  public addItemKnife(
+    pos: Point
+  ): Component[] {
+    const entity = this.createEntity();
+    this.entityStore.addEntity(entity);
+    const visual = new VisualComponent(
+      this.componentCounter++,
+      entity.id,
+      true,
+      'knife',
+      SpriteType.ITEM
+    );
+    entity.addComponent(visual);
+
+    const position = new PositionComponent(
+      this.componentCounter++,
+      entity.id
+    );
+    position.position = pos;
+    entity.addComponent(position);
+
+    const entityTypeComp = new EntityTypeComponent(
+      this.componentCounter++,
+      entity.id
+    );
+    entityTypeComp.entityType = EntityType.ITEM;
+    entity.addComponent(entityTypeComp);
+
+    const inventoryComp = new InventoryComponent(
+      this.componentCounter++,
+      entity.id
+    );
+
+    inventoryComp.items.push(new Item(
       2,
-      name,
-      itemImg,
-      itemWeight,
+      this.lastInsertedItemId++,
+      'knife',
+      'knife.png',
+      0.5,
       1
     ));
     entity.addComponent(inventoryComp);

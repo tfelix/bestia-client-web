@@ -21,7 +21,7 @@ export const TextStyles = {
   },
   UI: {
     fontFamily: 'Viga',
-    fontSize: 12,
+    fontSize: 14,
     color: '#000000'
   },
   DEBUG: {

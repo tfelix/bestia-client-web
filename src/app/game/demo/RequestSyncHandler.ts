@@ -84,11 +84,11 @@ export class RequestSyncHandler extends ClientMessageHandler<SyncRequestMessage>
     const signEntity = this.serverEntities.getEntity(signEntityId);
     this.serverEntities.addIdentifier('sign_post', signEntity);
 
-    this.sendAllComponents(this.entityFactory.addItem('empty_bottle', 2, new Point(27, 94)));
-    this.sendAllComponents(this.entityFactory.addItem('empty_bottle', 1, new Point(31, 95)));
+    this.sendAllComponents(this.entityFactory.addItemEmptyBottle(new Point(27, 94)));
+    this.sendAllComponents(this.entityFactory.addItemEmptyBottle(new Point(31, 95)));
 
-    this.sendAllComponents(this.entityFactory.addItem('knife', 1, new Point(17, 93)));
-    this.sendAllComponents(this.entityFactory.addItem('knife', 1, new Point(26, 90)));
+    this.sendAllComponents(this.entityFactory.addItemKnife(new Point(17, 93)));
+    this.sendAllComponents(this.entityFactory.addItemKnife(new Point(26, 90)));
 
     const startBuildingData: BuildingData = [
       [{outer: 'outer_rtl', inner: 'floor_wtl'}, {outer: 'outer_rt', inner: 'floor_wt'}, {outer: 'outer_rtr', inner: 'floor_wtr'}],

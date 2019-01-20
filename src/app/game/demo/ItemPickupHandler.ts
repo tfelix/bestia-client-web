@@ -32,10 +32,15 @@ export class ItemPickupHandler extends ClientMessageHandler<RequestItemLootMessa
     const lootedItem = itemContent.items[0];
     const playerEntity = this.serverEntities.getEntity(this.playerEntityId);
     const playerInventoryComp = playerEntity.getComponent(ComponentType.INVENTORY) as InventoryComponent;
-    playerInventoryComp.items.push(lootedItem);
-    playerEntity.addComponent(playerInventoryComp);
-    this.sendClient(new ComponentMessage<InventoryComponent>(playerInventoryComp));
 
+    const inventoryItem = playerInventoryComp.items.find(x => x.itemId === lootedItem.itemId);
+    if (inventoryItem) {
+      inventoryItem.amount++;
+    } else {
+      playerInventoryComp.items.push(lootedItem);
+    }
+
+    this.sendClient(new ComponentMessage<InventoryComponent>(playerInventoryComp));
     this.deleteEntity(itemEntity);
   }
 }

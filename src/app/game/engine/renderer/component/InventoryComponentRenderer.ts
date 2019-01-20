@@ -6,9 +6,6 @@ import { EngineContext } from '../../EngineContext';
 import { TextStyles } from '../../TextStyles';
 import { SceneNames } from '../../scenes/SceneNames';
 
-let lastItemCount: number | undefined;
-const itemPickupQueue: ItemViewModel[] = [];
-
 class ItemViewModel {
   constructor(
     public readonly name: string,
@@ -18,7 +15,16 @@ class ItemViewModel {
   }
 }
 
+interface StoredItem {
+  itemId: number;
+  amount: number;
+}
+
 export class InventoryComponentRenderer extends ComponentRenderer<InventoryComponent> {
+
+  private lastSeenItems: StoredItem[] = [];
+  private lastItemCount = 0;
+  private itemPickupQueue: ItemViewModel[] = [];
 
   private ui: Phaser.Scene;
   private obtainedBg: Phaser.GameObjects.Image;
@@ -37,36 +43,44 @@ export class InventoryComponentRenderer extends ComponentRenderer<InventoryCompo
   }
 
   protected hasNotSetup(entity: Entity, component: InventoryComponent): boolean {
-
+    // We simply dont need to tick and check for each entity.
     if (!this.ctx.playerHolder.isActivePlayerEntity(entity)) {
       return false;
     }
 
-    if (lastItemCount === undefined) {
-      lastItemCount = component.items.length;
+    if (this.lastItemCount < component.totalItemCount) {
+      this.queueNewItems(entity, component);
     }
-    // TODO what if only the amount has changed? Better calculate owned item number.
-    return lastItemCount < component.items.length;
+
+    return this.itemPickupQueue.length > 0;
   }
 
   protected createGameData(entity: Entity, component: InventoryComponent) {
-    lastItemCount = component.items.length;
-    // TODO The way how we determine the last picked up item is totally buggy. We need
-    // to consider if only the amount of a certain item went up. Must calculate delta between now and last check.
-    const lastItem = component.items[component.items.length - 1];
+    // Maybe fetch translation of item first here. I dont know.
+    this.showItemObtained();
+  }
 
-    // TODO generalize the item key translation creation in a dedicated component
-    const keyItemTranslation = `item.${lastItem.name}`;
-    const translateRequest = [`item.${lastItem.name}`];
-    this.ctx.i18n.translate(translateRequest, (t) => {
-      const itemViewModel = new ItemViewModel(
-        t[keyItemTranslation],
-        lastItem.amount,
-        lastItem.name
-      );
-      itemPickupQueue.push(itemViewModel);
-      this.showItemObtained();
+  private queueNewItems(entity: Entity, component: InventoryComponent) {
+    component.items.forEach(invItem => {
+      const presentItem = this.lastSeenItems.find(x => x.itemId === invItem.itemId);
+
+      if (presentItem) {
+        // Item already there, if the amount is bigger, queue difference.
+        const d = invItem.amount - presentItem.amount;
+        if (d <= 0) {
+          return;
+        }
+        this.itemPickupQueue.push(new ItemViewModel(invItem.dbName, d, invItem.image));
+      } else {
+        // Item not yet in inventory. Add total to queue.
+        this.itemPickupQueue.push(new ItemViewModel(invItem.dbName, invItem.amount, invItem.image));
+      }
     });
+
+    this.lastSeenItems = component.items.map(x => {
+      return { itemId: x.itemId, amount: x.amount };
+    });
+    this.lastItemCount = component.totalItemCount;
   }
 
   protected updateGameData(entity: Entity, component: InventoryComponent) { }
@@ -81,12 +95,12 @@ export class InventoryComponentRenderer extends ComponentRenderer<InventoryCompo
   }
 
   private showItemObtained() {
-    if (itemPickupQueue.length === 0) {
+    if (this.itemPickupQueue.length === 0) {
       return;
     }
-    const viewItem = itemPickupQueue.shift();
+    const viewItem = this.itemPickupQueue.shift();
 
-    const itemImg = this.ui.add.image(12, 12, viewItem.spriteName);
+    const itemImg = this.ui.add.image(12, 12, viewItem.name);
     itemImg.setOrigin(0, 0);
     const obtainedText = this.ui.add.text(50, 16, `${viewItem.name} x${viewItem.amount}`, TextStyles.UI);
 

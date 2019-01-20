@@ -23,7 +23,7 @@ export class FishingComponentHandler extends ClientMessageHandler<UpdateComponen
     if (this.hasSuccessfullFished(msg.component)) {
       const playerEntity = this.serverEntities.getEntity(this.playerEntityId);
       const playerInventoryComp = playerEntity.getComponent(ComponentType.INVENTORY) as InventoryComponent;
-      const fishItem = new Item(10, 11, 'fish', 1);
+      const fishItem = new Item(10, 11, 'fish', 'fish.png', 0.5, 1);
       playerInventoryComp.items.push(fishItem);
       playerEntity.addComponent(playerInventoryComp);
       this.sendComponent(playerInventoryComp);

@@ -56,7 +56,7 @@ export class BasicAttackHandler extends ClientMessageHandler<BasicAttackMessage>
     this.sendClient(killActionMsg);
 
     const positionComp = entity.getComponent(ComponentType.POSITION) as PositionComponent;
-    this.sendAllComponents(this.entityFactory.addItem('knife', 1, positionComp.position));
+    this.sendAllComponents(this.entityFactory.addItemKnife(positionComp.position));
 
     const visualComp = this.copyHelper.copyComponent(entityId, ComponentType.VISUAL) as VisualComponent;
     visualComp.animation = 'kill';

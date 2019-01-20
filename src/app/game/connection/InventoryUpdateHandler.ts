@@ -28,7 +28,7 @@ export class InventoryUpdateHandler implements ComponentUpdaterHandler {
       i.playerItemId,
       i.image,
       i.amount,
-      i.name,
+      i.dbName,
       i.weight
     ));
 
