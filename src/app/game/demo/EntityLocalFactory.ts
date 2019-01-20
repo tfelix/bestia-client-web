@@ -195,7 +195,8 @@ export class EntityLocalFactory {
 
   public addItem(
     name: string,
-    amount: number, pos: Point
+    amount: number,
+    pos: Point
   ): Component[] {
     const entity = this.createEntity();
     this.entityStore.addEntity(entity);
@@ -226,7 +227,35 @@ export class EntityLocalFactory {
       this.componentCounter++,
       entity.id
     );
-    inventoryComp.items.push(new Item(1, 2, name, 1));
+
+    let itemImg = '';
+    switch (name) {
+      case 'empty_bottle':
+        itemImg = 'empty_bottle.png';
+        break;
+      case 'knife':
+        itemImg = 'knife.png';
+        break;
+    }
+
+    let itemWeight = 1;
+    switch (name) {
+      case 'empty_bottle':
+        itemWeight = 0.1;
+        break;
+      case 'knife':
+        itemWeight = 0.5;
+        break;
+    }
+
+    inventoryComp.items.push(new Item(
+      1,
+      2,
+      name,
+      itemImg,
+      itemWeight,
+      1
+    ));
     entity.addComponent(inventoryComp);
 
     return [visual, position, entityTypeComp, inventoryComp];

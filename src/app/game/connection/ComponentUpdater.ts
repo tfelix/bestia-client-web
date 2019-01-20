@@ -37,6 +37,11 @@ export class ComponentUpdater {
   }
 
   private onComponentDeleteMessage(msg: ComponentDeleteMessage) {
+    const entity = this.entityStore.getEntity(msg.entityId);
+    if (entity) {
+      entity.removeComponentByType(msg.componentType);
+    }
+
     const handler = this.componentUpdateHandler.get(msg.componentType) || [];
     handler.forEach(h => {
       h.onComponentDeleteMessage(msg);

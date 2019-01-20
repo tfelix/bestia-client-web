@@ -63,7 +63,7 @@ export class CollisionMap {
 
   public setCollision(x: number, y: number, collision: boolean) {
     if (this.collisionMap.length < y || this.collisionMap[0].length < x || x < 0 || y < 0) {
-      LOG.warn(`Requested coordinate ${x}-${y} is not inside collision map.`);
+      // LOG.warn(`Requested coordinate ${x}-${y} is not inside collision map.`);
       return;
     }
     const flag = (collision) ? 1 : 0;

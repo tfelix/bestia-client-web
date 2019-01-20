@@ -52,7 +52,7 @@ export class InventoryModel {
 })
 export class InventoryComponent implements OnInit {
 
-  public isOpen = true;
+  public isOpen = false;
   public items: ItemModel[] = [];
 
   public get itemCount(): number {
