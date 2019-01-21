@@ -55,6 +55,9 @@ export class MoveComponentHandler extends ClientMessageHandler<UpdateComponentMe
       msg.component.entityId
     );
     moveCopy.path = msg.component.path.slice();
+    // We can throw away the first part of the path as we are already
+    // standing on it.
+    moveCopy.path.shift();
     moveCopy.walkspeed = msg.component.walkspeed;
     entity.addComponent(moveCopy);
 
@@ -85,7 +88,8 @@ export class MoveComponentHandler extends ClientMessageHandler<UpdateComponentMe
 
   private moveTick(entity: Entity, move: MoveComponent) {
     const currentPosition = move.path.shift();
-    LOG.debug(`Updating entity ${entity.id} position: ${JSON.stringify(currentPosition)}`);
+
+    LOG.debug(`MCH: ${JSON.stringify(currentPosition)}`);
 
     const posComp = entity.getComponent(ComponentType.POSITION) as PositionComponent;
     if (!posComp) {

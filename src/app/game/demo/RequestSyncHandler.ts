@@ -24,17 +24,19 @@ export class RequestSyncHandler extends ClientMessageHandler<SyncRequestMessage>
     const accInfoMsg = new AccountInfoMessage('roggy', this.playerAccId, 'master');
     this.sendClient(accInfoMsg);
 
-    // const comps = this.entityFactory.addPlayer('player_1', new Point(83, 95), this.playerAccId);
-    const comps = this.entityFactory.addPlayer('player_1', new Point(18, 95), this.playerAccId);
+    const comps = this.entityFactory.addPlayer('player_1', new Point(83, 87), this.playerAccId);
+    // const comps = this.entityFactory.addPlayer('player_1', new Point(18, 95), this.playerAccId);
     this.sendAllComponents(comps);
     const playerEntityId = this.entityFactory.getLastInsertedEntityId();
 
+    /*
     // Left as an example how to add the fishing component.
     window.setTimeout(() => {
       const fishingComp = this.entityFactory.addFishingComponent(playerEntityId);
       fishingComp.targetPoint = { x: 23, y: 98 };
       this.sendComponent(fishingComp);
     });
+    */
 
     // TODO Handle AI differently
     const bestiaComps = this.entityFactory.addBestia('rabbit', new Point(16, 89));

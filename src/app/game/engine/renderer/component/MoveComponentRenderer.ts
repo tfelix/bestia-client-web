@@ -144,7 +144,9 @@ export class MoveComponentRenderer extends ComponentRenderer<MoveComponent> {
           entity.data.move.currentValidStandAnimation = standAnimation;
           visual.animation = walkAnimation;
         },
-        onComplete: () => { }
+        onComplete: () => {
+          LOG.debug(`MC: x: ${nextPosition.x} y: ${nextPosition.y}`);
+        }
       };
 
       if (isLastStep) {
