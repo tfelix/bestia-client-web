@@ -53,15 +53,12 @@ export class BuildingCollisions {
     }
 
     const building = currentBuilding.getComponent(ComponentType.BUILDING) as BuildingComponent;
+    const connectedBuildingEntities = building.findAllConnectedEntityIds(this.ctx.entityStore);
 
-    // Break if we have already notices we are inside this building.
-    if (this.currentEnteredBuildingEntityIds.has(building.entityId)) {
-      return;
+    if (connectedBuildingEntities.length !== this.currentEnteredBuildingEntityIds.size) {
+      this.currentEnteredBuildingEntityIds.clear();
+      connectedBuildingEntities.forEach(eid => this.currentEnteredBuildingEntityIds.add(eid));
     }
-
-    this.currentEnteredBuildingEntityIds.clear();
-    building.findAllConnectedEntityIds(this.ctx.entityStore)
-      .forEach(eid => this.currentEnteredBuildingEntityIds.add(eid));
   }
 
   public isInsideBuilding(): boolean {

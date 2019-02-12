@@ -1,10 +1,11 @@
+import { Vec2 } from 'app/game/model';
+import { ComponentType, BuildingComponent, PositionComponent } from 'app/game/entities';
+
 import { CommonRenderer } from './CommonRenderer';
 import { EngineContext } from '../../EngineContext';
 import { SceneNames } from '../../scenes/SceneNames';
-import { ComponentType, BuildingComponent, PositionComponent } from 'app/game/entities';
 import { BuildingDescription } from '../component/BuildingComponentRenderer';
 import { MapHelper } from '../../MapHelper';
-import { Px, Vec2 } from 'app/game/model';
 
 interface WindowPos {
   x: number;
@@ -26,6 +27,7 @@ export class BuildingInsideRenderer extends CommonRenderer {
   private tempHelperLines: Phaser.GameObjects.Graphics;
   private uiUnderScene: Phaser.Scene;
   private lastRenderedPlayerPos = { x: 0, y: 0 };
+  private renderedBuildingEntityCount = 0;
 
   constructor(
     private readonly ctx: EngineContext
@@ -47,14 +49,16 @@ export class BuildingInsideRenderer extends CommonRenderer {
       return false;
     }
 
-    const playerPosComp = player.getComponent(ComponentType.POSITION) as PositionComponent;
-    if (!playerPosComp) {
-      return false;
-    }
-    const hasPlayerMoved = this.lastRenderedPlayerPos.x !== playerPosComp.position.x ||
-      this.lastRenderedPlayerPos.y !== playerPosComp.position.y;
+    const currentBuildingEntityCount = this.ctx.collision.building.getCurrentOccupiedBuildingEntityIds().length;
+    const hasBuildingChanged = currentBuildingEntityCount !== this.renderedBuildingEntityCount;
 
-    return this.isInsideRenderActive !== isPlayerInBuilding || isPlayerInBuilding && hasPlayerMoved;
+    const playerSprite = player.data.visual.sprite;
+    const hasPlayerMoved = this.lastRenderedPlayerPos.x !== playerSprite.x ||
+      this.lastRenderedPlayerPos.y !== playerSprite.y;
+
+    return this.isInsideRenderActive !== isPlayerInBuilding
+      || isPlayerInBuilding && hasPlayerMoved
+      || isPlayerInBuilding && hasBuildingChanged;
   }
 
   public update() {
@@ -67,10 +71,6 @@ export class BuildingInsideRenderer extends CommonRenderer {
     }
   }
 
-  private getWindowsOfBuilding() {
-
-  }
-
   private updateBuildingInside() {
     this.isInsideRenderActive = true;
     this.ctx.gameScene.cameras.main.renderToTexture = false;
@@ -78,11 +78,14 @@ export class BuildingInsideRenderer extends CommonRenderer {
     this.outsideShadowRoomMask.clear();
 
     // Prepare to draw the window see lines
-    const playerSprite = this.ctx.playerHolder.activeEntity.data.visual.sprite;
+    const player = this.ctx.playerHolder.activeEntity;
+    const playerSprite = player.data.visual.sprite;
     const playerLocalPx = MapHelper.worldPxToSceneLocal(this.ctx.gameScene.cameras.main, playerSprite.x, playerSprite.y);
     const playerLocal = new Phaser.Math.Vector2(playerLocalPx.x, playerLocalPx.y);
-    this.lastRenderedPlayerPos.x = playerLocalPx.x;
-    this.lastRenderedPlayerPos.y = playerLocalPx.y;
+
+    const playerPosComp = player.getComponent(ComponentType.POSITION) as PositionComponent;
+    this.lastRenderedPlayerPos.x = playerSprite.x;
+    this.lastRenderedPlayerPos.y = playerSprite.y;
 
     const playerDistTopLeft = dist(playerLocalPx, { x: 0, y: 0 });
     const playerDistTopRight = dist(playerLocalPx, { x: this.ctx.helper.display.sceneWidth, y: 0 });
@@ -92,13 +95,11 @@ export class BuildingInsideRenderer extends CommonRenderer {
 
     this.outsideShadowOverlay.fillStyle(0x000000);
     this.outsideShadowOverlay.fillRect(0, 0, this.ctx.helper.display.sceneWidth, this.ctx.helper.display.sceneHeight);
-    // this.outsideShadowRoomMask.fillStyle(0xFFFFFF, 1);
-    // this.outsideShadowRoomMask.fillRect(0, 0, 2000, 2000);
-    // this.outsideShadowRoomMask.fillStyle(0xFFFFFF, 0);
 
     // Gets position of the player
     // Draw depending from the player lines towards the windows
     const buildingEntityIds = this.ctx.collision.building.getCurrentOccupiedBuildingEntityIds();
+    this.renderedBuildingEntityCount = buildingEntityIds.length;
     const windowWorldPos: WindowPos[] = [];
 
     // Draw the mask and find the windows
