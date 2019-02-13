@@ -77,6 +77,11 @@ export class LoadScene extends Phaser.Scene {
       '../assets/base.json'
     );
     this.load.atlas(
+      UIAtlasBase,
+      '../assets/vegetation.png',
+      '../assets/vegetation.json'
+    );
+    this.load.atlas(
       UIAtlasFx,
       '../assets/fx/fx.png',
       '../assets/fx/fx.json'
