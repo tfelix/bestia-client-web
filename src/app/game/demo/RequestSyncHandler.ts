@@ -92,6 +92,8 @@ export class RequestSyncHandler extends ClientMessageHandler<SyncRequestMessage>
     this.sendAllComponents(this.entityFactory.addItemKnife(new Point(17, 93)));
     this.sendAllComponents(this.entityFactory.addItemKnife(new Point(26, 90)));
 
+    this.sendAllComponents(this.entityFactory.addPlant('gras_1', new Point(47, 89)));
+
     const startBuildingData: BuildingData = [
       [{outer: 'outer_rtl', inner: 'floor_wtl'}, {outer: 'outer_rt', inner: 'floor_wt'}, {outer: 'outer_rtr', inner: 'floor_wtr'}],
       [{outer: 'outer_rbl', inner: 'floor_wl'}, {outer: 'outer_rb', inner: 'floor'}, {outer: 'outer_rbr', inner: 'floor_wr'}],

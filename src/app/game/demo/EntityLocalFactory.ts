@@ -2,7 +2,7 @@ import { Point } from 'app/game/model';
 import {
   PlayerComponent, Component, ComponentType, ConditionComponent, VisualComponent,
   DebugComponent, PositionComponent, AttacksComponent, Entity, InventoryComponent,
-  FxComponent, FishingComponent, ProjectileComponent, EntityTypeComponent, EntityType, BuildingComponent, Item
+  FxComponent, FishingComponent, ProjectileComponent, EntityTypeComponent, EntityType, BuildingComponent, Item, VegetationComponent
 } from 'app/game/entities';
 import { SpriteType } from 'app/game/engine';
 
@@ -245,6 +245,7 @@ export class EntityLocalFactory {
   ): Component[] {
     const entity = this.createEntity();
     this.entityStore.addEntity(entity);
+
     const visual = new VisualComponent(
       this.componentCounter++,
       entity.id,
@@ -284,6 +285,34 @@ export class EntityLocalFactory {
     entity.addComponent(inventoryComp);
 
     return [visual, position, entityTypeComp, inventoryComp];
+  }
+
+  public addPlant(name: string, pos: Point): Component[] {
+    const entity = this.createEntity(this.entityCounter++);
+    this.entityStore.addEntity(entity);
+
+    const vegetation = new VegetationComponent(
+      this.componentCounter++,
+      entity.id,
+    );
+    vegetation.hullPoints = [
+      new Point(0, 0),
+      new Point(2, 0),
+      new Point(2, 2),
+      new Point(0, 2)
+    ];
+    vegetation.overlaySprite = 'mask_1';
+    vegetation.spriteSheet = name;
+    entity.addComponent(vegetation);
+
+    const position = new PositionComponent(
+      this.componentCounter++,
+      entity.id,
+    );
+    position.position = pos;
+    entity.addComponent(position);
+
+    return [vegetation, position];
   }
 
   public addObject(name: string, pos: Point, givenEntityId?: number): Component[] {

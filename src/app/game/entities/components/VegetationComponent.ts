@@ -12,6 +12,6 @@ export class VegetationComponent extends Component {
     id: number,
     entityId: number
   ) {
-    super(id, entityId, ComponentType.BUILDING);
+    super(id, entityId, ComponentType.VEGETATION);
   }
 }
