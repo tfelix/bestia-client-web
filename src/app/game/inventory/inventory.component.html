@@ -3,10 +3,10 @@
     <div class="inventory-header">
       <h1>Inventory</h1>
       <div class="weight">
-        Items: {{itemCount}} / {{itemMaxCount}} -
-        Weight {{weight | number: '1.0-1'}} / {{maxWeight}}
+        <img src="assets/img/swap-bag.svg"><span>{{itemCount}} / {{itemMaxCount}}</span>
+        <img src="assets/img/anvil.svg"><span>{{weight | number: '1.0-1'}} / {{maxWeight}} kg</span>
       </div>
-      <button (click)="close()">Close</button>
+      <button (click)="close()"><img src="assets/img/cancel.svg" width="32" height="32" ></button>
     </div>
     <div style="display: flex;">
       <ul class="inventory-options">
