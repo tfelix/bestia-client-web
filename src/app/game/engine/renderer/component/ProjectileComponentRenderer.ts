@@ -3,7 +3,7 @@ import { ComponentType, Entity, PositionComponent } from 'app/game/entities';
 import { EngineContext } from '../../EngineContext';
 import { MapHelper } from '../../MapHelper';
 import { Point } from 'app/game/model';
-import { UIConstants, UIAtlasFx } from 'app/game/ui';
+import { UIConstants, AtlasFx } from 'app/game/ui';
 import { ProjectileComponent } from 'app/game/entities/components/ProjectileComponent';
 
 export interface ProjectileData {
@@ -19,7 +19,7 @@ export class ProjectileComponentRenderer extends ComponentRenderer<ProjectileCom
   }
 
   protected createGameData(entity: Entity, component: ProjectileComponent) {
-    const img = this.ctx.gameScene.physics.add.image(0, 0, UIAtlasFx, UIConstants.PROJ_ARROW_01);
+    const img = this.ctx.gameScene.physics.add.image(0, 0, AtlasFx, UIConstants.PROJ_ARROW_01);
 
     entity.data.projectile = {
       projectileImage: img

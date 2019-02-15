@@ -1,6 +1,6 @@
 import * as LOG from 'loglevel';
 
-import { UIConstants, UIAtlasBase } from 'app/game/ui';
+import { UIConstants, AtlasUIBase } from 'app/game/ui';
 import {
   Entity, ComponentType, SelectLocalComponent, InteractionLocalComponent, InteractionType
 } from 'app/game/entities';
@@ -97,7 +97,7 @@ export class SelectLocalComponentRenderer extends ComponentRenderer<SelectLocalC
         interactionIconName: this.typeToIcon(interaction)
       });
     }
-    this.icons = interactionNames.map(v => this.guiScene.add.image(0, 0, UIAtlasBase, v.interactionIconName));
+    this.icons = interactionNames.map(v => this.guiScene.add.image(0, 0, AtlasUIBase, v.interactionIconName));
     this.icons.forEach((s, i) => {
       const interactionType = interactionNames[i].interaction;
       if (this.isDefaultInteraction(entity, interactionType)) {

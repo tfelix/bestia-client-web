@@ -16,5 +16,7 @@ export * from './ConditionComponentRenderer';
 export * from './SubFxComponentRenderer';
 export * from './FishingComponetRenderer';
 export * from './ProjectileComponentRenderer';
+export * from './VegetationComponentRenderer';
+export * from './BuildingComponentRenderer';
 
 export * from './local';

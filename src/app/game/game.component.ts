@@ -35,7 +35,7 @@ export class GameComponent implements OnInit {
 
   // GameConfig type mapping key is broken
   public readonly config = {
-    title: 'Test',
+    title: 'Bestia Browsergame',
     url: 'https://bestia-game.net',
     version: '0.1.0-alpha',
     width: window.innerWidth,
@@ -91,9 +91,12 @@ export class GameComponent implements OnInit {
   public onGameReady(game: Phaser.Game): void {
     this.game = game;
 
+    // Currently disabled as this reduces render quality. Need something better.
+    /*
     window.addEventListener('resize', () => {
       game.resize(window.innerWidth, window.innerHeight);
     }, false);
+    */
   }
 
   public onMouseOut() {

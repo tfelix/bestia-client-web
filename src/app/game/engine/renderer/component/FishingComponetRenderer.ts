@@ -5,7 +5,7 @@ import { Point, Px } from 'app/game/model';
 import { ComponentRenderer } from './ComponentRenderer';
 import { EngineContext } from '../../EngineContext';
 import { MapHelper } from '../../MapHelper';
-import { UIAtlasBase, UIConstants } from 'app/game/ui';
+import { AtlasUIBase, UIConstants } from 'app/game/ui';
 import { VisualDepth } from '../VisualDepths';
 import { SceneNames } from '../../scenes/SceneNames';
 
@@ -79,7 +79,7 @@ export class FishingComponentRenderer extends ComponentRenderer<FishingComponent
     this.fishingMeter = this.uiScene.add.image(
       0,
       0,
-      UIAtlasBase,
+      AtlasUIBase,
       UIConstants.ICON_FISHING_METER
     );
     this.fishingMeter.depth = VisualDepth.UI_UNDER_CURSOR;
@@ -88,7 +88,7 @@ export class FishingComponentRenderer extends ComponentRenderer<FishingComponent
     this.hookArea = this.uiScene.add.image(
       0,
       0,
-      UIAtlasBase,
+      AtlasUIBase,
       UIConstants.FISHING_HOOK_AREA
     );
     this.container.add(this.hookArea);
@@ -96,7 +96,7 @@ export class FishingComponentRenderer extends ComponentRenderer<FishingComponent
     this.fishIcon = this.uiScene.physics.add.image(
       0,
       0,
-      UIAtlasBase,
+      AtlasUIBase,
       UIConstants.ICON_FISHING
     );
     this.fishIcon.depth = VisualDepth.UI_UNDER_CURSOR;
@@ -141,7 +141,7 @@ export class FishingComponentRenderer extends ComponentRenderer<FishingComponent
     this.container.mask = new Phaser.Display.Masks.GeometryMask(this.uiScene, shape);
 
     const bubblesLine = new Phaser.Geom.Line(-50, 150, 50, 150);
-    this.bubbles = this.uiScene.add.particles(UIAtlasBase);
+    this.bubbles = this.uiScene.add.particles(AtlasUIBase);
     this.bubbles.createEmitter({
       frame: [UIConstants.FISHING_BUBBLE],
       scale: { start: 0.8, end: 1.0 },
@@ -157,7 +157,7 @@ export class FishingComponentRenderer extends ComponentRenderer<FishingComponent
     this.fishingActionButton = this.uiScene.add.image(
       this.container.x + 90,
       this.container.y,
-      UIAtlasBase,
+      AtlasUIBase,
       UIConstants.ICON_FISHING_BUTTON
     );
     this.fishingActionButton.setInteractive();
@@ -168,7 +168,7 @@ export class FishingComponentRenderer extends ComponentRenderer<FishingComponent
     this.fishingCancelButton = this.uiScene.add.image(
       this.container.x - 85,
       this.container.y,
-      UIAtlasBase,
+      AtlasUIBase,
       UIConstants.CANCEL
     );
     this.fishingCancelButton.depth = VisualDepth.UI_UNDER_CURSOR;

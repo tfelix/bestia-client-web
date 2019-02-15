@@ -1,4 +1,4 @@
-import { UIConstants, UIAtlasFx } from 'app/game/ui';
+import { UIConstants, AtlasFx } from 'app/game/ui';
 
 import { CommonRenderer } from './CommonRenderer';
 import { EngineContext } from '../../EngineContext';
@@ -51,7 +51,7 @@ export class WeatherRenderer extends CommonRenderer {
     this.weatherGfx.depth = VisualDepth.WEATHER_FX;
     this.weatherGfx.blendMode = Phaser.BlendModes.MULTIPLY;
 
-    this.rainParticles = this.scene.add.particles(UIAtlasFx, UIConstants.FX_RAIN);
+    this.rainParticles = this.scene.add.particles(AtlasFx, UIConstants.FX_RAIN);
 
     this.rainEmitter = this.rainParticles.createEmitter({
       x: 0,

@@ -1,5 +1,5 @@
 import { SceneNames } from './SceneNames';
-import { UIAtlasBase, UIAtlasFx, UIConstants } from 'app/game/ui';
+import { AtlasUIBase, AtlasFx, UIConstants, AtlasVegetation } from 'app/game/ui';
 import { Loadbar } from './Loadbar';
 
 export class LoadScene extends Phaser.Scene {
@@ -72,17 +72,17 @@ export class LoadScene extends Phaser.Scene {
 
     // Misc
     this.load.atlas(
-      UIAtlasBase,
+      AtlasUIBase,
       '../assets/base.png',
       '../assets/base.json'
     );
     this.load.atlas(
-      UIAtlasBase,
+      AtlasVegetation,
       '../assets/vegetation.png',
       '../assets/vegetation.json'
     );
     this.load.atlas(
-      UIAtlasFx,
+      AtlasFx,
       '../assets/fx/fx.png',
       '../assets/fx/fx.json'
     );
@@ -110,7 +110,7 @@ export class LoadScene extends Phaser.Scene {
     this.anims.create({
       key: UIConstants.FISHING_ANIM_SWIMMER,
       frames: this.anims.generateFrameNames(
-        UIAtlasBase,
+        AtlasUIBase,
         { prefix: 'swimmer_', end: 2, zeroPad: 3, suffix: '.png' }
       ),
       repeat: -1,
@@ -120,7 +120,7 @@ export class LoadScene extends Phaser.Scene {
     this.anims.create({
       key: UIConstants.FISHING_ANIM_SWIMMER_BITTEN,
       frames: this.anims.generateFrameNames(
-        UIAtlasBase,
+        AtlasUIBase,
         { prefix: 'swimmer-bitten_', end: 2, zeroPad: 3, suffix: '.png' }
       ),
       repeat: -1,

@@ -1,5 +1,5 @@
 import { VisualDepth } from 'app/game/engine/renderer/VisualDepths';
-import { UIAtlasBase, UIConstants } from './UiConstants';
+import { AtlasUIBase, UIConstants } from './UiConstants';
 
 export class DialogModalPlugin extends Phaser.Plugins.ScenePlugin {
 
@@ -157,7 +157,7 @@ export class DialogModalPlugin extends Phaser.Plugins.ScenePlugin {
     this.closeBtn = this.scene.add.image(
       this.getGameWidth() - this.padding - 5,
       this.getGameHeight() - this.windowHeight - this.padding - 5,
-      UIAtlasBase,
+      AtlasUIBase,
       UIConstants.CANCEL
     );
     this.closeBtn.setScaleMode(Phaser.ScaleModes.NEAREST);
