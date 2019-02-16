@@ -24,7 +24,7 @@ export class RequestSyncHandler extends ClientMessageHandler<SyncRequestMessage>
     const accInfoMsg = new AccountInfoMessage('roggy', this.playerAccId, 'master');
     this.sendClient(accInfoMsg);
 
-    const comps = this.entityFactory.addPlayer('player_1', new Point(47, 89), this.playerAccId);
+    const comps = this.entityFactory.addPlayer('player_1', new Point(85, 89), this.playerAccId);
     // const comps = this.entityFactory.addPlayer('player_1', new Point(18, 95), this.playerAccId);
     this.sendAllComponents(comps);
     const playerEntityId = this.entityFactory.getLastInsertedEntityId();
@@ -100,6 +100,10 @@ export class RequestSyncHandler extends ClientMessageHandler<SyncRequestMessage>
       [{outer: 'outer_wbl', inner: 'floor_wbl'}, {outer: 'outer_db', inner: 'floor_db'}, {outer: 'outer_wbr', inner: 'floor_wbr'}]
     ];
     this.sendAllComponents(this.entityFactory.addBuilding2(startBuildingData, new Point(82, 85)));
+
+    // Game Setup
+    this.sendAllComponents(this.entityFactory.addItem(new Point(89, 88), 'simple_axe'));
+    this.sendAllComponents(this.entityFactory.addItem(new Point(89, 89), 'simple_bow'));
 
     this.testProjectile();
   }

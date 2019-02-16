@@ -64,7 +64,7 @@ export class LoadScene extends Phaser.Scene {
     this.load.tilemapTiledJSON('map', '../assets/tilemap/maps/intro.json');
 
     // Load Items
-    const itemNames = ['empty_bottle', 'knife', 'fish'];
+    const itemNames = ['empty_bottle', 'knife', 'fish', 'simple_bow', 'simple_axe'];
     itemNames.forEach(x => this.load.image(x, `../assets/sprites/items/${x}.png`));
 
     // Shader

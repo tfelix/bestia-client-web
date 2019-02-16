@@ -23,4 +23,6 @@ game, name the auther and also its licence.
 | Intro Creation Shader                         |                          [Danilo Guanabara](http://www.pouet.net/prod.php?which=57245)                          | Public Domain |
 | Audio FX GDC 2016, GDC 2017 Game Audio Bundle |                                       [sonniss.com](https://sonniss.com)                                        |               |
 | Item Icons                                    |                                                BizmasterStudios                                                 |     CC-BY 4.0 |
-| Icons                                         |
+| simple_bow.png, simple_axe.png                |                          [gentlecatstudio](https://gentlecatstudio.itch.io/rpg-items)                           |           CC0 |
+| fire-ball-edit.png (Fx-Asset)                 |                           [DkuCook](https://opengameart.org/content/fire-ball-pixel)                            |           CC0 |
+| 2d-pixel-fire-sprite-strip                    |                    [Chromaeleon](https://opengameart.org/content/2d-pixel-fire-sprite-strip)                    |     CC-BY 3.0 |

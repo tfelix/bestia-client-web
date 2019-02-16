@@ -240,6 +240,54 @@ export class EntityLocalFactory {
     return [visual, position, entityTypeComp, inventoryComp];
   }
 
+  public addItem(
+    pos: Point,
+    itemName: string
+  ): Component[] {
+    const entity = this.createEntity();
+    this.entityStore.addEntity(entity);
+
+    const visual = new VisualComponent(
+      this.componentCounter++,
+      entity.id,
+      true,
+      itemName,
+      SpriteType.ITEM
+    );
+    entity.addComponent(visual);
+
+    const position = new PositionComponent(
+      this.componentCounter++,
+      entity.id
+    );
+    position.position = pos;
+    entity.addComponent(position);
+
+    const entityTypeComp = new EntityTypeComponent(
+      this.componentCounter++,
+      entity.id
+    );
+    entityTypeComp.entityType = EntityType.ITEM;
+    entity.addComponent(entityTypeComp);
+
+    const inventoryComp = new InventoryComponent(
+      this.componentCounter++,
+      entity.id
+    );
+
+    inventoryComp.items.push(new Item(
+      2,
+      this.lastInsertedItemId++,
+      itemName,
+      `${itemName}.png`,
+      0.5,
+      1
+    ));
+    entity.addComponent(inventoryComp);
+
+    return [visual, position, entityTypeComp, inventoryComp];
+  }
+
   public addItemKnife(
     pos: Point
   ): Component[] {
