@@ -11,3 +11,4 @@ export * from './CollisionMap';
 export * from './renderer';
 export * from './pointer';
 export * from './scenes';
+export * from './fx';

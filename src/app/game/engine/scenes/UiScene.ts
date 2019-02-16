@@ -11,7 +11,4 @@ export class UiScene extends Phaser.Scene {
       key: SceneNames.UI
     });
   }
-
-  public create() {
-  }
 }

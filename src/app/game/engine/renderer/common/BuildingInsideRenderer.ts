@@ -22,8 +22,10 @@ function dist(a: Vec2, b: Vec2): number {
 export class BuildingInsideRenderer extends CommonRenderer {
 
   private isInsideRenderActive = false;
+
+  private shadowMapGfx: Phaser.GameObjects.Graphics;
+  private shadowMap: Phaser.GameObjects.RenderTexture;
   private outsideShadowOverlay: Phaser.GameObjects.Graphics;
-  private outsideShadowRoomMask: Phaser.GameObjects.Graphics;
   private tempHelperLines: Phaser.GameObjects.Graphics;
   private uiUnderScene: Phaser.Scene;
   private lastRenderedPlayerPos = { x: 0, y: 0 };
@@ -36,9 +38,9 @@ export class BuildingInsideRenderer extends CommonRenderer {
 
     this.uiUnderScene = ctx.gameScene.game.scene.getScene(SceneNames.UI);
     this.outsideShadowOverlay = this.uiUnderScene.add.graphics({});
-    this.outsideShadowRoomMask = this.uiUnderScene.make.graphics({});
+
+    // For testing
     this.tempHelperLines = this.uiUnderScene.add.graphics({});
-    this.outsideShadowRoomMask.fillStyle(0x000000);
   }
 
   public needsUpdate(): boolean {
@@ -61,6 +63,27 @@ export class BuildingInsideRenderer extends CommonRenderer {
       || isPlayerInBuilding && hasBuildingChanged;
   }
 
+  public create() {
+    this.shadowMap = this.uiUnderScene.make.renderTexture({
+      x: 0,
+      y: 0,
+      width: this.ctx.helper.display.sceneWidth,
+      height: this.ctx.helper.display.sceneHeight
+    });
+    this.shadowMap.visible = false;
+
+    this.shadowMapGfx = this.uiUnderScene.add.graphics({});
+    this.shadowMapGfx.setVisible(false);
+    this.shadowMapGfx.fillStyle(0x000000);
+
+    this.outsideShadowOverlay = this.uiUnderScene.add.graphics();
+    this.outsideShadowOverlay.fillStyle(0x000000);
+    this.outsideShadowOverlay.fillRect(0, 0, this.ctx.helper.display.sceneWidth, this.ctx.helper.display.sceneHeight);
+
+    this.outsideShadowOverlay.mask = new Phaser.Display.Masks.BitmapMask(this.uiUnderScene, this.shadowMap);
+    this.outsideShadowOverlay.mask.invertAlpha = true;
+  }
+
   public update() {
     const isPlayerInBuilding = this.ctx.collision.building.isInsideBuilding();
 
@@ -74,8 +97,6 @@ export class BuildingInsideRenderer extends CommonRenderer {
   private updateBuildingInside() {
     this.isInsideRenderActive = true;
     this.ctx.gameScene.cameras.main.renderToTexture = false;
-    this.outsideShadowOverlay.clear();
-    this.outsideShadowRoomMask.clear();
 
     // Prepare to draw the window see lines
     const player = this.ctx.playerHolder.activeEntity;
@@ -93,9 +114,6 @@ export class BuildingInsideRenderer extends CommonRenderer {
     const playerDistBottomRight = dist(playerLocalPx, { x: this.ctx.helper.display.sceneWidth, y: this.ctx.helper.display.sceneHeight });
     const maxCornerDist = Math.max(playerDistBottomLeft, playerDistBottomRight, playerDistTopLeft, playerDistTopRight);
 
-    this.outsideShadowOverlay.fillStyle(0x000000);
-    this.outsideShadowOverlay.fillRect(0, 0, this.ctx.helper.display.sceneWidth, this.ctx.helper.display.sceneHeight);
-
     // Gets position of the player
     // Draw depending from the player lines towards the windows
     const buildingEntityIds = this.ctx.collision.building.getCurrentOccupiedBuildingEntityIds();
@@ -103,6 +121,10 @@ export class BuildingInsideRenderer extends CommonRenderer {
     const windowWorldPos: WindowPos[] = [];
 
     // Draw the mask and find the windows
+    this.shadowMapGfx.clear();
+    this.shadowMapGfx.fillStyle(0x000000, 1);
+    this.shadowMap.clear();
+
     buildingEntityIds.forEach(eid => {
       const buildingEntity = this.ctx.entityStore.getEntity(eid);
       const buildingComp = buildingEntity.getComponent(ComponentType.BUILDING) as BuildingComponent;
@@ -112,19 +134,13 @@ export class BuildingInsideRenderer extends CommonRenderer {
 
       const buildingWorldPos = MapHelper.pointToPixel(posComp.position);
       const buildingSceneLocalPos = MapHelper.worldPxToSceneLocal(this.ctx.gameScene.cameras.main, buildingWorldPos.x, buildingWorldPos.y);
-      this.outsideShadowRoomMask.fillRect(buildingSceneLocalPos.x, buildingSceneLocalPos.y, buildingPxSize, buildingPxSize);
+      this.shadowMapGfx.fillRect(buildingSceneLocalPos.x, buildingSceneLocalPos.y, buildingPxSize, buildingPxSize);
 
-      this.extractWindowPosition(buildingDesc, posComp, buildingComp)
-        .forEach(wpos => windowWorldPos.push(wpos));
+      this.extractWindowPosition(buildingDesc, posComp, buildingComp).forEach(wpos => windowWorldPos.push(wpos));
     });
 
-    this.outsideShadowOverlay.mask = this.outsideShadowRoomMask.createGeometryMask();
-    // Currently this is not in the type.d file included. It will get included as soon as
-    // https://github.com/photonstorm/phaser/pull/4301 will get merged.
-    (this.outsideShadowOverlay.mask as any).invertAlpha = true;
-
     // Bring the windows into local space and then we need to sort them into a clockwise order (which is previously not guranteed)
-    // in order to draw the sight effects.
+    // in order to draw the sight beam effects.
     const winLocalPos = windowWorldPos.map(win => {
       const posGlobal = MapHelper.pointToPixel(win);
       const posLocal = MapHelper.worldPxToSceneLocal(this.ctx.gameScene.cameras.main, posGlobal.x, posGlobal.y);
@@ -158,18 +174,46 @@ export class BuildingInsideRenderer extends CommonRenderer {
 
       if (win.isVertical) {
         this.tempHelperLines.fillRect(win.x, win.y, 5, MapHelper.TILE_SIZE_PX);
-
         // Draw test line
         this.tempHelperLines.lineBetween(playerLocalPx.x, playerLocalPx.y, win.x, win.y);
         this.tempHelperLines.lineBetween(playerLocalPx.x, playerLocalPx.y, win.x, win.y + MapHelper.TILE_SIZE_PX);
 
+        const rx = playerLocalPx.x - win.x;
+        const ry = playerLocalPx.y - win.y;
+        const y = playerLocalPx.y - playerLocalPx.x / rx * ry;
+
+        this.shadowMapGfx.fillStyle(0x000000, 1);
+        const a = new Phaser.Geom.Point(400, 100);
+        const b = new Phaser.Geom.Point(200, 400);
+        const c = new Phaser.Geom.Point(playerLocalPx.x, playerLocalPx.y);
+        this.shadowMapGfx.fillTriangle(0, y, b.x, b.y, c.x, c.y);
       } else {
         this.tempHelperLines.fillRect(win.x, win.y, MapHelper.TILE_SIZE_PX, 5);
         // Draw test line
         this.tempHelperLines.lineBetween(playerLocalPx.x, playerLocalPx.y, win.x, win.y);
         this.tempHelperLines.lineBetween(playerLocalPx.x, playerLocalPx.y, win.x + MapHelper.TILE_SIZE_PX, win.y);
       }
+
+
     });
+
+    /*
+    this.shadowMapGfx.fillStyle(0x000000, 1);
+    var a = new Phaser.Geom.Point(400, 100);
+    var b = new Phaser.Geom.Point(200, 400);
+    var c = new Phaser.Geom.Point(playerLocalPx.x, playerLocalPx.y);
+    this.shadowMapGfx.fillTriangle(a.x, a.y, b.x, b.y, c.x, c.y);
+
+    this.shadowMapGfx.fillStyle(0x000000, 0.4);
+    a = new Phaser.Geom.Point(400, 0);
+    b = new Phaser.Geom.Point(100, 600);
+    c = new Phaser.Geom.Point(playerLocalPx.x, playerLocalPx.y);
+
+    this.shadowMapGfx.fillTriangle(a.x, a.y, b.x, b.y, c.x, c.y);
+    */
+
+    // Draw the shadow map
+    this.shadowMap.draw(this.shadowMapGfx);
   }
 
   private sortClockwise(wins: WindowPos[], playerLocalPos: Phaser.Math.Vector2): WindowPos[] {

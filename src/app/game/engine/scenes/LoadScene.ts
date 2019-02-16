@@ -1,6 +1,7 @@
 import { SceneNames } from './SceneNames';
-import { AtlasUIBase, AtlasFx, UIConstants, AtlasVegetation } from 'app/game/ui';
+import { AtlasUIBase, UIConstants, AtlasVegetation } from 'app/game/ui';
 import { Loadbar } from './Loadbar';
+import { AtlasFx } from '../fx/FxConstants';
 
 export class LoadScene extends Phaser.Scene {
 

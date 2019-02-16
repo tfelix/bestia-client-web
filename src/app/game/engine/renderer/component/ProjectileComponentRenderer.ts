@@ -3,8 +3,9 @@ import { ComponentType, Entity, PositionComponent } from 'app/game/entities';
 import { EngineContext } from '../../EngineContext';
 import { MapHelper } from '../../MapHelper';
 import { Point } from 'app/game/model';
-import { UIConstants, AtlasFx } from 'app/game/ui';
+import { UIConstants } from 'app/game/ui';
 import { ProjectileComponent } from 'app/game/entities/components/ProjectileComponent';
+import { AtlasFx } from '../../fx/FxConstants';
 
 export interface ProjectileData {
   projectileImage: Phaser.GameObjects.Image;

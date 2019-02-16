@@ -1,9 +1,10 @@
-import { UIConstants, AtlasFx } from 'app/game/ui';
+import { UIConstants } from 'app/game/ui';
 
 import { CommonRenderer } from './CommonRenderer';
 import { EngineContext } from '../../EngineContext';
 import { VisualDepth } from '../VisualDepths';
 import { ShaderPipeline } from '../../pipelines/ShaderPipeline';
+import { AtlasFx } from '../../fx/FxConstants';
 
 /**
  * Its probably better to exchange data between the scenes via the

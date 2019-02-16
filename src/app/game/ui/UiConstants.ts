@@ -1,6 +1,5 @@
 export const AtlasUIBase = 'base';
 export const AtlasVegetation = 'vegetation';
-export const AtlasFx = 'fx';
 
 export const UIConstants = {
   PLACEHOLDER: 'placeholder.png',
