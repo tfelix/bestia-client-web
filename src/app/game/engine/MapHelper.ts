@@ -25,6 +25,13 @@ export class MapHelper {
     );
   }
 
+  public static xyPointToPx(x: number, y: number): Px {
+    return new Px(
+      x * this.TILE_SIZE_PX,
+      y * this.TILE_SIZE_PX
+    );
+  }
+
   public static pixelToPoint(xPx: number, yPx: number): Point {
     return new Point(
       Math.floor(xPx / this.TILE_SIZE_PX),

@@ -13,10 +13,28 @@ interface WindowPos {
   isVertical: boolean;
 }
 
+interface WindowPolar {
+  a: Polar;
+  b: Polar;
+}
+
+interface Polar {
+  r: number;
+  theta: number;
+}
+
 function dist(a: Vec2, b: Vec2): number {
   const dx = a.x - b.x;
   const dy = a.y - b.y;
   return Math.sqrt(dx * dx + dy * dy);
+}
+
+function toPolar(x: number, y: number): Polar {
+  const preTheta = Math.atan2(y, x)
+  return {
+    r: Math.sqrt(x * x + y * y),
+    theta: (preTheta < 0) ? Math.PI * 2 - preTheta : preTheta
+  };
 }
 
 export class BuildingInsideRenderer extends CommonRenderer {
@@ -77,8 +95,6 @@ export class BuildingInsideRenderer extends CommonRenderer {
     this.shadowMapGfx.fillStyle(0x000000);
 
     this.outsideShadowOverlay = this.uiUnderScene.add.graphics();
-    this.outsideShadowOverlay.fillStyle(0x000000);
-    this.outsideShadowOverlay.fillRect(0, 0, this.ctx.helper.display.sceneWidth, this.ctx.helper.display.sceneHeight);
 
     this.outsideShadowOverlay.mask = new Phaser.Display.Masks.BitmapMask(this.uiUnderScene, this.shadowMap);
     this.outsideShadowOverlay.mask.invertAlpha = true;
@@ -97,6 +113,9 @@ export class BuildingInsideRenderer extends CommonRenderer {
   private updateBuildingInside() {
     this.isInsideRenderActive = true;
     this.ctx.gameScene.cameras.main.renderToTexture = false;
+
+    this.outsideShadowOverlay.fillStyle(0x000000);
+    this.outsideShadowOverlay.fillRect(0, 0, this.ctx.helper.display.sceneWidth, this.ctx.helper.display.sceneHeight);
 
     // Prepare to draw the window see lines
     const player = this.ctx.playerHolder.activeEntity;
@@ -193,9 +212,9 @@ export class BuildingInsideRenderer extends CommonRenderer {
         this.tempHelperLines.lineBetween(playerLocalPx.x, playerLocalPx.y, win.x, win.y);
         this.tempHelperLines.lineBetween(playerLocalPx.x, playerLocalPx.y, win.x + MapHelper.TILE_SIZE_PX, win.y);
       }
-
-
     });
+
+    // winLocalPos.map(x => toPolar(x.x, x.y));
 
     /*
     this.shadowMapGfx.fillStyle(0x000000, 1);

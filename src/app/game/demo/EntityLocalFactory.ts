@@ -2,7 +2,7 @@ import { Point } from 'app/game/model';
 import {
   PlayerComponent, Component, ComponentType, ConditionComponent, VisualComponent,
   DebugComponent, PositionComponent, AttacksComponent, Entity, InventoryComponent,
-  FxComponent, FishingComponent, ProjectileComponent, EntityTypeComponent, EntityType, BuildingComponent, Item, VegetationComponent
+  FxComponent, FishingComponent, ProjectileComponent, EntityTypeComponent, EntityType, BuildingComponent, Item, VegetationComponent, PerformComponent
 } from 'app/game/entities';
 import { SpriteType } from 'app/game/engine';
 
@@ -176,6 +176,25 @@ export class EntityLocalFactory {
       .addComponent(fishingComp);
 
     return fishingComp;
+  }
+
+  addPerformComponent(
+    playerEntityId: number,
+    duration: number
+    ): any {
+    const performComp = new PerformComponent(
+      this.componentCounter++,
+      playerEntityId
+    );
+    performComp.canAbort = true;
+    performComp.canMove = false;
+    performComp.duration = duration;
+
+    this.entityStore
+      .getEntity(playerEntityId)
+      .addComponent(performComp);
+
+    return performComp;
   }
 
   public addBestia(name: string, pos: Point): Component[] {
