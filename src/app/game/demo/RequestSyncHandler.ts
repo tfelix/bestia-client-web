@@ -24,7 +24,7 @@ export class RequestSyncHandler extends ClientMessageHandler<SyncRequestMessage>
     const accInfoMsg = new AccountInfoMessage('roggy', this.playerAccId, 'master');
     this.sendClient(accInfoMsg);
 
-    const comps = this.entityFactory.addPlayer('player_1', new Point(85, 89), this.playerAccId);
+    const comps = this.entityFactory.addPlayer('player_1', new Point(52, 89), this.playerAccId);
     // const comps = this.entityFactory.addPlayer('player_1', new Point(18, 95), this.playerAccId);
     this.sendAllComponents(comps);
     const playerEntityId = this.entityFactory.getLastInsertedEntityId();
@@ -37,6 +37,11 @@ export class RequestSyncHandler extends ClientMessageHandler<SyncRequestMessage>
       this.sendComponent(fishingComp);
     });
     */
+
+   window.setTimeout(() => {
+    const performComp = this.entityFactory.addPerformComponent(playerEntityId, 8000);
+    this.sendComponent(performComp);
+  }, 2000);
 
     // TODO Handle AI differently
     const bestiaComps = this.entityFactory.addBestia('rabbit', new Point(16, 89));

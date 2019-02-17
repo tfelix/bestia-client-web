@@ -27,16 +27,10 @@ import { WoodChopPointer } from './WoodChopPointer';
  */
 export class PointerManager {
 
+  public activePointer: Pointer;
+
   private pointers: Pointer[] = [];
-  // FIXME We probably dont need a stack here and can simple have the active pointer
-  // with the prio system
-  private pointerStack: Pointer[] = [];
-
-  get activePointer(): Pointer {
-    const pointer = this.pointerStack[this.pointerStack.length - 1];
-    return (!pointer) ? this.nullIndicator : pointer;
-  }
-
+  private isPointerHidden = false;
   private movePointer: Pointer;
   private nullIndicator: Pointer;
 
@@ -48,6 +42,8 @@ export class PointerManager {
 
     this.nullIndicator = new NullPointer(this, engineContext);
     this.movePointer = new MovePointer(this, engineContext);
+
+    this.activePointer = this.nullIndicator;
 
     // Register the available indicators.
     this.pointers.push(this.movePointer);
@@ -103,13 +99,12 @@ export class PointerManager {
   }
 
   public hide() {
+    this.isPointerHidden = true;
+    this.setActive(this.nullIndicator);
   }
 
   public show() {
-    if (this.activePointer !== this.nullIndicator) {
-      return;
-    }
-    this.dismissActive();
+    this.isPointerHidden = false;
   }
 
   public load() {
@@ -122,6 +117,9 @@ export class PointerManager {
   }
 
   public update() {
+    if (this.isPointerHidden) {
+      return;
+    }
     const activePointer = this.engineContext.gameScene.input.activePointer;
     const worldX = this.engineContext.gameScene.cameras.main.scrollX + activePointer.x;
     const worldY = this.engineContext.gameScene.cameras.main.scrollY + activePointer.y;
@@ -145,25 +143,18 @@ export class PointerManager {
       }
     });
 
-    if (maxPrioPointer !== this.activePointer) {
-      this.setActive(maxPrioPointer);
+    if (maxPrio === -1) {
+      this.setActive(this.nullIndicator);
+    } else {
+      if (maxPrioPointer !== this.activePointer) {
+        this.setActive(maxPrioPointer);
+      }
     }
   }
 
   public setActive(pointer: Pointer) {
     this.activePointer.deactivate();
-    this.pointerStack.push(pointer);
-    this.activePointer.activate();
-  }
-
-  public dismissActive() {
-    this.activePointer.deactivate();
-    if (this.pointerStack.length === 0) {
-      this.pointerStack.push(this.movePointer);
-    } else {
-      this.pointerStack.pop();
-    }
-
+    this.activePointer = pointer;
     this.activePointer.activate();
   }
 }

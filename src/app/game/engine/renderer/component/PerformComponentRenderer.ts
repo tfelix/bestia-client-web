@@ -90,6 +90,8 @@ export class PerformComponentRenderer extends ComponentRenderer<PerformComponent
   public removeGameData(entity: Entity) {
     PerformComponentRenderer.graphicsLayer.clear();
     PerformComponentRenderer.cancelButton.visible = false;
+
+    delete entity.data.perform;
   }
 
   private drawPerformBar(entity: Entity, component: PerformComponent) {

@@ -1,11 +1,10 @@
 import { Point, Px } from 'app/game/model';
-import { ComponentType, PerformComponent } from 'app/game/entities';
+import { ComponentType, PerformComponent, Entity } from 'app/game/entities';
 
 import { MapHelper } from '../MapHelper';
 import { Pointer } from './Pointer';
 import { PointerManager } from './PointerManager';
 import { EngineContext } from '../EngineContext';
-import { Entity } from 'entities';
 import { PointerPriority } from './PointerPriority';
 import { VisualDepth } from '../renderer/VisualDepths';
 
@@ -48,7 +47,17 @@ export class MovePointer extends Pointer {
   }
 
   public reportPriority(px: Px, pos: Point, overEntity?: Entity): number {
-    return PointerPriority.MOVE;
+    const playerEntity = this.ctx.playerHolder.activeEntity;
+
+    const canMove = !this.doesAnyPerfomDisableMovement(playerEntity);
+
+    return canMove ? PointerPriority.MOVE : PointerPriority.NONE;
+  }
+
+  private doesAnyPerfomDisableMovement(entity: Entity): boolean {
+    const perform = entity.getComponent(ComponentType.PERFORM) as PerformComponent;
+
+    return perform && !perform.canMove;
   }
 
   private isNotWalkable(pointerPx: Px) {
