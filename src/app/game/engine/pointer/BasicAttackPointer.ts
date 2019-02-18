@@ -92,7 +92,6 @@ export class BasicAttackPointer extends Pointer {
     }
 
     if (!this.isAttackable(clickedEntity)) {
-      this.manager.dismissActive();
       return;
     }
 
