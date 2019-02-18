@@ -24,7 +24,7 @@ export class RequestSyncHandler extends ClientMessageHandler<SyncRequestMessage>
     const accInfoMsg = new AccountInfoMessage('roggy', this.playerAccId, 'master');
     this.sendClient(accInfoMsg);
 
-    const comps = this.entityFactory.addPlayer('player_1', new Point(52, 89), this.playerAccId);
+    const comps = this.entityFactory.addPlayer('player_1', new Point(82, 95), this.playerAccId);
     // const comps = this.entityFactory.addPlayer('player_1', new Point(18, 95), this.playerAccId);
     this.sendAllComponents(comps);
     const playerEntityId = this.entityFactory.getLastInsertedEntityId();

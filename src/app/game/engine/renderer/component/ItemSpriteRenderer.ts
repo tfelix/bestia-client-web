@@ -34,6 +34,7 @@ export class ItemSpriteRenderer extends SpriteRenderer {
   }
 
   protected updateSpriteDepth(spriteData: SpriteData) {
-    spriteData.sprite.depth = spriteData.sprite.y - 10;
+    const scrollOffset = this.ctx.helper.display.getScrollOffsetPx();
+    spriteData.sprite.depth = spriteData.sprite.y - scrollOffset.y - 10;
   }
 }

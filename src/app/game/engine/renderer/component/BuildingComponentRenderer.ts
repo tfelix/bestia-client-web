@@ -80,27 +80,41 @@ export class BuildingComponentRenderer extends ComponentRenderer<BuildingCompone
     }
 
     const mapPos = MapHelper.pointToPixel(pos.position);
-    const spriteMetaInner = this.getSpriteNameMeta(component.innerSprite);
+
     const buildingData: BuildingData = {
-      innerSprite: this.ctx.gameScene.add.image(mapPos.x, mapPos.y, component.spriteSheet, spriteMetaInner.correctedSpriteName),
+      innerSprite: this.createBuildingInner(mapPos, component),
       outerSprite: null
     };
-    buildingData.innerSprite.setOrigin(0);
-    buildingData.innerSprite.flipX = spriteMetaInner.flipX;
 
     if (component.outerSprite) {
-      const spriteMetaOuter = this.getSpriteNameMeta(component.outerSprite);
-      buildingData.outerSprite = this.ctx.gameScene.add.image(
-        mapPos.x,
-        mapPos.y,
-        component.spriteSheet,
-        spriteMetaOuter.correctedSpriteName
-      );
-      buildingData.outerSprite.setOrigin(0);
-      buildingData.outerSprite.flipX = spriteMetaOuter.flipX;
+      buildingData.outerSprite = this.createBuildingOuter(mapPos, component);
     }
 
     entity.data.building = buildingData;
+  }
+
+  private createBuildingInner(mapPos: Vec2, component: BuildingComponent): Phaser.GameObjects.Image {
+    const spriteMetaInner = this.getSpriteNameMeta(component.innerSprite);
+    const innerBuilding = this.ctx.gameScene.add.image(mapPos.x, mapPos.y, component.spriteSheet, spriteMetaInner.correctedSpriteName);
+    innerBuilding.setOrigin(0);
+    innerBuilding.flipX = spriteMetaInner.flipX;
+
+    return innerBuilding;
+  }
+
+  private createBuildingOuter(mapPos: Vec2, component: BuildingComponent): Phaser.GameObjects.Image {
+    const spriteMetaOuter = this.getSpriteNameMeta(component.outerSprite);
+    const outerSprite = this.ctx.gameScene.add.image(
+      mapPos.x,
+      mapPos.y,
+      component.spriteSheet,
+      spriteMetaOuter.correctedSpriteName
+    );
+    outerSprite.setOrigin(0);
+    outerSprite.flipX = spriteMetaOuter.flipX;
+    outerSprite.depth = mapPos.y;
+
+    return outerSprite;
   }
 
   protected updateGameData(entity: Entity, component: BuildingComponent) {
