@@ -18,23 +18,16 @@ export class AbortPerformHandler extends ClientMessageHandler<AbortPerformMessag
   }
 
   public handle(msg: AbortPerformMessage) {
-    const perfComp = new PerformComponent(
-      71235,
-      this.playerEntityId
-    );
-    perfComp.duration = 10000;
-    perfComp.skillname = 'chop_tree';
     const playerEntity = this.serverEntities.getEntity(this.playerEntityId);
-    playerEntity.addComponent(perfComp);
-    const compMsg = new ComponentMessage<PerformComponent>(perfComp);
-    this.sendClient(compMsg);
 
-    window.setTimeout(() => {
-      const deleteMessage = new ComponentDeleteMessage(1, ComponentType.PERFORM);
-      this.sendClient(deleteMessage);
-    },
-      10000
-    );
+    const performComp = playerEntity.getComponent(ComponentType.PERFORM) as PerformComponent;
+    if (performComp == null || !performComp.canAbort) {
+      return;
+    }
+
+    playerEntity.removeComponentByType(ComponentType.PERFORM);
+
+    const deleteMessage = new ComponentDeleteMessage(1, ComponentType.PERFORM);
+    this.sendClient(deleteMessage);
   }
-
 }
