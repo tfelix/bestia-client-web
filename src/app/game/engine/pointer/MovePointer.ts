@@ -48,6 +48,9 @@ export class MovePointer extends Pointer {
 
   public reportPriority(px: Px, pos: Point, overEntity?: Entity): number {
     const playerEntity = this.ctx.playerHolder.activeEntity;
+    if (!playerEntity) {
+      return PointerPriority.NONE;
+    }
 
     const canMove = !this.doesAnyPerfomDisableMovement(playerEntity);
 

@@ -41,12 +41,20 @@ export class RequestSyncHandler extends ClientMessageHandler<SyncRequestMessage>
    window.setTimeout(() => {
     const performComp = this.entityFactory.addPerformComponent(playerEntityId, 8000);
     this.sendComponent(performComp);
+    window.setTimeout(() => {
+
+    });
   }, 2000);
 
   window.setTimeout(() => {
-    const msg = new UiModalMessage(0, 'Oh dammit! I totally forgot Dörthe will come over today!!! I need to prepare everything for her...');
+    const msg = new UiModalMessage(0, 'Oh dammit! I totally forgot Dörthes birthday!!! I need to prepare everything for her...');
     this.sendClient(msg);
   }, 2000);
+
+  window.setTimeout(() => {
+    const msg = new UiModalMessage(0, 'I need to hunt something, I need to make some firewood and I need to get some fresh water!');
+    this.sendClient(msg);
+  }, 8000);
 
     // TODO Handle AI differently
     const bestiaComps = this.entityFactory.addBestia('rabbit', new Point(16, 89));
