@@ -9,6 +9,7 @@ import { ChatComponent } from './chat/chat.component';
 import { InventoryComponent } from './inventory/inventory.component';
 import { BootScene, LoadScene, IntroScene, GameScene, UiScene, WeatherScene, UiDialogScene } from './engine';
 import { ServerEmulator } from './demo';
+import { SettingsComponent } from './settings/settings.component';
 
 @Component({
   selector: 'app-game',
@@ -27,6 +28,9 @@ export class GameComponent implements OnInit {
 
   @ViewChild(InventoryComponent)
   public inventoryComponent: InventoryComponent;
+
+  @ViewChild(SettingsComponent)
+  public settingsComponent: SettingsComponent;
 
   public hasActiveGame = false;
   public hideDefaultCursorOverGame = false;
@@ -117,6 +121,16 @@ export class GameComponent implements OnInit {
     } else {
       this.inventoryComponent.close();
       this.chatComponent.open();
+    }
+  }
+
+  public toggleSettings() {
+    if (this.settingsComponent.isOpen) {
+      this.settingsComponent.close();
+    } else {
+      this.chatComponent.close();
+      this.inventoryComponent.close();
+      this.settingsComponent.open();
     }
   }
 

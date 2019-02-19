@@ -10,6 +10,7 @@ import { ChatComponent } from './chat/chat.component';
 import { WebSocketService } from './connection/websocket.service';
 import { ChatService } from './chat/chat.service';
 import { InventoryComponent } from './inventory/inventory.component';
+import { SettingsComponent } from './settings/settings.component';
 
 @NgModule({
   imports: [
@@ -20,7 +21,8 @@ import { InventoryComponent } from './inventory/inventory.component';
   declarations: [
     GameComponent,
     ChatComponent,
-    InventoryComponent
+    InventoryComponent,
+    SettingsComponent
   ],
   providers: [
     WebSocketService,
