@@ -1,4 +1,4 @@
-import { SyncRequestMessage, AccountInfoMessage, ComponentMessage } from 'app/game/message';
+import { SyncRequestMessage, AccountInfoMessage, ComponentMessage, UiModalMessage } from 'app/game/message';
 import { MoveComponent, FxComponent, ProjectileComponent } from 'app/game/entities';
 import { Point } from 'app/game/model';
 
@@ -41,6 +41,11 @@ export class RequestSyncHandler extends ClientMessageHandler<SyncRequestMessage>
    window.setTimeout(() => {
     const performComp = this.entityFactory.addPerformComponent(playerEntityId, 8000);
     this.sendComponent(performComp);
+  }, 2000);
+
+  window.setTimeout(() => {
+    const msg = new UiModalMessage(0, 'Oh dammit! I totally forgot Dörthe will come over today!!! I need to prepare everything for her...');
+    this.sendClient(msg);
   }, 2000);
 
     // TODO Handle AI differently

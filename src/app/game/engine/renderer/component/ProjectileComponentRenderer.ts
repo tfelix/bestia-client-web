@@ -20,7 +20,7 @@ export class ProjectileComponentRenderer extends ComponentRenderer<ProjectileCom
   }
 
   protected createGameData(entity: Entity, component: ProjectileComponent) {
-    const img = this.ctx.gameScene.physics.add.image(0, 0, AtlasFx, UIConstants.PROJ_ARROW_01);
+    const img = this.ctx.gameScene.physics.add.image(0, 0, AtlasFx, 'projectiles/' + UIConstants.PROJ_ARROW_01);
 
     entity.data.projectile = {
       projectileImage: img
