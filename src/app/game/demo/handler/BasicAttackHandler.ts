@@ -1,11 +1,11 @@
 import { ClientMessageHandler } from './ClientMessageHandler';
 import { BasicAttackMessage, ActionMessage, ComponentMessage, ComponentDeleteMessage } from 'app/game/message';
 import { DamageAction, KillAction } from 'app/game/entities';
-import { ConditionHelper } from './ConditionHelper';
-import { ComponentCopyHelper } from './ComponentCopyHelper';
+import { ConditionHelper } from '../ConditionHelper';
+import { ComponentCopyHelper } from '../ComponentCopyHelper';
 import { ConditionComponent, ComponentType, VisualComponent, PositionComponent } from 'app/game/entities/components';
-import { ServerEntityStore } from './ServerEntityStore';
-import { EntityLocalFactory } from './EntityLocalFactory';
+import { ServerEntityStore } from '../ServerEntityStore';
+import { EntityLocalFactory } from '../EntityLocalFactory';
 
 export class BasicAttackHandler extends ClientMessageHandler<BasicAttackMessage> {
 

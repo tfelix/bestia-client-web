@@ -1,7 +1,7 @@
 import { ClientMessageHandler } from './ClientMessageHandler';
 import { UpdateComponentMessage } from 'app/game/message';
 import { FishingComponent, ComponentType, InventoryComponent, Item } from 'app/game/entities/components';
-import { ServerEntityStore } from './ServerEntityStore';
+import { ServerEntityStore } from '../ServerEntityStore';
 
 export class FishingComponentHandler extends ClientMessageHandler<UpdateComponentMessage<FishingComponent>> {
   constructor(

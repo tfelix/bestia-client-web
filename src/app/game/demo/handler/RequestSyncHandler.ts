@@ -2,8 +2,8 @@ import { SyncRequestMessage, AccountInfoMessage, ComponentMessage, UiModalMessag
 import { MoveComponent, FxComponent, ProjectileComponent } from 'app/game/entities';
 import { Point } from 'app/game/model';
 
-import { EntityLocalFactory, BuildingData } from './EntityLocalFactory';
-import { ServerEntityStore } from './ServerEntityStore';
+import { EntityLocalFactory, BuildingData } from '../EntityLocalFactory';
+import { ServerEntityStore } from '../ServerEntityStore';
 import { ClientMessageHandler } from './ClientMessageHandler';
 
 export class RequestSyncHandler extends ClientMessageHandler<SyncRequestMessage> {
@@ -24,7 +24,7 @@ export class RequestSyncHandler extends ClientMessageHandler<SyncRequestMessage>
     const accInfoMsg = new AccountInfoMessage('roggy', this.playerAccId, 'master');
     this.sendClient(accInfoMsg);
 
-    const comps = this.entityFactory.addPlayer('player_1', new Point(82, 95), this.playerAccId);
+    const comps = this.entityFactory.addPlayer('player_1', new Point(81, 96), this.playerAccId);
     // const comps = this.entityFactory.addPlayer('player_1', new Point(18, 95), this.playerAccId);
     this.sendAllComponents(comps);
     const playerEntityId = this.entityFactory.getLastInsertedEntityId();
@@ -47,12 +47,12 @@ export class RequestSyncHandler extends ClientMessageHandler<SyncRequestMessage>
   }, 2000);
 
   window.setTimeout(() => {
-    const msg = new UiModalMessage(0, 'Oh dammit! I totally forgot Dörthes birthday!!! I need to prepare everything for her...');
+    const msg = new UiModalMessage('Oh dammit! I totally forgot Dörthes birthday!!! I need to prepare everything for her...');
     this.sendClient(msg);
   }, 2000);
 
   window.setTimeout(() => {
-    const msg = new UiModalMessage(0, 'I need to hunt something, I need to make some firewood and I need to get some fresh water!');
+    const msg = new UiModalMessage('I need to hunt something, I need to make some firewood and I need to get some fresh water!');
     this.sendClient(msg);
   }, 8000);
 

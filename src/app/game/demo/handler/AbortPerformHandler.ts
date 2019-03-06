@@ -2,7 +2,7 @@ import { AbortPerformMessage, ComponentMessage, ComponentDeleteMessage } from 'a
 import { ComponentType, PerformComponent } from 'app/game/entities/components';
 
 import { ClientMessageHandler } from './ClientMessageHandler';
-import { ServerEntityStore } from './ServerEntityStore';
+import { ServerEntityStore } from '../ServerEntityStore';
 
 export class AbortPerformHandler extends ClientMessageHandler<AbortPerformMessage> {
 

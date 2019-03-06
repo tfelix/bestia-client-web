@@ -71,6 +71,19 @@
                  "width":96,
                  "x":2464,
                  "y":2912
+                }, 
+                {
+                 "height":64,
+                 "name":"01_block_house_leave",
+                 "properties":
+                    {
+                     "triggers":"01_block_house_leave"
+                    },
+                 "type":"",
+                 "visible":true,
+                 "width":96,
+                 "x":2720,
+                 "y":2976
                 }],
          "opacity":1,
          "type":"objectgroup",

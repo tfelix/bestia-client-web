@@ -4,7 +4,7 @@ import {
 } from 'app/game/entities';
 
 import { ClientMessageHandler } from './ClientMessageHandler';
-import { ServerEntityStore } from './ServerEntityStore';
+import { ServerEntityStore } from '../ServerEntityStore';
 
 interface InteractionCallback {
   type: InteractionType;

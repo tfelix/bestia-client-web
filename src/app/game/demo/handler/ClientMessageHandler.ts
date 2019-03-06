@@ -3,7 +3,7 @@ import * as LOG from 'loglevel';
 import { Entity } from 'entities';
 import { ComponentDeleteMessage, ComponentMessage, EngineEvents } from 'app/game/message';
 import { Component } from 'app/game/entities';
-import { ServerEntityStore } from './ServerEntityStore';
+import { ServerEntityStore } from '../ServerEntityStore';
 
 export abstract class ClientMessageHandler<T> {
 

@@ -45,82 +45,78 @@ export class VegetationComponentRenderer extends ComponentRenderer<VegetationCom
     const images = [];
 
     const hull = component.hullPoints.slice(0);
-    let lastMinX = 0;
-    let lastMaxX = null;
-
-    let lastMinY = 0;
-    let lastMaxY = null;
+    const borderSet = new Set<number>();
 
     for (let x = 0; x <= bbox.width; x++) {
       const currentPoints = getHullPointsWithX(hull, x).sort(compareY);
 
-      let minY = lastMinY;
-      let maxY = lastMaxY;
-
-      if (currentPoints.length > 0) {
-        minY = currentPoints[0].y;
-        maxY = currentPoints[currentPoints.length - 1].y;
+      if (currentPoints.length === 0) {
+        continue;
       }
 
+      const minY = currentPoints[0].y;
+      const maxY = currentPoints[currentPoints.length - 1].y;
+
       for (let y = minY; y <= maxY; y++) {
-        const topIndex = currentPoints.findIndex(p => p.y === y);
-        const isBorderTop = lastMinY === y || y < lastMinY && topIndex !== -1;
-        const isBorderBottom = !isBorderTop && (lastMaxY === y || y > lastMaxY && currentPoints.findIndex(p => p.y === y) !== -1);
+        const isBorderTop = y === minY;
+        const isBorderBottom = y === maxY;
         const isInside = minY < y && maxY > y;
-        const isBorderLeft = x <= lastMinX || x >= lastMaxX;
-        const isBorderRight = x > lastMinX || x < lastMaxX;
+        const isBorderLeft = !borderSet.has(y);
+        const isBorderRight = borderSet.has(y);
+
+        if (isBorderLeft) {
+          borderSet.add(y);
+        }
+
+        if (isBorderRight) {
+          borderSet.delete(y);
+        }
+
+        const px = MapHelper.xyPointToPx(x, y);
 
         if (isBorderLeft && isBorderTop) {
-          const px = MapHelper.xyPointToPx(x, y);
           const img = this.game.add.image(px.x + pxOffset.x, px.y + pxOffset.y, 'vegetation', 'grass_1_tl.png');
           img.setOrigin(0, 0);
           images.push(img);
         }
 
         if (isBorderLeft && isBorderBottom) {
-          const px = MapHelper.xyPointToPx(x, y);
           const img = this.game.add.image(px.x + pxOffset.x, px.y + pxOffset.y, 'vegetation', 'grass_1_bl.png');
           img.setOrigin(0, 0);
           images.push(img);
         }
 
         if (isBorderLeft && isInside) {
-          const px = MapHelper.xyPointToPx(x, y);
           const img = this.game.add.image(px.x + pxOffset.x, px.y + pxOffset.y, 'vegetation', 'grass_1_l.png');
           img.setOrigin(0, 0);
           images.push(img);
         }
 
-        if (!isBorderLeft && isBorderTop) {
-          const px = MapHelper.xyPointToPx(x, y);
+        if (isBorderTop && isInside) {
           const img = this.game.add.image(px.x + pxOffset.x, px.y + pxOffset.y, 'vegetation', 'grass_1_t.png');
           img.setOrigin(0, 0);
           images.push(img);
         }
 
-        if (!isBorderLeft && isInside) {
-          const px = MapHelper.xyPointToPx(x, y);
+        if (!isBorderLeft && !isBorderTop && isInside) {
           const img = this.game.add.image(px.x + pxOffset.x, px.y + pxOffset.y, 'vegetation', 'grass_1.png');
           img.setOrigin(0, 0);
           images.push(img);
         }
 
-        if (!isBorderLeft && isBorderBottom) {
-          const px = MapHelper.xyPointToPx(x, y);
+        if (isBorderBottom && isInside) {
           const img = this.game.add.image(px.x + pxOffset.x, px.y + pxOffset.y, 'vegetation', 'grass_1_b.png');
           img.setOrigin(0, 0);
           images.push(img);
         }
 
-        /*
         if (isBorderRight && isBorderTop) {
           const px = MapHelper.xyPointToPx(x, y);
           const img = this.game.add.image(px.x + pxOffset.x, px.y + pxOffset.y, 'vegetation', 'grass_1_tr.png');
           img.setOrigin(0, 0);
           images.push(img);
-        }*/
+        }
 
-        /*
         if (isBorderRight && isInside) {
           const px = MapHelper.xyPointToPx(x, y);
           const img = this.game.add.image(px.x + pxOffset.x, px.y + pxOffset.y, 'vegetation', 'grass_1_r.png');
@@ -133,16 +129,8 @@ export class VegetationComponentRenderer extends ComponentRenderer<VegetationCom
           const img = this.game.add.image(px.x + pxOffset.x, px.y + pxOffset.y, 'vegetation', 'grass_1_br.png');
           img.setOrigin(0, 0);
           images.push(img);
-        }*/
-
-        if (isBorderLeft) {
-          lastMinX = Math.min(lastMinX, x);
-          lastMaxX = Math.max(lastMaxX, x);
         }
       }
-
-      lastMinY = minY;
-      lastMaxY = maxY;
     }
 
     // Temp
@@ -151,13 +139,11 @@ export class VegetationComponentRenderer extends ComponentRenderer<VegetationCom
     };
   }
 
-  private addVegetationTile() {
-    /*
-    const px = MapHelper.pointToPixel(p);
-      const img = this.game.add.image(px.x + pxOffset.x, px.y + pxOffset.y, 'vegetation', 'grass_1_br.png');
-      img.setOrigin(0, 0);
-      images.push(img);
-      */
+  private addVegetationTile(posPx: Vec2, vegetationName: string, suffix: string): Phaser.GameObjects.Image {
+    const img = this.game.add.image(posPx.x, posPx.y, 'vegetation', `${vegetationName}_${suffix}.png`);
+    img.setOrigin(0, 0);
+
+    return img;
   }
 
   private findBoundingBox(component: VegetationComponent): Phaser.Geom.Rectangle {

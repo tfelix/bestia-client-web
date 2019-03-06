@@ -4,5 +4,5 @@ export * from './WeatherDataUpdater';
 export * from './UiDataUpdater';
 export * from './TranslationService';
 export * from './ComponentUpdater';
-export * from './ComponentUpdateHandler';
-export * from './InventoryUpdateHandler';
+export * from './update-handler/ComponentUpdateHandler';
+export * from './update-handler/InventoryUpdateHandler';

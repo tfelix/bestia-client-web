@@ -1,7 +1,7 @@
 import { EntityStore, ComponentType } from 'app/game/entities';
 import { ComponentMessage, ComponentDeleteMessage, EngineEvents } from 'app/game/message';
 import { Component } from 'app/game/entities';
-import { ComponentUpdaterHandler } from './ComponentUpdateHandler';
+import { ComponentUpdaterHandler } from './update-handler/ComponentUpdateHandler';
 
 export class ComponentUpdater {
 

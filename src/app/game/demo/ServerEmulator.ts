@@ -1,27 +1,25 @@
 import * as PubSub from 'pubsub-js';
 import * as LOG from 'loglevel';
 
-import { WeatherData } from 'app/game/engine';
-import { WeatherMessage, EngineEvents, ComponentMessage } from 'app/game/message';
+import { EngineEvents, ComponentMessage } from 'app/game/message';
 
-import { ClientMessageHandler } from './ClientMessageHandler';
-import { ItemPickupHandler } from './ItemPickupHandler';
-import { BasicAttackHandler } from './BasicAttackHandler';
-import { RequestSyncHandler } from './RequestSyncHandler';
-import { AbortPerformHandler } from './AbortPerformHandler';
-import { InteractionHandler } from './InteractionHandler';
+import { ClientMessageHandler } from './handler/ClientMessageHandler';
+import { ItemPickupHandler } from './handler/ItemPickupHandler';
+import { BasicAttackHandler } from './handler/BasicAttackHandler';
+import { RequestSyncHandler } from './handler/RequestSyncHandler';
+import { AbortPerformHandler } from './handler/AbortPerformHandler';
+import { InteractionHandler } from './handler/InteractionHandler';
 import { ServerEntityStore } from './ServerEntityStore';
 import { EntityLocalFactory } from './EntityLocalFactory';
-import { MoveComponentHandler } from './MoveComponentHandler';
+import { MoveComponentHandler } from './handler/MoveComponentHandler';
 import { EventTriggerManager } from './events/EventTriggerManager';
-import { FishingComponentHandler } from './FishingComponentHandler';
+import { FishingComponentHandler } from './handler/FishingComponentHandler';
 import { Simulator } from './simulator/Simulator';
 import { WeatherSimulator } from './simulator/WeatherSimulator';
 import { MoveComponent } from '../entities';
 
 const PLAYER_ACC_ID = 1337;
 const PLAYER_ENTITY_ID = 1;
-
 export class ServerEmulator {
 
   private tickrateHz = 60;

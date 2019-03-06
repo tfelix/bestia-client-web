@@ -2,11 +2,13 @@ import { Point } from 'app/game/model';
 import {
   PlayerComponent, Component, ComponentType, ConditionComponent, VisualComponent,
   DebugComponent, PositionComponent, AttacksComponent, Entity, InventoryComponent,
-  FxComponent, FishingComponent, ProjectileComponent, EntityTypeComponent, EntityType, BuildingComponent, Item, VegetationComponent, PerformComponent
+  FxComponent, FishingComponent, ProjectileComponent, EntityTypeComponent, EntityType,
+  BuildingComponent, Item, VegetationComponent, PerformComponent
 } from 'app/game/entities';
 import { SpriteType } from 'app/game/engine';
 
 import { ServerEntityStore } from './ServerEntityStore';
+import { PLAYER_ENTITY_ID } from './WorldState';
 
 export type BuildingData = Array<Array<{
   outer: string,
@@ -14,7 +16,7 @@ export type BuildingData = Array<Array<{
 }>>;
 
 export class EntityLocalFactory {
-  private entityCounter = 1;
+  private entityCounter = 100;
   private componentCounter = 0;
   private lastInsertedEntityId = 0;
   private lastInsertedItemId = 0;
@@ -55,7 +57,7 @@ export class EntityLocalFactory {
   }
 
   public addPlayer(name: string, pos: Point, accountId: number): Component[] {
-    const entity = this.createEntity();
+    const entity = this.createEntity(PLAYER_ENTITY_ID);
     const spriteComp = this.addSprite(entity, name, pos);
 
     const entityTypeComp = new EntityTypeComponent(
@@ -181,7 +183,7 @@ export class EntityLocalFactory {
   addPerformComponent(
     playerEntityId: number,
     duration: number
-    ): any {
+  ): any {
     const performComp = new PerformComponent(
       this.componentCounter++,
       playerEntityId

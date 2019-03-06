@@ -2,7 +2,7 @@ import { EngineEvents } from 'app/game/message';
 
 export abstract class EventTrigger {
 
-  abstract triggers();
+  abstract triggers(): void;
 
   abstract getTriggerName(): string;
 

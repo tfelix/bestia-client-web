@@ -1,7 +1,6 @@
 import { UiModalMessage } from 'app/game/message';
 import { EventTrigger } from './EventTrigger';
 
-
 export class HelloWorldTrigger extends EventTrigger {
 
   getTriggerName(): string {
@@ -9,7 +8,7 @@ export class HelloWorldTrigger extends EventTrigger {
   }
 
   triggers() {
-    const msg = new UiModalMessage(0, 'Hello Darkness my old friend!');
+    const msg = new UiModalMessage('Hello Darkness my old friend!');
     this.sendClient(msg);
   }
 }

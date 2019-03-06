@@ -49,7 +49,7 @@ export class GameComponent implements OnInit {
     render: { pixelArt: true },
     physics: {
       default: 'arcade',
-      arcade: { debug: false }
+      arcade: { debug: true }
     },
     parent: 'game',
     plugins: {
@@ -120,6 +120,7 @@ export class GameComponent implements OnInit {
       this.chatComponent.close();
     } else {
       this.inventoryComponent.close();
+      this.settingsComponent.close();
       this.chatComponent.open();
     }
   }
@@ -139,6 +140,7 @@ export class GameComponent implements OnInit {
       this.inventoryComponent.close();
     } else {
       this.chatComponent.close();
+      this.settingsComponent.close();
       this.inventoryComponent.open();
     }
   }

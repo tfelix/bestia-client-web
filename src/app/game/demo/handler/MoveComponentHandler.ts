@@ -4,8 +4,8 @@ import { ClientMessageHandler } from './ClientMessageHandler';
 import { UpdateComponentMessage, ComponentMessage } from 'app/game/message';
 import { Entity } from 'app/game/entities';
 import { MoveComponent, ComponentType, PositionComponent } from 'app/game/entities/components';
-import { ServerEntityStore } from './ServerEntityStore';
-import { MapHelper } from '../engine';
+import { ServerEntityStore } from '../ServerEntityStore';
+import { MapHelper } from '../../engine';
 
 /**
  * The move handler must handle bi-directional messages coming into the server and getting out of the

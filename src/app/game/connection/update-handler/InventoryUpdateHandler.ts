@@ -1,9 +1,9 @@
 import { ComponentUpdaterHandler } from './ComponentUpdateHandler';
-import { ComponentDeleteMessage } from '../message/ComponentDeleteMessage';
-import { ComponentMessage } from '../message/ComponentMessage';
-import { PlayerEntityHolder, Component, InventoryComponent, ComponentType } from '../entities';
-import { EngineEvents } from '../message';
-import { ItemModel, InventoryModel } from '../inventory/inventory.component';
+import { ComponentDeleteMessage } from '../../message/ComponentDeleteMessage';
+import { ComponentMessage } from '../../message/ComponentMessage';
+import { PlayerEntityHolder, Component, InventoryComponent, ComponentType } from '../../entities';
+import { EngineEvents } from '../../message';
+import { ItemModel, InventoryModel } from '../../inventory/inventory.component';
 
 /**
  * This handler will transform the messages into the Item model and then send them
