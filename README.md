@@ -4,17 +4,10 @@
   <img src="src/assets/img/logo-full-black.png" style="width: 60%; height: 60%;">
 </p>
 
-[![Build Status](https://travis-ci.org/tfelix/bestia-client.svg?branch=master)](https://travis-ci.org/tfelix/bestia-client)
+## Discontinued
 
-This is the client implementation of the [Bestia Browsergame](https://bestia-game.net).
-
-Currently its meant as a development platform and as a small introduction game, thus currently no connection to the server
-is established and it is solely a single user game. Later the server support will be added. The game is under active development
-but I can only do so much. If you want to help in coding feel free to fork this repo and open some pull requests. :)
-
-Documentation and Game Design goals can be found here in the [Bestia Developers Documentation](https://docs.bestia-game.net/).
-
-You can also get in touch via [Discord](https://discord.gg/zZW8M2S).
+This client is not under active development anymore. There is the new 3D client which enabled me to get closer
+to my vision of the perfect MMORPG. Check it out from [bestia-client](https://github.com/tfelix/bestia-client)!
 
 ## Development
 
